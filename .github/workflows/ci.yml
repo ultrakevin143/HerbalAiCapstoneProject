@@ -1,0 +1,84 @@
+name: Herbal AI Continuous Integration (CI)
+
+on:
+  push:
+    branches: [ "main", "master", "develop" ]
+  pull_request:
+    branches: [ "main", "master", "develop" ]
+
+jobs:
+  backend-checks:
+    name: Backend Lint, Typecheck & Automated Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: herbalai_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+          cache-dependency-path: herbalaibackend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: herbalaibackend
+        run: npm ci
+
+      - name: Generate Prisma Client
+        working-directory: herbalaibackend
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/herbalai_test?sslmode=disable
+        run: npx prisma generate
+
+      - name: Run Typecheck
+        working-directory: herbalaibackend
+        run: npx tsc --noEmit
+
+      - name: Run Automated Vitest Suites
+        working-directory: herbalaibackend
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/herbalai_test?sslmode=disable
+          JWT_SECRET: ci_test_jwt_secret_key_1234567890
+          JWT_REFRESH_SECRET: ci_test_refresh_jwt_secret_key_1234567890
+          FRONTEND_URL: http://localhost:3000
+        run: npm test
+
+  frontend-checks:
+    name: Frontend Lint & Typecheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+          cache-dependency-path: herbalaifrontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: herbalaifrontend
+        run: npm ci
+
+      - name: Run Frontend Typecheck
+        working-directory: herbalaifrontend
+        run: npx tsc --noEmit

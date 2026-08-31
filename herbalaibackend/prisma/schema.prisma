@@ -1,0 +1,269 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  admin
+  contributor
+}
+
+model User {
+  id               String          @id @default(cuid())
+  username         String          @unique
+  email            String          @unique
+  password         String
+  name             String
+  avatar           String?
+  role             Role            @default(contributor)
+  bio              String?
+  reputation       Int             @default(10)
+  joined           DateTime        @default(now())
+  isBanned         Boolean         @default(false)
+  emailVerified    DateTime?       @map("email_verified")
+
+  // Relations
+  submittedHerbs   SuggestedHerb[] @relation("SubmittedHerbs")
+  reviewedHerbs    SuggestedHerb[] @relation("ReviewedHerbs")
+  herbComments     HerbComment[]
+  threads          Thread[]
+  threadComments   ThreadComment[]
+  sentMessages     ChatMessage[]   @relation("SentMessages")
+  receivedMessages ChatMessage[]   @relation("ReceivedMessages")
+  tokens           Token[]
+  herbCommentLikes HerbCommentLike[]
+  auditLogs        AuditLog[]      @relation("AdminLogs")
+  notifications    Notification[]
+}
+
+model Herb {
+  id                String        @id @default(cuid())
+  localName         String
+  cebuanoName       String?
+  scientificName    String
+  category          String
+  medicinalUses     String
+  preparationMethod String
+  dosage            String
+  regionFound       String?
+  warnings          String?
+  imageUrl          String?
+  isDohApproved     Boolean       @default(false)
+  isVerified        Boolean       @default(true)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  embedding         Unsupported("vector(768)")?
+
+  comments          HerbComment[]
+
+  @@index([localName])
+  @@index([scientificName])
+  @@index([category])
+  @@index([isDohApproved])
+}
+
+model HerbComment {
+  id              Int      @id @default(autoincrement())
+  herbId          String
+  authorId        String
+  parentCommentId Int?
+  content         String
+  likes           Int      @default(0)
+  date            DateTime @default(now())
+  isDeleted       Boolean  @default(false)
+
+  herb            Herb     @relation(fields: [herbId], references: [id], onDelete: Cascade)
+  author          User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parentComment   HerbComment?  @relation("HerbCommentReplies", fields: [parentCommentId], references: [id], onDelete: SetNull)
+  replies         HerbComment[] @relation("HerbCommentReplies")
+  userLikes       HerbCommentLike[]
+
+  @@index([herbId])
+  @@index([authorId])
+}
+
+model HerbCommentLike {
+  commentId Int
+  userId    String
+  date      DateTime @default(now())
+
+  comment   HerbComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([commentId, userId])
+}
+
+enum SuggestionStatus {
+  Pending
+  Approved
+  Rejected
+}
+
+model SuggestedHerb {
+  id                Int              @id @default(autoincrement())
+  submitterId       String
+  localName         String
+  cebuanoName       String?
+  scientificName    String
+  category          String
+  medicinalUses     String
+  preparationMethod String
+  dosage            String
+  regionFound       String?
+  warnings          String?
+  informationSource String?
+  imageUrl          String?
+  status            SuggestionStatus @default(Pending)
+  submittedAt       DateTime         @default(now())
+  reviewedBy        String?
+
+  submitter         User             @relation("SubmittedHerbs", fields: [submitterId], references: [id], onDelete: Cascade)
+  reviewer          User?            @relation("ReviewedHerbs", fields: [reviewedBy], references: [id], onDelete: SetNull)
+
+  @@index([submitterId])
+  @@index([status])
+}
+
+model Thread {
+  id        Int             @id @default(autoincrement())
+  authorId  String
+  title     String
+  category  String
+  content   String
+  views     Int             @default(0)
+  likes     Int             @default(0)
+  replies   Int             @default(0)
+  pinned    Boolean         @default(false)
+  date      DateTime        @default(now())
+  isDeleted Boolean         @default(false)
+
+  author    User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments  ThreadComment[]
+  tags      ThreadTag[]
+
+  @@index([authorId])
+  @@index([category])
+}
+
+model ThreadComment {
+  id              Int             @id @default(autoincrement())
+  threadId        Int
+  authorId        String
+  parentCommentId Int?
+  content         String
+  likes           Int             @default(0)
+  date            DateTime        @default(now())
+  isDeleted       Boolean         @default(false)
+
+  thread          Thread          @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  author          User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parentComment   ThreadComment?  @relation("ThreadCommentReplies", fields: [parentCommentId], references: [id], onDelete: SetNull)
+  replies         ThreadComment[] @relation("ThreadCommentReplies")
+
+  @@index([threadId])
+  @@index([authorId])
+}
+
+model Tag {
+  id      Int         @id @default(autoincrement())
+  name    String      @unique
+  threads ThreadTag[]
+}
+
+model ThreadTag {
+  threadId Int
+  tagId    Int
+
+  thread   Thread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  tag      Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([threadId, tagId])
+}
+
+model ChatMessage {
+  id         Int      @id @default(autoincrement())
+  senderId   String
+  receiverId String
+  content    String
+  time       DateTime @default(now())
+  imageUrl   String?
+  isEdited   Boolean  @default(false)
+  isDeleted  Boolean  @default(false)
+
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([time])
+}
+
+model Token {
+  id        String    @id @default(cuid())
+  userId    String
+  type      String    // e.g. "REFRESH"
+  token     String    @unique
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  revokedAt DateTime?
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model KnowledgeBase {
+  id        String   @id @default(cuid())
+  question  String   @unique
+  answer    String   @db.Text
+  category  String?
+  tags      String[]
+  metadata  Json?    // Flexible field for extra AI context or source info
+  embedding Unsupported("vector(768)")? // Gemini embedding dimension is 768
+  
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([question])
+}
+
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  adminId    String
+  action     String   // e.g. "APPROVE_SUGGESTION", "REJECT_SUGGESTION", "BAN_USER", "UNBAN_USER", "UPDATE_HERB", "DELETE_HERB", "CREATE_HERB"
+  targetType String   // "SuggestedHerb", "Herb", "User", "KnowledgeBase"
+  targetId   String
+  details    Json?
+  createdAt  DateTime @default(now())
+
+  admin      User     @relation("AdminLogs", fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  title     String
+  message   String
+  type      String   @default("SUGGESTION_UPDATE") // "SUGGESTION_UPDATE", "FORUM_REPLY", "SYSTEM"
+  link      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+}
