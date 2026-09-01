@@ -56,6 +56,8 @@ JWT_SECRET="your-production-secret-jwt-key"
 JWT_REFRESH_SECRET="your-production-secret-refresh-key"
 FRONTEND_URL="https://herbalai.ph"
 GEMINI_API_KEY="your-google-gemini-api-key"
+ADMIN_EMAIL="admin@herbalai.ph"
+ADMIN_PASSWORD="generate-a-unique-random-password-of-at-least-12-characters"
 ```
 
 ### Configure Frontend Environment

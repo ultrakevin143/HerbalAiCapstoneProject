@@ -13,6 +13,7 @@ export default function SignInPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const googleAuthUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/auth/google`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,11 +37,6 @@ export default function SignInPage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleGoogleLogin = () => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-    window.location.href = `${apiUrl}/auth/google`;
   };
 
   return (
@@ -117,13 +113,13 @@ export default function SignInPage() {
           </form>
 
           {/* Google SSO Button */}
-          <button
-            onClick={handleGoogleLogin}
+          <a
+            href={googleAuthUrl}
             className="flat-button flat-button-secondary w-full mt-4 flex items-center justify-center gap-3"
           >
             <span className="font-extrabold text-sm border-2 border-[#2d6a4f] rounded px-1.5 py-0.5 bg-[#fafaf8]">G</span>
             Sign in with Google
-          </button>
+          </a>
 
           <Link
             href="/"

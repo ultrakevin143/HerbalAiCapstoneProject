@@ -212,7 +212,7 @@ export default function AboutPage() {
                     Clinical Validation
                   </h3>
                   <p className="text-sm text-[#2d6a4f] leading-relaxed">
-                    We align herbal remedies with standards set by the Philippine Institute of Traditional and Alternative Health Care (PITAHC). Every entry clearly indicates proven active compounds, dosages, and safety precautions to prevent toxicity.
+                    We align entries with publicly available Department of Health and PITAHC reference materials. Each record presents its cited uses, preparation guidance, dosage information, and safety precautions for educational review.
                   </p>
                 </div>
               </div>
@@ -240,13 +240,13 @@ export default function AboutPage() {
           <section className="space-y-12">
             <div className="text-center space-y-3">
               <div className="inline-block bg-[#52b788] text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">
-                PITAHC-Endorsed Remedies
+                DOH/PITAHC Reference-Based Remedies
               </div>
               <h2 className="font-serif-custom italic font-normal text-3xl md:text-5xl text-[#1b4332]">
                 The 10 Medicinal Plants
               </h2>
               <p className="text-[#2d6a4f] font-bold text-sm max-w-xl mx-auto">
-                These plants have been clinically proven and officially endorsed by the Department of Health (DOH) for safety and therapeutic efficacy. Click on any plant below to learn more.
+                These plants are included in Philippine government medicinal-plant reference materials. Click a plant to review the educational preparation and safety information stored in Herbal AI.
               </p>
             </div>
 
@@ -398,7 +398,7 @@ export default function AboutPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#52b788] shrink-0" />
-                  <span>Endorsed by PITAHC standards</span>
+                  <span>Uses public DOH/PITAHC references</span>
                 </div>
               </div>
             </div>

@@ -15,35 +15,36 @@ enum Role {
 }
 
 model User {
-  id               String          @id @default(cuid())
-  username         String          @unique
-  email            String          @unique
-  password         String
-  name             String
-  avatar           String?
-  role             Role            @default(contributor)
-  bio              String?
-  reputation       Int             @default(10)
-  joined           DateTime        @default(now())
-  isBanned         Boolean         @default(false)
-  emailVerified    DateTime?       @map("email_verified")
+  id            String    @id @default(cuid())
+  username      String    @unique
+  email         String    @unique
+  password      String
+  name          String
+  avatar        String?
+  role          Role      @default(contributor)
+  bio           String?
+  joined        DateTime  @default(now())
+  isBanned      Boolean   @default(false)
+  emailVerified DateTime? @map("email_verified")
 
   // Relations
-  submittedHerbs   SuggestedHerb[] @relation("SubmittedHerbs")
-  reviewedHerbs    SuggestedHerb[] @relation("ReviewedHerbs")
-  herbComments     HerbComment[]
-  threads          Thread[]
-  threadComments   ThreadComment[]
-  sentMessages     ChatMessage[]   @relation("SentMessages")
-  receivedMessages ChatMessage[]   @relation("ReceivedMessages")
-  tokens           Token[]
-  herbCommentLikes HerbCommentLike[]
-  auditLogs        AuditLog[]      @relation("AdminLogs")
-  notifications    Notification[]
+  submittedHerbs     SuggestedHerb[]     @relation("SubmittedHerbs")
+  reviewedHerbs      SuggestedHerb[]     @relation("ReviewedHerbs")
+  herbComments       HerbComment[]
+  threads            Thread[]
+  threadComments     ThreadComment[]
+  threadLikes        ThreadLike[]
+  threadCommentLikes ThreadCommentLike[]
+  sentMessages       ChatMessage[]       @relation("SentMessages")
+  receivedMessages   ChatMessage[]       @relation("ReceivedMessages")
+  tokens             Token[]
+  herbCommentLikes   HerbCommentLike[]
+  auditLogs          AuditLog[]          @relation("AdminLogs")
+  notifications      Notification[]
 }
 
 model Herb {
-  id                String        @id @default(cuid())
+  id                String   @id @default(cuid())
   localName         String
   cebuanoName       String?
   scientificName    String
@@ -54,14 +55,14 @@ model Herb {
   regionFound       String?
   warnings          String?
   imageUrl          String?
-  isDohApproved     Boolean       @default(false)
-  isVerified        Boolean       @default(true)
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
+  isDohApproved     Boolean  @default(false)
+  isVerified        Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
-  embedding         Unsupported("vector(768)")?
+  embedding Unsupported("vector(768)")?
 
-  comments          HerbComment[]
+  comments HerbComment[]
 
   @@index([localName])
   @@index([scientificName])
@@ -79,11 +80,11 @@ model HerbComment {
   date            DateTime @default(now())
   isDeleted       Boolean  @default(false)
 
-  herb            Herb     @relation(fields: [herbId], references: [id], onDelete: Cascade)
-  author          User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  parentComment   HerbComment?  @relation("HerbCommentReplies", fields: [parentCommentId], references: [id], onDelete: SetNull)
-  replies         HerbComment[] @relation("HerbCommentReplies")
-  userLikes       HerbCommentLike[]
+  herb          Herb              @relation(fields: [herbId], references: [id], onDelete: Cascade)
+  author        User              @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parentComment HerbComment?      @relation("HerbCommentReplies", fields: [parentCommentId], references: [id], onDelete: SetNull)
+  replies       HerbComment[]     @relation("HerbCommentReplies")
+  userLikes     HerbCommentLike[]
 
   @@index([herbId])
   @@index([authorId])
@@ -94,8 +95,8 @@ model HerbCommentLike {
   userId    String
   date      DateTime @default(now())
 
-  comment   HerbComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comment HerbComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([commentId, userId])
 }
@@ -124,51 +125,77 @@ model SuggestedHerb {
   submittedAt       DateTime         @default(now())
   reviewedBy        String?
 
-  submitter         User             @relation("SubmittedHerbs", fields: [submitterId], references: [id], onDelete: Cascade)
-  reviewer          User?            @relation("ReviewedHerbs", fields: [reviewedBy], references: [id], onDelete: SetNull)
+  submitter User  @relation("SubmittedHerbs", fields: [submitterId], references: [id], onDelete: Cascade)
+  reviewer  User? @relation("ReviewedHerbs", fields: [reviewedBy], references: [id], onDelete: SetNull)
 
   @@index([submitterId])
   @@index([status])
 }
 
 model Thread {
-  id        Int             @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   authorId  String
   title     String
   category  String
   content   String
-  views     Int             @default(0)
-  likes     Int             @default(0)
-  replies   Int             @default(0)
-  pinned    Boolean         @default(false)
-  date      DateTime        @default(now())
-  isDeleted Boolean         @default(false)
+  views     Int      @default(0)
+  likes     Int      @default(0)
+  replies   Int      @default(0)
+  pinned    Boolean  @default(false)
+  date      DateTime @default(now())
+  isDeleted Boolean  @default(false)
 
   author    User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
   comments  ThreadComment[]
   tags      ThreadTag[]
+  userLikes ThreadLike[]
 
   @@index([authorId])
   @@index([category])
 }
 
 model ThreadComment {
-  id              Int             @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   threadId        Int
   authorId        String
   parentCommentId Int?
   content         String
-  likes           Int             @default(0)
-  date            DateTime        @default(now())
-  isDeleted       Boolean         @default(false)
+  likes           Int      @default(0)
+  date            DateTime @default(now())
+  isDeleted       Boolean  @default(false)
 
-  thread          Thread          @relation(fields: [threadId], references: [id], onDelete: Cascade)
-  author          User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  parentComment   ThreadComment?  @relation("ThreadCommentReplies", fields: [parentCommentId], references: [id], onDelete: SetNull)
-  replies         ThreadComment[] @relation("ThreadCommentReplies")
+  thread        Thread              @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  author        User                @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parentComment ThreadComment?      @relation("ThreadCommentReplies", fields: [parentCommentId], references: [id], onDelete: SetNull)
+  replies       ThreadComment[]     @relation("ThreadCommentReplies")
+  userLikes     ThreadCommentLike[]
 
   @@index([threadId])
   @@index([authorId])
+}
+
+model ThreadLike {
+  threadId Int
+  userId   String
+  date     DateTime @default(now())
+
+  thread Thread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([threadId, userId])
+  @@index([userId])
+}
+
+model ThreadCommentLike {
+  commentId Int
+  userId    String
+  date      DateTime @default(now())
+
+  comment ThreadComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([commentId, userId])
+  @@index([userId])
 }
 
 model Tag {
@@ -181,8 +208,8 @@ model ThreadTag {
   threadId Int
   tagId    Int
 
-  thread   Thread @relation(fields: [threadId], references: [id], onDelete: Cascade)
-  tag      Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  thread Thread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([threadId, tagId])
 }
@@ -197,8 +224,8 @@ model ChatMessage {
   isEdited   Boolean  @default(false)
   isDeleted  Boolean  @default(false)
 
-  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
-  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  sender   User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
 
   @@index([senderId])
   @@index([receiverId])
@@ -208,26 +235,26 @@ model ChatMessage {
 model Token {
   id        String    @id @default(cuid())
   userId    String
-  type      String    // e.g. "REFRESH"
+  type      String // e.g. "REFRESH"
   token     String    @unique
   expiresAt DateTime
   createdAt DateTime  @default(now())
   revokedAt DateTime?
 
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
 model KnowledgeBase {
-  id        String   @id @default(cuid())
-  question  String   @unique
-  answer    String   @db.Text
+  id        String                      @id @default(cuid())
+  question  String                      @unique
+  answer    String                      @db.Text
   category  String?
   tags      String[]
-  metadata  Json?    // Flexible field for extra AI context or source info
+  metadata  Json? // Flexible field for extra AI context or source info
   embedding Unsupported("vector(768)")? // Gemini embedding dimension is 768
-  
+
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -239,13 +266,13 @@ model KnowledgeBase {
 model AuditLog {
   id         Int      @id @default(autoincrement())
   adminId    String
-  action     String   // e.g. "APPROVE_SUGGESTION", "REJECT_SUGGESTION", "BAN_USER", "UNBAN_USER", "UPDATE_HERB", "DELETE_HERB", "CREATE_HERB"
-  targetType String   // "SuggestedHerb", "Herb", "User", "KnowledgeBase"
+  action     String // e.g. "APPROVE_SUGGESTION", "REJECT_SUGGESTION", "BAN_USER", "UNBAN_USER", "UPDATE_HERB", "DELETE_HERB", "CREATE_HERB"
+  targetType String // "SuggestedHerb", "Herb", "User", "KnowledgeBase"
   targetId   String
   details    Json?
   createdAt  DateTime @default(now())
 
-  admin      User     @relation("AdminLogs", fields: [adminId], references: [id], onDelete: Cascade)
+  admin User @relation("AdminLogs", fields: [adminId], references: [id], onDelete: Cascade)
 
   @@index([adminId])
   @@index([action])
@@ -262,7 +289,7 @@ model Notification {
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([isRead])

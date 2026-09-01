@@ -338,7 +338,7 @@ function LibraryContent() {
               {selectedHerb.isDohApproved && (
                 <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-[#e8f5e9] border border-[#a3ef95]/60 text-[#1b4332] text-xs font-bold mb-6">
                   <ShieldCheck className="h-5 w-5 text-[#2d6a4f] shrink-0" />
-                  <span>Officially validated and endorsed by the Department of Health (DOH) Philippines as one of the 10 scientifically proven medicinal plants.</span>
+                  <span>Included among the medicinal plants recognized in Philippine Department of Health reference materials.</span>
                 </div>
               )}
 

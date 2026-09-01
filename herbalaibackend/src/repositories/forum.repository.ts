@@ -111,23 +111,25 @@ export const incrementThreadViews = async (id: number) => {
   });
 };
 
-export const incrementThreadLikes = async (id: number) => {
-  return prisma.thread.update({
-    where: { id },
-    data: {
-      likes: { increment: 1 },
-    },
+export const toggleThreadLike = async (threadId: number, userId: string) => {
+  return prisma.$transaction(async (tx) => {
+    const key = { threadId_userId: { threadId, userId } };
+    const existing = await tx.threadLike.findUnique({ where: key });
+
+    if (existing) {
+      await tx.threadLike.delete({ where: key });
+    } else {
+      await tx.threadLike.create({ data: { threadId, userId } });
+    }
+
+    const likes = await tx.threadLike.count({ where: { threadId } });
+    await tx.thread.update({ where: { id: threadId }, data: { likes } });
+    return { likes, hasLiked: !existing };
   });
 };
 
-export const decrementThreadLikes = async (id: number) => {
-  return prisma.thread.update({
-    where: { id },
-    data: {
-      likes: { decrement: 1 },
-    },
-  });
-};
+export const hasUserLikedThread = async (threadId: number, userId: string) =>
+  Boolean(await prisma.threadLike.findUnique({ where: { threadId_userId: { threadId, userId } } }));
 
 export const createComment = async (data: {
   threadId: number;
@@ -192,13 +194,32 @@ export const findCommentById = async (id: number) => {
   });
 };
 
-export const incrementCommentLikes = async (id: number) => {
-  return prisma.threadComment.update({
-    where: { id },
-    data: {
-      likes: { increment: 1 },
-    },
+export const toggleCommentLike = async (commentId: number, userId: string) => {
+  return prisma.$transaction(async (tx) => {
+    const key = { commentId_userId: { commentId, userId } };
+    const existing = await tx.threadCommentLike.findUnique({ where: key });
+
+    if (existing) {
+      await tx.threadCommentLike.delete({ where: key });
+    } else {
+      await tx.threadCommentLike.create({ data: { commentId, userId } });
+    }
+
+    const likes = await tx.threadCommentLike.count({ where: { commentId } });
+    await tx.threadComment.update({ where: { id: commentId }, data: { likes } });
+    return { likes, hasLiked: !existing };
   });
+};
+
+export const findUserLikedCommentIds = async (threadId: number, userId: string) => {
+  const likes = await prisma.threadCommentLike.findMany({
+    where: {
+      userId,
+      comment: { threadId, isDeleted: false },
+    },
+    select: { commentId: true },
+  });
+  return likes.map(({ commentId }) => commentId);
 };
 
 export const deleteThread = async (id: number) => {

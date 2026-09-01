@@ -102,7 +102,7 @@ export async function generateChatResponse(
     throw new Error("GEMINI_API_KEY is not configured.");
   }
 
-  const fullPrompt = `Below is the relevant Context retrieved from the database. Use it to answer the question. If the answer cannot be found in the context, use your built-in traditional knowledge of Philippine medicinal herbs while adhering strictly to DOH/PITAHC safety guidelines and the system prompt's rules.
+  const fullPrompt = `Below is the Context retrieved from the Herbal AI database. It is the only allowed source for herb-specific facts. Answer the user's question by paraphrasing and organizing this material into a clearer explanation. Preserve its meaning and do not add details merely to make the answer longer. Do not fill missing facts from general model knowledge. If the Context has no sufficiently relevant verified record, state that limitation and do not guess.
 
 Context:
 ${context}

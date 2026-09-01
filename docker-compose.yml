@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres123}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in the root .env file}
       POSTGRES_DB: ${POSTGRES_DB:-herbalai}
     ports:
       - "5432:5432"
@@ -31,11 +31,14 @@ services:
     environment:
       NODE_ENV: production
       PORT: 5000
-      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres123}@postgres:5432/${POSTGRES_DB:-herbalai}?sslmode=disable
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in the root .env file}@postgres:5432/${POSTGRES_DB:-herbalai}?sslmode=disable
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in the root .env file}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?Set JWT_REFRESH_SECRET in the root .env file}
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
       GEMINI_API_KEY: ${GEMINI_API_KEY}
+      DR_AI_MAX_COSINE_DISTANCE: ${DR_AI_MAX_COSINE_DISTANCE:-0.52}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@herbalai.ph}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in the root .env file before seeding}
     ports:
       - "5000:5000"
 

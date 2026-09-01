@@ -144,6 +144,11 @@ export class ForumController {
    */
   public likeThread = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
     try {
+      const authReq = req as AuthenticatedRequest;
+      const userId = authReq.user?.userId;
+      if (!userId) {
+        return res.status(401).json({ status: 'error', code: 401, message: 'Authentication required.' });
+      }
       const id = parseInt(req.params.id as string, 10);
       if (isNaN(id)) {
         return res.status(400).json({
@@ -153,14 +158,52 @@ export class ForumController {
         });
       }
 
-      const updated = await forumRepo.incrementThreadLikes(id);
+      const updated = await forumRepo.toggleThreadLike(id, userId);
 
       return res.status(200).json({
         status: 'success',
         code: 200,
-        message: 'Thread liked successfully.',
-        data: { likes: updated.likes },
+        message: updated.hasLiked ? 'Thread liked successfully.' : 'Thread unliked successfully.',
+        data: updated,
       });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getThreadLikeStatus = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+    try {
+      const authReq = req as AuthenticatedRequest;
+      const userId = authReq.user?.userId;
+      const id = parseInt(req.params.id as string, 10);
+      if (!userId) {
+        return res.status(401).json({ status: 'error', code: 401, message: 'Authentication required.' });
+      }
+      if (isNaN(id)) {
+        return res.status(400).json({ status: 'error', code: 400, message: 'Invalid thread ID.' });
+      }
+
+      const hasLiked = await forumRepo.hasUserLikedThread(id, userId);
+      return res.status(200).json({ status: 'success', code: 200, data: { hasLiked } });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getCommentLikeStatuses = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+    try {
+      const authReq = req as AuthenticatedRequest;
+      const userId = authReq.user?.userId;
+      const threadId = parseInt(req.params.id as string, 10);
+      if (!userId) {
+        return res.status(401).json({ status: 'error', code: 401, message: 'Authentication required.' });
+      }
+      if (isNaN(threadId)) {
+        return res.status(400).json({ status: 'error', code: 400, message: 'Invalid thread ID.' });
+      }
+
+      const likedCommentIds = await forumRepo.findUserLikedCommentIds(threadId, userId);
+      return res.status(200).json({ status: 'success', code: 200, data: { likedCommentIds } });
     } catch (error) {
       next(error);
     }
@@ -299,6 +342,11 @@ export class ForumController {
    */
   public likeComment = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
     try {
+      const authReq = req as AuthenticatedRequest;
+      const userId = authReq.user?.userId;
+      if (!userId) {
+        return res.status(401).json({ status: 'error', code: 401, message: 'Authentication required.' });
+      }
       const id = parseInt(req.params.id as string, 10);
       if (isNaN(id)) {
         return res.status(400).json({
@@ -308,13 +356,13 @@ export class ForumController {
         });
       }
 
-      const updated = await forumRepo.incrementCommentLikes(id);
+      const updated = await forumRepo.toggleCommentLike(id, userId);
 
       return res.status(200).json({
         status: 'success',
         code: 200,
-        message: 'Comment liked successfully.',
-        data: { likes: updated.likes },
+        message: updated.hasLiked ? 'Comment liked successfully.' : 'Comment unliked successfully.',
+        data: updated,
       });
     } catch (error) {
       next(error);

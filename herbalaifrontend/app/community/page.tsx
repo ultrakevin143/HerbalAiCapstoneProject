@@ -191,7 +191,7 @@ export default function CommunityPage() {
               <ul className="list-disc pl-4 space-y-1.5 text-gray-500">
                 <li>Be respectful of traditional herbal heritage practices.</li>
                 <li>Never prescribe; always speak of personal experiences or cited logs.</li>
-                <li>Cite DOH or PITAHC approvals where possible.</li>
+                <li>Cite DOH or PITAHC publications where possible.</li>
               </ul>
             </div>
           </aside>

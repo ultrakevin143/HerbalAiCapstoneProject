@@ -161,7 +161,10 @@ function MessengerContent() {
       // Update sidebar conversation preview
       setConversations((prev) => {
         const contactId = msg.senderId === user.id ? msg.receiverId : msg.senderId;
-        const contact = msg.senderId === user.id ? msg.sender : (prev.find((c) => c.contact.id === contactId)?.contact || msg.sender);
+        const existingContact = prev.find((c) => c.contact.id === contactId)?.contact;
+        // For outgoing messages, msg.sender is the current user. Preserve the
+        // recipient already inserted by openConversation instead of displaying self.
+        const contact = existingContact || msg.sender;
         
         let lastMsgText = msg.content;
         if (msg.isDeleted) {
@@ -570,6 +573,7 @@ function MessengerContent() {
                                 {isOwn && !isEditing && (
                                   <div className="absolute left-[-28px] top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button 
+                                      type="button"
                                       onClick={() => setActiveMenuMessageId(activeMenuMessageId === msg.id ? null : msg.id)}
                                       className="h-6 w-6 rounded-full bg-white hover:bg-gray-100 border border-gray-100 shadow flex items-center justify-center text-gray-500 hover:text-gray-700"
                                       aria-label="Message options"
@@ -582,7 +586,11 @@ function MessengerContent() {
                                       <div ref={menuRef} className="absolute bottom-7 left-0 z-10 w-24 bg-white rounded-lg border border-gray-100 shadow-lg py-1">
                                         {!msg.imageUrl && (
                                           <button
-                                            onClick={() => {
+                                            type="button"
+                                            onMouseDown={(event) => event.stopPropagation()}
+                                            onClick={(event) => {
+                                              event.preventDefault();
+                                              event.stopPropagation();
                                               setEditingMessageId(msg.id);
                                               setEditInput(msg.content);
                                               setActiveMenuMessageId(null);
@@ -593,6 +601,7 @@ function MessengerContent() {
                                           </button>
                                         )}
                                         <button
+                                          type="button"
                                           onClick={() => handleDeleteMessage(msg.id)}
                                           className="w-full px-3 py-1.5 text-left text-xs font-bold text-red-600 hover:bg-red-50 flex items-center gap-1.5"
                                         >

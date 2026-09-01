@@ -23,7 +23,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Herbal AI — Philippine Medicinal Plant Repository.
           </p>
           <p className="text-[10px] font-bold text-[#6a7282]">
-            Endorsed by the Philippine Institute of Traditional and Alternative Health Care (PITAHC).
+            Uses publicly available DOH and PITAHC reference materials; not an institutional endorsement.
           </p>
         </div>
       </div>

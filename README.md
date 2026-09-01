@@ -176,11 +176,9 @@ cd herbalaifrontend && npx tsc --noEmit
 
 ---
 
-## Default Administrative Credentials
+## Administrative Account
 
-* **Email**: `admin@herbalai.ph`
-* **Password**: `Admin@HerbalAI2026!`
-* **Role**: `admin`
+Before running `npm run seed`, configure `ADMIN_EMAIL` and a unique random `ADMIN_PASSWORD` of at least 12 characters. The project does not ship a default administrator password. Never commit production credentials.
 
 ---
 

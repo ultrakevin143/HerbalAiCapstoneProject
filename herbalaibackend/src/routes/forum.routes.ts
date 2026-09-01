@@ -21,6 +21,12 @@ router.delete('/threads/:id', authMiddleware.execute, forumController.deleteThre
 // POST /api/forum/threads/:id/like - Like a thread (auth required)
 router.post('/threads/:id/like', authMiddleware.execute, forumController.likeThread);
 
+// GET /api/forum/threads/:id/like-status - Current user's reaction state
+router.get('/threads/:id/like-status', authMiddleware.execute, forumController.getThreadLikeStatus);
+
+// GET /api/forum/threads/:id/comment-like-statuses - Current user's reply reactions
+router.get('/threads/:id/comment-like-statuses', authMiddleware.execute, forumController.getCommentLikeStatuses);
+
 // POST /api/forum/threads/:id/comments - Post comment/reply on a thread (auth required)
 router.post('/threads/:id/comments', authMiddleware.execute, forumController.createComment);
 

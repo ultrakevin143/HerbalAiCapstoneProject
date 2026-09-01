@@ -243,20 +243,12 @@ export default function SuggestHerbPage() {
               <div>
                 <h2 className="text-3xl font-black text-[#1b4332]">Thank You!</h2>
                 <p className="text-lg font-bold text-[#40916c] mt-1">
-                  {user?.role === 'admin' ? 'Herb Added Successfully' : 'Suggestion Submitted Successfully'}
+                  Suggestion Submitted Successfully
                 </p>
               </div>
 
               <p className="text-sm font-bold text-[#6a7282] leading-relaxed">
-                {user?.role === 'admin' ? (
-                  <>
-                    Your new herb entry for <span className="text-[#1b4332] font-black underline">{submittedHerb?.localName || localName}</span> has been successfully added directly to the database library.
-                  </>
-                ) : (
-                  <>
-                    Your suggestion for <span className="text-[#1b4332] font-black underline">{submittedHerb?.localName || localName}</span> has been logged and queued for professional botanical review. Thank you for preserving Filipino healing traditions!
-                  </>
-                )}
+                Your suggestion for <span className="text-[#1b4332] font-black underline">{submittedHerb?.localName || localName}</span> has been logged and queued for review. It will appear in the public library only after an administrator approves it.
               </p>
 
               {/* Submitted Summary Card */}

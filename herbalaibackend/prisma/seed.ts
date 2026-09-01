@@ -161,14 +161,19 @@ async function generateVector(text: string): Promise<string | null> {
 async function main() {
   console.log("🌱 Starting Herbal AI database seeding...");
 
-  // 1. Ensure Default Admin User exists
-  const adminPassword = await bcrypt.hash("Admin@HerbalAI2026!", 10);
+  // 1. Ensure the configured administrator exists. Never ship a fixed password.
+  const adminEmail = process.env.ADMIN_EMAIL?.trim() || "admin@herbalai.ph";
+  const adminPlainPassword = process.env.ADMIN_PASSWORD;
+  if (!adminPlainPassword || adminPlainPassword.length < 12) {
+    throw new Error("ADMIN_PASSWORD must be set to at least 12 characters before running the seed command.");
+  }
+  const adminPassword = await bcrypt.hash(adminPlainPassword, 10);
   const admin = await prisma.user.upsert({
-    where: { email: "admin@herbalai.ph" },
-    update: { role: "admin", isBanned: false },
+    where: { email: adminEmail },
+    update: { role: "admin", isBanned: false, password: adminPassword, emailVerified: new Date() },
     create: {
       username: "admin_herbalai",
-      email: "admin@herbalai.ph",
+      email: adminEmail,
       name: "Herbal AI Administrator",
       password: adminPassword,
       role: "admin",

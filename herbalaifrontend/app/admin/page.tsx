@@ -64,7 +64,6 @@ interface SystemUser {
   avatar: string | null;
   joined: string;
   isBanned: boolean;
-  reputation: number;
 }
 
 interface KBItem {
@@ -85,7 +84,7 @@ interface AuditLog {
   targetType: string;
   targetId: string | null;
   details: any; /* eslint-disable-line @typescript-eslint/no-explicit-any */
-  timestamp: string;
+  createdAt: string;
   admin: {
     id: string;
     name: string;
@@ -170,38 +169,35 @@ export default function AdminPage() {
       try {
         setError(null);
         
-        // Fetch suggestions
-        const suggestRes = await api.get('/suggest');
+        const [suggestRes, herbsRes, usersRes, kbRes, statsRes, auditRes] = await Promise.all([
+          api.get('/suggest'),
+          api.get('/herbs'),
+          api.get('/auth/users'),
+          api.get('/knowledge-base/all'),
+          api.get('/stats/dashboard'),
+          api.get('/admin/audit-logs'),
+        ]);
+
         if (suggestRes.data?.status === 'success') {
           setSuggestions(suggestRes.data.data.suggestions || []);
         }
-        
-        // Fetch all library herbs
-        const herbsRes = await api.get('/herbs');
+
         if (herbsRes.data?.status === 'success') {
           setAllHerbs(herbsRes.data.data.herbs || []);
         }
 
-        // Fetch all users
-        const usersRes = await api.get('/auth/users');
         if (usersRes.data?.status === 'success') {
           setUsersList(usersRes.data.data.users || []);
         }
 
-        // Fetch all knowledge base entries
-        const kbRes = await api.get('/knowledge-base/all');
         if (kbRes.data?.status === 'success') {
           setKbList(kbRes.data.data || []);
         }
-        
-        // Fetch stats
-        const statsRes = await api.get('/stats/dashboard');
+
         if (statsRes.data?.status === 'success') {
           setDashboardStats(statsRes.data.data);
         }
 
-        // Fetch audit logs
-        const auditRes = await api.get('/admin/audit-logs');
         if (auditRes.data?.status === 'success') {
           setAuditLogs(auditRes.data.data.logs || []);
         }
@@ -218,6 +214,31 @@ export default function AdminPage() {
       }
     }
   }, [loading, isAuthenticated, user, router]);
+
+  // Audit records can change while the admin remains on this page. Refresh
+  // them whenever the audit tab is opened instead of relying on mount-time data.
+  useEffect(() => {
+    if (activeTab !== 'audit' || !isAuthenticated || user?.role !== 'admin') return;
+
+    let cancelled = false;
+    const refreshAuditLogs = async () => {
+      try {
+        const auditRes = await api.get('/admin/audit-logs');
+        if (!cancelled && auditRes.data?.status === 'success') {
+          setAuditLogs(auditRes.data.data.logs || []);
+        }
+      } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
+        if (!cancelled) {
+          setError(err.response?.data?.message || 'Unable to refresh audit logs.');
+        }
+      }
+    };
+
+    refreshAuditLogs();
+    return () => {
+      cancelled = true;
+    };
+  }, [activeTab, isAuthenticated, user?.role]);
 
   const handleApprove = async (id: number) => {
     try {
@@ -644,7 +665,7 @@ export default function AdminPage() {
                     ) : (
                       <div className="h-64 flex flex-col justify-between">
                         <div className="h-36">
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                             <PieChart>
                               <Pie
                                 data={dashboardStats.herbsByCategory}
@@ -687,7 +708,7 @@ export default function AdminPage() {
                       <p className="text-xs text-gray-500 text-center py-10">No data available</p>
                     ) : (
                       <div className="h-64">
-                        <ResponsiveContainer width="100%" height="100%">
+                        <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                           <BarChart data={dashboardStats.suggestionsByStatus}>
                             <XAxis dataKey="name" tick={{ fontSize: 12 }} />
                             <YAxis allowDecimals={false} />
@@ -712,7 +733,7 @@ export default function AdminPage() {
                       <p className="text-xs text-gray-500 text-center py-10">No data available</p>
                     ) : (
                       <div className="h-64">
-                        <ResponsiveContainer width="100%" height="100%">
+                        <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                           <PieChart>
                             <Pie
                               data={dashboardStats.threadsByCategory}
@@ -777,7 +798,7 @@ export default function AdminPage() {
                     <div>[INFO] Loaded {allHerbs.length} published botanical records from PostgreSQL.</div>
                     <div>[INFO] Loaded {kbList.length} RAG FAQs references.</div>
                     <div>[SUCCESS] Session verified for admin client user.</div>
-                    <div>[HEALTH] All core capstone services running at 100% efficiency.</div>
+                    <div>[HEALTH] Core API, authentication, database, and admin console checks completed.</div>
                   </div>
                 </div>
               </div>
@@ -1216,7 +1237,7 @@ export default function AdminPage() {
                           return (
                             <tr key={log.id} className="hover:bg-gray-50/50 transition">
                               <td className="py-3 px-4 text-gray-500 font-mono text-[11px] whitespace-nowrap">
-                                {new Date(log.timestamp).toLocaleString(undefined, {
+                                {new Date(log.createdAt).toLocaleString(undefined, {
                                   month: 'short',
                                   day: 'numeric',
                                   year: 'numeric',

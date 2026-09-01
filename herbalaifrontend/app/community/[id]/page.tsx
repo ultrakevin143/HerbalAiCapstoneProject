@@ -63,6 +63,8 @@ export default function ThreadDetailPage() {
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
   const [isLiking, setIsLiking] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
+  const [likedCommentIds, setLikedCommentIds] = useState<Set<number>>(new Set());
+  const [likingCommentIds, setLikingCommentIds] = useState<Set<number>>(new Set());
 
   // Profile popup state
   const [selectedProfile, setSelectedProfile] = useState<{ id: string; name: string; avatar?: string | null; role: string } | null>(null);
@@ -88,6 +90,17 @@ export default function ThreadDetailPage() {
       if (res.data?.status === 'success') {
         setThread(res.data.data.thread);
         setComments(res.data.data.comments || []);
+        if (isAuthenticated) {
+          const [likeStatus, commentLikeStatuses] = await Promise.all([
+            api.get(`/forum/threads/${id}/like-status`),
+            api.get(`/forum/threads/${id}/comment-like-statuses`),
+          ]);
+          setHasLiked(Boolean(likeStatus.data?.data?.hasLiked));
+          setLikedCommentIds(new Set(commentLikeStatuses.data?.data?.likedCommentIds || []));
+        } else {
+          setHasLiked(false);
+          setLikedCommentIds(new Set());
+        }
       }
     } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
       console.error('Failed to load thread detail:', err);
@@ -98,7 +111,7 @@ export default function ThreadDetailPage() {
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  }, [id, isAuthenticated]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -106,18 +119,45 @@ export default function ThreadDetailPage() {
   }, [id, fetchThreadDetail]);
 
   const handleLike = async () => {
-    if (!thread || hasLiked || isLiking) return;
+    if (!thread || isLiking) return;
     try {
       setIsLiking(true);
       const res = await api.post(`/forum/threads/${thread.id}/like`);
       if (res.data?.status === 'success') {
         setThread((prev) => prev ? { ...prev, likes: res.data.data.likes } : null);
-        setHasLiked(true);
+        setHasLiked(Boolean(res.data.data.hasLiked));
       }
     } catch (err) {
       console.error('Failed to like thread:', err);
     } finally {
       setIsLiking(false);
+    }
+  };
+
+  const handleCommentLike = async (commentId: number) => {
+    if (likingCommentIds.has(commentId)) return;
+    setLikingCommentIds((current) => new Set(current).add(commentId));
+    try {
+      const res = await api.post(`/forum/comments/${commentId}/like`);
+      if (res.data?.status === 'success') {
+        setComments((current) => current.map((comment) =>
+          comment.id === commentId ? { ...comment, likes: res.data.data.likes } : comment
+        ));
+        setLikedCommentIds((current) => {
+          const next = new Set(current);
+          if (res.data.data.hasLiked) next.add(commentId);
+          else next.delete(commentId);
+          return next;
+        });
+      }
+    } catch (err) {
+      console.error('Failed to update reply like:', err);
+    } finally {
+      setLikingCommentIds((current) => {
+        const next = new Set(current);
+        next.delete(commentId);
+        return next;
+      });
     }
   };
 
@@ -304,7 +344,7 @@ export default function ThreadDetailPage() {
             <div className="flex items-center gap-6">
               <button
                 onClick={handleLike}
-                disabled={hasLiked}
+                disabled={isLiking}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all ${
                   hasLiked
                     ? 'border-[#2d6a4f]/20 bg-[#eef5f0] text-[#1b4332]'
@@ -427,9 +467,16 @@ export default function ThreadDetailPage() {
                         {/* Comment actions row */}
                         {!comment.isDeleted && (
                           <div className="flex items-center justify-between gap-4 mt-3 pt-2 border-t border-gray-50 text-[10px] font-bold text-gray-400">
-                            <span className="flex items-center gap-1.5 hover:text-[#1b4332] cursor-pointer">
-                              ❤️ {comment.likes} likes
-                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleCommentLike(comment.id)}
+                              disabled={likingCommentIds.has(comment.id)}
+                              className={`flex items-center gap-1.5 transition-colors disabled:opacity-60 ${
+                                likedCommentIds.has(comment.id) ? 'text-[#1b4332]' : 'hover:text-[#1b4332]'
+                              }`}
+                            >
+                              ❤️ {comment.likes} {likedCommentIds.has(comment.id) ? 'liked' : 'likes'}
+                            </button>
                             {isCommentDeletable && (
                               <button
                                 onClick={() => handleDeleteComment(comment.id)}

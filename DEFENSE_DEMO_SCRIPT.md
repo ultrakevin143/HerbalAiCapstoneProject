@@ -51,7 +51,7 @@ An organized, step-by-step presentation script designed for demonstrating the He
 ---
 
 ### Scene 4: Administrative Moderation & Real-Time Notification Loop
-1. **Switch Browser / Window**: Log in with administrator account (`admin@herbalai.ph`).
+1. **Switch Browser / Window**: Log in with the dedicated administrator demonstration account configured for the defense. Never display its password.
 2. **Navigate to**: `http://localhost:3000/admin`
 3. **Demonstrate**:
    * **Pending Suggestions Tab**: Review the newly submitted *Tawa-tawa* herb suggestion.

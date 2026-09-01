@@ -12,6 +12,18 @@
 | Result classification | Pass |
 | Notes | PostgreSQL SSL-mode compatibility warnings were emitted; no test failed. |
 
+## Functional API audit run
+
+| Field | Record |
+|---|---|
+| Run ID | API-E2E-2026-09-01-01 |
+| Date | 1 September 2026 |
+| Accounts | Dedicated temporary contributor and administrator; deleted after execution |
+| Scope | Authentication, herbs/comments, forum, messaging, suggestions, notifications, audit, statistics, knowledge base, and Dr. Ai |
+| Result | **34 passed / 34 exercised checks** on the clean rerun |
+| Evidence | `Docs/FUNCTIONAL_AUDIT_2026-09-01.md` |
+| Limitation | Browser/UI automation was unavailable; external OAuth/email/upload/deployment/load evidence remains pending |
+
 ## Deployment preflight record
 
 | Field | Record |
