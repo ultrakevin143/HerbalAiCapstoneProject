@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/auth.controller.js";
 import { validateSchema } from "../middlewares/validate.js";
-import { signupSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema } from "../schema/auth.schema.js";
+import { signupSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema, updateProfileSchema } from "../schema/auth.schema.js";
 import { AuthMiddleware } from "../middlewares/auth.middleware.js";
 import rateLimit from "express-rate-limit";
 
@@ -57,6 +57,7 @@ router.get("/google/callback", authController.googleCallback);
 
 // Session Verification
 router.get("/me", authMiddleware.execute, authController.me);
+router.patch("/me", authMiddleware.execute, validateSchema(updateProfileSchema), authController.updateProfile);
 
 // Get All Users (Admin only check inside controller)
 router.get("/users", authMiddleware.execute, authController.getAllUsers);

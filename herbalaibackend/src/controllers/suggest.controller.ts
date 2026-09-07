@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { uploadToCloudinary } from '../services/cloudinary.service.js';
 import * as suggestRepo from '../repositories/suggest.repository.js';
+import { invalidateHerbCache } from '../repositories/herb.repository.js';
 import type { AuthenticatedRequest } from '../middlewares/auth.middleware.js';
 import { generateEmbedding } from '../services/ai/core/gemini-service.js';
 import { prisma } from '../lib/prisma.js';
@@ -227,6 +228,7 @@ export class SuggestController {
 
       // Approve in repository
       const herb = await suggestRepo.approveSuggestion(id, reviewerId, vectorStr);
+      invalidateHerbCache();
 
       // 1. Log administrative action
       await createAuditLog({
@@ -249,7 +251,7 @@ export class SuggestController {
           title: "Herb Suggestion Approved! 🎉",
           message: `Your submitted herb "${suggestion.localName}" (${suggestion.scientificName}) has been approved and published to the Herbal AI Library.`,
           type: "SUGGESTION_UPDATE",
-          link: `/library/${herb?.id}`,
+          link: herb ? `/library?id=${encodeURIComponent(herb.id)}` : '/library',
         });
 
         const { io } = await import("../server.js");

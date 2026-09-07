@@ -83,11 +83,16 @@ export const getHistory = async (
       return;
     }
 
-    const limit = req.query["limit"] ? parseInt(req.query["limit"] as string, 10) : undefined;
+    const parsedLimit = req.query["limit"] ? parseInt(req.query["limit"] as string, 10) : 50;
+    const limit = Number.isFinite(parsedLimit) ? Math.min(100, Math.max(1, parsedLimit)) : 50;
     const beforeTime = req.query["before"] ? new Date(req.query["before"] as string) : undefined;
+    if (beforeTime && Number.isNaN(beforeTime.getTime())) {
+      res.status(400).json({ status: "error", message: "Invalid before cursor." });
+      return;
+    }
 
-    const messages = await messageRepo.getChatHistory(currentUserId, targetUserId, limit, beforeTime);
-    res.status(200).json({ status: "success", data: { messages } });
+    const page = await messageRepo.getChatHistory(currentUserId, targetUserId, limit, beforeTime);
+    res.status(200).json({ status: "success", data: page });
   } catch (error) {
     next(error);
   }

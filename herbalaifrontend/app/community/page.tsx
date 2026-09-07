@@ -204,6 +204,7 @@ export default function CommunityPage() {
               <input
                 type="text"
                 placeholder="Search discussion titles or content..."
+                aria-label="Search discussion titles or content"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full bg-transparent focus:outline-none text-[#1b4332] font-semibold text-sm"

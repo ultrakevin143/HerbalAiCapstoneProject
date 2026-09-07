@@ -297,8 +297,11 @@ export const verifyEmail = async (token: string) => {
     throw { status: 400, message: "Invalid or expired verification token." };
   }
 
-  await userRepo.updateUserEmailVerified(tokenRecord.userId);
-  await tokenRepo.revokeToken(tokenRecord.id);
+  const redeemed = await tokenRepo.redeemAccountToken({
+    id: tokenRecord.id, userId: tokenRecord.userId, type: 'EMAIL_VERIFY',
+  });
+  if (!redeemed) throw { status: 400, message: "Invalid or expired verification token." };
+  userRepo.invalidateCachedUser(tokenRecord.userId);
 
   return { message: "Email verified successfully. You can now log in." };
 };
@@ -405,16 +408,13 @@ export const resetPassword = async (token: string, newPassword: string) => {
 
   const hashedPassword = await hashPassword(newPassword);
 
-  // Update password in DB
-  await userRepo.updateUserPassword(tokenRecord.userId, hashedPassword);
-
-  // Revoke reset token
-  await tokenRepo.revokeToken(tokenRecord.id);
-
-  // Revoke all refresh tokens
-  await tokenRepo.revokeAllUserRefreshTokens(tokenRecord.userId);
+  const redeemed = await tokenRepo.redeemAccountToken({
+    id: tokenRecord.id, userId: tokenRecord.userId,
+    type: 'PASSWORD_RESET', passwordHash: hashedPassword,
+  });
+  if (!redeemed) throw { status: 400, message: "Invalid or expired password reset token." };
+  userRepo.invalidateCachedUser(tokenRecord.userId);
 
   return { message: "Password reset successful. You can now log in with your new password." };
 };
-
 

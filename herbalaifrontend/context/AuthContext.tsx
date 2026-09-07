@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import api from '../lib/axios';
+import { cachedApiGet, invalidateApiGetCache } from '../lib/request-cache';
 
 export interface User {
   id: string;
@@ -24,6 +25,7 @@ interface AuthContextType {
   signup: (data: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => Promise<void>;
   logout: () => Promise<void>;
   checkSession: () => Promise<User | null>;
+  updateProfile: (data: { name?: string; avatar?: string | null; bio?: string | null }) => Promise<User>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,7 +37,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const checkSession = async (): Promise<User | null> => {
     try {
-      const response = await api.get('/auth/me');
+      const response = await cachedApiGet('/auth/me', 2_000);
       if (response.data?.status === 'success' && response.data?.data?.user) {
         const userObj = response.data.data.user;
         setUser(userObj);
@@ -56,6 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(true);
     try {
       await api.post('/auth/login', { email, password });
+      invalidateApiGetCache('/auth/me');
       const loggedInUser = await checkSession();
       return loggedInUser;
     } catch (error) {
@@ -83,9 +86,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error('Logout request failed:', error);
     } finally {
       setUser(null);
+      invalidateApiGetCache();
       setLoading(false);
       router.push('/signin');
     }
+  };
+
+  const updateProfile = async (data: { name?: string; avatar?: string | null; bio?: string | null }): Promise<User> => {
+    const response = await api.patch('/auth/me', data);
+    const updatedUser = response.data.data.user as User;
+    invalidateApiGetCache('/auth/me');
+    setUser(updatedUser);
+    return updatedUser;
   };
 
   useEffect(() => {
@@ -113,6 +125,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         signup,
         logout,
         checkSession,
+        updateProfile,
       }}
     >
       {children}

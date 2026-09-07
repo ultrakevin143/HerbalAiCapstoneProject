@@ -15,7 +15,7 @@
   --color-text-custom: #1b4332;
   --color-text-2: #2d6a4f;
   --color-text-3: #6a7282;
-  --color-danger: #dc3545;
+  --color-danger: #b42336;
   --color-warning: #e08030;
   --color-success: #40916c;
   
@@ -45,6 +45,11 @@ input:focus, select:focus, textarea:focus {
   outline-offset: 1px;
 }
 
+:focus-visible {
+  outline: 3px solid #2d6a4f;
+  outline-offset: 3px;
+}
+
 .flat-button {
   display: inline-flex;
   align-items: center;
@@ -60,7 +65,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .flat-button-primary {
-  background: linear-gradient(135deg, #2d6a4f 0%, #52b788 100%);
+  background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%);
   color: #ffffff;
 }
 
@@ -120,7 +125,7 @@ body.admin-app {
 
 .admin-shell {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 260px minmax(0, 1fr);
   min-height: 100vh;
 }
 
@@ -273,7 +278,7 @@ body.admin-app {
 
 .admin-stat-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 24px;
   margin-bottom: 32px;
 }
@@ -414,4 +419,36 @@ body.admin-app {
 
 .admin-form-grid .full {
   grid-column: 1 / -1;
+}
+
+.admin-menu-toggle { display: none; }
+.admin-content > *, .admin-stat-card { min-width: 0; }
+.admin-table-wrap { max-width: 100%; }
+.admin-table { min-width: 640px; }
+.admin-user-chip { overflow-wrap: anywhere; }
+
+@media (max-width: 1023px) {
+  .admin-shell { display: block; }
+  .admin-sidebar { position: static; height: auto; }
+  .admin-brand { padding: 12px 16px; }
+  .admin-menu-toggle {
+    display: block; margin-left: auto; min-height: 44px; padding: 8px 16px;
+    border: 1px solid #74c69d; border-radius: 12px; font-weight: 700;
+  }
+  .admin-sidebar:not(.is-open) .admin-nav,
+  .admin-sidebar:not(.is-open) .admin-sidebar-footer { display: none; }
+  .admin-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 12px; }
+  .admin-nav-link { font-size: 0.8rem; padding: 12px 8px; }
+  .admin-content { padding: 16px; overflow: visible; }
+  .admin-content > .bg-white { padding: 16px; }
+  .admin-main { min-height: calc(100dvh - 70px); }
+  .admin-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .admin-stat-card, .admin-panel-card { padding: 16px; }
+  .admin-form-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 767px) {
+  /* Prevent mobile form zoom and keep controls comfortable for touch input. */
+  input:not([type="checkbox"]):not([type="radio"]), textarea, select { font-size: 16px; }
+  .flat-button { min-height: 44px; }
 }

@@ -15,7 +15,7 @@ export async function CreateKnowledgeBaseService(data: CreateKnowledgeBaseData) 
     const embedding = await generateEmbedding(`${data.question}\n${data.answer}`);
     const vectorStr = `[${embedding.join(",")}]`;
 
-    await createKB({
+    const created = await createKB({
       ...data,
       embedding: vectorStr,
     });
@@ -24,6 +24,7 @@ export async function CreateKnowledgeBaseService(data: CreateKnowledgeBaseData) 
       code: 201,
       status: "success",
       message: "Knowledge base entry created successfully",
+      data: created,
     };
   } catch (error) {
     console.error("CreateKnowledgeBaseService Error:", error);

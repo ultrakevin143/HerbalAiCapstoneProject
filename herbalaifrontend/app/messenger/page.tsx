@@ -19,7 +19,8 @@ import {
   Edit2, 
   Trash2, 
   Check, 
-  AlertCircle
+  AlertCircle,
+  ArrowLeft
 } from 'lucide-react';
 
 // --- Types ---
@@ -102,6 +103,9 @@ function MessengerContent() {
   const [showUserPicker, setShowUserPicker] = useState(false);
   const [userPickerSearch, setUserPickerSearch] = useState('');
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [loadingOlderMessages, setLoadingOlderMessages] = useState(false);
+  const [hasOlderMessages, setHasOlderMessages] = useState(false);
+  const [nextBefore, setNextBefore] = useState<string | null>(null);
 
   // --- Attachments & Edit/Delete States ---
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -115,6 +119,7 @@ function MessengerContent() {
   const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const prependingMessagesRef = useRef(false);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -241,6 +246,10 @@ function MessengerContent() {
 
   // Auto scroll to bottom when messages update
   useEffect(() => {
+    if (prependingMessagesRef.current) {
+      prependingMessagesRef.current = false;
+      return;
+    }
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
@@ -248,6 +257,8 @@ function MessengerContent() {
     setActiveContact(contact);
     setLoadingMessages(true);
     setMessages([]);
+    setHasOlderMessages(false);
+    setNextBefore(null);
     setSelectedFile(null);
     setFilePreviewUrl(null);
     setEditingMessageId(null);
@@ -255,9 +266,11 @@ function MessengerContent() {
     inputRef.current?.focus();
 
     try {
-      const res = await api.get(`/messages/history/${contact.id}`);
+      const res = await api.get(`/messages/history/${contact.id}?limit=50`);
       if (res.data?.status === 'success') {
         setMessages(res.data.data.messages || []);
+        setHasOlderMessages(Boolean(res.data.data.hasMore));
+        setNextBefore(res.data.data.nextBefore || null);
       }
     } catch (err) {
       console.error('Failed to load message history', err);
@@ -272,6 +285,26 @@ function MessengerContent() {
       return [{ contact, lastMessage: '', lastTime: '' }, ...prev];
     });
   }, []);
+
+  const loadOlderMessages = async () => {
+    if (!activeContact || !nextBefore || loadingOlderMessages) return;
+    setLoadingOlderMessages(true);
+    try {
+      const res = await api.get(
+        `/messages/history/${activeContact.id}?limit=50&before=${encodeURIComponent(nextBefore)}`
+      );
+      if (res.data?.status === 'success') {
+        prependingMessagesRef.current = true;
+        setMessages((current) => [...(res.data.data.messages || []), ...current]);
+        setHasOlderMessages(Boolean(res.data.data.hasMore));
+        setNextBefore(res.data.data.nextBefore || null);
+      }
+    } catch (err) {
+      console.error('Failed to load older messages', err);
+    } finally {
+      setLoadingOlderMessages(false);
+    }
+  };
 
   // Handle auto-opening conversation from query param
   useEffect(() => {
@@ -420,16 +453,16 @@ function MessengerContent() {
           <p className="text-xs text-gray-500 mt-0.5">Direct messages with contributors and admins</p>
         </div>
 
-        <div className="flex flex-1 overflow-hidden" style={{ height: 'calc(100vh - 160px)' }}>
+        <div className="flex min-h-[320px] overflow-hidden h-[calc(100dvh-160px)]">
           {/* ===== SIDEBAR ===== */}
-          <aside className="w-full max-w-[300px] shrink-0 flex flex-col border-r border-[#1b4332]/10 bg-white overflow-hidden">
+          <aside aria-label="Conversations" className={`${activeContact ? 'hidden md:flex' : 'flex'} w-full md:w-[280px] lg:w-[300px] shrink-0 flex-col border-r border-[#1b4332]/10 bg-white overflow-hidden`}>
             <div className="px-4 py-3 border-b border-gray-100">
               <div className="flex items-center gap-2 mb-3">
                 <MessageSquare className="h-4 w-4 text-[#2d6a4f]" />
                 <span className="text-sm font-extrabold text-[#1b4332]">Messages</span>
                 <button
                   onClick={() => setShowUserPicker(true)}
-                  className="ml-auto h-7 w-7 rounded-full bg-[#40916c]/10 hover:bg-[#40916c]/20 flex items-center justify-center transition-colors"
+                  className="ml-auto h-11 w-11 rounded-full bg-[#40916c]/10 hover:bg-[#40916c]/20 flex items-center justify-center transition-colors"
                   title="New message"
                 >
                   <UserPlus className="h-3.5 w-3.5 text-[#2d6a4f]" />
@@ -440,6 +473,7 @@ function MessengerContent() {
                 <input
                   type="text"
                   placeholder="Search conversations..."
+                  aria-label="Search conversations"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-8 pr-3 py-2 text-xs rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:border-[#2d6a4f] transition-colors"
@@ -454,7 +488,7 @@ function MessengerContent() {
                   <div className="h-12 w-12 rounded-full bg-[#40916c]/10 flex items-center justify-center">
                     <MessageSquare className="h-6 w-6 text-[#40916c]/60" />
                   </div>
-                  <p className="text-xs text-gray-400 font-semibold">No conversations yet.</p>
+                  <p className="text-xs text-gray-600 font-semibold">No conversations yet.</p>
                   <button
                     onClick={() => setShowUserPicker(true)}
                     className="text-xs font-extrabold text-[#2d6a4f] hover:underline"
@@ -493,7 +527,7 @@ function MessengerContent() {
           </aside>
 
           {/* ===== MAIN CHAT AREA ===== */}
-          <section className="flex-1 flex flex-col overflow-hidden">
+          <section aria-label="Conversation" className={`${activeContact ? 'flex' : 'hidden md:flex'} min-w-0 flex-1 flex-col overflow-hidden`}>
             {!activeContact ? (
               <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center px-6">
                 <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#40916c]/10 to-[#74c69d]/20 flex items-center justify-center shadow-inner">
@@ -516,16 +550,19 @@ function MessengerContent() {
             ) : (
               <>
                 {/* Chat header */}
-                <header className="flex items-center gap-3 px-5 py-3 border-b border-[#1b4332]/10 bg-white shrink-0">
+                <header className="flex items-center gap-2 px-3 py-3 border-b border-[#1b4332]/10 bg-white shrink-0">
+                  <button type="button" aria-label="Back to conversations" onClick={() => { setActiveContact(null); router.replace('/messenger'); }} className="md:hidden flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[#2d6a4f] hover:bg-[#eef5f0]">
+                    <ArrowLeft className="h-5 w-5" />
+                  </button>
                   {avatarDisplay(activeContact.avatar, activeContact.name)}
                   <div className="flex-1 min-w-0">
-                    <p className="font-extrabold text-[#1b4332] text-sm leading-none">{activeContact.name}</p>
+                    <p className="truncate font-extrabold text-[#1b4332] text-sm leading-tight">{activeContact.name}</p>
                     <p className="text-[11px] text-[#52b788] font-semibold mt-0.5">{getRoleLabel(activeContact.role)}</p>
                   </div>
                 </header>
 
                 {/* Messages Panel */}
-                <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50/60">
+                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-5 space-y-4 bg-gray-50/60">
                   {loadingMessages ? (
                     <div className="flex justify-center py-10">
                       <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#2d6a4f] border-t-transparent" />
@@ -539,7 +576,20 @@ function MessengerContent() {
                       <p className="text-xs text-gray-400">This is the beginning of your conversation.</p>
                     </div>
                   ) : (
-                    messages.map((msg) => {
+                    <>
+                    {hasOlderMessages && (
+                      <div className="flex justify-center pb-2">
+                        <button
+                          type="button"
+                          onClick={loadOlderMessages}
+                          disabled={loadingOlderMessages}
+                          className="rounded-full border border-[#2d6a4f]/20 bg-white px-4 py-1.5 text-xs font-bold text-[#2d6a4f] shadow-sm hover:bg-[#eef5f0] disabled:opacity-60"
+                        >
+                          {loadingOlderMessages ? 'Loading…' : 'Load older messages'}
+                        </button>
+                      </div>
+                    )}
+                    {messages.map((msg) => {
                       const isOwn = msg.senderId === user.id;
                       const isEditing = editingMessageId === msg.id;
                       
@@ -571,44 +621,16 @@ function MessengerContent() {
                               <>
                                 {/* Message Actions Trigger (three-dots icon) */}
                                 {isOwn && !isEditing && (
-                                  <div className="absolute left-[-28px] top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <div className="absolute left-[-44px] top-1/2 -translate-y-1/2 opacity-100 md:opacity-0 md:group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
                                     <button 
                                       type="button"
                                       onClick={() => setActiveMenuMessageId(activeMenuMessageId === msg.id ? null : msg.id)}
-                                      className="h-6 w-6 rounded-full bg-white hover:bg-gray-100 border border-gray-100 shadow flex items-center justify-center text-gray-500 hover:text-gray-700"
+                                      className="h-11 w-11 rounded-full bg-white hover:bg-gray-100 border border-gray-100 shadow flex items-center justify-center text-gray-500 hover:text-gray-700"
                                       aria-label="Message options"
                                     >
                                       <MoreVertical className="h-3 w-3" />
                                     </button>
                                     
-                                    {/* Action Dropdown Menu */}
-                                    {activeMenuMessageId === msg.id && (
-                                      <div ref={menuRef} className="absolute bottom-7 left-0 z-10 w-24 bg-white rounded-lg border border-gray-100 shadow-lg py-1">
-                                        {!msg.imageUrl && (
-                                          <button
-                                            type="button"
-                                            onMouseDown={(event) => event.stopPropagation()}
-                                            onClick={(event) => {
-                                              event.preventDefault();
-                                              event.stopPropagation();
-                                              setEditingMessageId(msg.id);
-                                              setEditInput(msg.content);
-                                              setActiveMenuMessageId(null);
-                                            }}
-                                            className="w-full px-3 py-1.5 text-left text-xs font-bold text-gray-600 hover:bg-[#eef5f0] hover:text-[#2d6a4f] flex items-center gap-1.5"
-                                          >
-                                            <Edit2 className="h-3 w-3" /> Edit
-                                          </button>
-                                        )}
-                                        <button
-                                          type="button"
-                                          onClick={() => handleDeleteMessage(msg.id)}
-                                          className="w-full px-3 py-1.5 text-left text-xs font-bold text-red-600 hover:bg-red-50 flex items-center gap-1.5"
-                                        >
-                                          <Trash2 className="h-3 w-3" /> Delete
-                                        </button>
-                                      </div>
-                                    )}
                                   </div>
                                 )}
 
@@ -619,7 +641,7 @@ function MessengerContent() {
                                       type="text"
                                       value={editInput}
                                       onChange={(e) => setEditInput(e.target.value)}
-                                      className="text-xs text-[#1b4332] bg-transparent focus:outline-none flex-1 min-w-[120px]"
+                                      className="text-base text-[#1b4332] bg-transparent focus:outline-none flex-1 min-w-0 w-full"
                                       autoFocus
                                     />
                                     <button 
@@ -671,6 +693,24 @@ function MessengerContent() {
                               </>
                             )}
 
+                            {/* In-flow actions cannot be clipped above the first message. */}
+                            {isOwn && !msg.isDeleted && !isEditing && activeMenuMessageId === msg.id && (
+                              <div ref={menuRef} className="flex flex-wrap self-end rounded-xl border border-gray-200 bg-white shadow-sm">
+                                {!msg.imageUrl && (
+                                  <button type="button" onClick={() => {
+                                    setEditingMessageId(msg.id);
+                                    setEditInput(msg.content);
+                                    setActiveMenuMessageId(null);
+                                  }} className="flex min-h-11 items-center gap-1.5 px-3 text-xs font-bold text-[#2d6a4f] hover:bg-[#eef5f0]">
+                                    <Edit2 className="h-4 w-4" /> Edit
+                                  </button>
+                                )}
+                                <button type="button" onClick={() => handleDeleteMessage(msg.id)} className="flex min-h-11 items-center gap-1.5 px-3 text-xs font-bold text-red-600 hover:bg-red-50">
+                                  <Trash2 className="h-4 w-4" /> Delete
+                                </button>
+                              </div>
+                            )}
+
                             {/* Timestamp / Edited Badge */}
                             {!isEditing && (
                               <div className="flex items-center gap-1.5 px-1 mt-0.5">
@@ -683,13 +723,14 @@ function MessengerContent() {
                           </div>
                         </div>
                       );
-                    })
+                    })}
+                    </>
                   )}
                   <div ref={messagesEndRef} />
                 </div>
 
                 {/* Input Bar Section */}
-                <div className="border-t border-[#1b4332]/10 bg-white px-4 py-3 shrink-0">
+                <div className="border-t border-[#1b4332]/10 bg-white px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shrink-0">
                   {/* File Upload Preview bar */}
                   {filePreviewUrl && (
                     <div className="flex items-center gap-3 p-2 bg-[#f0f7f2] rounded-xl border border-[#40916c]/20 mb-2 max-w-max animate-fade-in shadow-inner">
@@ -737,7 +778,7 @@ function MessengerContent() {
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       disabled={isSending}
-                      className="flex-1 px-4 py-2.5 text-sm rounded-full border border-gray-200 bg-gray-50/60 text-[#1b4332] placeholder-gray-400 focus:outline-none focus:border-[#2d6a4f] focus:bg-white transition-all disabled:opacity-60"
+                      className="min-w-0 flex-1 px-3 py-2.5 text-base rounded-full border border-gray-200 bg-gray-50/60 text-[#1b4332] placeholder-gray-400 focus:outline-none focus:border-[#2d6a4f] focus:bg-white transition-all disabled:opacity-60"
                       aria-label="Message input"
                     />
 

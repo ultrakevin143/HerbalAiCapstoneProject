@@ -10,7 +10,7 @@ The backend/API regression suite and the connected-browser workflow passed for t
 
 | Check | Result |
 |---|---|
-| Backend Vitest suite | 28/28 tests passed across 5 files |
+| Backend Vitest suite | 33/33 tests passed across 6 files |
 | Backend lint | Passed |
 | Backend TypeScript | Passed |
 | Frontend lint | Passed with no warnings |
@@ -76,6 +76,14 @@ The browser-created audit records and two older obvious junk herbs (`Herbal Test
 - Tuned Dr. AI to turn short retrieved entries into clearer, well-structured explanations while preserving the source's meaning and refusing to invent missing facts.
 - Replaced public-facing PITAHC endorsement claims with accurate wording that the project uses publicly available DOH/PITAHC reference materials and is not institutionally endorsed.
 - Parallelized independent administrator dashboard requests to reduce avoidable sequential loading time.
+- Added a bounded five-minute herb API cache and shared frontend GET cache with in-flight request deduplication. Herb approval, editing, and deletion invalidate cached results.
+- Verified cache impact on the remote database path: the first measured herb request took about 6.0 seconds, followed by cached responses of about 18 ms and 11 ms.
+- Added production backend compilation/start scripts and Windows demonstration start/stop scripts with build and health verification; corrected the backend Docker image to run compiled production code.
+- Added responsive AVIF/WebP image optimization for key local, Cloudinary, Unsplash, and Google-hosted images.
+- Added 50-message cursor pagination, composite indexes for high-use list/conversation queries, and HNSW cosine indexes for herb and knowledge-base vectors. Migration `20260901143000_add_query_performance_indexes` was deployed successfully.
+- Added structured slow-request logging, API `Server-Timing`/`X-Response-Time` headers, and Dr. AI embedding/retrieval/generation timing metadata without logging question text.
+- Added regression coverage for cache deduplication/invalidation, messaging cursors, invalid cursor handling, Dr. AI source/timing behavior, and response timing headers.
+- Added environment-aware email delivery controls so local audits log mail by default instead of sending to placeholder accounts; production retains live delivery and controlled tests can use an explicit recipient allowlist.
 
 ## Cleanup performed
 
@@ -86,7 +94,7 @@ The browser-created audit records and two older obvious junk herbs (`Herbal Test
 
 ## Limitations and remaining evidence
 
-- The final Messenger attachment and edit UI recheck remains blocked by the browser-control host referencing a removed plugin build. The API path and all static/automated checks pass; this is a verification limitation, not a confirmed application defect.
-- Cold or first-use API/UI initialization remains noticeable. The herbs endpoint measured approximately 2.9 seconds on its first measured request and about 0.27 seconds when warm; several browser pages took 8-12 seconds to fully settle in development mode.
-- Real email receipt, production deployment/TLS, backup/restore, stakeholder UAT, accessibility review, and formal load testing still require their external services or participants.
+- The Messenger attachment and edit recheck was completed on 4 September 2026. Text send/edit, edited-state persistence, valid PNG upload, Socket.io delivery, image rendering/opening, and reload persistence passed; see `Docs/MESSENGER_BROWSER_TEST_2026-09-04.md`.
+- The remote database can still take several seconds on its first cold connection, but herb-list caching now reduces repeated API responses to tens of milliseconds. Production demo mode removes development compilation delays.
+- Outbound Gmail SMTP was observed, but the placeholder `admin@herbalai.ph` mailbox returned a delayed-delivery notice. A real mailbox (or configured domain mail service), production deployment/TLS, backup/restore, stakeholder UAT, accessibility review, and formal load testing still require external setup or participants.
 - Backend npm audit reports three high-severity findings under Prisma's development CLI dependency chain. npm offers only a breaking downgrade to Prisma 6.12; this was not applied because runtime tests use Prisma 7.10 and the offered change is unsafe without a migration project.

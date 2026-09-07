@@ -23,3 +23,7 @@
 | Run ID | Endpoint/workflow | Concurrent users | Requests | p50 | p95 | Error rate | Target met | Evidence |
 |---|---|---:|---:|---:|---:|---:|---|---|
 | PERF-___ |  |  |  |  |  |  |  |  |
+| PERF-2026-09-04-01 | `/api/test` sustained repeat | 500 | 500 | 2314.9 ms | 2433.8 ms | 0% | Capacity only; no 1 s health target defined | `Docs/ACCESSIBILITY_PERFORMANCE_AUDIT_2026-09-04.md` |
+| PERF-2026-09-04-02 | `/api/herbs?limit=12` warmed cache | 500 | 500 | 574.8 ms | 884.5 ms | 0% | Yes for cached API response | `Docs/ACCESSIBILITY_PERFORMANCE_AUDIT_2026-09-04.md` |
+| PERF-2026-09-04-03 | `/api/auth/me` | 500 | 500 | 11475.3 ms | 15095.5 ms | 25.4% | **No** | `Docs/ACCESSIBILITY_PERFORMANCE_AUDIT_2026-09-04.md` |
+| PERF-2026-09-07-01 | `/api/auth/me`, distinct users after startup warm-up | 10 / 50 / 100 | 10 / 50 / 100 | 318.4 / 455.7 / 172.7 ms | 322.7 / 468.3 / 2413.4 ms | 0% | Pass at 10/50; **No at 100** | `Docs/PERFORMANCE_COLD_START_DIAGNOSIS_2026-09-07.md` |

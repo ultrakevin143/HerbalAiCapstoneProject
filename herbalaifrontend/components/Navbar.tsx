@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import NotificationBell from './NotificationBell';
+import ProfileEditorModal from './ProfileEditorModal';
 
 export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuth();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProfileEditorOpen, setIsProfileEditorOpen] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
@@ -44,6 +46,7 @@ export default function Navbar() {
   const allLinks = [...navLinks, ...authLinks];
 
   return (
+    <>
     <nav className="sticky top-0 z-50 w-full border-b border-white/90 bg-[rgba(163,239,149,0.2)] backdrop-blur-md px-4 py-3 shadow-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         {/* Logo */}
@@ -57,14 +60,14 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation Links */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden xl:flex items-center gap-1">
           {allLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded-full px-4 py-2 text-sm font-extrabold transition-all border-2 border-transparent ${
+                className={`rounded-full px-3 py-2 text-sm font-extrabold transition-all border-2 border-transparent ${
                   isActive
                     ? 'bg-[#eef5f0] text-[#1b4332] border-[#2d6a4f]'
                     : 'text-[#2d6a4f] hover:bg-[#eef5f0] hover:text-[#1b4332]'
@@ -77,15 +80,15 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Authentication / Action buttons */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden xl:flex items-center gap-2">
           {isAuthenticated ? (
             <>
-              {/* Notification Bell */}
-              <NotificationBell />
-
               {/* User Identity Badge (Read-Only) */}
-              <div
-                className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-extrabold border border-[#1b4332]/10 bg-white shadow-sm"
+              <button
+                type="button"
+                onClick={() => setIsProfileEditorOpen(true)}
+                aria-label="Edit profile"
+                className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-extrabold border border-[#1b4332]/10 bg-white shadow-sm hover:bg-[#eef5f0]"
               >
                 {user?.avatar?.startsWith('http') ? (
                   <img src={user.avatar} alt="Avatar" className="h-5 w-5 rounded-full object-cover shadow-sm" />
@@ -97,7 +100,7 @@ export default function Navbar() {
                 <span className="text-[#1b4332] max-w-[120px] truncate">
                   {user?.name && user.name.toLowerCase() !== 'admin' ? user.name : 'Admin'}
                 </span>
-              </div>
+              </button>
 
               <Link
                 href="/suggest"
@@ -143,21 +146,25 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Hamburger Button */}
+        <div className="flex shrink-0 items-center gap-2">
+        {isAuthenticated && <NotificationBell />}
         <button
           onClick={toggleMobileMenu}
-          className="flex flex-col gap-1.5 border-2 border-[#1b4332] p-2 bg-[#f7f5ef] rounded-lg md:hidden hover:bg-[#eef5f0] focus:outline-none"
+          className="flex h-11 w-11 items-center justify-center flex-col gap-1.5 border-2 border-[#1b4332] p-2 bg-[#f7f5ef] rounded-lg xl:hidden hover:bg-[#eef5f0] focus-visible:outline-2 focus-visible:outline-offset-2"
           aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-navigation"
           aria-label="Toggle Navigation Menu"
         >
           <span className={`h-0.5 w-6 bg-[#1b4332] transition-transform ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
           <span className={`h-0.5 w-6 bg-[#1b4332] transition-opacity ${isMobileMenuOpen ? 'opacity-0' : ''}`}></span>
           <span className={`h-0.5 w-6 bg-[#1b4332] transition-transform ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
         </button>
+        </div>
       </div>
 
       {/* Mobile Menu Drawer */}
       {isMobileMenuOpen && (
-        <div className="mt-3 flex flex-col gap-3 rounded-xl border border-gray-200 bg-white p-4 shadow-lg md:hidden">
+        <div id="mobile-navigation" className="mt-3 flex max-h-[calc(100dvh-6rem)] flex-col gap-3 overflow-y-auto overscroll-contain rounded-xl border border-gray-200 bg-white p-4 shadow-lg xl:hidden">
           {/* Navigation Links */}
           <div className="flex flex-col gap-2 border-b-2 border-[#1b4332]/25 pb-3">
             {allLinks.map((link) => {
@@ -183,7 +190,7 @@ export default function Navbar() {
           <div className="flex flex-col gap-2">
             {isAuthenticated ? (
               <>
-                <div className="flex items-center gap-2.5 px-3 py-2 border-2 border-[#1b4332]/10 bg-white rounded-lg">
+                <button type="button" onClick={() => { setIsMobileMenuOpen(false); setIsProfileEditorOpen(true); }} aria-label="Edit profile" className="flex items-center gap-2.5 px-3 py-2 text-left border-2 border-[#1b4332]/10 bg-white rounded-lg hover:bg-[#eef5f0]">
                   {user?.avatar?.startsWith('http') ? (
                     <img src={user.avatar} alt="Avatar" className="h-7 w-7 rounded-full object-cover shadow-sm" />
                   ) : (
@@ -191,13 +198,13 @@ export default function Navbar() {
                       {user?.name ? user.name.charAt(0) : 'U'}
                     </span>
                   )}
-                  <div>
-                    <p className="font-extrabold text-sm text-[#1b4332]">
+                  <div className="min-w-0">
+                    <p className="break-words font-extrabold text-sm text-[#1b4332]">
                       {user?.name && user.name.toLowerCase() !== 'admin' ? user.name : 'Administrator'}
                     </p>
                     <p className="text-xs text-[#6a7282] capitalize">{user?.role}</p>
                   </div>
-                </div>
+                </button>
 
 
                 <Link
@@ -250,5 +257,7 @@ export default function Navbar() {
         </div>
       )}
     </nav>
+    {isProfileEditorOpen && <ProfileEditorModal isOpen onClose={() => setIsProfileEditorOpen(false)} />}
+    </>
   );
 }

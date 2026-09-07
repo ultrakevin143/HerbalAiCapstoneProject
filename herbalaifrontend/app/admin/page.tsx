@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import api from '../../lib/axios';
+import { cachedApiGet, invalidateApiGetCache } from '../../lib/request-cache';
 import {
   Edit2,
   Trash2,
@@ -113,8 +114,10 @@ export default function AdminPage() {
   const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(null);
   
   const [activeTab, setActiveTab] = useState<'dashboard' | 'pending' | 'library' | 'users' | 'knowledgebase' | 'audit'>('dashboard');
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [actioningId, setActioningId] = useState<number | null>(null);
+  const [banActioningUserId, setBanActioningUserId] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   // Search filters
@@ -171,7 +174,7 @@ export default function AdminPage() {
         
         const [suggestRes, herbsRes, usersRes, kbRes, statsRes, auditRes] = await Promise.all([
           api.get('/suggest'),
-          api.get('/herbs'),
+          cachedApiGet('/herbs', 60_000),
           api.get('/auth/users'),
           api.get('/knowledge-base/all'),
           api.get('/stats/dashboard'),
@@ -247,13 +250,14 @@ export default function AdminPage() {
       setSuccessMsg(null);
       const res = await api.post(`/suggest/${id}/approve`);
       if (res.data?.status === 'success') {
+        invalidateApiGetCache('/herbs');
         setSuccessMsg(`Herb suggestion approved and added to the library!`);
         // Update locally
         setSuggestions((prev) =>
           prev.map((s) => (s.id === id ? { ...s, status: 'Approved' } : s))
         );
         // Refresh herbs list
-        const herbsRes = await api.get('/herbs');
+        const herbsRes = await cachedApiGet('/herbs', 60_000, true);
         if (herbsRes.data?.status === 'success') {
           setAllHerbs(herbsRes.data.data.herbs || []);
         }
@@ -286,7 +290,7 @@ export default function AdminPage() {
 
   const handleToggleBan = async (targetUserId: string, currentIsBanned: boolean) => {
     try {
-      setActioningId(Number(targetUserId.substring(0, 5).replace(/\D/g, '') || '999')); // Visual feedback ID hack
+      setBanActioningUserId(targetUserId);
       setError(null);
       setSuccessMsg(null);
       
@@ -303,7 +307,7 @@ export default function AdminPage() {
         );
       }
     } finally {
-      setActioningId(null);
+      setBanActioningUserId(null);
     }
   };
 
@@ -314,6 +318,7 @@ export default function AdminPage() {
       setSuccessMsg(null);
       const res = await api.delete(`/herbs/${id}`);
       if (res.data?.status === 'success') {
+        invalidateApiGetCache('/herbs');
         setSuccessMsg('Herb deleted successfully.');
         setAllHerbs((prev) => prev.filter((h) => h.id !== id));
       }
@@ -352,6 +357,7 @@ export default function AdminPage() {
       setSuccessMsg(null);
       const res = await api.put(`/herbs/${editingHerb.id}`, herbFormData);
       if (res.data?.status === 'success') {
+        invalidateApiGetCache('/herbs');
         setSuccessMsg('Herb updated successfully.');
         setAllHerbs((prev) => prev.map(h => h.id === editingHerb.id ? { ...h, ...herbFormData } : h));
         closeEditHerbModal();
@@ -526,27 +532,30 @@ export default function AdminPage() {
   return (
     <div className="admin-shell">
       {/* Sidebar Console */}
-      <aside className="admin-sidebar">
+      <aside className={`admin-sidebar ${mobileNavOpen ? 'is-open' : ''}`}>
         <div className="admin-brand">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#1b4332] shadow-sm">
             <Leaf className="h-5 w-5" />
           </div>
           <div>
             <strong className="text-white font-black text-lg">Herbal AI</strong>
-            <span className="text-white/60 text-xs block font-bold">Admin Console</span>
+            <span className="text-white/80 text-xs block font-bold">Admin Console</span>
           </div>
+          <button type="button" className="admin-menu-toggle" aria-label="Toggle admin navigation" aria-expanded={mobileNavOpen} aria-controls="admin-navigation" onClick={() => setMobileNavOpen(!mobileNavOpen)}>
+            {mobileNavOpen ? 'Close' : 'Menu'}
+          </button>
         </div>
 
-        <nav className="admin-nav">
+        <nav id="admin-navigation" className="admin-nav" aria-label="Admin navigation">
           <button 
-            onClick={() => setActiveTab('dashboard')}
+            onClick={() => { setActiveTab('dashboard'); setMobileNavOpen(false); }}
             className={`admin-nav-link flex items-center gap-2.5 ${activeTab === 'dashboard' ? 'active' : ''}`}
           >
             <LayoutDashboard className="h-4 w-4 shrink-0" />
             <span>Dashboard</span>
           </button>
           <button 
-            onClick={() => setActiveTab('pending')}
+            onClick={() => { setActiveTab('pending'); setMobileNavOpen(false); }}
             className={`admin-nav-link flex items-center gap-2.5 ${activeTab === 'pending' ? 'active' : ''}`}
           >
             <Clock className="h-4 w-4 shrink-0" />
@@ -556,28 +565,28 @@ export default function AdminPage() {
             )}
           </button>
           <button 
-            onClick={() => setActiveTab('library')}
+            onClick={() => { setActiveTab('library'); setMobileNavOpen(false); }}
             className={`admin-nav-link flex items-center gap-2.5 ${activeTab === 'library' ? 'active' : ''}`}
           >
             <Leaf className="h-4 w-4 shrink-0" />
             <span>All Herbs</span>
           </button>
           <button 
-            onClick={() => setActiveTab('users')}
+            onClick={() => { setActiveTab('users'); setMobileNavOpen(false); }}
             className={`admin-nav-link flex items-center gap-2.5 ${activeTab === 'users' ? 'active' : ''}`}
           >
             <Users className="h-4 w-4 shrink-0" />
             <span>Users</span>
           </button>
           <button 
-            onClick={() => setActiveTab('knowledgebase')}
+            onClick={() => { setActiveTab('knowledgebase'); setMobileNavOpen(false); }}
             className={`admin-nav-link flex items-center gap-2.5 ${activeTab === 'knowledgebase' ? 'active' : ''}`}
           >
             <BookOpen className="h-4 w-4 shrink-0" />
             <span>Knowledge Base</span>
           </button>
           <button 
-            onClick={() => setActiveTab('audit')}
+            onClick={() => { setActiveTab('audit'); setMobileNavOpen(false); }}
             className={`admin-nav-link flex items-center gap-2.5 ${activeTab === 'audit' ? 'active' : ''}`}
           >
             <ClipboardList className="h-4 w-4 shrink-0" />
@@ -684,7 +693,7 @@ export default function AdminPage() {
                             </PieChart>
                           </ResponsiveContainer>
                         </div>
-                        <div className="h-[96px] overflow-y-auto mt-1 pr-1 space-y-1 scrollbar-thin">
+                        <div tabIndex={0} role="region" aria-label="Herb category counts" className="h-[96px] overflow-y-auto mt-1 pr-1 space-y-1 scrollbar-thin">
                           {dashboardStats.herbsByCategory.map((entry, index) => (
                             <div key={entry.name} className="flex items-center justify-between text-[11px] border-b border-gray-50 pb-0.5">
                               <div className="flex items-center gap-1.5 truncate">
@@ -793,7 +802,7 @@ export default function AdminPage() {
                   <h2 className="font-black italic text-lg text-[#1b4332] mb-4">
                     Console Logs & Health
                   </h2>
-                  <div className="space-y-4 font-mono text-xs text-[#2d6a4f] bg-[#eef5f0] p-4 rounded-xl max-h-[220px] overflow-y-auto">
+                  <div tabIndex={0} role="region" aria-label="Console logs and health" className="space-y-4 font-mono text-xs text-[#2d6a4f] bg-[#eef5f0] p-4 rounded-xl max-h-[220px] overflow-y-auto">
                     <div>[INFO] {new Date().toISOString()} - Connection to database established successfully.</div>
                     <div>[INFO] Loaded {allHerbs.length} published botanical records from PostgreSQL.</div>
                     <div>[INFO] Loaded {kbList.length} RAG FAQs references.</div>
@@ -1041,13 +1050,15 @@ export default function AdminPage() {
                           {u.id !== user.id && (
                             <button
                               onClick={() => handleToggleBan(u.id, !!u.isBanned)}
+                              disabled={banActioningUserId !== null}
+                              aria-busy={banActioningUserId === u.id}
                               className={`text-xs font-black px-3 py-1.5 rounded-lg border transition-all ${
                                 u.isBanned 
                                   ? 'border-[#2d6a4f] text-[#2d6a4f] bg-[#eef5f0] hover:bg-[#2d6a4f] hover:text-white' 
                                   : 'border-rose-600 text-rose-600 bg-rose-50 hover:bg-rose-600 hover:text-white'
                               }`}
                             >
-                              {u.isBanned ? 'Unban User' : 'Ban User'}
+                              {banActioningUserId === u.id ? 'Updating...' : u.isBanned ? 'Unban User' : 'Ban User'}
                             </button>
                           )}
                         </td>
@@ -1298,13 +1309,13 @@ export default function AdminPage() {
 
       {/* Edit Herb Modal */}
       {isHerbModalOpen && editingHerb && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1b4332]/40 backdrop-blur-sm px-4">
-          <div className="w-full max-w-2xl rounded-3xl bg-white shadow-2xl overflow-hidden border border-[#2d6a4f]/20">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1b4332]/40 backdrop-blur-sm px-4 py-4">
+          <div role="dialog" aria-modal="true" aria-labelledby="edit-herb-title" className="flex max-h-full w-full max-w-2xl flex-col rounded-3xl bg-white shadow-2xl overflow-hidden border border-[#2d6a4f]/20">
             <div className="bg-[#f0f7f2] p-5 border-b border-[#2d6a4f]/10 flex justify-between items-center">
-              <h3 className="text-lg font-black text-[#1b4332] flex items-center gap-2">
+              <h3 id="edit-herb-title" className="text-lg font-black text-[#1b4332] flex items-center gap-2">
                 <Edit2 className="h-5 w-5" /> Edit Herb
               </h3>
-              <button onClick={closeEditHerbModal} className="text-gray-400 hover:text-rose-600 text-xl font-bold px-2">&times;</button>
+              <button onClick={closeEditHerbModal} aria-label="Close herb editor" className="text-gray-400 hover:text-rose-600 text-xl font-bold px-2">&times;</button>
             </div>
             
             <form onSubmit={handleEditHerbSubmit} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
@@ -1312,6 +1323,7 @@ export default function AdminPage() {
                 <div>
                   <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Local Name *</label>
                   <input
+                    aria-label="Local Name"
                     type="text"
                     required
                     value={herbFormData.localName}
@@ -1323,6 +1335,7 @@ export default function AdminPage() {
                 <div>
                   <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Common Name</label>
                   <input
+                    aria-label="Common Name"
                     type="text"
                     value={herbFormData.cebuanoName}
                     onChange={(e) => setHerbFormData({...herbFormData, cebuanoName: e.target.value})}
@@ -1336,6 +1349,7 @@ export default function AdminPage() {
                 <div>
                   <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Scientific Name *</label>
                   <input
+                    aria-label="Scientific Name"
                     type="text"
                     required
                     value={herbFormData.scientificName}
@@ -1347,6 +1361,7 @@ export default function AdminPage() {
                 <div>
                   <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Category *</label>
                   <input
+                    aria-label="Category"
                     type="text"
                     required
                     value={herbFormData.category}
@@ -1360,6 +1375,7 @@ export default function AdminPage() {
               <div>
                 <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Medicinal Uses *</label>
                 <textarea
+                  aria-label="Medicinal Uses"
                   required
                   rows={2}
                   value={herbFormData.medicinalUses}
@@ -1372,6 +1388,7 @@ export default function AdminPage() {
               <div>
                 <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Preparation Method</label>
                 <textarea
+                  aria-label="Preparation Method"
                   rows={2}
                   value={herbFormData.preparationMethod}
                   onChange={(e) => setHerbFormData({...herbFormData, preparationMethod: e.target.value})}
@@ -1383,6 +1400,7 @@ export default function AdminPage() {
               <div>
                 <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Dosage & Frequency</label>
                 <textarea
+                  aria-label="Dosage and Frequency"
                   rows={2}
                   value={herbFormData.dosage}
                   onChange={(e) => setHerbFormData({...herbFormData, dosage: e.target.value})}
@@ -1395,6 +1413,7 @@ export default function AdminPage() {
                 <div>
                   <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Region Found</label>
                   <input
+                    aria-label="Region Found"
                     type="text"
                     value={herbFormData.regionFound}
                     onChange={(e) => setHerbFormData({...herbFormData, regionFound: e.target.value})}
@@ -1405,6 +1424,7 @@ export default function AdminPage() {
                 <div>
                   <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Image Path / URL</label>
                   <input
+                    aria-label="Image Path or URL"
                     type="text"
                     value={herbFormData.imageUrl}
                     onChange={(e) => setHerbFormData({...herbFormData, imageUrl: e.target.value})}
@@ -1417,6 +1437,7 @@ export default function AdminPage() {
               <div>
                 <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Important Warnings & Precautions</label>
                 <textarea
+                  aria-label="Warnings and Precautions"
                   rows={2}
                   value={herbFormData.warnings}
                   onChange={(e) => setHerbFormData({...herbFormData, warnings: e.target.value})}
@@ -1448,26 +1469,28 @@ export default function AdminPage() {
       {/* KNOWLEDGE BASE MODAL (CREATE / EDIT) */}
       {isKbModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 font-sans">
-          <div className="bg-white border border-gray-100 rounded-3xl w-full max-w-xl shadow-2xl overflow-hidden animate-in fade-in duration-200">
+          <div role="dialog" aria-modal="true" aria-labelledby="knowledge-editor-title" className="flex max-h-full w-full max-w-xl flex-col overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-2xl animate-in fade-in duration-200">
             
             <header className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <h3 className="font-extrabold text-lg text-[#1b4332]">
+              <h3 id="knowledge-editor-title" className="font-extrabold text-lg text-[#1b4332]">
                 {editingKbItem ? 'Edit Knowledge Base Entry' : 'Create Knowledge Base Entry'}
               </h3>
               <button
                 onClick={closeKbModal}
+                aria-label="Close knowledge editor"
                 className="text-gray-400 hover:text-gray-600 text-lg font-bold"
               >
                 ✕
               </button>
             </header>
 
-            <form onSubmit={handleSaveKbItem} className="p-6 space-y-4">
+            <form onSubmit={handleSaveKbItem} className="overflow-y-auto p-6 space-y-4">
               <div className="space-y-1">
                 <label className="block text-xs font-extrabold uppercase tracking-wider text-gray-400">
                   Question *
                 </label>
                 <input
+                  aria-label="Knowledge question"
                   type="text"
                   required
                   placeholder="e.g. What is the traditional use of Yerba Buena?"
@@ -1482,6 +1505,7 @@ export default function AdminPage() {
                   Detailed Answer *
                 </label>
                 <textarea
+                  aria-label="Knowledge answer"
                   required
                   rows={4}
                   placeholder="Provide a verified answer. This text will be parsed by Dr. AI for search match context."
@@ -1491,12 +1515,13 @@ export default function AdminPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-1">
                   <label className="block text-xs font-extrabold uppercase tracking-wider text-gray-400">
                     Category (Optional)
                   </label>
                   <input
+                    aria-label="Knowledge category"
                     type="text"
                     placeholder="e.g. dosage, preparation"
                     value={kbCategory}
@@ -1510,6 +1535,7 @@ export default function AdminPage() {
                     Tags (Comma Separated)
                   </label>
                   <input
+                    aria-label="Knowledge tags"
                     type="text"
                     placeholder="e.g. mint, leaves, fever"
                     value={kbTags}

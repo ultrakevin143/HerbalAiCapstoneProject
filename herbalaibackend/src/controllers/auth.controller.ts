@@ -170,6 +170,43 @@ export class AuthController {
     }
   };
 
+  public updateProfile = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const authReq = req as AuthenticatedRequest;
+      const userId = authReq.user?.userId;
+      if (!userId) {
+        res.status(401).json({ status: "error", code: 401, message: "Authentication required" });
+        return;
+      }
+
+      const currentUser = await userRepo.findUserById(userId);
+      if (!currentUser) {
+        res.status(404).json({ status: "error", code: 404, message: "User not found" });
+        return;
+      }
+      if (currentUser.isBanned) {
+        res.status(403).json({ status: "error", code: 403, message: "Your account has been banned." });
+        return;
+      }
+
+      const data = {
+        ...(req.body.name !== undefined && { name: req.body.name.trim() }),
+        ...(req.body.avatar !== undefined && { avatar: req.body.avatar?.trim() || null }),
+        ...(req.body.bio !== undefined && { bio: req.body.bio?.trim() || null }),
+      };
+      const user = await userRepo.updateUserProfile(userId, data);
+
+      res.status(200).json({
+        status: "success",
+        code: 200,
+        message: "Profile updated successfully",
+        data: { user },
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   // --- Google SSO ---
 
   public googleAuth = (_req: Request, res: Response): void => {
@@ -395,4 +432,3 @@ export class AuthController {
     }
   };
 }
-

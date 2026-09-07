@@ -4,10 +4,13 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { ENV } from './config/env.js';
 import routes from './routes/index.js';
+import { requestTiming } from './middlewares/request-timing.middleware.js';
+import { errorResponse } from './utils/error-response.js';
 
 const app = express();
 
 app.disable('x-powered-by');
+app.use(requestTiming);
 
 // --- Security Headers ---
 app.use((_req: Request, res: Response, next: NextFunction) => {
@@ -52,12 +55,8 @@ app.use((req: Request, res: Response) => {
 app.use((err: Error & { status?: number }, req: Request, res: Response, _next: NextFunction) => {
   console.error('🔥 Global Error Hook:', err.message || err);
   
-  const statusCode = err.status || 500;
-  res.status(statusCode).json({
-    status: 'error',
-    message: ENV.NODE_ENV === 'production' ? 'Internal Server Error' : err.message || 'Something went wrong',
-    ...(ENV.NODE_ENV !== 'production' && { stack: err.stack })
-  });
+  const response = errorResponse(err, ENV.NODE_ENV === 'production');
+  res.status(response.status).json(response.body);
 });
 
 export default app;

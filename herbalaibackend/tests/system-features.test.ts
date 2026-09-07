@@ -17,6 +17,20 @@ describe("Herbal AI - Comprehensive System Features & AI Chat Verification", () 
   });
 
   describe("1. Core Feature: Dr. Ai Assistant (RAG Chat with pgvector & Gemini)", () => {
+    it("POST /api/chat/stream - rejects unauthenticated requests", async () => {
+      const res = await request(app).post("/api/chat/stream").send({ message: "What is Lagundi used for?" });
+      expect(res.status).toBe(401);
+    });
+
+    it("POST /api/chat/stream - rejects empty messages", async () => {
+      const res = await request(app)
+        .post("/api/chat/stream")
+        .set("Authorization", `Bearer ${contributorToken}`)
+        .send({ message: "   " });
+      expect(res.status).toBe(400);
+      expect(res.body.message).toContain("non-empty");
+    });
+
     it("POST /api/chat - rejects unauthenticated requests", async () => {
       const res = await request(app).post("/api/chat").send({
         message: "What is Lagundi used for?",
@@ -57,6 +71,11 @@ describe("Herbal AI - Comprehensive System Features & AI Chat Verification", () 
       expect(res.body.data.history.length).toBe(2); // user + model turns
       expect(res.body.data.history[0].role).toBe("user");
       expect(res.body.data.history[1].role).toBe("model");
+      expect(res.body.data.sources.map((source: { title: string }) => source.title)).toEqual(["Lagundi"]);
+      expect(res.body.data.meta.timingMs.embeddingMs).toBeGreaterThanOrEqual(0);
+      expect(res.body.data.meta.timingMs.retrievalMs).toBeGreaterThanOrEqual(0);
+      expect(res.body.data.meta.timingMs.generationMs).toBeGreaterThanOrEqual(0);
+      expect(res.headers["server-timing"]).toContain("embedding;dur=");
     }, 25000);
 
     it("POST /api/chat - supports multi-turn conversational context", async () => {
@@ -77,6 +96,28 @@ describe("Herbal AI - Comprehensive System Features & AI Chat Verification", () 
       expect(res.body.status).toBe("success");
       expect(res.body.data.reply).toBeDefined();
       expect(res.body.data.history.length).toBe(4); // 2 previous + 2 new
+    }, 25000);
+
+    it("POST /api/chat/stream - completes a grounded streamed answer", async () => {
+      const res = await request(app).post('/api/chat/stream')
+        .set('Authorization', `Bearer ${contributorToken}`)
+        .send({ message: 'Explain the verified Lagundi information in simple language.', history: [] });
+      expect(res.status).toBe(200);
+      expect(res.headers['content-type']).toContain('text/event-stream');
+      const events = res.text.split('\n\n').filter(Boolean).map(block => {
+        const lines = block.split('\n');
+        return { event: lines.find(line => line.startsWith('event: '))?.slice(7),
+          data: JSON.parse(lines.find(line => line.startsWith('data: '))?.slice(6) || '{}') };
+      });
+      expect(events.some(event => event.event === 'error')).toBe(false);
+      const chunks = events.filter(event => event.event === 'chunk');
+      // The initial source acknowledgement alone is not a completed model reply.
+      expect(chunks.length).toBeGreaterThan(1);
+      const done = events.at(-1);
+      expect(done?.event).toBe('done');
+      expect(done?.data.sources.map((source: { title: string }) => source.title)).toEqual(['Lagundi']);
+      expect(done?.data.history).toHaveLength(2);
+      expect(done?.data.history[1].parts[0].text).toBe(chunks.map(event => event.data.text).join(''));
     }, 25000);
   });
 
@@ -130,6 +171,23 @@ describe("Herbal AI - Comprehensive System Features & AI Chat Verification", () 
       expect(res.body.status).toBe("success");
       expect(Array.isArray(res.body.data.users)).toBe(true);
     });
+
+    it("GET /api/messages/history/:userId - returns bounded cursor pagination metadata", async () => {
+      const res = await request(app)
+        .get("/api/messages/history/test-user-id-002?limit=10")
+        .set("Authorization", `Bearer ${contributorToken}`);
+      expect(res.status).toBe(200);
+      expect(Array.isArray(res.body.data.messages)).toBe(true);
+      expect(typeof res.body.data.hasMore).toBe("boolean");
+      expect(res.body.data.messages.length).toBeLessThanOrEqual(10);
+    });
+
+    it("GET /api/messages/history/:userId - rejects invalid cursors", async () => {
+      const res = await request(app)
+        .get("/api/messages/history/test-user-id-002?before=not-a-date")
+        .set("Authorization", `Bearer ${contributorToken}`);
+      expect(res.status).toBe(400);
+    });
   });
 
   describe("5. Notifications System", () => {
@@ -168,6 +226,15 @@ describe("Herbal AI - Comprehensive System Features & AI Chat Verification", () 
       expect(res.status).toBe(200);
       expect(res.body.status).toBe("success");
       expect(Array.isArray(res.body.data.logs)).toBe(true);
+    });
+  });
+
+  describe("7. Performance and observability controls", () => {
+    it("adds response timing headers to API requests", async () => {
+      const res = await request(app).get("/api/health");
+      expect(res.status).toBe(200);
+      expect(res.headers["x-response-time"]).toMatch(/^\d+(\.\d+)?ms$/);
+      expect(res.headers["server-timing"]).toContain("app;dur=");
     });
   });
 });

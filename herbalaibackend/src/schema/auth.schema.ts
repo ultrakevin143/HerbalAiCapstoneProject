@@ -35,6 +35,19 @@ export const resetPasswordSchema = z.object({
   }),
 });
 
+const updateProfileBodySchema = z
+  .object({
+    name: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name must be at most 100 characters").optional(),
+    avatar: z.string().trim().max(500, "Avatar must be at most 500 characters").nullable().optional(),
+    bio: z.string().trim().max(1000, "Bio must be at most 1000 characters").nullable().optional(),
+  })
+  .strict()
+  .refine((body) => Object.keys(body).length > 0, "Provide at least one profile field");
+
+export const updateProfileSchema = z.object({
+  body: updateProfileBodySchema,
+});
+
 export type SignupInput = z.infer<typeof signupSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
-
+export type UpdateProfileInput = z.infer<typeof updateProfileBodySchema>;

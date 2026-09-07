@@ -5,7 +5,8 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import api from '../../lib/axios';
+import { cachedApiGet } from '../../lib/request-cache';
+import { streamDrAiResponse } from '../../lib/dr-ai-stream';
 import { Send, Sparkles, BookOpen, AlertCircle } from 'lucide-react';
 
 interface ChatTurn {
@@ -31,6 +32,12 @@ interface HerbInfo {
   localName: string;
 }
 
+const QUICK_PROMPTS = [
+  'What are the medicinal uses of Lagundi?',
+  'How is Sambong traditionally prepared?',
+  'What safety warnings apply to Bayabas leaves?',
+] as const;
+
 function ChatContent() {
   const { user, isAuthenticated, loading } = useAuth();
   const searchParams = useSearchParams();
@@ -49,14 +56,14 @@ function ChatContent() {
   const [chatError, setChatError] = useState<string | null>(null);
   const [herbMap, setHerbMap] = useState<Record<string, string>>({}); // Maps lowercase localName to herb.id
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messageListRef = useRef<HTMLDivElement>(null);
   const processedInitialQuery = useRef(false);
 
   // Fetch herbs to map local name to ID for source linking
   useEffect(() => {
     const fetchHerbs = async () => {
       try {
-        const res = await api.get('/herbs');
+        const res = await cachedApiGet('/herbs', 60_000);
         if (res.data?.status === 'success') {
           const list = res.data.data.herbs || [];
           const mapping: Record<string, string> = {};
@@ -77,7 +84,8 @@ function ChatContent() {
 
   // Handle auto-scroll to bottom of conversation
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const messageList = messageListRef.current;
+    messageList?.scrollTo({ top: messageList.scrollHeight, behavior: 'smooth' });
   }, [messages, isSending]);
 
   // Check auth and redirect if not authenticated (as secondary defense to middleware)
@@ -110,31 +118,38 @@ function ChatContent() {
     const cleanHistory = [...history];
 
     try {
-      const response = await api.post('/chat', {
-        message: queryText,
-        history: cleanHistory,
+      const modelMessageId = `${userMsgId}-model`;
+      let reply = '';
+      let sources: Source[] = [];
+      let modelMessageAdded = false;
+
+      await streamDrAiResponse(queryText, cleanHistory, ({ event, data }) => {
+        if (event === 'sources') {
+          sources = data.sources;
+          return;
+        }
+        if (event === 'chunk') {
+          reply += data.text;
+          if (!modelMessageAdded) {
+            modelMessageAdded = true;
+            setMessages((prev) => [...prev, { id: modelMessageId, role: 'model', text: reply, sources }]);
+          } else {
+            setMessages((prev) => prev.map((message) =>
+              message.id === modelMessageId ? { ...message, text: reply, sources } : message
+            ));
+          }
+          return;
+        }
+        if (event === 'done') {
+          sources = data.sources || sources;
+          setHistory(data.history || []);
+          setMessages((prev) => prev.map((message) =>
+            message.id === modelMessageId ? { ...message, sources } : message
+          ));
+        }
       });
-
-      if (response.data?.status === 'success') {
-        const { reply, history: updatedHistory, sources } = response.data.data;
-
-        // Add Dr. AI response
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: (Date.now() + 1).toString(),
-            role: 'model',
-            text: reply,
-            sources: sources || [],
-          },
-        ]);
-
-        setHistory(updatedHistory || []);
-      } else {
-        setChatError(response.data?.message || 'Failed to get a response from Dr. AI.');
-      }
-    } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
-      setChatError(err.response?.data?.message || 'Connection lost. Please try again.');
+    } catch (err: unknown) {
+      setChatError(err instanceof Error ? err.message : 'Connection lost. Please try again.');
     } finally {
       setIsSending(false);
     }
@@ -156,52 +171,100 @@ function ChatContent() {
     handleSendQuery(input);
   };
 
-  // Helper to parse simple markdown bold, italics, paragraphs, and list items
+  // Render the small, predictable Markdown subset returned by Dr. AI without
+  // allowing raw HTML. Parsing line-by-line keeps headings and lists separate
+  // even when the model places them in the same paragraph block.
   const renderFormattedText = (text: string) => {
-    const paragraphs = text.split('\n\n');
-    return paragraphs.map((p, pIdx) => {
-      const trimmed = p.trim();
-      if (!trimmed) return null;
+    const lines = text.replace(/\r\n?/g, '\n').split('\n');
+    const rendered: React.ReactNode[] = [];
+    const horizontalRulePattern = /^(?:-{3,}|\*{3,}|_{3,})$/;
+    let lineIndex = 0;
 
-      // Unordered lists
-      if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
-        const items = p.split('\n').map((item) => item.replace(/^[-*]\s+/, '').trim());
-        return (
-          <ul key={pIdx} className="list-disc pl-5 my-2 space-y-1 font-sans text-sm text-[#1b4332]">
-            {items.map((item, itemIdx) => (
-              <li key={itemIdx}>{renderInline(item)}</li>
-            ))}
+    while (lineIndex < lines.length) {
+      const trimmed = lines[lineIndex].trim();
+
+      if (!trimmed) {
+        lineIndex += 1;
+        continue;
+      }
+
+      if (horizontalRulePattern.test(trimmed)) {
+        rendered.push(
+          <hr key={`rule-${lineIndex}`} className="my-3 border-0 border-t border-[#d8e8de]" />
+        );
+        lineIndex += 1;
+        continue;
+      }
+
+      const headingMatch = trimmed.match(/^(#{1,3})\s+(.+)$/);
+      if (headingMatch) {
+        const level = headingMatch[1].length;
+        const sizeClass = level === 1 ? 'text-base' : 'text-sm';
+        rendered.push(
+          <h3 key={`heading-${lineIndex}`} className={`mt-3 mb-1.5 ${sizeClass} font-extrabold text-[#1b4332]`}>
+            {renderInline(headingMatch[2].trim())}
+          </h3>
+        );
+        lineIndex += 1;
+        continue;
+      }
+
+      if (/^[-*]\s+/.test(trimmed)) {
+        const items: string[] = [];
+        while (lineIndex < lines.length && /^[-*]\s+/.test(lines[lineIndex].trim())) {
+          items.push(lines[lineIndex].trim().replace(/^[-*]\s+/, ''));
+          lineIndex += 1;
+        }
+        rendered.push(
+          <ul key={`unordered-${lineIndex}`} className="list-disc pl-5 my-2 space-y-1 font-sans text-sm text-[#1b4332]">
+            {items.map((item, itemIndex) => <li key={itemIndex}>{renderInline(item)}</li>)}
           </ul>
         );
+        continue;
       }
 
-      // Ordered lists
       if (/^\d+\.\s+/.test(trimmed)) {
-        const items = p.split('\n').map((item) => item.replace(/^\d+\.\s+/, '').trim());
-        return (
-          <ol key={pIdx} className="list-decimal pl-5 my-2 space-y-1 font-sans text-sm text-[#1b4332]">
-            {items.map((item, itemIdx) => (
-              <li key={itemIdx}>{renderInline(item)}</li>
-            ))}
+        const items: string[] = [];
+        while (lineIndex < lines.length && /^\d+\.\s+/.test(lines[lineIndex].trim())) {
+          items.push(lines[lineIndex].trim().replace(/^\d+\.\s+/, ''));
+          lineIndex += 1;
+        }
+        rendered.push(
+          <ol key={`ordered-${lineIndex}`} className="list-decimal pl-5 my-2 space-y-1 font-sans text-sm text-[#1b4332]">
+            {items.map((item, itemIndex) => <li key={itemIndex}>{renderInline(item)}</li>)}
           </ol>
         );
+        continue;
       }
 
-      // Blockquote / Disclaimer alert (e.g. starting with ⚠️)
       if (trimmed.startsWith('⚠️')) {
-        return (
-          <div key={pIdx} className="my-3 p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 font-sans leading-relaxed">
+        rendered.push(
+          <div key={`warning-${lineIndex}`} className="my-3 p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 font-sans leading-relaxed">
             {renderInline(trimmed)}
           </div>
         );
+        lineIndex += 1;
+        continue;
       }
 
-      return (
-        <p key={pIdx} className="mb-2 font-sans text-sm leading-relaxed text-[#1b4332]">
-          {renderInline(trimmed)}
+      const paragraphLines: string[] = [];
+      while (lineIndex < lines.length) {
+        const candidate = lines[lineIndex].trim();
+        if (!candidate || horizontalRulePattern.test(candidate) || /^(#{1,3})\s+/.test(candidate) || /^[-*]\s+/.test(candidate) || /^\d+\.\s+/.test(candidate)) {
+          break;
+        }
+        paragraphLines.push(candidate);
+        lineIndex += 1;
+      }
+
+      rendered.push(
+        <p key={`paragraph-${lineIndex}`} className="mb-2 font-sans text-sm leading-relaxed text-[#1b4332]">
+          {renderInline(paragraphLines.join(' '))}
         </p>
       );
-    });
+    }
+
+    return rendered;
   };
 
   const renderInline = (text: string) => {
@@ -258,20 +321,20 @@ function ChatContent() {
       <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-4 gap-8">
 
         {/* Left column: Bot Profile & Instructions */}
-        <aside className="md:col-span-1 space-y-6">
+        <aside className="order-2 md:order-1 md:col-span-1 min-w-0 space-y-6">
           <div className="bg-white border border-black/10 rounded-2xl p-6 shadow-sm flex flex-col items-center text-center">
             <div className="h-16 w-16 rounded-full bg-gradient-to-br from-[#40916c] to-[#74c69d] text-3xl flex items-center justify-center text-white shadow-sm mb-4">
               🤖
             </div>
-            <h2 className="text-lg font-extrabold text-[#1b4332]">Dr. AI Assistant</h2>
-            <p className="text-xs text-[#52b788] font-bold mt-1">● Online & Verified</p>
+            <h1 className="text-lg font-extrabold text-[#1b4332]">Dr. AI Assistant</h1>
+            <p className="text-xs text-[#2d6a4f] font-bold mt-1">● Online & Verified</p>
             <p className="text-xs text-gray-500 mt-3 leading-relaxed">
               Equipped with RAG technology to retrieve direct botanical records and FAQ resources from our secure databases.
             </p>
           </div>
 
           <div className="bg-[#eef5f0]/50 border border-[#2d6a4f]/10 rounded-2xl p-6 space-y-4">
-            <h3 className="text-sm font-extrabold text-[#1b4332]">Quick Reference Guides</h3>
+            <h2 className="text-sm font-extrabold text-[#1b4332]">Quick Reference Guides</h2>
             <div className="space-y-3 text-xs text-[#2d6a4f] font-semibold">
               <div className="flex gap-2">
                 <Sparkles className="h-4 w-4 shrink-0 text-[#40916c]" />
@@ -293,13 +356,13 @@ function ChatContent() {
         </aside>
 
         {/* Right column: Active Chat Box */}
-        <section className="md:col-span-3 flex flex-col bg-white border border-black/10 rounded-3xl overflow-hidden shadow-sm h-[650px]">
+        <section className="order-1 md:order-2 min-w-0 md:col-span-3 flex flex-col bg-white border border-black/10 rounded-3xl overflow-hidden shadow-sm h-[calc(100dvh-8rem)] min-h-[400px] md:h-[650px]">
 
           {/* Header */}
-          <header className="px-6 py-4 border-b border-black/10 flex items-center justify-between bg-white">
+          <header className="px-4 py-3 border-b border-black/10 flex items-center justify-between gap-2 bg-white shrink-0">
             <div>
-              <h3 className="font-extrabold text-[#1b4332] text-base">Consultation Session</h3>
-              <p className="text-xs text-gray-400">Ask about plants, symptoms, or home preparation guidelines</p>
+              <h2 className="font-extrabold text-[#1b4332] text-base">Consultation Session</h2>
+              <p className="text-xs text-gray-600">Ask about plants, symptoms, or home preparation guidelines</p>
             </div>
             <button
               onClick={() => {
@@ -320,11 +383,11 @@ function ChatContent() {
           </header>
 
           {/* Message List Area */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50/30">
+          <div ref={messageListRef} aria-label="Conversation messages" className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50/30">
             {messages.map((msg) => {
               const isBot = msg.role === 'model';
               return (
-                <div key={msg.id} className={`flex gap-3 ${isBot ? 'justify-start' : 'justify-end'}`}>
+                <div key={msg.id} data-message-role={msg.role} data-message-id={msg.id} className={`flex gap-3 ${isBot ? 'justify-start' : 'justify-end'}`}>
                   {isBot && (
                     <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#40916c] to-[#74c69d] text-base flex items-center justify-center text-white shadow-sm shrink-0">
                       🤖
@@ -414,29 +477,43 @@ function ChatContent() {
               </div>
             )}
 
-            <div ref={messagesEndRef} />
           </div>
 
           {/* Form Input Footer */}
-          <form onSubmit={handleSubmit} className="p-4 border-t border-black/10 bg-white flex gap-2">
+          <div className="border-t border-black/10 bg-white p-3 shrink-0">
+            <div aria-label="Quick prompts" className="mb-2 flex gap-2 overflow-x-auto pb-1" role="group" tabIndex={0}>
+              {QUICK_PROMPTS.map((prompt) => (
+                <button
+                  key={prompt}
+                  type="button"
+                  disabled={isSending}
+                  onClick={() => handleSendQuery(prompt)}
+                  className="shrink-0 rounded-full border border-[#2d6a4f]/30 bg-[#eef5f0] px-3 py-1.5 text-xs font-bold text-[#1b4332] hover:bg-[#dceee2] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          <form onSubmit={handleSubmit} className="flex gap-2">
             <input
               type="text"
               placeholder={isSending ? "Waiting for response..." : "Type your query here..."}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isSending}
-              className="flex-1 px-5 py-3 border border-gray-200 bg-gray-50/50 text-sm rounded-full text-[#1b4332] placeholder-emerald-800/40 focus:outline-none focus:border-[#2d6a4f] focus:bg-white transition-all disabled:opacity-50 font-sans"
+              className="min-w-0 flex-1 px-4 py-3 border border-gray-200 bg-gray-50/50 text-base rounded-full text-[#1b4332] placeholder-emerald-800/40 focus:outline-none focus:border-[#2d6a4f] focus:bg-white transition-all disabled:opacity-50 font-sans"
               aria-label="Type message"
             />
             <button
               type="submit"
               disabled={isSending || !input.trim()}
-              className="h-12 w-12 rounded-full bg-gradient-to-br from-[#40916c] to-[#74c69d] text-white flex items-center justify-center shadow-sm hover:brightness-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="h-12 w-12 shrink-0 rounded-full bg-gradient-to-br from-[#40916c] to-[#74c69d] text-white flex items-center justify-center shadow-sm hover:brightness-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               aria-label="Send message"
             >
               <Send className="h-5 w-5 rotate-0 pl-0.5" />
             </button>
           </form>
+          </div>
 
         </section>
       </main>

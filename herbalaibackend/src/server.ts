@@ -3,6 +3,7 @@ import { ENV } from './config/env.js';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { verifyAccessToken } from './utils/jwt.js';
+import { closeDatabasePool, warmDatabasePool } from './lib/prisma.js';
 
 const httpServer = createServer(app);
 
@@ -55,8 +56,11 @@ io.on('connection', (socket) => {
 });
 
 
-const startServer = () => {
+const startServer = async () => {
   try {
+    // Pay the remote database connection cost before readiness instead of on the
+    // first user's authenticated request. This does not cache user data.
+    await warmDatabasePool();
     httpServer.listen(ENV.PORT, () => {
       console.log('--------------------------------------------------');
       console.log(`🚀 ${ENV.APP_NAME} started successfully!`);
@@ -72,3 +76,23 @@ const startServer = () => {
 };
 
 startServer();
+
+let shuttingDown = false;
+const shutdown = (signal: string) => {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  console.log(JSON.stringify({ event: 'server_shutdown', signal }));
+  io.close();
+  httpServer.close(async () => {
+    try {
+      await closeDatabasePool();
+      process.exit(0);
+    } catch (error) {
+      console.error('Failed to close the database pool cleanly:', error);
+      process.exit(1);
+    }
+  });
+};
+
+process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('SIGTERM', () => shutdown('SIGTERM'));

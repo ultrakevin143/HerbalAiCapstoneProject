@@ -205,11 +205,11 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
 
       {/* Main Comment Form */}
       {isAuthenticated ? (
-        <form onSubmit={(e) => handleSubmitComment(e)} className="mb-8 flex gap-4">
+        <form onSubmit={(e) => handleSubmitComment(e)} className="mb-8 flex gap-2 sm:gap-4">
           <div className="w-10 h-10 rounded-full bg-[#eef5f0] border-2 border-[#1b4332] flex items-center justify-center shrink-0 overflow-hidden font-black text-[#1b4332]">
             {user?.name?.charAt(0).toUpperCase()}
           </div>
-          <div className="flex-1">
+          <div className="min-w-0 flex-1">
             <textarea
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
@@ -258,9 +258,9 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
                 >
                   {comment.author.name.charAt(0).toUpperCase()}
                 </div>
-                <div className="flex-1">
+                <div className="min-w-0 flex-1">
                   <div className="bg-[#f7f5ef] rounded-2xl rounded-tl-none p-3 border border-[#2d6a4f]/10 relative">
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex flex-wrap items-center gap-2 mb-1 break-words">
                       <span 
                         className="font-extrabold text-[#1b4332] text-sm cursor-pointer hover:underline"
                         onClick={() => handleUserClick(comment.author)}
@@ -274,7 +274,7 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
                         {new Date(comment.date).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className="text-sm text-[#1b4332] font-medium leading-relaxed whitespace-pre-wrap">
+                    <p className="text-sm text-[#1b4332] font-medium leading-relaxed whitespace-pre-wrap [overflow-wrap:anywhere]">
                       {comment.content}
                     </p>
                   </div>
@@ -283,6 +283,8 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
                   <div className="flex items-center gap-4 mt-1.5 ml-2">
                     <button 
                       onClick={() => handleToggleLike(comment.id)}
+                      aria-label={comment.userLikes?.some(ul => ul.userId === user?.id) ? 'Unlike comment' : 'Like comment'}
+                      aria-pressed={comment.userLikes?.some(ul => ul.userId === user?.id)}
                       className={`text-xs font-bold flex items-center gap-1 transition-colors ${
                         comment.userLikes?.some(ul => ul.userId === user?.id) 
                           ? 'text-rose-600' 
@@ -313,8 +315,8 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
 
               {/* Reply Form */}
               {replyingTo === comment.id && (
-                <form onSubmit={(e) => handleSubmitComment(e, comment.id)} className="ml-12 mt-3 flex gap-3 animate-in fade-in zoom-in-95">
-                  <div className="flex-1">
+                <form onSubmit={(e) => handleSubmitComment(e, comment.id)} className="sm:ml-12 mt-3 flex flex-wrap gap-2 animate-in fade-in zoom-in-95">
+                  <div className="min-w-0 flex-1">
                     <input
                       type="text"
                       autoFocus
@@ -336,7 +338,7 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
 
               {/* Replies */}
               {comment.replies && comment.replies.length > 0 && (
-                <div className="ml-5 mt-3 pl-7 border-l-2 border-[#eef5f0] space-y-4">
+                <div className="ml-2 sm:ml-5 mt-3 pl-2 sm:pl-7 border-l-2 border-[#eef5f0] space-y-4">
                   {comment.replies.map((reply) => (
                     <div key={reply.id} className="flex gap-3 group animate-in fade-in duration-300">
                       <div 
@@ -345,9 +347,9 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
                       >
                         {reply.author.name.charAt(0).toUpperCase()}
                       </div>
-                      <div className="flex-1">
+                      <div className="min-w-0 flex-1">
                         <div className="bg-[#f7f5ef] rounded-2xl rounded-tl-none p-2.5 border border-[#2d6a4f]/10">
-                          <div className="flex items-center gap-2 mb-0.5">
+                          <div className="flex flex-wrap items-center gap-2 mb-0.5 break-words">
                             <span 
                               className="font-extrabold text-[#1b4332] text-xs cursor-pointer hover:underline"
                               onClick={() => handleUserClick(reply.author)}
@@ -361,7 +363,7 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
                               {new Date(reply.date).toLocaleDateString()}
                             </span>
                           </div>
-                          <p className="text-xs text-[#1b4332] font-medium leading-relaxed whitespace-pre-wrap">
+                          <p className="text-xs text-[#1b4332] font-medium leading-relaxed whitespace-pre-wrap [overflow-wrap:anywhere]">
                             {reply.content}
                           </p>
                         </div>
@@ -370,6 +372,8 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
                         <div className="flex items-center gap-4 mt-1 ml-2">
                           <button 
                             onClick={() => handleToggleLike(reply.id)}
+                            aria-label={reply.userLikes?.some(ul => ul.userId === user?.id) ? 'Unlike reply' : 'Like reply'}
+                            aria-pressed={reply.userLikes?.some(ul => ul.userId === user?.id)}
                             className={`text-[11px] font-bold flex items-center gap-1 transition-colors ${
                               reply.userLikes?.some(ul => ul.userId === user?.id) 
                                 ? 'text-rose-600' 

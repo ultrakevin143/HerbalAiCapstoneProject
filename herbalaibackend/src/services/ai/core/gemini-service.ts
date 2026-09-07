@@ -5,14 +5,50 @@ import { DR_AI_SYSTEM_PROMPT } from "../../../config/drAiSystemPrompt.js";
 
 const genAI = new GoogleGenerativeAI(ENV.GEMINI_API_KEY || "");
 
-const CHAT_MODELS = [
-  "gemini-3.5-flash",
-  "gemini-2.5-flash",
-  "gemini-2.0-flash",
-  "gemini-2.5-pro"
-];
+const CHAT_MODELS = ENV.DR_AI_CHAT_MODELS;
+const CHAT_REQUEST_OPTIONS = { timeout: ENV.DR_AI_MODEL_TIMEOUT_MS };
 
 const EMBEDDING_MODEL = "gemini-embedding-2";
+
+const buildGroundedPrompt = (prompt: string, context: string) => `Below is the Context retrieved from the Herbal AI database. It is the only allowed source for herb-specific facts. Answer the user's question by paraphrasing and organizing this material into a clearer explanation. Preserve its meaning and do not add details merely to make the answer longer. Do not fill missing facts from general model knowledge. If the Context has no sufficiently relevant verified record, state that limitation and do not guess.
+
+Context:
+${context}
+
+Question: ${prompt}`;
+
+const createChat = (modelName: string, history: Content[]) => {
+  const model = genAI.getGenerativeModel({
+    model: modelName,
+    systemInstruction: DR_AI_SYSTEM_PROMPT,
+    generationConfig: {
+      temperature: 0.4,
+      topK: 40,
+      topP: 0.95,
+      maxOutputTokens: 1024,
+    },
+    safetySettings: [
+      {
+        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+      },
+      {
+        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+      },
+      {
+        category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+      },
+      {
+        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+        threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+      },
+    ],
+  });
+
+  return model.startChat({ history: history.slice(-6) });
+};
 
 /**
  * Utility to chunk text for embeddings.
@@ -81,11 +117,6 @@ export async function generateEmbedding(text: string): Promise<number[]> {
 }
 
 /**
- * Helper to delay execution
- */
-const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
-
-/**
  * Generate a chat response based on a prompt and provided context.
  * Includes a multi-model fallback to maximize free-tier limits.
  * @param prompt The user's question.
@@ -102,52 +133,15 @@ export async function generateChatResponse(
     throw new Error("GEMINI_API_KEY is not configured.");
   }
 
-  const fullPrompt = `Below is the Context retrieved from the Herbal AI database. It is the only allowed source for herb-specific facts. Answer the user's question by paraphrasing and organizing this material into a clearer explanation. Preserve its meaning and do not add details merely to make the answer longer. Do not fill missing facts from general model knowledge. If the Context has no sufficiently relevant verified record, state that limitation and do not guess.
-
-Context:
-${context}
-
-Question: ${prompt}`;
+  const fullPrompt = buildGroundedPrompt(prompt, context);
 
   let lastError: Error | null = null;
 
   for (const modelName of CHAT_MODELS) {
     try {
-      const model = genAI.getGenerativeModel({
-        model: modelName,
-        systemInstruction: DR_AI_SYSTEM_PROMPT,
-        generationConfig: {
-          temperature: 0.4,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 4096,
-        },
-        safetySettings: [
-          {
-            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-          },
-          {
-            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-          },
-          {
-            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-          },
-          {
-            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-            threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
-          },
-        ],
-      });
+      const chat = createChat(modelName, history);
 
-      // Limit history to last 6 messages to keep context concise but relevant
-      const chat = model.startChat({
-        history: history.slice(-6),
-      });
-
-      const result = await chat.sendMessage(fullPrompt);
+      const result = await chat.sendMessage(fullPrompt, CHAT_REQUEST_OPTIONS);
 
       // Log token usage for tracking
       if (result.response.usageMetadata) {
@@ -162,10 +156,52 @@ Question: ${prompt}`;
       console.warn(`Model ${modelName} failed:`, err.message);
       lastError = err;
 
-      // If the error is 429 (Rate Limit), 503 (Unavailable) or 404 (Not Found), 
-      // we naturally loop to the next available model in CHAT_MODELS.
-      // Small delay to prevent spamming APIs too fast
-      await delay(500);
+      // Move immediately to the next configured model. Each attempt has its own
+      // timeout, so one unavailable provider model cannot consume the whole request.
+    }
+  }
+
+  throw new Error(`All Gemini models hit limits or failed. Last error: ${lastError?.message || "Unknown error"}`);
+}
+
+export async function* generateChatResponseStream(
+  prompt: string,
+  context: string,
+  history: Content[] = []
+): AsyncGenerator<string> {
+  if (!ENV.GEMINI_API_KEY) {
+    throw new Error("GEMINI_API_KEY is not configured.");
+  }
+
+  const fullPrompt = buildGroundedPrompt(prompt, context);
+  let lastError: Error | null = null;
+
+  for (const modelName of CHAT_MODELS) {
+    let emittedText = false;
+    try {
+      const result = await createChat(modelName, history).sendMessageStream(fullPrompt, CHAT_REQUEST_OPTIONS);
+      // The SDK aggregates the response concurrently with iteration. Observe its
+      // rejection immediately; an interrupted stream otherwise risks an unhandled rejection.
+      void result.response.catch(() => undefined);
+      for await (const chunk of result.stream) {
+        const text = chunk.text();
+        if (text) {
+          emittedText = true;
+          yield text;
+        }
+      }
+
+      const response = await result.response;
+      if (response.usageMetadata) {
+        console.log(`📊 AI Token Usage [${modelName}] | Prompt: ${response.usageMetadata.promptTokenCount} | Response: ${response.usageMetadata.candidatesTokenCount} | Total: ${response.usageMetadata.totalTokenCount}`);
+      }
+      if (!emittedText) throw new Error("Empty response from model");
+      return;
+    } catch (error) {
+      const err = error as Error;
+      if (emittedText) throw err;
+      console.warn(`Streaming model ${modelName} failed:`, err.message);
+      lastError = err;
     }
   }
 

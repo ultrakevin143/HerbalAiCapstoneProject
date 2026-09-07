@@ -61,11 +61,22 @@ ADMIN_PASSWORD="generate-a-unique-random-password-of-at-least-12-characters"
 ```
 
 ### Configure Frontend Environment
-Create and edit `/root/herbal-ai/herbalaifrontend/.env.local`:
+For Docker Compose, set these values in the **root `.env`** (not the frontend `.env.local`, which is excluded from the Docker build):
 ```env
 NEXT_PUBLIC_API_URL="https://api.herbalai.ph/api"
 NEXT_PUBLIC_SOCKET_URL="https://api.herbalai.ph"
 ```
+
+Replace these example domains with the actual staging or production addresses. Compose passes both public URLs as build arguments before `next build`; changing container runtime variables alone does not change the browser bundle. Rebuild the frontend image after changing either URL. Never put secrets in `NEXT_PUBLIC_*` variables. For local, non-Docker development, continue using `herbalaifrontend/.env.local`.
+
+Check the deployment configuration before building:
+
+```bash
+docker compose config --quiet
+node --test scripts/deployment-config.test.mjs
+```
+
+The Node checks are static regression checks, not proof that Docker builds or the deployment works. On the staging host, build/start the services and confirm in browser network tools that API and Socket.IO requests use the configured staging host, not localhost. Confirm remote herb images load as well; the frontend runtime must retain `next.config.ts` for image configuration.
 
 ---
 
@@ -110,15 +121,46 @@ certbot renew --dry-run
 
 ## 6. Continuous Deployment & Updates
 
-Whenever new code is pushed to your Git repository:
+Deployment is optional while preparing a local capstone demo. Do not run these commands just to test the application locally. This script is for a reviewed release on a Docker host; it does not provide zero downtime.
+
+Before an update, review migration compatibility with the currently running application. Use backward-compatible migrations or schedule a maintenance window and stop application writes. Verify a recent database backup can be restored into a separate test database. Record the current git commit and backend/frontend image IDs outside the checkout, and retain those images. An existing database originally created with `db push` may need a reviewed Prisma migration baseline; do not bypass migration errors or mark unknown migrations applied.
+
+Only after completing those checks:
 
 ```bash
 cd /root/herbal-ai
-./scripts/deploy.sh
+DEPLOY_BACKUP_CONFIRMED=yes ./scripts/deploy.sh
 ```
 
-This script will automatically:
-1. Pull the latest code (`git pull origin main`).
-2. Rebuild and launch modified containers (`docker compose up -d --build`).
-3. Sync Prisma database migrations.
-4. Prune unused images to maintain disk space.
+The script:
+
+1. Requires Git, Docker Compose, a clean checkout and explicit backup acknowledgement.
+2. Updates the current branch from its configured upstream using fast-forward only.
+3. Validates Compose settings and builds the images before replacing application containers.
+4. Waits for PostgreSQL, then runs `prisma migrate deploy` and `prisma migrate status` using the new backend image. Errors stop deployment.
+5. Starts the application containers and retries internal API/homepage checks at most 30 times, with per-request timeouts.
+6. Retains old images and reports that public HTTPS, login/OAuth, email and browser smoke tests remain necessary.
+
+The backup flag is an operator acknowledgement, not an automated backup or restore test. Internal health checks do not certify every database query or user workflow. A failed rollout can leave migrations applied or containers partially replaced; the script does not automatically roll anything back.
+
+### Failure and recovery checklist
+
+- Inspect the failing command and `docker compose logs --tail=100 backend frontend postgres`; avoid sharing secrets or personal data from logs.
+- For build failure, verify the previous application containers still serve correctly before retrying.
+- For migration failure, stop and inspect migration status. Do not use `db push`, force-reset the database, or suppress the failure.
+- For a bad application release, restore the recorded prior image versions using a reviewed Compose override only after confirming they are compatible with the current database schema.
+- If schema recovery is necessary, enter maintenance mode, preserve the current database for investigation, and restore the verified backup into a separate database first. Validate data and login before changing the application connection. Obtain approval before replacing live data; writes since the backup can be lost.
+- Keep previous images and backups until the release has passed browser checks and reviewer acceptance. Do not automatically prune them during deployment.
+
+### Local verification status
+
+Static checks can be run without a VPS, domain or Docker:
+
+```bash
+node --test scripts/deployment-config.test.mjs
+bash -n scripts/deploy.sh
+```
+
+These checks do not execute Docker or migrations. A real container build, migration against a disposable database, backup restore drill and live readiness checks remain pending until a Docker test environment is available.
+
+Run mocked control-flow tests with `node --test scripts/deployment-flow.test.mjs`. They require Bash (set TEST_BASH to its executable if necessary) and replace Git, Docker and sleep with test functions. All 15 static/mocked checks passed locally, covering dirty checkout, Git status/update failure, missing backup acknowledgement, build/migration failure, exhausted health retries and success. Bash syntax and git whitespace checks passed. These results are separate from the application's 37-test backend suite.

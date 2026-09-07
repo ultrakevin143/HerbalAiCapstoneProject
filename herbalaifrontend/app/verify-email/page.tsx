@@ -41,7 +41,7 @@ function VerifyEmailContent() {
   }, [token]);
 
   return (
-    <div className="flex min-h-screen flex-col lg:flex-row bg-[#fafaf8]">
+    <main className="flex min-h-screen flex-col lg:flex-row bg-[#fafaf8]">
       {/* Left side - brand */}
       <div className="flex flex-col justify-center items-center lg:items-start lg:w-1/2 p-8 lg:p-20 bg-gradient-to-br from-[#1b4332] to-[#40916c] text-[#ffffff] text-center lg:text-left border-b lg:border-b-0 lg:border-r border-green-700/20">
         <div className="flex items-center justify-center w-24 h-24 rounded-full bg-[#ffffff] text-4xl mb-6 shadow-md">
@@ -88,7 +88,7 @@ function VerifyEmailContent() {
                 !
               </div>
               <p className="text-sm font-bold text-danger bg-red-50 p-4 rounded-lg border-2 border-danger/20">
-                ⚠️ {message}
+                {message}
               </p>
               <Link
                 href="/signin"
@@ -100,7 +100,7 @@ function VerifyEmailContent() {
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 
@@ -115,4 +115,3 @@ export default function VerifyEmailPage() {
     </Suspense>
   );
 }
-

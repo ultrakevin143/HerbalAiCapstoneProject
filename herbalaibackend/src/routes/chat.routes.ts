@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { sendMessage } from "../controllers/chat.controller.js";
+import { sendMessage, streamMessage } from "../controllers/chat.controller.js";
 import { AuthMiddleware } from "../middlewares/auth.middleware.js";
 import rateLimit from "express-rate-limit";
 
@@ -24,5 +24,6 @@ const chatLimiter = rateLimit({
  * Per SRS FR-CHAT: "Member+" access only.
  */
 router.post("/", authMiddleware.execute, chatLimiter, sendMessage);
+router.post("/stream", authMiddleware.execute, chatLimiter, streamMessage);
 
 export default router;

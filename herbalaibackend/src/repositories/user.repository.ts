@@ -1,5 +1,15 @@
 import { prisma } from "../lib/prisma.js";
 import { Prisma } from "@prisma/client";
+import { ENV } from "../config/env.js";
+import { TtlCache } from "../lib/ttl-cache.js";
+import { BatchedLookup } from "../lib/batched-lookup.js";
+
+const userSessionCache = new TtlCache(ENV.AUTH_USER_CACHE_MAX_ENTRIES);
+const userCacheKey = (id: string) => `auth-user:${id}`;
+
+export const invalidateCachedUser = (id: string): void => {
+  userSessionCache.deletePrefix(userCacheKey(id));
+};
 
 export const findUserByEmail = async (email: string) => {
   return prisma.user.findUnique({
@@ -13,9 +23,9 @@ export const findUserByUsername = async (username: string) => {
   });
 };
 
-export const findUserById = async (id: string) => {
-  return prisma.user.findUnique({
-    where: { id },
+const fetchSessionUsers = async (ids: string[]) => {
+  const users = await prisma.user.findMany({
+    where: { id: { in: ids } },
     select: {
       id: true,
       username: true,
@@ -29,6 +39,12 @@ export const findUserById = async (id: string) => {
       emailVerified: true,
     },
   });
+  return new Map(users.map(user => [user.id, user]));
+};
+const sessionLookup = new BatchedLookup(fetchSessionUsers);
+
+export const findUserById = async (id: string) => {
+  return userSessionCache.getOrSet(userCacheKey(id), ENV.AUTH_USER_CACHE_TTL_MS, () => sessionLookup.load(id));
 };
 
 export const createUser = async (data: Prisma.UserCreateInput) => {
@@ -70,7 +86,7 @@ export const findAllUsers = async () => {
 };
 
 export const updateUserBanStatus = async (id: string, isBanned: boolean) => {
-  return prisma.user.update({
+  const user = await prisma.user.update({
     where: { id },
     data: { isBanned },
     select: {
@@ -86,19 +102,30 @@ export const updateUserBanStatus = async (id: string, isBanned: boolean) => {
       emailVerified: true,
     },
   });
+  invalidateCachedUser(id);
+  return user;
 };
 
-export const updateUserEmailVerified = async (id: string) => {
-  return prisma.user.update({
+export const updateUserProfile = async (
+  id: string,
+  data: { name?: string; avatar?: string | null; bio?: string | null },
+) => {
+  const user = await prisma.user.update({
     where: { id },
-    data: { emailVerified: new Date() },
+    data,
+    select: {
+      id: true,
+      username: true,
+      email: true,
+      name: true,
+      avatar: true,
+      role: true,
+      bio: true,
+      joined: true,
+      isBanned: true,
+      emailVerified: true,
+    },
   });
+  invalidateCachedUser(id);
+  return user;
 };
-
-export const updateUserPassword = async (id: string, passwordHash: string) => {
-  return prisma.user.update({
-    where: { id },
-    data: { password: passwordHash },
-  });
-};
-

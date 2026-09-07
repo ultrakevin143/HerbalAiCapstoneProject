@@ -13,6 +13,8 @@ import {
   X,
   ArrowRight,
 } from 'lucide-react';
+import { cachedApiGet } from '../../lib/request-cache';
+import OptimizedFillImage from '../../components/OptimizedFillImage';
 
 interface Herb {
   id: string;
@@ -80,9 +82,8 @@ function LibraryContent() {
       try {
         setLoading(true);
         setError(null);
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-        const response = await fetch(`${baseUrl}/herbs`);
-        const res = await response.json();
+        const response = await cachedApiGet('/herbs', 60_000);
+        const res = response.data;
         if (res.status === 'success') {
           setHerbs(res.data.herbs || []);
         } else {
@@ -129,7 +130,7 @@ function LibraryContent() {
   return (
     <div className="min-h-screen flex flex-col bg-transparent">
       <Navbar />
-      <div className="mx-auto max-w-7xl px-4 py-8 flex-1 w-full">
+      <main className="mx-auto max-w-7xl px-4 py-8 flex-1 w-full">
         {/* Header */}
         <div className="library-header mb-8 text-center">
           <h1 className="font-serif-custom italic font-normal text-3xl text-[#1b4332] md:text-5xl mb-4 leading-none">
@@ -147,6 +148,7 @@ function LibraryContent() {
             <input
               type="text"
               placeholder="Search by name, scientific name, or uses..."
+              aria-label="Search herbs by name, scientific name, or medicinal use"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input w-full bg-transparent border-none text-sm text-[#1b4332] placeholder-gray-500 pl-8 focus:outline-none"
@@ -173,6 +175,7 @@ function LibraryContent() {
           {/* Category Selector */}
           <div className="w-full md:w-56 shrink-0">
             <select
+              aria-label="Filter herbs by category"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="library-filter-btn h-[48px] w-full border border-black/10 bg-white/72 rounded-full px-5 text-sm font-semibold text-[#1b4332] appearance-none bg-no-repeat focus:outline-none"
@@ -202,7 +205,7 @@ function LibraryContent() {
         {filteredHerbs.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-[#2d6a4f]/35 bg-white p-12 text-center shadow-md">
             <Leaf className="h-12 w-12 text-[#2d6a4f]/30 stroke-[1.5] mb-3" />
-            <h3 className="font-serif-custom text-xl font-black text-[#1b4332]">No herbs found</h3>
+            <h2 className="font-serif-custom text-xl font-black text-[#1b4332]">No herbs found</h2>
             <p className="mt-2 text-sm text-[#6a7282]">
               Try adjusting your search terms or filter selection.
             </p>
@@ -222,9 +225,10 @@ function LibraryContent() {
                     <Leaf className="h-16 w-16 stroke-[1.5]" />
                   </div>
                   {herb.imageUrl && herb.imageUrl.trim() !== '' && (
-                    <img
+                    <OptimizedFillImage
                       src={herb.imageUrl}
                       alt={herb.localName}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-85"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
@@ -241,7 +245,7 @@ function LibraryContent() {
                     </span>
                   )}
 
-                  <span className="herb-figma-badge absolute top-4 right-4 bg-[#52b788] text-white text-[10px] font-bold uppercase px-3 py-1 rounded-full z-10">
+                  <span className="herb-figma-badge absolute top-4 right-4 bg-[#2d6a4f] text-white text-[10px] font-bold uppercase px-3 py-1 rounded-full z-10">
                     {herb.category}
                   </span>
                 </div>
@@ -249,9 +253,9 @@ function LibraryContent() {
                 {/* Info Body */}
                 <div className="herb-figma-body p-5 flex-grow flex flex-col justify-between">
                   <div>
-                    <h3 className="font-serif-custom italic font-normal text-xl text-[#1b4332]">
+                    <h2 className="font-serif-custom italic font-normal text-xl text-[#1b4332]">
                       {herb.localName}
-                    </h3>
+                    </h2>
                     <p className="herb-figma-sci text-xs italic text-gray-500 mt-1">
                       {herb.scientificName} {herb.cebuanoName ? `(${herb.cebuanoName})` : ''}
                     </p>
@@ -274,14 +278,14 @@ function LibraryContent() {
         {/* Detail Modal */}
         {selectedHerb && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-gray-100 bg-white p-6 md:p-8 shadow-xl animate-in fade-in zoom-in duration-200 flex flex-col">
+            <div role="dialog" aria-modal="true" aria-label={`${selectedHerb.localName} details`} className="relative w-full min-w-0 max-w-2xl max-h-[90dvh] overflow-y-auto overscroll-contain rounded-2xl border border-gray-100 bg-white p-4 sm:p-6 md:p-8 shadow-xl animate-in fade-in zoom-in duration-200 flex flex-col">
               {/* Close Button */}
               <button
                 onClick={() => {
                   setSelectedHerb(null);
                   setIsImageExpanded(false);
                 }}
-                className="absolute top-4 right-4 h-9 w-9 flex items-center justify-center rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-500 hover:text-gray-800 transition-colors z-10"
+                className="absolute top-4 right-4 h-11 w-11 flex items-center justify-center rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-500 hover:text-gray-800 transition-colors z-10"
                 aria-label="Close modal"
               >
                 <X className="h-5 w-5" />
@@ -297,9 +301,10 @@ function LibraryContent() {
                 >
                   {selectedHerb.imageUrl && selectedHerb.imageUrl.trim() !== '' ? (
                     <>
-                      <img
+                      <OptimizedFillImage
                         src={selectedHerb.imageUrl}
                         alt={selectedHerb.localName}
+                        sizes="(max-width: 768px) 100vw, 160px"
                         className="h-full w-full object-cover transition-transform duration-300 group-hover/img:scale-105"
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-300 flex items-center justify-center">
@@ -421,7 +426,7 @@ function LibraryContent() {
             </div>
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }

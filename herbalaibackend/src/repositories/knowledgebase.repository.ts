@@ -15,9 +15,10 @@ export interface KBData {
  * Create knowledge base entry with vector embedding
  */
 export const createKB = async (data: KBData) => {
-  return await prisma.$executeRawUnsafe(
+  const records = await prisma.$queryRawUnsafe<Array<{ id: string }>>(
     `INSERT INTO "KnowledgeBase" (id, question, answer, category, tags, metadata, embedding, "isActive", "createdAt", "updatedAt") 
-     VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6::vector, true, NOW(), NOW())`,
+     VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6::vector, true, NOW(), NOW())
+     RETURNING id`,
     data.question || null,
     data.answer,
     data.category || null,
@@ -25,6 +26,7 @@ export const createKB = async (data: KBData) => {
     data.metadata || {},
     data.embedding || null
   );
+  return records[0];
 };
 
 /**

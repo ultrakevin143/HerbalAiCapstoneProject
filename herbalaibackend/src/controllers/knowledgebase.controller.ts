@@ -1,4 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
+import type { AuthenticatedRequest } from "../middlewares/auth.middleware.js";
+import { createAuditLog } from "../repositories/audit.repository.js";
 import {  
   CreateKnowledgeBaseService, 
   UpdateKnowledgeBaseService, 
@@ -11,6 +13,16 @@ export class KnowledgeBaseController {
   public createKnowledge = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const result = await CreateKnowledgeBaseService(req.body);
+      const adminId = (req as AuthenticatedRequest).user?.userId;
+      if (result.status === "success" && adminId && result.data?.id) {
+        await createAuditLog({
+          adminId,
+          action: "CREATE_KNOWLEDGE_BASE",
+          targetType: "KnowledgeBase",
+          targetId: result.data.id,
+          details: { question: req.body.question },
+        });
+      }
       res.status(result.code).json(result);
     } catch (error) {
       next(error);
@@ -33,6 +45,16 @@ export class KnowledgeBaseController {
       const id = req.params['id'] as string;
       const data = { ...req.body, id };
       const result = await UpdateKnowledgeBaseService(data);
+      const adminId = (req as AuthenticatedRequest).user?.userId;
+      if (result.status === "success" && adminId) {
+        await createAuditLog({
+          adminId,
+          action: "UPDATE_KNOWLEDGE_BASE",
+          targetType: "KnowledgeBase",
+          targetId: id,
+          details: { fields: Object.keys(req.body) },
+        });
+      }
       res.status(result.code).json(result);
     } catch (error) {
       next(error);
@@ -44,6 +66,15 @@ export class KnowledgeBaseController {
     try {
       const id = req.params['id'] as string;
       const result = await DeleteKnowledgeBaseService(id);
+      const adminId = (req as AuthenticatedRequest).user?.userId;
+      if (result.status === "success" && adminId) {
+        await createAuditLog({
+          adminId,
+          action: "DELETE_KNOWLEDGE_BASE",
+          targetType: "KnowledgeBase",
+          targetId: id,
+        });
+      }
       res.status(result.code).json(result);
     } catch (error) {
       next(error);

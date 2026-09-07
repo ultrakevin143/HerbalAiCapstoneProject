@@ -1,5 +1,36 @@
 import { prisma } from "../lib/prisma.js";
 
+type AccountTokenRedemption = { id: string; userId: string } & (
+  | { type: 'EMAIL_VERIFY' }
+  | { type: 'PASSWORD_RESET'; passwordHash: string }
+);
+
+/** Consume the still-valid link and change account state as one atomic operation. */
+export const redeemAccountToken = async (redemption: AccountTokenRedemption): Promise<boolean> => {
+  return prisma.$transaction(async (tx) => {
+    const now = new Date();
+    const claimed = await tx.token.updateMany({
+      where: {
+        id: redemption.id, userId: redemption.userId, type: redemption.type,
+        revokedAt: null, expiresAt: { gt: now },
+      },
+      data: { revokedAt: now },
+    });
+    if (claimed.count !== 1) return false;
+
+    if (redemption.type === 'EMAIL_VERIFY') {
+      await tx.user.update({ where: { id: redemption.userId }, data: { emailVerified: now } });
+    } else {
+      await tx.user.update({ where: { id: redemption.userId }, data: { password: redemption.passwordHash } });
+      await tx.token.updateMany({
+        where: { userId: redemption.userId, type: 'REFRESH', revokedAt: null },
+        data: { revokedAt: now },
+      });
+    }
+    return true;
+  });
+};
+
 export const createToken = async (data: {
   userId: string;
   type: string;
@@ -33,19 +64,6 @@ export const findActiveRefreshToken = async (token: string) => {
 export const revokeToken = async (id: string) => {
   return prisma.token.update({
     where: { id },
-    data: {
-      revokedAt: new Date(),
-    },
-  });
-};
-
-export const revokeAllUserRefreshTokens = async (userId: string) => {
-  return prisma.token.updateMany({
-    where: {
-      userId,
-      type: "REFRESH",
-      revokedAt: null,
-    },
     data: {
       revokedAt: new Date(),
     },
@@ -115,4 +133,3 @@ export const findActiveTokenByValue = async (token: string, type: string) => {
     },
   });
 };
-

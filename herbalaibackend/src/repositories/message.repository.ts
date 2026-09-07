@@ -73,7 +73,7 @@ export const deleteMessage = async (id: number) => {
 export const getChatHistory = async (
   userAId: string,
   userBId: string,
-  limit?: number,
+  limit: number = 50,
   beforeTime?: Date
 ) => {
   const where: {
@@ -90,16 +90,25 @@ export const getChatHistory = async (
     where.time = { lt: beforeTime };
   }
 
-  return prisma.chatMessage.findMany({
+  const boundedLimit = Math.min(100, Math.max(1, limit));
+  const rows = await prisma.chatMessage.findMany({
     where,
     include: {
       sender: {
         select: { id: true, name: true, avatar: true, role: true },
       },
     },
-    orderBy: { time: "asc" },
-    ...(limit && limit > 0 ? { take: limit } : {}),
+    orderBy: { time: "desc" },
+    take: boundedLimit + 1,
   });
+
+  const hasMore = rows.length > boundedLimit;
+  const messages = rows.slice(0, boundedLimit).reverse();
+  return {
+    messages,
+    hasMore,
+    nextBefore: hasMore ? messages[0]?.time.toISOString() ?? null : null,
+  };
 };
 
 /**

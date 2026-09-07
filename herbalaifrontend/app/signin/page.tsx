@@ -40,7 +40,7 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col lg:flex-row bg-[#fafaf8]">
+    <main className="flex min-h-screen flex-col lg:flex-row bg-[#fafaf8]">
       {/* Left side - brand */}
       <div className="flex flex-col justify-center items-center lg:items-start lg:w-1/2 p-8 lg:p-20 bg-gradient-to-br from-[#1b4332] to-[#40916c] text-[#ffffff] text-center lg:text-left border-b lg:border-b-0 lg:border-r border-green-700/20">
         <div className="flex items-center justify-center w-24 h-24 rounded-full bg-[#ffffff] text-4xl mb-6 shadow-md">
@@ -87,7 +87,7 @@ export default function SignInPage() {
                 <label className="text-sm font-extrabold text-[#1b4332]" htmlFor="password">
                   Password
                 </label>
-                <Link href="/forgot-password" className="text-xs font-bold text-[#40916c] hover:underline">
+                <Link href="/forgot-password" className="text-xs font-bold text-[#2d6a4f] hover:underline">
                   Forgot Password?
                 </Link>
 
@@ -130,12 +130,12 @@ export default function SignInPage() {
 
           <p className="text-center mt-6 text-sm font-bold text-[#6a7282]">
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="text-[#40916c] hover:underline font-extrabold">
+            <Link href="/signup" className="text-[#2d6a4f] hover:underline font-extrabold">
               Sign Up
             </Link>
           </p>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

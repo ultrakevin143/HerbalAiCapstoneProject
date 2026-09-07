@@ -11,10 +11,10 @@ An organized, step-by-step presentation script designed for demonstrating the He
   * Traditional Philippine botanical medicine is rich, but fragmented and susceptible to misinformation.
   * Herbal AI provides a centralized, Department of Health (DOH)-aligned botanical repository integrated with Retrieval-Augmented Generation (RAG) AI assistant ("Dr. AI").
   * **Technology Stack**:
-    * **Frontend**: Next.js 16 (React 19), Vanilla CSS, Lucide Icons, Socket.io Client.
+    * **Frontend**: Next.js 16 (React 19), Tailwind CSS 4, Lucide Icons, Socket.io Client.
     * **Backend**: Express 5, TypeScript, Node.js 22, Socket.io, Prisma ORM.
     * **Database**: PostgreSQL 16 with `pgvector` extension for 768-dimension semantic vector embeddings.
-    * **AI Engine**: Google Gemini API (`text-embedding-004` / `gemini-embedding-2` for vector search, `gemini-2.5-flash` for conversational synthesis).
+    * **AI Engine**: Google Gemini API (`gemini-embedding-2` for vector search and the configured fallback chat-model list for conversational synthesis).
 
 ---
 
@@ -31,7 +31,7 @@ An organized, step-by-step presentation script designed for demonstrating the He
 ---
 
 ### Scene 2: Dr. AI - RAG Botanical Assistant
-1. **Navigate to**: `http://localhost:3000/chat` (Log in as contributor user or guest account).
+1. **Navigate to**: `http://localhost:3000/chat` using the dedicated contributor demonstration account.
 2. **Sample Questions to Ask**:
    * **Query 1 (Botanical match)**: *"What Philippine herb can I use for cough and asthma, and how do I prepare it?"*
      * **Expected Result**: Dr. AI retrieves *Lagundi* from the pgvector database, cites the preparation steps, dosage, and displays the mandatory medical disclaimer.
@@ -84,9 +84,9 @@ An organized, step-by-step presentation script designed for demonstrating the He
      ```bash
      npm test
      ```
-   * Show the panel all **28 / 28 automated tests passing** across 5 Vitest test files.
+   * Show the panel the latest verified baseline: **82 / 82 automated tests passing** across 14 Vitest files. Rerun before the defense and report the actual output if the count changes.
 2. **Docker Orchestration**:
-   * Point out [docker-compose.yml](file:///c:/Users/Hp/Desktop/CAPSTONE%20PROJECT/docker-compose.yml) demonstrating full containerization of PostgreSQL (`pgvector`), backend API, and frontend web client for one-command deployment (`docker compose up --build`).
+   * Point out `docker-compose.yml`, which defines PostgreSQL/pgvector, backend, frontend and reverse-proxy services. State clearly that static deployment checks passed locally but an actual Docker/HTTPS deployment and recovery drill remain deferred.
 
 ---
 
@@ -96,4 +96,12 @@ An organized, step-by-step presentation script designed for demonstrating the He
 | :--- | :--- |
 | **How do you ensure medical safety and avoid inaccurate advice?** | We implement a multi-layered safety strategy: (1) System prompt boundary instructions enforcing standard medical disclaimers, (2) Vector similarity search (RAG) grounding AI responses in verified botanical data, and (3) Mandatory administrator review before any user-submitted herb is published. |
 | **Why did you use pgvector over a standalone vector database like Pinecone?** | pgvector allows relational plant data and high-dimensional semantic embeddings to reside in the exact same PostgreSQL database. This eliminates dual-write consistency issues, reduces infrastructure costs, and supports atomic transactions. |
-| **How does real-time communication scale?** | We use Socket.io with JWT authentication during the handshake phase, server-side room mapping per user ID, and optimized PostgreSQL `DISTINCT ON` queries to fetch conversation summaries in $O(1)$ database execution time without accumulating message arrays in Node.js RAM. |
+| **How does real-time communication scale?** | We use Socket.io authentication, per-user rooms, bounded message pagination and indexed PostgreSQL conversation queries. Local browser delivery passed, but production-scale WebSocket capacity is not yet accepted without staging load evidence. |
+
+## 4. Known limitations to state honestly
+
+- Five-participant UAT is prepared but remains 0/5 until real participants complete and sign the forms.
+- Local startup/session performance improved, but the 100-user p95 and 500-user capacity targets remain unaccepted.
+- Docker/HTTPS deployment, rollback and database restore proof are deferred while no hosting environment is available.
+- Chrome emulation is verified; physical Samsung/iOS and full WCAG acceptance are not claimed.
+- Do not expose passwords, tokens, environment files, personal inbox content or database connection strings during the presentation.

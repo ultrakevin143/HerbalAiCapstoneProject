@@ -1,5 +1,12 @@
 import { prisma } from "../lib/prisma.js";
 import type { Prisma } from "@prisma/client";
+import { TtlCache } from "../lib/ttl-cache.js";
+
+const herbCache = new TtlCache();
+const HERB_CACHE_PREFIX = "herbs:";
+const HERB_CACHE_TTL_MS = Math.max(1_000, Number(process.env["HERB_CACHE_TTL_MS"] ?? 300_000));
+
+export const invalidateHerbCache = () => herbCache.deletePrefix(HERB_CACHE_PREFIX);
 
 export interface HerbData {
   localName: string;
@@ -19,9 +26,9 @@ export interface HerbData {
  * Find herb by ID
  */
 export const findHerbById = async (id: string) => {
-  return prisma.herb.findUnique({
-    where: { id },
-  });
+  return herbCache.getOrSet(`${HERB_CACHE_PREFIX}detail:${id}`, HERB_CACHE_TTL_MS, () =>
+    prisma.herb.findUnique({ where: { id } })
+  );
 };
 
 export interface FindHerbsOptions {
@@ -38,45 +45,56 @@ export interface FindHerbsOptions {
 export const findAllHerbs = async (options: FindHerbsOptions = {}) => {
   const { search, category, isDohApproved, page, limit } = options;
 
-  const where: Prisma.HerbWhereInput = {};
+  const cacheKey = `${HERB_CACHE_PREFIX}list:${JSON.stringify({
+    search: search?.trim().toLowerCase() || null,
+    category: category?.trim().toLowerCase() || null,
+    isDohApproved: isDohApproved ?? null,
+    page: page ?? null,
+    limit: limit ?? null,
+  })}`;
 
-  if (category && category !== 'all' && category !== 'All') {
-    where.category = { contains: category, mode: 'insensitive' };
-  }
+  return herbCache.getOrSet(cacheKey, HERB_CACHE_TTL_MS, async () => {
 
-  if (isDohApproved !== undefined) {
-    where.isDohApproved = isDohApproved;
-  }
+    const where: Prisma.HerbWhereInput = {};
 
-  if (search && search.trim()) {
-    const s = search.trim();
-    where.OR = [
-      { localName: { contains: s, mode: 'insensitive' } },
-      { cebuanoName: { contains: s, mode: 'insensitive' } },
-      { scientificName: { contains: s, mode: 'insensitive' } },
-      { medicinalUses: { contains: s, mode: 'insensitive' } },
-      { category: { contains: s, mode: 'insensitive' } },
-    ];
-  }
-
-  const paginationArgs: { take?: number; skip?: number } = {};
-  if (limit && limit > 0) {
-    paginationArgs.take = limit;
-    if (page && page > 1) {
-      paginationArgs.skip = (page - 1) * limit;
+    if (category && category.toLowerCase() !== 'all') {
+      where.category = { contains: category, mode: 'insensitive' };
     }
-  }
 
-  const [herbs, total] = await Promise.all([
-    prisma.herb.findMany({
-      where,
-      orderBy: { localName: 'asc' },
-      ...paginationArgs,
-    }),
-    prisma.herb.count({ where }),
-  ]);
+    if (isDohApproved !== undefined) {
+      where.isDohApproved = isDohApproved;
+    }
 
-  return { herbs, total };
+    if (search && search.trim()) {
+      const s = search.trim();
+      where.OR = [
+        { localName: { contains: s, mode: 'insensitive' } },
+        { cebuanoName: { contains: s, mode: 'insensitive' } },
+        { scientificName: { contains: s, mode: 'insensitive' } },
+        { medicinalUses: { contains: s, mode: 'insensitive' } },
+        { category: { contains: s, mode: 'insensitive' } },
+      ];
+    }
+
+    const paginationArgs: { take?: number; skip?: number } = {};
+    if (limit && limit > 0) {
+      paginationArgs.take = limit;
+      if (page && page > 1) {
+        paginationArgs.skip = (page - 1) * limit;
+      }
+    }
+
+    const [herbs, total] = await Promise.all([
+      prisma.herb.findMany({
+        where,
+        orderBy: { localName: 'asc' },
+        ...paginationArgs,
+      }),
+      prisma.herb.count({ where }),
+    ]);
+
+    return { herbs, total };
+  });
 };
 
 /**
@@ -84,7 +102,7 @@ export const findAllHerbs = async (options: FindHerbsOptions = {}) => {
  */
 export const createHerb = async (data: HerbData) => {
   if (data.embedding) {
-    return await prisma.$executeRawUnsafe(
+    const result = await prisma.$executeRawUnsafe(
       `INSERT INTO "Herb" (id, "localName", "cebuanoName", "scientificName", category, "medicinalUses", "preparationMethod", dosage, "regionFound", warnings, "imageUrl", embedding, "createdAt", "updatedAt") 
        VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11::vector, NOW(), NOW())`,
       data.localName,
@@ -99,8 +117,10 @@ export const createHerb = async (data: HerbData) => {
       data.imageUrl ?? null,
       data.embedding
     );
+    invalidateHerbCache();
+    return result;
   }
-  return await prisma.herb.create({
+  const herb = await prisma.herb.create({
     data: {
       localName: data.localName,
       cebuanoName: data.cebuanoName ?? null,
@@ -114,6 +134,8 @@ export const createHerb = async (data: HerbData) => {
       imageUrl: data.imageUrl ?? null,
     },
   });
+  invalidateHerbCache();
+  return herb;
 };
 
 /**
@@ -121,7 +143,7 @@ export const createHerb = async (data: HerbData) => {
  */
 export const updateHerb = async (id: string, data: Partial<HerbData>) => {
   if (data.embedding) {
-    return await prisma.$executeRawUnsafe(
+    const result = await prisma.$executeRawUnsafe(
       `UPDATE "Herb" SET 
         "localName" = COALESCE($1, "localName"), 
         "cebuanoName" = COALESCE($2, "cebuanoName"), 
@@ -149,6 +171,8 @@ export const updateHerb = async (id: string, data: Partial<HerbData>) => {
       data.embedding,
       id
     );
+    invalidateHerbCache();
+    return result;
   }
 
   const updateData: Prisma.HerbUpdateInput = {};
@@ -163,10 +187,12 @@ export const updateHerb = async (id: string, data: Partial<HerbData>) => {
   if (data.warnings !== undefined) updateData.warnings = data.warnings ?? null;
   if (data.imageUrl !== undefined) updateData.imageUrl = data.imageUrl ?? null;
 
-  return await prisma.herb.update({
+  const herb = await prisma.herb.update({
     where: { id },
     data: updateData,
   });
+  invalidateHerbCache();
+  return herb;
 };
 
 export interface HerbQueryResult {

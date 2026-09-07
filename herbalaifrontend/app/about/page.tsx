@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   ArrowRight,
 } from 'lucide-react';
+import OptimizedFillImage from '../../components/OptimizedFillImage';
 
 interface PitahcHerb {
   id: string;
@@ -239,7 +240,7 @@ export default function AboutPage() {
           {/* Interactive PITAHC Herbs Section */}
           <section className="space-y-12">
             <div className="text-center space-y-3">
-              <div className="inline-block bg-[#52b788] text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">
+              <div className="inline-block bg-[#2d6a4f] text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">
                 DOH/PITAHC Reference-Based Remedies
               </div>
               <h2 className="font-serif-custom italic font-normal text-3xl md:text-5xl text-[#1b4332]">
@@ -271,9 +272,9 @@ export default function AboutPage() {
                         <span className={`text-[10px] font-bold tracking-wider uppercase ${isActive ? 'text-white/80' : 'text-[#40916c]'}`}>
                           {herb.englishName}
                         </span>
-                        <h4 className="font-serif-custom italic font-semibold text-lg leading-tight mt-1">
+                        <h3 className="font-serif-custom italic font-semibold text-lg leading-tight mt-1">
                           {herb.name}
-                        </h4>
+                        </h3>
                       </div>
                       <span className={`text-xs italic ${isActive ? 'text-white/70' : 'text-gray-500'}`}>
                         {herb.scientificName}
@@ -302,11 +303,12 @@ export default function AboutPage() {
                       </div>
 
                       {/* Plant graphic */}
-                      <div className="h-20 w-20 bg-gradient-to-tr from-[#40916c]/20 to-[#74c69d]/20 rounded-2xl flex items-center justify-center border border-[#40916c]/10 overflow-hidden shrink-0 shadow-inner">
+                      <div className="relative h-20 w-20 bg-gradient-to-tr from-[#40916c]/20 to-[#74c69d]/20 rounded-2xl flex items-center justify-center border border-[#40916c]/10 overflow-hidden shrink-0 shadow-inner">
                         {activeHerb.image ? (
-                          <img
+                          <OptimizedFillImage
                             src={activeHerb.image}
                             alt={activeHerb.name}
+                            sizes="80px"
                             className="h-full w-full object-cover"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
@@ -404,9 +406,10 @@ export default function AboutPage() {
             </div>
 
             <div className="md:col-span-5 relative rounded-2xl overflow-hidden shadow-md aspect-video md:aspect-square bg-white border border-black/5">
-              <img
+              <OptimizedFillImage
                 src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=600&q=80"
                 alt="Science lab analyzing medicinal leaves"
+                sizes="(max-width: 768px) 100vw, 42vw"
                 className="w-full h-full object-cover opacity-90"
               />
             </div>

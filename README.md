@@ -53,7 +53,7 @@ graph TD
 | **Frontend** | Next.js 16 (React 19), TypeScript, Vanilla CSS, Lucide Icons, Socket.io-Client, Recharts |
 | **Backend** | Node.js 22, Express 5, TypeScript, Prisma ORM, Socket.io, Nodemailer, Bcrypt, Zod |
 | **Database** | PostgreSQL 16 with `pgvector` extension |
-| **AI / NLP** | Google Gemini API (`text-embedding-004` / `gemini-embedding-2`, `gemini-2.5-flash`) |
+| **AI / NLP** | Google Gemini API (`gemini-embedding-2`; configurable Flash models, default `gemini-3.5-flash-lite`) |
 | **Testing** | Vitest, Supertest |
 | **DevOps & CI/CD** | Docker, Docker Compose, GitHub Actions |
 
@@ -124,6 +124,22 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+#### Production-mode capstone demonstration (Windows)
+
+For a faster, stable demonstration without development overlays or on-demand compilation:
+
+```powershell
+.\scripts\start-demo.ps1
+```
+
+Open `http://localhost:3000`. When the demonstration is finished:
+
+```powershell
+.\scripts\stop-demo.ps1
+```
+
+The start script performs clean backend and frontend production builds, launches both services in production mode, and verifies their health before reporting readiness. Runtime logs are written to the ignored `.demo-logs` directory. Demo email defaults to safe `log` mode; explicitly set `EMAIL_DELIVERY_MODE=allowlist` and `EMAIL_ALLOWED_RECIPIENTS` before starting only when a controlled mailbox test is required.
+
 ---
 
 ### Running with Docker Compose (One-Click Setup)
@@ -158,7 +174,9 @@ For deploying to an Ubuntu VPS with Nginx reverse proxy, automatic SSL (Certbot)
 
 ## Automated Testing
 
-Run the automated Vitest test suites (28 tests across Auth, Herbs, Suggestions, Chat, and system features):
+Use the root-level [`HERBAL_AI_TESTING_SCRATCHPAD.md`](HERBAL_AI_TESTING_SCRATCHPAD.md) for manual session notes, quick regression commands, evidence capture, and temporary-data cleanup. Confirmed outcomes belong in `Docs/TEST_EXECUTION_LOG.md`.
+
+Run the automated Vitest test suites (82 tests across authentication/account recovery, profile authorization and validation, bounded user lookup batching, production error responses, herbs, suggestions, chat, system features, validation, fallback behavior, forum deletion and cache controls; some integration checks require the configured database and Gemini API):
 
 ```bash
 cd herbalaibackend
@@ -173,6 +191,18 @@ cd herbalaibackend && npx tsc --noEmit
 # Frontend
 cd herbalaifrontend && npx tsc --noEmit
 ```
+
+### Performance controls
+
+- Public herb queries use a bounded in-memory cache with automatic invalidation after library changes.
+- The frontend deduplicates concurrent herb/session/notification GET requests.
+- Messenger history uses a 50-message cursor and can load older pages on demand.
+- API responses expose `Server-Timing` and `X-Response-Time`; slow requests are logged as structured JSON.
+- Dr. AI reports separate embedding, retrieval, and generation timings without logging question content.
+
+Optional tuning values are documented in `.env.example`: `HERB_CACHE_TTL_MS`, `AUTH_USER_CACHE_TTL_MS`, `AUTH_USER_CACHE_MAX_ENTRIES`, `SLOW_REQUEST_THRESHOLD_MS`, `DR_AI_MAX_COSINE_DISTANCE`, and the bounded `DB_POOL_*` connection-pool settings. Slow-request logs include a pool snapshot (`total`, `idle`, and `waiting`) to identify database saturation. The authentication-user cache is intentionally short-lived and is invalidated immediately by application-managed ban, verification, and password changes.
+
+Email safety is controlled by `EMAIL_DELIVERY_MODE`: use `log` for local development, `allowlist` plus `EMAIL_ALLOWED_RECIPIENTS` for controlled mailbox testing, and `live` only for production. Development defaults to `log` when the variable is omitted.
 
 ---
 

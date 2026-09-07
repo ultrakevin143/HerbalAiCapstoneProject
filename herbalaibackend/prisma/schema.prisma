@@ -88,6 +88,7 @@ model HerbComment {
 
   @@index([herbId])
   @@index([authorId])
+  @@index([herbId, isDeleted, date])
 }
 
 model HerbCommentLike {
@@ -130,6 +131,7 @@ model SuggestedHerb {
 
   @@index([submitterId])
   @@index([status])
+  @@index([status, submittedAt])
 }
 
 model Thread {
@@ -152,6 +154,7 @@ model Thread {
 
   @@index([authorId])
   @@index([category])
+  @@index([isDeleted, date])
 }
 
 model ThreadComment {
@@ -172,6 +175,7 @@ model ThreadComment {
 
   @@index([threadId])
   @@index([authorId])
+  @@index([threadId, isDeleted, date])
 }
 
 model ThreadLike {
@@ -230,6 +234,7 @@ model ChatMessage {
   @@index([senderId])
   @@index([receiverId])
   @@index([time])
+  @@index([senderId, receiverId, time])
 }
 
 model Token {
@@ -293,4 +298,5 @@ model Notification {
 
   @@index([userId])
   @@index([isRead])
+  @@index([userId, isRead, createdAt])
 }

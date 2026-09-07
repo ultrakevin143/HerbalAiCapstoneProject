@@ -55,9 +55,7 @@ export class HerbController {
   public getHerbById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { id } = req.params;
-      const herb = await prisma.herb.findUnique({
-        where: { id: id as string },
-      });
+      const herb = await herbRepo.findHerbById(id as string);
 
       if (!herb) {
         res.status(404).json({
@@ -291,6 +289,7 @@ export class HerbController {
           isDohApproved: req.body.isDohApproved !== undefined ? req.body.isDohApproved : herb.isDohApproved,
         },
       });
+      herbRepo.invalidateHerbCache();
 
       const authReq = req as AuthenticatedRequest;
       const adminId = authReq.user?.userId;
@@ -328,6 +327,7 @@ export class HerbController {
       await prisma.herb.delete({
         where: { id },
       });
+      herbRepo.invalidateHerbCache();
 
       const authReq = req as AuthenticatedRequest;
       const adminId = authReq.user?.userId;
@@ -347,5 +347,4 @@ export class HerbController {
     }
   };
 }
-
 

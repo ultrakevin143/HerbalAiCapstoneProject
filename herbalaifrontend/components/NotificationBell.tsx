@@ -5,6 +5,7 @@ import Link from 'next/link';
 import io, { Socket } from 'socket.io-client';
 import { Bell, Check, CheckCheck, ShieldCheck, FileText, ExternalLink } from 'lucide-react';
 import api from '../lib/axios';
+import { cachedApiGet, invalidateApiGetCache } from '../lib/request-cache';
 
 export interface NotificationItem {
   id: number;
@@ -29,7 +30,7 @@ export default function NotificationBell() {
 
     const loadNotifications = async () => {
       try {
-        const res = await api.get('/notifications');
+        const res = await cachedApiGet('/notifications', 10_000);
         if (isMounted && res.data?.status === 'success') {
           const notifs = res.data.data.notifications || [];
           setNotifications(notifs);
@@ -51,6 +52,7 @@ export default function NotificationBell() {
 
     socket.on('notification', (newNotif: NotificationItem) => {
       if (isMounted) {
+        invalidateApiGetCache('/notifications');
         setNotifications((prev) => [newNotif, ...prev]);
         setUnreadCount((prev) => prev + 1);
       }
@@ -80,6 +82,7 @@ export default function NotificationBell() {
   const handleMarkAsRead = async (id: number, link?: string | null) => {
     try {
       await api.patch(`/notifications/${id}/read`);
+      invalidateApiGetCache('/notifications');
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
       );
@@ -95,6 +98,7 @@ export default function NotificationBell() {
   const handleMarkAllAsRead = async () => {
     try {
       await api.patch('/notifications/read-all');
+      invalidateApiGetCache('/notifications');
       setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
       setUnreadCount(0);
     } catch (err) {
@@ -109,7 +113,8 @@ export default function NotificationBell() {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Notifications"
-        className="relative flex h-10 w-10 items-center justify-center rounded-full border border-[#1b4332]/20 bg-white text-[#1b4332] shadow-sm transition hover:bg-[#eef5f0]"
+        aria-expanded={isOpen}
+        className="relative flex h-11 w-11 items-center justify-center rounded-full border border-[#1b4332]/20 bg-white text-[#1b4332] shadow-sm transition hover:bg-[#eef5f0]"
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
@@ -121,7 +126,7 @@ export default function NotificationBell() {
 
       {/* Notifications Dropdown Drawer */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl border border-gray-200 bg-white p-3 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-100">
+        <div className="fixed left-3 right-3 top-20 max-h-[calc(100dvh-6rem)] overflow-y-auto overscroll-contain xl:absolute xl:left-auto xl:right-0 xl:top-full xl:mt-2 xl:w-96 rounded-2xl border border-gray-200 bg-white p-3 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-100">
           <div className="flex items-center justify-between border-b border-gray-100 pb-2 px-1">
             <div className="flex items-center gap-2">
               <span className="font-bold text-[#1b4332] text-sm">Notifications</span>

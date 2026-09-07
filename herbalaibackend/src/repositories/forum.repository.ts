@@ -166,10 +166,10 @@ export const createComment = async (data: {
 };
 
 export const findCommentsByThreadId = async (threadId: number) => {
-  return prisma.threadComment.findMany({
+  const comments = await prisma.threadComment.findMany({
     where: {
       threadId,
-      // We still select deleted comments but filter their content visually or mask it
+      // Retain deleted replies in the discussion structure; mask them before returning.
     },
     include: {
       author: {
@@ -186,6 +186,9 @@ export const findCommentsByThreadId = async (threadId: number) => {
       date: 'asc',
     },
   });
+  return comments.map(comment => comment.isDeleted
+    ? { ...comment, content: '[This reply has been deleted by the author or moderator.]' }
+    : comment);
 };
 
 export const findCommentById = async (id: number) => {

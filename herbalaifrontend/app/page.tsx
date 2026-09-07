@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { cachedApiGet } from '../lib/request-cache';
+import OptimizedFillImage from '../components/OptimizedFillImage';
 
 interface Herb {
   id: string;
@@ -59,9 +61,8 @@ export default function Home() {
   useEffect(() => {
     const fetchTrending = async () => {
       try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-        const response = await fetch(`${baseUrl}/herbs`);
-        const res = await response.json();
+        const response = await cachedApiGet('/herbs', 60_000);
+        const res = response.data;
         if (res.status === 'success') {
           const list = (res.data.herbs || []) as {
             id: string;
@@ -91,8 +92,9 @@ export default function Home() {
             setTrendingHerbs(mapped as Herb[]);
           }
         }
-      } catch (err) {
-        console.error('Failed to fetch trending herbs:', err);
+      } catch {
+        // Keep the bundled fallback cards when the API is temporarily unavailable.
+        // An unavailable optional homepage refresh should not trigger Next's dev overlay.
       }
     };
 
@@ -202,7 +204,7 @@ export default function Home() {
                       🤖
                     </div>
                     <div>
-                      <h4 className="font-extrabold text-sm text-[#1b4332]">Dr.Ai</h4>
+                      <h2 className="font-extrabold text-sm text-[#1b4332]">Dr.Ai</h2>
                       <div className="flex items-center gap-1.5">
                         <span className="dr-ai-status text-[#52b788] text-xs font-semibold">● Online</span>
                       </div>
@@ -214,7 +216,7 @@ export default function Home() {
                 </div>
 
                 {/* Messages Panel */}
-                <div className="dr-ai-messages flex-1 overflow-y-auto space-y-3 pr-1 text-xs">
+                <div tabIndex={0} role="region" aria-label="Dr. Ai conversation preview" className="dr-ai-messages flex-1 overflow-y-auto space-y-3 pr-1 text-xs">
                   <div className="flex gap-2">
                     <div className="dr-ai-bubble bot bg-white/60 backdrop-blur-sm text-[#1b4332] rounded-[4px_16px_16px_16px] max-w-[88%] p-3 text-sm">
                       Hello! I&apos;m Dr.Ai. How can I help you with herbal medicine today?
@@ -334,9 +336,10 @@ export default function Home() {
                       🌿
                     </div>
                     {herb.image && herb.image !== '' && (
-                      <img
+                      <OptimizedFillImage
                         src={herb.image}
                         alt={herb.name}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
                         className="absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105 opacity-85"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
@@ -346,7 +349,7 @@ export default function Home() {
                     )}
                     
                     {herb.verified && (
-                      <span className="herb-figma-badge absolute top-4 right-4 bg-[#52b788] text-white text-[10px] font-bold uppercase px-3 py-1 rounded-full z-10">
+                      <span className="herb-figma-badge absolute top-4 right-4 bg-[#2d6a4f] text-white text-[10px] font-bold uppercase px-3 py-1 rounded-full z-10">
                         Verified
                       </span>
                     )}
@@ -387,9 +390,10 @@ export default function Home() {
             
             {/* Left Image Column */}
             <div className="relative border border-black/10 rounded-3xl overflow-hidden shadow-md aspect-video md:aspect-[4/3] bg-white">
-              <img
+              <OptimizedFillImage
                 src="https://images.unsplash.com/photo-1595278069441-2cf29faff7a5?w=800&q=80"
                 alt="Traditional herbal knowledge sharing"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="w-full h-full object-cover"
               />
             </div>
