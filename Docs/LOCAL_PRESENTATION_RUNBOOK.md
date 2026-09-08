@@ -4,12 +4,13 @@ No VPS or domain is required for this rehearsal. Online deployment remains defer
 
 ## Before presenting
 
-1. Open `Herbal_AI_Capstone_Defense_v1.pptx` in Microsoft PowerPoint and confirm that it contains 15 slides. Presenter notes contain the short speaking cues.
-2. Use dedicated demo accounts. Keep terminals showing secrets, dotenv files and personal inboxes off screen.
-3. Keep ports 3000 and 5000 available. Do not stop an unrelated application without checking what owns the port.
-4. From the project root, run `powershell -ExecutionPolicy Bypass -File scripts/start-demo.ps1`. It builds and starts the local production app. Use `-SkipBuild` only when the current code has already been built successfully.
-5. Confirm `http://localhost:3000` shows Herbal AI and the library retrieves the intended demo herbs. A health endpoint alone does not prove database access.
-6. Run `node scripts/run-local-rehearsal.mjs` for read-only mobile/desktop checks. The script requires installed frontend dependencies and Chrome. It does not submit AI prompts, credentials or email forms.
+1. Run `powershell -ExecutionPolicy Bypass -File scripts/defense-preflight.ps1`. It checks the deck, PDF fallback, formal documents, environment-file presence, local build artifacts, PowerPoint compatibility and port state without displaying secrets. Use `-RunAutomatedChecks` for a full test/build pass and `-RunBrowserChecks` only after both local services are running.
+2. Open `Herbal_AI_Capstone_Defense_v1.pptx` in Microsoft PowerPoint and confirm that it contains 15 slides. Presenter notes contain the short speaking cues. Keep `output/pdf/Herbal_AI_Capstone_Defense_v1.pdf` as the offline fallback.
+3. Use dedicated demo accounts. Keep terminals showing secrets, dotenv files and personal inboxes off screen.
+4. Keep ports 3000 and 5000 available. Do not stop an unrelated application without checking what owns the port.
+5. From the project root, run `powershell -ExecutionPolicy Bypass -File scripts/start-demo.ps1`. It builds and starts the local production app. Use `-SkipBuild` only when the current code has already been built successfully.
+6. Confirm `http://localhost:3000` shows Herbal AI and the library retrieves the intended demo herbs. A health endpoint alone does not prove database access.
+7. Run `node scripts/run-local-rehearsal.mjs` for read-only mobile/desktop checks. The script requires installed frontend dependencies and Chrome. It does not submit AI prompts, credentials or email forms.
 
 ## Suggested demonstration order
 

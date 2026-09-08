@@ -16,7 +16,10 @@
 | User manual | `Docs/USER_MANUAL.md` | Complete |
 | Release checklist | `Docs/RELEASE_READINESS_CHECKLIST.md` | Complete structure; external gates pending |
 | Capstone defense presentation | `Herbal_AI_Capstone_Defense_v1.pptx` | Complete locally; 15 slides, presenter notes, three editable native charts, structural validation and PowerPoint visual QA passed |
+| Offline defense deck fallback | `output/pdf/Herbal_AI_Capstone_Defense_v1.pdf` | Complete; 15 pages exported by Microsoft PowerPoint and visually inspected after Poppler rendering |
 | Defense script and runbook | `DEFENSE_DEMO_SCRIPT.md`, `Docs/LOCAL_PRESENTATION_RUNBOOK.md` | Aligned to the 15-slide deck and current 83-test/performance evidence |
+| Defense preflight | `scripts/defense-preflight.ps1` | Checks presentation artifacts, application compatibility, build outputs, local port health and optional automated/browser verification without printing secrets |
+| Final capstone rehearsal | `Docs/FINAL_CAPSTONE_REHEARSAL_2026-09-08.md` | Passed recorded local scope; includes the repaired homepage image dependency, full workflow results, cleanup and remaining external gates |
 
 ## Required external evidence before final acceptance
 

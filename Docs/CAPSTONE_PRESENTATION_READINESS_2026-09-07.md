@@ -36,6 +36,8 @@ Internal evidence score: **88/100**. This is a project-management readiness indi
 
 Final verification for this review: frontend lint, separate TypeScript, 18-route production build, complete backend regression and the authenticated profile/quick-prompt production-browser workflow passed. Temporary browser-test records were deleted by the rehearsal. The local demo was stopped after review.
 
+The final production-mode capstone rehearsal on 8 September passed all recorded local workflows, 83/83 backend tests and both lint suites. It also identified and repaired one broken external homepage image request; the replacement local asset passed rebuild and browser verification. See `Docs/FINAL_CAPSTONE_REHEARSAL_2026-09-08.md`.
+
 ## Remaining acceptance blockers
 
 - UAT: 0/5 real participants and no adviser/reviewer acceptance signature.
