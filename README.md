@@ -176,7 +176,7 @@ For deploying to an Ubuntu VPS with Nginx reverse proxy, automatic SSL (Certbot)
 
 Use the root-level [`HERBAL_AI_TESTING_SCRATCHPAD.md`](HERBAL_AI_TESTING_SCRATCHPAD.md) for manual session notes, quick regression commands, evidence capture, and temporary-data cleanup. Confirmed outcomes belong in `Docs/TEST_EXECUTION_LOG.md`.
 
-Run the automated Vitest test suites (82 tests across authentication/account recovery, profile authorization and validation, bounded user lookup batching, production error responses, herbs, suggestions, chat, system features, validation, fallback behavior, forum deletion and cache controls; some integration checks require the configured database and Gemini API):
+Run the automated Vitest test suites (83 tests across authentication/account recovery, profile authorization and validation, safe post-login session caching, bounded user lookup batching, production error responses, herbs, suggestions, chat, system features, validation, fallback behavior, forum deletion and cache controls; some integration checks require the configured database and Gemini API):
 
 ```bash
 cd herbalaibackend

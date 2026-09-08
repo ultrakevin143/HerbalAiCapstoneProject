@@ -59,7 +59,7 @@
 | UR-003 | TC-A11Y-01 | All meaningful herb images have non-empty, descriptive alt text | Verified — 21/21 visible images in the representative rendered route audit had `alt` attributes |
 | UR-004 | TC-UX-03 | Invalid form submission shows clear, actionable feedback | Verified — signup/reset/link/upload negative browser states |
 | UR-005 | TC-UX-04 | Navigation is consistent and role-appropriate on each core page | Verified — public/contributor/admin responsive navigation rehearsals |
-| PR-001 | TC-PERF-01 | Landing page load is <= 3 seconds under recorded normal conditions | Failed / Unstable — initial p95 2,532 ms, but repeated fresh-Chrome p95 values reached 3,588–4,552 ms |
+| PR-001 | TC-PERF-01 | Landing page load is <= 3 seconds under recorded normal conditions | Provisional Pass — after server/client-boundary refactor, five fresh local Chrome contexts measured 744–2,636 ms; staging/device acceptance remains pending |
 | PR-002 | TC-PERF-02 | Herb search response is <= 2 seconds under recorded normal load | Provisional Pass — rendered Lagundi filtering p95 32.1 ms |
 | PR-003 | TC-PERF-03 | Dr. Ai starts rendering within <= 1.5 seconds for 95% of measured prompts | Provisional Pass — streamed first grounded text p95 529.9 ms over 3 local prompts |
 | PR-004 | TC-PERF-04 | 95% of standard authentication/data API requests complete in <= 1 second | Failed — warmed `/api/auth/me` exceeds 1 s p95 at 250 and 500 requests |
@@ -67,7 +67,7 @@
 
 ## Automated evidence boundary
 
-The 82-test backend suite plus dated browser rehearsals verify every listed functional row within its recorded local scope, including full herb CRUD and admin-managed KB retrieval. Exhaustive input/browser combinations are not implied. UAT, physical-device/full WCAG, staging capacity and deployment/recovery remain separate gates.
+The 83-test backend suite plus dated browser rehearsals verify every listed functional row within its recorded local scope, including full herb CRUD, admin-managed KB retrieval and credential-safe post-login cache priming. Exhaustive input/browser combinations are not implied. UAT, physical-device/full WCAG, staging capacity and deployment/recovery remain separate gates.
 
 ## Recorded browser evidence
 

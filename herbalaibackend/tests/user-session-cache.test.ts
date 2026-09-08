@@ -38,6 +38,17 @@ describe('authenticated user cache', () => {
     expect(findMany).toHaveBeenCalledTimes(1);
   });
 
+  it('primes a safe post-login profile without caching credential fields', async () => {
+    const authenticatedRecord = { ...profile, password: 'must-not-be-cached' };
+    userRepo.primeCachedUser(authenticatedRecord);
+
+    const cached = await userRepo.findUserById(profile.id);
+
+    expect(cached).toEqual(profile);
+    expect(cached).not.toHaveProperty('password');
+    expect(findMany).not.toHaveBeenCalled();
+  });
+
   it('invalidates the cached profile immediately after a ban change', async () => {
     const bannedProfile = { ...profile, isBanned: true };
     findMany.mockResolvedValueOnce([profile]).mockResolvedValueOnce([bannedProfile]);

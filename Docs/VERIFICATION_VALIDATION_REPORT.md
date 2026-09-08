@@ -15,7 +15,7 @@ Each allocation is above 20% and should match the team's actual documented work.
 
 | Check | Result | Evidence |
 |---|---|---|
-| Backend automated tests | **82 passed / 82 total across 14 files** | Vitest run on 7 September 2026; includes profile authorization/validation plus cache invalidation |
+| Backend automated tests | **83 passed / 83 total across 14 files** | Vitest run on 8 September 2026; includes profile authorization/validation, cache invalidation and credential-safe post-login cache priming |
 | Frontend lint | **Passed** | ESLint run on 4 September 2026 |
 | Backend lint | **Passed** | Latest recorded regression run |
 | Backend TypeScript/production build | **Passed** | `npm run build` on 6 September 2026 |
@@ -72,4 +72,4 @@ The project must not be marked **Accepted** until:
 
 ## Current conclusion
 
-The code-quality baseline is healthy: 82 backend tests, lint/build checks, the 34-check API audit, browser workflow suites and 26/26 emulated-mobile accessibility scans pass within their scopes. Every listed functional traceability row now has local evidence, including full herb CRUD and live retrieval from an admin-managed KB record. Startup warm-up reduced one first authenticated sample to 535.2ms, but 100-user p95 remained 2413.4ms; PR-001/PR-004/PR-005 are not accepted. The remaining gates are 0/5 participant UAT, physical-device/full WCAG, staging performance, deployment, backup/restore, formal DOCX visual QA and final reviewer sign-off.
+The code-quality baseline is healthy: 83 backend tests, lint/build checks, the 34-check API audit, browser workflow suites and 26/26 emulated-mobile accessibility scans pass within their scopes. Every listed functional traceability row has local evidence, including full herb CRUD and live retrieval from an admin-managed KB record. The performance follow-up produced a provisional local PR-001 pass (five fresh-context LCP samples from 744 to 2,636ms) and a 37.5ms first `/api/auth/me` response after login-cache priming, but cold 100-user p95 remained 2413.4ms; PR-004/PR-005 are not accepted. The remaining gates are 0/5 participant UAT, physical-device/full WCAG, staging performance, deployment, backup/restore and final reviewer sign-off.

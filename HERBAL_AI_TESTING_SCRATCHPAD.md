@@ -29,7 +29,7 @@ Result: **13 of 13 leaf checks passed (100%)**. Two grounding prompts also passe
 
 | Area | Latest result | Evidence/status |
 |---|---|---|
-| Backend automated tests | 82/82 passed across 14 files | Verified 7 September 2026; includes profile update authorization/validation and cache invalidation |
+| Backend automated tests | 83/83 passed across 14 files | Verified 8 September 2026; includes profile authorization/validation, cache invalidation and safe post-login cache priming |
 | Backend lint, type check, production build | Passed | Verified |
 | Frontend lint and production build | Passed; 18 routes | Verified |
 | Functional API audit | 34/34 exercised checks passed | `Docs/FUNCTIONAL_AUDIT_2026-09-01.md` |
@@ -150,7 +150,7 @@ Before ending a test session:
 
 ## Session notes
 
-Account recovery: `Docs/ACCOUNT_RECOVERY_REHEARSAL_2026-09-06.md`. API concurrency and browser recovery passed; latest backend baseline is 82/82 across 14 files. Kevin confirmed successful use of real verification/reset emails for a temporary Gmail alias, with database evidence and cleanup. Mobile accessibility follow-up: 26/26 automated page-width scans report no violations/overflow after fixes; three keyboard scrollers passed. Physical Samsung A73 and manual accessibility acceptance remain pending; see `Docs/MOBILE_ACCESSIBILITY_FOLLOWUP_2026-09-06.md`.
+Account recovery: `Docs/ACCOUNT_RECOVERY_REHEARSAL_2026-09-06.md`. API concurrency and browser recovery passed; latest backend baseline is 83/83 across 14 files. Kevin confirmed successful use of real verification/reset emails for a temporary Gmail alias, with database evidence and cleanup. Mobile accessibility follow-up: 26/26 automated page-width scans report no violations/overflow after fixes; three keyboard scrollers passed. Physical Samsung A73 and manual accessibility acceptance remain pending; see `Docs/MOBILE_ACCESSIBILITY_FOLLOWUP_2026-09-06.md`.
 
 Mobile layout and remaining workflows: `Docs/MOBILE_FUNCTIONAL_REHEARSAL_2026-09-06.md`. Herb comments, admin ban/unban and logout passed. Repaired clipped phone Messenger/admin layouts, tablet navigation overflow and first-message touch actions; restored mobile notifications. Physical-device acceptance remains separate.
 

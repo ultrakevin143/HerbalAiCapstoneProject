@@ -7,6 +7,36 @@ import { BatchedLookup } from "../lib/batched-lookup.js";
 const userSessionCache = new TtlCache(ENV.AUTH_USER_CACHE_MAX_ENTRIES);
 const userCacheKey = (id: string) => `auth-user:${id}`;
 
+type SessionUser = {
+  id: string;
+  username: string;
+  email: string;
+  name: string;
+  avatar: string | null;
+  role: string;
+  bio: string | null;
+  joined: Date;
+  isBanned: boolean;
+  emailVerified: Date | null;
+};
+
+const toSessionUser = (user: SessionUser): SessionUser => ({
+  id: user.id,
+  username: user.username,
+  email: user.email,
+  name: user.name,
+  avatar: user.avatar,
+  role: user.role,
+  bio: user.bio,
+  joined: user.joined,
+  isBanned: user.isBanned,
+  emailVerified: user.emailVerified,
+});
+
+export const primeCachedUser = (user: SessionUser): void => {
+  userSessionCache.set(userCacheKey(user.id), toSessionUser(user), ENV.AUTH_USER_CACHE_TTL_MS);
+};
+
 export const invalidateCachedUser = (id: string): void => {
   userSessionCache.deletePrefix(userCacheKey(id));
 };

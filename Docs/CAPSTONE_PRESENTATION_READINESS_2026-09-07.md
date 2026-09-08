@@ -9,7 +9,7 @@ Internal evidence score: **88/100**. This is a project-management readiness indi
 | Area | Weight | Earned | Evidence-based assessment |
 |---|---:|---:|---|
 | Core functional workflows | 35 | 35 | Every listed functional traceability row has repeatable local evidence, including profile editing, quick prompts, full herb CRUD, full KB CRUD and live admin-managed RAG retrieval |
-| Automated/code quality | 25 | 25 | 82/82 backend tests, build/lint/type checks and browser regressions pass in recorded runs |
+| Automated/code quality | 25 | 25 | 83/83 backend tests, build/lint/type checks and browser regressions pass in recorded runs |
 | Documentation/traceability | 20 | 18 | SRS/SPMP/SDD/STD passed page-by-page Word visual QA; final adviser/reviewer reconciliation and signatures remain |
 | Local defense operation | 10 | 9 | Local runbook/rehearsal works; external AI/email/network dependencies require fallback screenshots |
 | Participant UAT | 7 | 0 | Package prepared; 0/5 real participants recorded |
@@ -18,7 +18,7 @@ Internal evidence score: **88/100**. This is a project-management readiness indi
 
 ## Strong evidence to present
 
-- 82/82 backend regression baseline across 14 files.
+- 83/83 backend regression baseline across 14 files.
 - 34/34 functional API checks and dated browser workflow evidence.
 - Google OAuth and actual Gmail verification/password-reset links completed successfully with isolated cleanup.
 - Dr. Ai retrieves repository facts, improves clarity, refuses unknown-herb invention and maintains a medical disclaimer.

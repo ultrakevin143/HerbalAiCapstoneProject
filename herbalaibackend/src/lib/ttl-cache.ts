@@ -10,6 +10,15 @@ export class TtlCache {
 
   public constructor(private readonly maxEntries = 250) {}
 
+  public set<T>(key: string, value: T, ttlMs: number): void {
+    if (ttlMs <= 0) return;
+    if (this.values.size >= this.maxEntries && !this.values.has(key)) {
+      const oldestKey = this.values.keys().next().value as string | undefined;
+      if (oldestKey) this.values.delete(oldestKey);
+    }
+    this.values.set(key, { value, expiresAt: Date.now() + ttlMs });
+  }
+
   public async getOrSet<T>(key: string, ttlMs: number, load: () => Promise<T>): Promise<T> {
     const current = this.values.get(key) as CacheEntry<T> | undefined;
     if (current && current.expiresAt > Date.now()) return current.value;
@@ -22,11 +31,7 @@ export class TtlCache {
     const request = load()
       .then((value) => {
         if (loadGeneration === this.generation) {
-          if (this.values.size >= this.maxEntries) {
-            const oldestKey = this.values.keys().next().value as string | undefined;
-            if (oldestKey) this.values.delete(oldestKey);
-          }
-          this.values.set(key, { value, expiresAt: Date.now() + ttlMs });
+          this.set(key, value, ttlMs);
         }
         return value;
       })

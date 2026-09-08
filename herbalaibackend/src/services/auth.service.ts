@@ -117,6 +117,10 @@ export const login = async (data: { email: string; password: string }) => {
     throw { status: 403, message: "Please verify your email before logging in." };
   }
 
+  // The login query already returned the current account state. Reuse only its
+  // safe session fields for the immediate /auth/me request instead of paying a
+  // second remote database round trip. Ban/profile mutations still invalidate it.
+  userRepo.primeCachedUser(user);
 
   const tokenPayload = { userId: user.id, role: user.role };
   const accessToken = generateAccessToken(tokenPayload);
@@ -258,6 +262,8 @@ export const googleLogin = async (code: string) => {
   if (user.isBanned) {
     throw { status: 403, message: "Your account has been banned. Please contact support." };
   }
+
+  userRepo.primeCachedUser(user);
 
   // Issue JWT tokens (same flow as regular login)
   const tokenPayload = { userId: user.id, role: user.role };
@@ -417,4 +423,3 @@ export const resetPassword = async (token: string, newPassword: string) => {
 
   return { message: "Password reset successful. You can now log in with your new password." };
 };
-

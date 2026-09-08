@@ -6,7 +6,7 @@ The application is in the **Integration, Stabilization, Testing, and Deployment 
 
 Verified evidence from the current repository:
 
-- Backend automated tests: **82/82 passed** across 14 test files on 7 September 2026.
+- Backend automated tests: **83/83 passed** across 14 test files on 8 September 2026.
 - Frontend lint: **passed**.
 - Backend lint: **passed**.
 - Production builds and TypeScript checks: **passed** for backend and frontend.
@@ -45,7 +45,7 @@ Historical performance runs remain available in their dated reports. The current
 
 ## Documentation correction log
 
-Earlier SRS revisions contained stale statements saying no automated suite existed and frontend lint still failed. Current repository evidence on 7 September 2026 shows 82 backend tests passing, frontend/backend lint and builds passing, a 34-check API audit, dated browser workflows and 26/26 automated mobile accessibility scans. Later revisions must preserve the latest baseline while labeling older numbers as historical.
+Earlier SRS revisions contained stale statements saying no automated suite existed and frontend lint still failed. Current repository evidence on 8 September 2026 shows 83 backend tests passing, frontend/backend lint and builds passing, a 34-check API audit, dated browser workflows and 26/26 automated mobile accessibility scans. Later revisions must preserve the latest baseline while labeling older numbers as historical.
 
 ## Status vocabulary
 
