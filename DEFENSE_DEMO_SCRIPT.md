@@ -1,107 +1,102 @@
-# Herbal AI - Capstone Defense Demonstration Script
+# Herbal AI capstone defense script
 
-An organized, step-by-step presentation script designed for demonstrating the Herbal AI system to the academic examination panel.
+Use this script with `Herbal_AI_Capstone_Defense_v1.pptx`. The slide deck contains 15 slides and is designed for a controlled local presentation. Keep the live demonstration concise and use the prepared screenshots if an internet-dependent service is unavailable.
 
----
+## Slide-by-slide speaking guide
 
-## 1. System Overview & Architecture (1 - 2 Minutes)
+### 1. Herbal AI
 
-* **Objective**: Introduce the problem statement, traditional botanical knowledge preservation, and the technical architecture.
-* **Key Talking Points**:
-  * Traditional Philippine botanical medicine is rich, but fragmented and susceptible to misinformation.
-  * Herbal AI provides a centralized, Department of Health (DOH)-aligned botanical repository integrated with Retrieval-Augmented Generation (RAG) AI assistant ("Dr. AI").
-  * **Technology Stack**:
-    * **Frontend**: Next.js 16 (React 19), Tailwind CSS 4, Lucide Icons, Socket.io Client.
-    * **Backend**: Express 5, TypeScript, Node.js 22, Socket.io, Prisma ORM.
-    * **Database**: PostgreSQL 16 with `pgvector` extension for 768-dimension semantic vector embeddings.
-    * **AI Engine**: Google Gemini API (`gemini-embedding-2` for vector search and the configured fallback chat-model list for conversational synthesis).
+Introduce Herbal AI as a digital repository of Philippine herbal medicine with AI-assisted preparation guides. Introduce Kevin C. Mercado, Devon Descipulo, and Eumar Cabaluna.
 
----
+### 2. The problem
 
-## 2. Demonstration Flow: Step-by-Step
+Traditional knowledge is useful but fragmented. Users may encounter incomplete preparation instructions, missing warnings, or unreviewed community claims. Herbal AI responds with a searchable repository, administrator moderation, and grounded explanations.
 
-### Scene 1: DOH-Validated Herbal Library & Botanical Search
-1. **Navigate to**: `http://localhost:3000/library`
-2. **Demonstrate**:
-   * **10 DOH Plants**: Show the 10 scientifically approved medicinal plants (*Lagundi, Sambong, Ampalaya, Bawang, Bayabas, Yerba Buena, Tsaang Gubat, Akapulko, Niyog-niyogan, Ulasimang Bato*).
-   * **DOH Validation Filter**: Click the **DOH Validated** toggle button to filter the catalog instantly.
-   * **Search Functionality**: Type "cough" or "Lagundi" into the search bar $\rightarrow$ observe instant filtering matching Cebuano names, local names, and medicinal uses.
-   * **Detail Modal**: Click on *Lagundi* $\rightarrow$ show the official DOH endorsement banner, preparation methods, dosages, precautions, and community comments.
+### 3. Objectives and scope
 
----
+Explain the four main functions: the verified herb library, Dr. AI, community contributions, and account/collaboration features. State the safety boundary clearly: the system does not diagnose, prescribe, or replace professional medical care.
 
-### Scene 2: Dr. AI - RAG Botanical Assistant
-1. **Navigate to**: `http://localhost:3000/chat` using the dedicated contributor demonstration account.
-2. **Sample Questions to Ask**:
-   * **Query 1 (Botanical match)**: *"What Philippine herb can I use for cough and asthma, and how do I prepare it?"*
-     * **Expected Result**: Dr. AI retrieves *Lagundi* from the pgvector database, cites the preparation steps, dosage, and displays the mandatory medical disclaimer.
-   * **Query 2 (Cebuano alias match)**: *"Unsay tambal sa sakit sa tiyan?"* or *"What is Alibhon used for?"*
-     * **Expected Result**: Dr. AI identifies *Sambong (Alibhon)* and explains its diuretic and anti-urolithiasis properties.
-   * **Query 3 (Safety boundary & medical disclaimer)**: *"Can I replace my prescription insulin with Ampalaya leaves?"*
-     * **Expected Result**: Dr. AI explains the supplemental benefits of Ampalaya while explicitly warning the user to consult their physician before modifying prescribed medications.
+### 4. System architecture
 
----
+Describe the browser, API, data, and external-service layers. The frontend uses Next.js and React; the backend uses Express, TypeScript, Prisma, and Socket.io; PostgreSQL stores relational and vector data; Gemini and Cloudinary support AI and media functions. Secrets remain in ignored backend environment files.
 
-### Scene 3: Community Crowdsourcing & Suggestion Workflow
-1. **Navigate to**: `http://localhost:3000/suggest`
-2. **Demonstrate**:
-   * Fill in a new herb proposal (e.g., Local Name: *Tawa-tawa*, Scientific Name: *Euphorbia hirta*, Category: *Traditional / Dengue support*).
-   * Submit the suggestion $\rightarrow$ system confirms submission and places it in `Pending` review status.
+### 5. Verified medicinal-plant library
 
----
+Open `http://localhost:3000/library`, search for `Lagundi`, and open its details. Point out approved catalog entries, aliases, categories, preparation guidance, dosage, warnings, and verification state. The seed catalog contains the ten DOH-recognized medicinal plants documented by the project.
 
-### Scene 4: Administrative Moderation & Real-Time Notification Loop
-1. **Switch Browser / Window**: Log in with the dedicated administrator demonstration account configured for the defense. Never display its password.
-2. **Navigate to**: `http://localhost:3000/admin`
-3. **Demonstrate**:
-   * **Pending Suggestions Tab**: Review the newly submitted *Tawa-tawa* herb suggestion.
-   * **Approve Action**: Click **Approve** $\rightarrow$ the system should generate embeddings, publish the herb, write an audit entry, and notify the contributor. Demonstrate this only after end-to-end evidence has been recorded.
-4. **Switch Back to Contributor Window**:
-   * After verification, observe the **Notification Bell** incrementing the unread badge counter without page refresh.
-   * Click the notification dropdown $\rightarrow$ click the notification $\rightarrow$ navigates directly to the new herb in the public library.
+### 6. Dr. AI retrieval and explanation
 
----
+Open `http://localhost:3000/chat` with the contributor demo account. Ask: `How do I prepare Lagundi for cough?` Explain the three stages shown in the deck:
 
-### Scene 5: Administrative Security & Audit Logging
-1. **In `/admin` Console**:
-   * Click on the **Audit Logs** tab.
-   * Highlight the chronological log entries:
-     * `APPROVE_SUGGESTION` (with target herb details and timestamp).
-     * `UPDATE_HERB` / `DELETE_HERB` / `BAN_USER`.
-   * Demonstrate the search filter by typing `APPROVE` or the target plant name.
+1. Retrieve relevant approved herb or knowledge-base records.
+2. Keep only relevant source facts, dosage, warnings, and system scope.
+3. Rewrite the short source into a clearer answer with attribution and a medical disclaimer.
 
----
+If no relevant approved source exists, Dr. AI must not invent herb instructions or dosage. A useful boundary test is: `What is Moonleaf used for?`
 
-### Scene 6: Community Forums & Real-Time Messaging
-1. **Navigate to**: `http://localhost:3000/community` $\rightarrow$ Show discussion threads, nested comment tree, and pagination.
-2. **Navigate to**: `http://localhost:3000/messenger` $\rightarrow$ Show real-time direct messaging between users with online status and image attachments.
+### 7. Contributor and administrator workflow
 
----
+Show a clearly labelled test suggestion moving from submission to pending review. In the separate administrator session, approve or reject it. Explain that approved content can update the catalog and contributor notification, while rejected or pending content stays out of the verified public library. Use only temporary test data and clean it up after the demonstration.
 
-### Scene 7: Code Quality, Verification Matrix & Docker Deployment
-1. **Automated Testing Suite**:
-   * Open terminal in `herbalaibackend`:
-     ```bash
-     npm test
-     ```
-   * Show the panel the latest verified baseline: **82 / 82 automated tests passing** across 14 Vitest files. Rerun before the defense and report the actual output if the count changes.
-2. **Docker Orchestration**:
-   * Point out `docker-compose.yml`, which defines PostgreSQL/pgvector, backend, frontend and reverse-proxy services. State clearly that static deployment checks passed locally but an actual Docker/HTTPS deployment and recovery drill remain deferred.
+### 8. Roles and collaboration
 
----
+Distinguish guest, contributor, and administrator permissions. Briefly show community discussion, herb comments, notifications, and Messenger. Mention that two authenticated users exchanged real-time messages through Socket.io without reloading.
 
-## 3. Anticipated Panel Questions & Answers
+### 9. Security and trust controls
 
-| Question | Recommended Answer |
-| :--- | :--- |
-| **How do you ensure medical safety and avoid inaccurate advice?** | We implement a multi-layered safety strategy: (1) System prompt boundary instructions enforcing standard medical disclaimers, (2) Vector similarity search (RAG) grounding AI responses in verified botanical data, and (3) Mandatory administrator review before any user-submitted herb is published. |
-| **Why did you use pgvector over a standalone vector database like Pinecone?** | pgvector allows relational plant data and high-dimensional semantic embeddings to reside in the exact same PostgreSQL database. This eliminates dual-write consistency issues, reduces infrastructure costs, and supports atomic transactions. |
-| **How does real-time communication scale?** | We use Socket.io authentication, per-user rooms, bounded message pagination and indexed PostgreSQL conversation queries. Local browser delivery passed, but production-scale WebSocket capacity is not yet accepted without staging load evidence. |
+Summarize short access tokens, refresh-token rotation, logout revocation, server-side role checks, input validation, parameterized database operations, upload signature checks, backend-only secrets, grounded AI behavior, and single-use account-recovery links. Never display credentials, `.env` files, inbox content, tokens, or database connection strings.
 
-## 4. Known limitations to state honestly
+### 10. Verification baseline
 
-- Five-participant UAT is prepared but remains 0/5 until real participants complete and sign the forms.
-- Local startup/session performance improved, but the 100-user p95 and 500-user capacity targets remain unaccepted.
-- Docker/HTTPS deployment, rollback and database restore proof are deferred while no hosting environment is available.
-- Chrome emulation is verified; physical Samsung/iOS and full WCAG acceptance are not claimed.
-- Do not expose passwords, tokens, environment files, personal inbox content or database connection strings during the presentation.
+Report the current recorded baseline accurately:
+
+- 83 of 83 backend tests passed across 14 files.
+- 34 of 34 functional API checks passed.
+- 26 of 26 emulated responsive accessibility-width checks passed.
+- Frontend lint, TypeScript checks, and the 18-route production build passed.
+
+Do not claim that automated or emulated checks replace participant UAT, physical-device acceptance, or adviser review.
+
+### 11. Performance
+
+The five fresh local homepage LCP measurements were 2,636 ms, 900 ms, 744 ms, 820 ms, and 868 ms. The local PR-001 target of 3,000 ms was met provisionally. The first post-login `/auth/me` request measured 37.5 ms end to end and 9.1 ms inside Express. PR-004 and PR-005 still require a staging environment close to the database.
+
+### 12. Team contribution
+
+State the documented allocation consistently: Kevin C. Mercado 50%, Devon Descipulo 25%, and Eumar Cabaluna 25%. Kevin served as project manager and backend developer and holds the highest contribution allocation.
+
+### 13. Readiness and remaining gates
+
+The internal evidence score is 88 out of 100. It means the project is ready for a controlled local capstone presentation, not that it has achieved final academic or production acceptance. The open gates are five real UAT participants, staging performance, production/TLS/recovery evidence, physical-device and full WCAG review, and adviser/panel signatures.
+
+### 14. Demonstration flow recap
+
+Keep the live sequence controlled:
+
+1. Public catalog and Lagundi details.
+2. Dr. AI grounded preparation answer.
+3. Contributor suggestion and collaboration features.
+4. Administrator moderation, management, and audit history.
+5. Test evidence, performance limits, and remaining gates.
+
+### 15. Questions
+
+Invite questions. If asked whether the project is complete, answer: `Local functional verification is complete for the recorded scope. Participant UAT, staging performance, deployment and formal reviewer acceptance remain open.`
+
+## Likely panel questions
+
+| Question | Recommended answer |
+|---|---|
+| How do you reduce inaccurate medical advice? | Dr. AI retrieves approved repository facts, filters unrelated sources, retains warnings and scope, and includes a medical disclaimer. Community submissions require administrator review before publication. |
+| Why use PostgreSQL with pgvector? | Relational herb records and semantic vectors remain in one database, reducing synchronization complexity and supporting consistent updates. |
+| How is authorization enforced? | Protected operations use authenticated server-side role checks; hiding a frontend control is not treated as authorization. |
+| Is the system production-ready? | No. It is ready for a controlled local presentation. Staging performance, production TLS/deployment, recovery evidence, real UAT, and formal acceptance remain pending. |
+| Why is Kevin's contribution higher? | Kevin performed project management and major backend responsibilities, including planning, architecture, authentication, database work, integration, testing, and documentation. The controlled documents record 50%, 25%, and 25%. |
+
+## Defense-day safety rules
+
+- Use dedicated contributor and administrator demo accounts and never say passwords aloud.
+- Keep screenshots ready for Google OAuth, email, Gemini, and other network-dependent behavior.
+- Do not submit a live medical claim as verified evidence without administrator review.
+- Delete only the temporary records created during rehearsal or presentation.
+- State limitations directly; do not present the 88/100 internal score as an academic grade.
