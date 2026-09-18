@@ -1,6 +1,15 @@
 import type { Request, Response } from "express";
 import { askDrAi, streamDrAi } from "../services/chat.service.js";
 import type { ChatTurn } from "../services/chat.service.js";
+import { MAX_CHAT_HISTORY_TURNS } from "../schema/chat.schema.js";
+
+const appendToHistory = (history: ChatTurn[], message: string, reply: string): ChatTurn[] => {
+  const newTurns: ChatTurn[] = [
+    { role: "user", parts: [{ text: message }] },
+    { role: "model", parts: [{ text: reply }] },
+  ];
+  return [...history, ...newTurns].slice(-MAX_CHAT_HISTORY_TURNS);
+};
 
 /**
  * POST /api/chat
@@ -48,11 +57,7 @@ export const sendMessage = async (req: Request, res: Response) => {
     }
 
     // Build the updated history to return to the frontend
-    const updatedHistory: ChatTurn[] = [
-      ...history,
-      { role: "user", parts: [{ text: message.trim() }] },
-      { role: "model", parts: [{ text: reply }] },
-    ];
+    const updatedHistory = appendToHistory(history as ChatTurn[], message.trim(), reply);
 
     return res.status(200).json({
       status: "success",
@@ -107,11 +112,7 @@ export const streamMessage = async (req: Request, res: Response) => {
     }
 
     const result = stream.getResult();
-    const updatedHistory: ChatTurn[] = [
-      ...history,
-      { role: "user", parts: [{ text: trimmedMessage }] },
-      { role: "model", parts: [{ text: result.reply }] },
-    ];
+    const updatedHistory = appendToHistory(history as ChatTurn[], trimmedMessage, result.reply);
     writeSse(res, "done", { history: updatedHistory, sources: result.sources, metrics: result.metrics });
     return res.end();
   } catch (error) {

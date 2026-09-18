@@ -21,7 +21,7 @@ export default function SignUpPage() {
   // Dynamic password strength evaluation
   const getPasswordStrength = () => {
     if (password.length === 0) return { label: 'Enter at least 8 characters', colorClass: 'bg-[#6a7282]/20', width: 'w-0' };
-    if (password.length < 8) return { label: 'Too Short (Weak)', colorClass: 'bg-danger', width: 'w-1/3' };
+    if (password.length < 8) return { label: 'Too Short (Weak)', colorClass: 'bg-rose-500', width: 'w-1/3' };
     if (password.length < 12) return { label: 'Safe (Medium)', colorClass: 'bg-[#c9a040]', width: 'w-2/3' };
     return { label: 'Strong', colorClass: 'bg-[#40916c]', width: 'w-full' };
   };
@@ -59,7 +59,7 @@ export default function SignUpPage() {
         router.push('/signin');
       }, 5000);
 
-    } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
+    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error(err);
       setError(
         err.response?.data?.message ||
@@ -71,13 +71,13 @@ export default function SignUpPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col lg:flex-row bg-[#fafaf8]">
+    <main className="flex min-h-screen flex-col lg:flex-row bg-transparent font-sans">
       {/* Left side - brand */}
       <div className="flex flex-col justify-center items-center lg:items-start lg:w-1/2 p-8 lg:p-20 bg-gradient-to-br from-[#1b4332] to-[#40916c] text-[#ffffff] text-center lg:text-left border-b lg:border-b-0 lg:border-r border-green-700/20">
         <div className="flex items-center justify-center w-24 h-24 rounded-full bg-[#ffffff] text-4xl mb-6 shadow-md">
           🌿
         </div>
-        <h1 className="text-4xl lg:text-6xl font-black tracking-tight mb-4">Herbal AI</h1>
+        <h1 className="text-4xl lg:text-6xl font-serif-custom italic font-normal tracking-tight mb-4">Herbal AI</h1>
         <p className="text-lg lg:text-xl font-bold opacity-90 max-w-md">
           Join contributors preserving Philippine traditional herbal medicine knowledge.
         </p>
@@ -85,13 +85,13 @@ export default function SignUpPage() {
 
       {/* Right side - form */}
       <div className="flex flex-col justify-center items-center lg:w-1/2 p-6 lg:p-12">
-        <div className="w-full max-w-md bg-white border border-gray-100 rounded-2xl p-6 lg:p-8 shadow-xl">
-          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] mb-6">Create your account</h2>
+        <div className="w-full max-w-md glass-card bg-white/60 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-6 lg:p-8 shadow-xl">
+          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] dark:text-ink mb-6">Create your account</h2>
 
           {error && (
             <div
               role="alert"
-              className="mb-6 p-4 border-2 border-danger bg-red-50 text-danger font-bold rounded-lg text-sm"
+              className="mb-6 p-4 border border-rose-200 bg-rose-50 text-rose-800 font-bold rounded-xl text-sm"
             >
               ⚠️ {error}
             </div>
@@ -100,7 +100,7 @@ export default function SignUpPage() {
           {success && (
             <div
               role="alert"
-              className="mb-6 p-4 border-2 border-[#40916c] bg-[#eef5f0] text-[#2d6a4f] font-bold rounded-lg text-sm"
+              className="mb-6 p-4 border border-[#40916c] bg-[#eef5f0] text-[#2d6a4f] font-bold rounded-xl text-sm"
             >
               🎉 {success}
             </div>
@@ -109,7 +109,7 @@ export default function SignUpPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-extrabold text-[#1b4332] mb-1" htmlFor="firstName">
+                <label className="block text-sm font-extrabold text-[#1b4332] dark:text-ink mb-1" htmlFor="firstName">
                   First Name
                 </label>
                 <input
@@ -119,11 +119,11 @@ export default function SignUpPage() {
                   placeholder="Maria"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  className="flat-input"
+                  className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-3 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-extrabold text-[#1b4332] mb-1" htmlFor="lastName">
+                <label className="block text-sm font-extrabold text-[#1b4332] dark:text-ink mb-1" htmlFor="lastName">
                   Last Name
                 </label>
                 <input
@@ -133,13 +133,13 @@ export default function SignUpPage() {
                   placeholder="Santos"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className="flat-input"
+                  className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-3 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-extrabold text-[#1b4332] mb-1" htmlFor="username">
+              <label className="block text-sm font-extrabold text-[#1b4332] dark:text-ink mb-1" htmlFor="username">
                 Username
               </label>
               <input
@@ -149,12 +149,12 @@ export default function SignUpPage() {
                 placeholder="maria_santos"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="flat-input"
+                className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-3 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-extrabold text-[#1b4332] mb-1" htmlFor="email">
+              <label className="block text-sm font-extrabold text-[#1b4332] dark:text-ink mb-1" htmlFor="email">
                 Email Address
               </label>
               <input
@@ -164,12 +164,12 @@ export default function SignUpPage() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flat-input"
+                className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-3 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-extrabold text-[#1b4332] mb-1" htmlFor="password">
+              <label className="block text-sm font-extrabold text-[#1b4332] dark:text-ink mb-1" htmlFor="password">
                 Password
               </label>
               <input
@@ -179,31 +179,30 @@ export default function SignUpPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="flat-input"
+                className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-3 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
               />
-              
-              {/* Password strength meter */}
-              <div className="h-2.5 w-full bg-gray-100 rounded-full overflow-hidden mt-2">
-                <div className={`h-full transition-all duration-300 ${strength.colorClass} ${strength.width}`} />
+              {/* Strength indicator */}
+              <div className="mt-2 space-y-1">
+                <div className="h-1.5 w-full bg-gray-200 dark:bg-line rounded-full overflow-hidden">
+                  <div className={`h-full ${strength.colorClass} ${strength.width} transition-all duration-300`} />
+                </div>
+                <p className="text-xs text-gray-500 dark:text-muted font-bold">{strength.label}</p>
               </div>
-              <span className="text-xs font-bold text-[#6a7282] mt-1 block">
-                Safety: {strength.label}
-              </span>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="flat-button flat-button-primary w-full mt-4"
+              className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-semibold text-base px-8 py-3.5 rounded-full shadow-sm hover:brightness-105 transition-all w-full cursor-pointer mt-2 disabled:opacity-50"
             >
-              {loading ? 'Creating Account...' : 'Sign Up'}
+              {loading ? 'Creating Account...' : 'Create Account'}
             </button>
           </form>
 
-          <p className="text-center mt-6 text-sm font-bold text-[#6a7282]">
+          <p className="text-center text-sm font-bold text-[#6a7282] dark:text-muted mt-6">
             Already have an account?{' '}
-            <Link href="/signin" className="text-[#2d6a4f] hover:underline font-extrabold">
-              Sign In
+            <Link href="/signin" className="text-[#2d6a4f] dark:text-[#74c69d] hover:underline font-extrabold">
+              Sign in
             </Link>
           </p>
         </div>

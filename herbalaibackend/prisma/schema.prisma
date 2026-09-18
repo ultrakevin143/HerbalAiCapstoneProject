@@ -28,46 +28,102 @@ model User {
   emailVerified DateTime? @map("email_verified")
 
   // Relations
-  submittedHerbs     SuggestedHerb[]     @relation("SubmittedHerbs")
-  reviewedHerbs      SuggestedHerb[]     @relation("ReviewedHerbs")
-  herbComments       HerbComment[]
-  threads            Thread[]
-  threadComments     ThreadComment[]
-  threadLikes        ThreadLike[]
-  threadCommentLikes ThreadCommentLike[]
-  sentMessages       ChatMessage[]       @relation("SentMessages")
-  receivedMessages   ChatMessage[]       @relation("ReceivedMessages")
-  tokens             Token[]
-  herbCommentLikes   HerbCommentLike[]
-  auditLogs          AuditLog[]          @relation("AdminLogs")
-  notifications      Notification[]
+  submittedHerbs       SuggestedHerb[]     @relation("SubmittedHerbs")
+  reviewedHerbs        SuggestedHerb[]     @relation("ReviewedHerbs")
+  reviewedLibraryHerbs Herb[]              @relation("HerbReviewer")
+  herbComments         HerbComment[]
+  threads              Thread[]
+  threadComments       ThreadComment[]
+  threadLikes          ThreadLike[]
+  threadCommentLikes   ThreadCommentLike[]
+  sentMessages         ChatMessage[]       @relation("SentMessages")
+  receivedMessages     ChatMessage[]       @relation("ReceivedMessages")
+  tokens               Token[]
+  herbCommentLikes     HerbCommentLike[]
+  auditLogs            AuditLog[]          @relation("AdminLogs")
+  notifications        Notification[]
 }
 
 model Herb {
-  id                String   @id @default(cuid())
-  localName         String
-  cebuanoName       String?
-  scientificName    String
-  category          String
-  medicinalUses     String
-  preparationMethod String
-  dosage            String
-  regionFound       String?
-  warnings          String?
-  imageUrl          String?
-  isDohApproved     Boolean  @default(false)
-  isVerified        Boolean  @default(true)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                   String                @id @default(cuid())
+  localName            String
+  cebuanoName          String?
+  scientificName       String
+  category             String
+  medicinalUses        String
+  preparationMethod    String
+  dosage               String
+  regionFound          String?
+  warnings             String?
+  imageUrl             String?
+  isDohApproved        Boolean               @default(false)
+  isVerified           Boolean               @default(false)
+  sourceScientificName String?
+  publicationStatus    HerbPublicationStatus @default(DRAFT)
+  evidenceClass        HerbEvidenceClass     @default(UNASSESSED)
+  provenance           HerbProvenance        @default(ADMIN_CREATED)
+  reviewedAt           DateTime?
+  reviewedById         String?
+  sourceSuggestionId   Int?                  @unique
+  imageCreator         String?
+  imageSourceUrl       String?
+  imageLicense         String?
+  imageLicenseUrl      String?
+  imageModification    String?
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
 
   embedding Unsupported("vector(768)")?
 
-  comments HerbComment[]
+  comments         HerbComment[]
+  sources          HerbSource[]
+  reviewer         User?          @relation("HerbReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  sourceSuggestion SuggestedHerb? @relation(fields: [sourceSuggestionId], references: [id], onDelete: SetNull)
 
   @@index([localName])
   @@index([scientificName])
   @@index([category])
   @@index([isDohApproved])
+  @@index([publicationStatus, isVerified])
+  @@index([provenance])
+}
+
+enum HerbPublicationStatus {
+  DRAFT
+  PUBLISHED
+  HOLD
+  ARCHIVED
+}
+
+enum HerbEvidenceClass {
+  DOH_PITAHC_LISTED
+  EVIDENCE_SUPPORTED_PHILIPPINE_USE
+  DOCUMENTED_TRADITIONAL_USE
+  UNASSESSED
+}
+
+enum HerbProvenance {
+  BUILT_IN
+  COMMUNITY_SUBMISSION
+  ADMIN_CREATED
+  LEGACY_IMPORT
+}
+
+model HerbSource {
+  id          Int       @id @default(autoincrement())
+  herbId      String
+  title       String
+  publisher   String?
+  url         String?
+  citation    String?
+  supports    String[]
+  publishedAt String?
+  accessedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  herb Herb @relation(fields: [herbId], references: [id], onDelete: Cascade)
+
+  @@index([herbId])
 }
 
 model HerbComment {
@@ -104,12 +160,13 @@ model HerbCommentLike {
 
 enum SuggestionStatus {
   Pending
+  ChangesRequested
   Approved
   Rejected
 }
 
 model SuggestedHerb {
-  id                Int              @id @default(autoincrement())
+  id                Int               @id @default(autoincrement())
   submitterId       String
   localName         String
   cebuanoName       String?
@@ -122,12 +179,18 @@ model SuggestedHerb {
   warnings          String?
   informationSource String?
   imageUrl          String?
-  status            SuggestionStatus @default(Pending)
-  submittedAt       DateTime         @default(now())
+  status            SuggestionStatus  @default(Pending)
+  submittedAt       DateTime          @default(now())
   reviewedBy        String?
+  reviewNotes       String?
+  references        Json             @default("[]")
+  revision          Int              @default(0)
+  evidenceClass     HerbEvidenceClass @default(UNASSESSED)
+  reviewedAt        DateTime?
 
-  submitter User  @relation("SubmittedHerbs", fields: [submitterId], references: [id], onDelete: Cascade)
-  reviewer  User? @relation("ReviewedHerbs", fields: [reviewedBy], references: [id], onDelete: SetNull)
+  submitter     User  @relation("SubmittedHerbs", fields: [submitterId], references: [id], onDelete: Cascade)
+  reviewer      User? @relation("ReviewedHerbs", fields: [reviewedBy], references: [id], onDelete: SetNull)
+  publishedHerb Herb?
 
   @@index([submitterId])
   @@index([status])
@@ -289,7 +352,7 @@ model Notification {
   userId    String
   title     String
   message   String
-  type      String   @default("SUGGESTION_UPDATE") // "SUGGESTION_UPDATE", "FORUM_REPLY", "SYSTEM"
+  type      String   @default("SUGGESTION_UPDATE") // "SUGGESTION_UPDATE", "COMMUNITY_COMMENT", "COMMUNITY_REPLY", "DIRECT_MESSAGE", "SYSTEM"
   link      String?
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())

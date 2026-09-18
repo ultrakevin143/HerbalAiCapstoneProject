@@ -5,10 +5,30 @@ import {
   CreateKnowledgeBaseService, 
   UpdateKnowledgeBaseService, 
   DeleteKnowledgeBaseService, 
-  GetAllKnowledgeBaseService 
+  GetAllKnowledgeBaseService,
+  ImportKnowledgeBaseService,
 } from "../services/ai/knowledge-base/index.js";
 
 export class KnowledgeBaseController {
+  public importKnowledge = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const result = await ImportKnowledgeBaseService(req.body.facts);
+      const adminId = (req as AuthenticatedRequest).user?.userId;
+      if (result.status === 'success' && adminId && result.data) {
+        await createAuditLog({
+          adminId,
+          action: 'IMPORT_KNOWLEDGE_BASE',
+          targetType: 'KnowledgeBase',
+          targetId: 'bulk-import',
+          details: result.data,
+        });
+      }
+      res.status(result.code).json(result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   // Create Knowledge
   public createKnowledge = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {

@@ -27,7 +27,10 @@ export interface HerbData {
  */
 export const findHerbById = async (id: string) => {
   return herbCache.getOrSet(`${HERB_CACHE_PREFIX}detail:${id}`, HERB_CACHE_TTL_MS, () =>
-    prisma.herb.findUnique({ where: { id } })
+    prisma.herb.findFirst({
+      where: { id, publicationStatus: "PUBLISHED", isVerified: true },
+      include: { sources: true },
+    })
   );
 };
 
@@ -55,7 +58,10 @@ export const findAllHerbs = async (options: FindHerbsOptions = {}) => {
 
   return herbCache.getOrSet(cacheKey, HERB_CACHE_TTL_MS, async () => {
 
-    const where: Prisma.HerbWhereInput = {};
+    const where: Prisma.HerbWhereInput = {
+      publicationStatus: "PUBLISHED",
+      isVerified: true,
+    };
 
     if (category && category.toLowerCase() !== 'all') {
       where.category = { contains: category, mode: 'insensitive' };
@@ -87,6 +93,7 @@ export const findAllHerbs = async (options: FindHerbsOptions = {}) => {
     const [herbs, total] = await Promise.all([
       prisma.herb.findMany({
         where,
+        include: { sources: true },
         orderBy: { localName: 'asc' },
         ...paginationArgs,
       }),
@@ -214,6 +221,9 @@ export const searchSimilarHerbs = async (vector: string, limit: number = 3) => {
     `SELECT id, "localName", "scientificName", "medicinalUses", "preparationMethod", dosage, warnings,
      (embedding <=> $1::vector) as distance
      FROM "Herb"
+     WHERE embedding IS NOT NULL
+       AND "publicationStatus" = 'PUBLISHED'::"HerbPublicationStatus"
+       AND "isVerified" = true
      ORDER BY distance ASC
      LIMIT $2`,
     vector,

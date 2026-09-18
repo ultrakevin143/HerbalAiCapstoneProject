@@ -5,7 +5,8 @@ import cookieParser from 'cookie-parser';
 import { ENV } from './config/env.js';
 import routes from './routes/index.js';
 import { requestTiming } from './middlewares/request-timing.middleware.js';
-import { errorResponse } from './utils/error-response.js';
+import { databaseErrorCode, errorResponse } from './utils/error-response.js';
+import { getDatabasePoolMetrics } from './lib/prisma.js';
 
 const app = express();
 
@@ -52,8 +53,23 @@ app.use((req: Request, res: Response) => {
 });
 
 // --- Global Error Handler ---
-app.use((err: Error & { status?: number }, req: Request, res: Response, _next: NextFunction) => {
-  console.error('🔥 Global Error Hook:', err.message || err);
+app.use((err: Error & { status?: number; code?: unknown }, req: Request, res: Response, _next: NextFunction) => {
+  const databaseCode = databaseErrorCode(err);
+  if (databaseCode) {
+    console.error(JSON.stringify({
+      event: 'database_request_error', code: databaseCode,
+      requestId: res.locals.requestId,
+      elapsedMs: typeof res.locals.requestStartedAt === 'bigint'
+        ? Math.round(Number(process.hrtime.bigint() - res.locals.requestStartedAt) / 1_000_000) : undefined,
+      transactionStartTimeout: databaseCode === 'P2028' && err.message.includes('Unable to start a transaction'),
+      method: req.method, route: req.route?.path,
+      pool: getDatabasePoolMetrics(),
+      transactionMaxWaitMs: ENV.DB_TRANSACTION_MAX_WAIT_MS,
+      connectionTimeoutMs: ENV.DB_POOL_CONNECTION_TIMEOUT_MS,
+    }));
+  } else {
+    console.error('🔥 Global Error Hook:', err.message || err);
+  }
   
   const response = errorResponse(err, ENV.NODE_ENV === 'production');
   res.status(response.status).json(response.body);

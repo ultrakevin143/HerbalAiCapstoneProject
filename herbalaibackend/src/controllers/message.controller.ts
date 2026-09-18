@@ -146,7 +146,7 @@ export const sendMessage = async (
       imageUrl = await uploadToCloudinary(req.file.buffer, "herbal_ai_messages");
     }
 
-    const newMessage = await messageRepo.saveMessage(
+    const { message: newMessage, notification } = await messageRepo.saveMessageWithNotification(
       senderId,
       receiverId,
       content ? content.trim() : "",
@@ -157,6 +157,7 @@ export const sendMessage = async (
     const { io } = await import("../server.js");
     io.to(senderId).emit("private_message", newMessage);
     io.to(receiverId).emit("private_message", newMessage);
+    io.to(receiverId).emit("notification", notification);
 
     res.status(201).json({ status: "success", data: { message: newMessage } });
   } catch (error) {

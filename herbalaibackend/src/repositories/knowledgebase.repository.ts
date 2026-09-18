@@ -1,5 +1,5 @@
 import { prisma } from "../lib/prisma.js";
-import type { Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 export interface KBData {
   question?: string;
@@ -27,6 +27,40 @@ export const createKB = async (data: KBData) => {
     data.embedding || null
   );
   return records[0];
+};
+
+export const upsertKB = async (data: KBData & { question: string }) => {
+  const existing = await prisma.knowledgeBase.findUnique({
+    where: { question: data.question },
+    select: { id: true },
+  });
+  const record = await prisma.knowledgeBase.upsert({
+    where: { question: data.question },
+    create: {
+      question: data.question,
+      answer: data.answer,
+      category: data.category ?? null,
+      tags: data.tags ?? [],
+      metadata: data.metadata ? data.metadata as Prisma.InputJsonValue : Prisma.JsonNull,
+      isActive: data.isActive ?? true,
+    },
+    update: {
+      answer: data.answer,
+      category: data.category ?? null,
+      tags: data.tags ?? [],
+      metadata: data.metadata ? data.metadata as Prisma.InputJsonValue : Prisma.JsonNull,
+      isActive: data.isActive ?? true,
+    },
+    select: { id: true },
+  });
+  if (data.embedding) {
+    await prisma.$executeRawUnsafe(
+      'UPDATE "KnowledgeBase" SET embedding = $1::vector, "updatedAt" = NOW() WHERE id = $2',
+      data.embedding,
+      record.id,
+    );
+  }
+  return { ...record, created: !existing };
 };
 
 /**
@@ -90,6 +124,7 @@ export const findAllKB = async () => {
       answer: true,
       category: true,
       tags: true,
+      metadata: true,
       isActive: true,
       createdAt: true,
       updatedAt: true,
@@ -104,6 +139,26 @@ export const findAllKB = async () => {
 export const findKBById = async (id: string) => {
   return await prisma.knowledgeBase.findUnique({
     where: { id }
+  });
+};
+
+export const findActiveKBByTerms = async (terms: string[], limit: number = 3) => {
+  const normalizedTerms = Array.from(new Set(terms.map((term) => term.trim().toLowerCase()).filter(Boolean)));
+  if (normalizedTerms.length === 0) return [];
+  return prisma.knowledgeBase.findMany({
+    where: {
+      isActive: true,
+      OR: [
+        { tags: { hasSome: normalizedTerms } },
+        ...normalizedTerms.flatMap((term) => [
+          { question: { contains: term, mode: 'insensitive' as const } },
+          { answer: { contains: term, mode: 'insensitive' as const } },
+        ]),
+      ],
+    },
+    select: { id: true, question: true, answer: true, category: true, tags: true, metadata: true },
+    orderBy: { updatedAt: 'desc' },
+    take: limit,
   });
 };
 

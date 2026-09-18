@@ -22,6 +22,33 @@ export const saveMessage = async (
   });
 };
 
+export const saveMessageWithNotification = async (
+  senderId: string,
+  receiverId: string,
+  content: string,
+  imageUrl?: string
+) => {
+  return prisma.$transaction(async (transaction) => {
+    const message = await transaction.chatMessage.create({
+      data: { senderId, receiverId, content, imageUrl: imageUrl ?? null },
+      include: {
+        sender: { select: { id: true, name: true, avatar: true, role: true } },
+        receiver: { select: { id: true, name: true, avatar: true, role: true } },
+      },
+    });
+    const notification = await transaction.notification.create({
+      data: {
+        userId: receiverId,
+        title: `New message from ${message.sender.name}`,
+        message: imageUrl ? 'Sent you an image.' : 'Sent you a message.',
+        type: 'DIRECT_MESSAGE',
+        link: `/messenger?userId=${encodeURIComponent(senderId)}`,
+      },
+    });
+    return { message, notification };
+  });
+};
+
 /**
  * Find a message by its numeric ID.
  */

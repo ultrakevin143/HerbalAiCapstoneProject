@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../lib/axios';
 import io, { Socket } from 'socket.io-client';
+import { Heart } from 'lucide-react';
 import UserProfileModal from './UserProfileModal';
 
 interface Author {
@@ -198,15 +199,15 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
   });
 
   return (
-    <div className="mt-8 border-t-2 border-[#eef5f0] pt-6 pb-4">
-      <h3 className="font-serif-custom text-2xl font-black text-[#1b4332] mb-6 flex items-center gap-2">
+    <div className="mt-8 border-t-2 border-line pt-6 pb-4">
+      <h3 className="font-serif-custom text-2xl font-black text-ink mb-6 flex items-center gap-2">
         <span>💬</span> Discussion & Experiences
       </h3>
 
       {/* Main Comment Form */}
       {isAuthenticated ? (
         <form onSubmit={(e) => handleSubmitComment(e)} className="mb-8 flex gap-2 sm:gap-4">
-          <div className="w-10 h-10 rounded-full bg-[#eef5f0] border-2 border-[#1b4332] flex items-center justify-center shrink-0 overflow-hidden font-black text-[#1b4332]">
+          <div className="w-10 h-10 rounded-full bg-soft border-2 border-line flex items-center justify-center shrink-0 overflow-hidden font-black text-ink">
             {user?.name?.charAt(0).toUpperCase()}
           </div>
           <div className="min-w-0 flex-1">
@@ -228,8 +229,8 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
           </div>
         </form>
       ) : (
-        <div className="mb-8 rounded-xl bg-[#eef5f0] border-2 border-[#2d6a4f]/20 p-4 text-center">
-          <p className="text-sm font-bold text-[#2d6a4f]">
+        <div className="mb-8 rounded-xl bg-soft border-2 border-line p-4 text-center">
+          <p className="text-sm font-bold text-ink">
             Please sign in to join the discussion!
           </p>
         </div>
@@ -238,11 +239,11 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
       {/* Comment List */}
       {loading ? (
         <div className="flex justify-center p-8">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#2d6a4f] border-t-transparent"></div>
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-line border-t-transparent"></div>
         </div>
       ) : topLevelComments.length === 0 ? (
-        <div className="text-center p-8 border-2 border-dashed border-[#2d6a4f]/20 rounded-xl">
-          <p className="text-[#6a7282] font-semibold text-sm">
+        <div className="text-center p-8 border-2 border-dashed border-line rounded-xl">
+          <p className="text-muted font-semibold text-sm">
             No comments yet. Be the first to share your thoughts!
           </p>
         </div>
@@ -253,28 +254,28 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
               {/* Top Level Comment */}
               <div className="flex gap-3 group">
                 <div 
-                  className="w-10 h-10 rounded-full bg-[#f7f5ef] border-2 border-[#2d6a4f]/30 flex items-center justify-center shrink-0 font-black text-[#1b4332] cursor-pointer hover:opacity-85 transition-opacity"
+                  className="w-10 h-10 rounded-full bg-soft border-2 border-line flex items-center justify-center shrink-0 font-black text-ink cursor-pointer hover:opacity-85 transition-opacity"
                   onClick={() => handleUserClick(comment.author)}
                 >
                   {comment.author.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="bg-[#f7f5ef] rounded-2xl rounded-tl-none p-3 border border-[#2d6a4f]/10 relative">
+                  <div className="bg-soft rounded-2xl rounded-tl-none p-3 border border-line relative">
                     <div className="flex flex-wrap items-center gap-2 mb-1 break-words">
                       <span 
-                        className="font-extrabold text-[#1b4332] text-sm cursor-pointer hover:underline"
+                        className="font-extrabold text-ink text-sm cursor-pointer hover:underline"
                         onClick={() => handleUserClick(comment.author)}
                       >
                         {comment.author.name}
                       </span>
                       {comment.author.role === 'admin' && (
-                        <span className="bg-[#1b4332] text-white text-[10px] px-1.5 py-0.5 rounded font-black uppercase tracking-wide">Admin</span>
+                        <span className="bg-brand text-on-brand text-sm px-1.5 py-0.5 rounded font-black uppercase tracking-wide">Admin</span>
                       )}
-                      <span className="text-xs text-[#6a7282] font-semibold ml-auto">
+                      <span className="text-sm text-muted font-semibold ml-auto">
                         {new Date(comment.date).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className="text-sm text-[#1b4332] font-medium leading-relaxed whitespace-pre-wrap [overflow-wrap:anywhere]">
+                    <p className="text-sm text-ink font-medium leading-relaxed whitespace-pre-wrap [overflow-wrap:anywhere]">
                       {comment.content}
                     </p>
                   </div>
@@ -285,18 +286,19 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
                       onClick={() => handleToggleLike(comment.id)}
                       aria-label={comment.userLikes?.some(ul => ul.userId === user?.id) ? 'Unlike comment' : 'Like comment'}
                       aria-pressed={comment.userLikes?.some(ul => ul.userId === user?.id)}
-                      className={`text-xs font-bold flex items-center gap-1 transition-colors ${
+                      className={`text-xs font-bold flex items-center gap-1.5 transition-colors ${
                         comment.userLikes?.some(ul => ul.userId === user?.id) 
-                          ? 'text-rose-600' 
-                          : 'text-[#6a7282] hover:text-rose-600'
+                          ? 'text-[var(--primary)]'
+                          : 'text-muted hover:text-ink'
                       }`}
                     >
-                      {comment.userLikes?.some(ul => ul.userId === user?.id) ? '❤️' : '🤍'} {comment.likes > 0 && comment.likes}
+                      <Heart className={`h-3.5 w-3.5 ${comment.userLikes?.some(ul => ul.userId === user?.id) ? 'fill-current' : ''}`} />
+                      <span>{comment.likes > 0 ? comment.likes : 'Like'}</span>
                     </button>
                     {isAuthenticated && (
                       <button 
                         onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
-                        className="text-xs font-bold text-[#6a7282] hover:text-[#2d6a4f] transition-colors"
+                        className="text-sm font-bold text-muted hover:text-ink transition-colors"
                       >
                         Reply
                       </button>
@@ -304,7 +306,7 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
                     {(user?.id === comment.authorId || user?.role === 'admin') && (
                       <button 
                         onClick={() => handleDeleteComment(comment.id)}
-                        className="text-xs font-bold text-[#6a7282] hover:text-red-600 transition-colors ml-4"
+                        className="text-sm font-bold text-muted hover:text-error-ink transition-colors ml-4"
                       >
                         Delete
                       </button>
@@ -328,7 +330,7 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
                   </div>
                   <button 
                     type="submit" 
-                    className="flat-button flat-button-primary !py-1.5 !px-3 text-xs"
+                    className="flat-button flat-button-primary !py-1.5 !px-3 text-sm"
                     disabled={!replyContent.trim() || isSubmitting}
                   >
                     {isSubmitting ? 'Replying...' : 'Reply'}
@@ -338,32 +340,32 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
 
               {/* Replies */}
               {comment.replies && comment.replies.length > 0 && (
-                <div className="ml-2 sm:ml-5 mt-3 pl-2 sm:pl-7 border-l-2 border-[#eef5f0] space-y-4">
+                <div className="ml-2 sm:ml-5 mt-3 pl-2 sm:pl-7 border-l-2 border-line space-y-4">
                   {comment.replies.map((reply) => (
                     <div key={reply.id} className="flex gap-3 group animate-in fade-in duration-300">
                       <div 
-                        className="w-8 h-8 rounded-full bg-[#f7f5ef] border-2 border-[#2d6a4f]/20 flex items-center justify-center shrink-0 font-black text-[#1b4332] text-xs cursor-pointer hover:opacity-85 transition-opacity"
+                        className="w-8 h-8 rounded-full bg-soft border-2 border-line flex items-center justify-center shrink-0 font-black text-ink text-sm cursor-pointer hover:opacity-85 transition-opacity"
                         onClick={() => handleUserClick(reply.author)}
                       >
                         {reply.author.name.charAt(0).toUpperCase()}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="bg-[#f7f5ef] rounded-2xl rounded-tl-none p-2.5 border border-[#2d6a4f]/10">
+                        <div className="bg-soft rounded-2xl rounded-tl-none p-2.5 border border-line">
                           <div className="flex flex-wrap items-center gap-2 mb-0.5 break-words">
                             <span 
-                              className="font-extrabold text-[#1b4332] text-xs cursor-pointer hover:underline"
+                              className="font-extrabold text-ink text-sm cursor-pointer hover:underline"
                               onClick={() => handleUserClick(reply.author)}
                             >
                               {reply.author.name}
                             </span>
                             {reply.author.role === 'admin' && (
-                              <span className="bg-[#1b4332] text-white text-[9px] px-1 py-0.5 rounded font-black uppercase tracking-wide">Admin</span>
+                              <span className="bg-brand text-on-brand text-sm px-1 py-0.5 rounded font-black uppercase tracking-wide">Admin</span>
                             )}
-                            <span className="text-[11px] text-[#6a7282] font-semibold ml-auto">
+                            <span className="text-sm text-muted font-semibold ml-auto">
                               {new Date(reply.date).toLocaleDateString()}
                             </span>
                           </div>
-                          <p className="text-xs text-[#1b4332] font-medium leading-relaxed whitespace-pre-wrap [overflow-wrap:anywhere]">
+                          <p className="text-sm text-ink font-medium leading-relaxed whitespace-pre-wrap [overflow-wrap:anywhere]">
                             {reply.content}
                           </p>
                         </div>
@@ -374,18 +376,19 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
                             onClick={() => handleToggleLike(reply.id)}
                             aria-label={reply.userLikes?.some(ul => ul.userId === user?.id) ? 'Unlike reply' : 'Like reply'}
                             aria-pressed={reply.userLikes?.some(ul => ul.userId === user?.id)}
-                            className={`text-[11px] font-bold flex items-center gap-1 transition-colors ${
+                            className={`text-xs font-bold flex items-center gap-1.5 transition-colors ${
                               reply.userLikes?.some(ul => ul.userId === user?.id) 
-                                ? 'text-rose-600' 
-                                : 'text-[#6a7282] hover:text-rose-600'
+                                ? 'text-[var(--primary)]'
+                                : 'text-muted hover:text-ink'
                             }`}
                           >
-                            {reply.userLikes?.some(ul => ul.userId === user?.id) ? '❤️' : '🤍'} {reply.likes > 0 && reply.likes}
+                            <Heart className={`h-3.5 w-3.5 ${reply.userLikes?.some(ul => ul.userId === user?.id) ? 'fill-current' : ''}`} />
+                            <span>{reply.likes > 0 ? reply.likes : 'Like'}</span>
                           </button>
                           {(user?.id === reply.authorId || user?.role === 'admin') && (
                             <button 
                               onClick={() => handleDeleteComment(reply.id)}
-                              className="text-[11px] font-bold text-[#6a7282] hover:text-red-600 transition-colors ml-4"
+                              className="text-sm font-bold text-muted hover:text-error-ink transition-colors ml-4"
                             >
                               Delete
                             </button>

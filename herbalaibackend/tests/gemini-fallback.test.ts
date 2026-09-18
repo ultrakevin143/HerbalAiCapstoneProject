@@ -2,15 +2,21 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('../src/config/env.js', () => ({ ENV: {
   GEMINI_API_KEY: 'test-key-no-network',
-  DR_AI_CHAT_MODELS: ['first-model', 'second-model'],
+  DR_AI_CHAT_MODELS: ['first-model', 'second-model', 'third-model'],
   DR_AI_MODEL_TIMEOUT_MS: 30,
+  DR_AI_MAX_MODEL_ATTEMPTS: 2,
+  DR_AI_MODEL_COOLDOWN_MS: 60_000,
 } }));
-import { generateChatResponse, generateChatResponseStream } from '../src/services/ai/core/gemini-service.js';
+import { generateChatResponse, generateChatResponseStream, resetGeminiFallbackState } from '../src/services/ai/core/gemini-service.js';
 
 const content = (text: string) => ({ candidates: [{ content: { role: 'model', parts: [{ text }] }, finishReason: 'STOP' }] });
 const json = (text: string) => new Response(JSON.stringify(content(text)), { headers: { 'Content-Type': 'application/json' } });
 const unavailable = () => new Response(JSON.stringify({ error: { message: 'model unavailable' } }), { status: 503 });
-afterEach(() => vi.unstubAllGlobals());
+const invalidRequest = () => new Response(JSON.stringify({ error: { message: 'invalid request' } }), { status: 400 });
+afterEach(() => {
+  resetGeminiFallbackState();
+  vi.unstubAllGlobals();
+});
 
 describe('Gemini transport fallback (no live provider calls)', () => {
   it('falls back from a failed model and retains the grounding prompt', async () => {
@@ -37,6 +43,24 @@ describe('Gemini transport fallback (no live provider calls)', () => {
     vi.stubGlobal('fetch', fetchMock);
     await expect(generateChatResponse('Question', 'Context')).rejects.toThrow('All Gemini models');
     expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+  it('does not retry permanent request errors', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(invalidRequest());
+    vi.stubGlobal('fetch', fetchMock);
+    await expect(generateChatResponse('Question', 'Context')).rejects.toThrow('invalid request');
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+  it('temporarily skips a model after a transient failure', async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(unavailable())
+      .mockResolvedValueOnce(json('Recovered'))
+      .mockResolvedValueOnce(json('Still healthy'));
+    vi.stubGlobal('fetch', fetchMock);
+
+    expect(await generateChatResponse('First question', 'Context')).toBe('Recovered');
+    expect(await generateChatResponse('Second question', 'Context')).toBe('Still healthy');
+
+    expect(String(fetchMock.mock.calls[2]?.[0])).toContain('second-model');
   });
   it('falls back before any streamed model text is emitted', async () => {
     const fetchMock = vi.fn().mockResolvedValueOnce(unavailable()).mockResolvedValueOnce(new Response(`data: ${JSON.stringify(content('Stream answer'))}\n\n`, { headers: { 'Content-Type': 'text/event-stream' } }));

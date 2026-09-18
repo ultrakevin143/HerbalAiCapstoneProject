@@ -33,13 +33,13 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col lg:flex-row bg-[#fafaf8]">
+    <main className="flex min-h-screen flex-col lg:flex-row bg-transparent font-sans">
       {/* Left side - brand */}
       <div className="flex flex-col justify-center items-center lg:items-start lg:w-1/2 p-8 lg:p-20 bg-gradient-to-br from-[#1b4332] to-[#40916c] text-[#ffffff] text-center lg:text-left border-b lg:border-b-0 lg:border-r border-green-700/20">
         <div className="flex items-center justify-center w-24 h-24 rounded-full bg-[#ffffff] text-4xl mb-6 shadow-md">
           🌿
         </div>
-        <h1 className="text-4xl lg:text-6xl font-black tracking-tight mb-4">Herbal AI</h1>
+        <h1 className="text-4xl lg:text-6xl font-serif-custom italic font-normal tracking-tight mb-4">Herbal AI</h1>
         <p className="text-lg lg:text-xl font-bold opacity-90 max-w-md">
           Secure and accessible preservation of traditional Philippine herbal medicine.
         </p>
@@ -47,16 +47,16 @@ export default function ForgotPasswordPage() {
 
       {/* Right side - form */}
       <div className="flex flex-col justify-center items-center lg:w-1/2 p-6 lg:p-12">
-        <div className="w-full max-w-md bg-white border border-gray-100 rounded-2xl p-6 lg:p-8 shadow-xl">
-          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] mb-2">Forgot Password?</h2>
-          <p className="text-sm font-bold text-[#6a7282] mb-6">
-            Enter your email address below and we will send you a link to reset your password.
+        <div className="w-full max-w-md glass-card bg-white/60 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-6 lg:p-8 shadow-xl">
+          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] dark:text-ink mb-2">Forgot Your Password?</h2>
+          <p className="text-sm font-semibold text-[#6a7282] dark:text-muted mb-6">
+            Enter your email address and we&apos;ll send you a link to reset your password.
           </p>
 
           {error && (
             <div 
               role="alert" 
-              className="mb-6 p-4 border-2 border-danger bg-red-50 text-danger font-bold rounded-lg text-sm"
+              className="mb-6 p-4 border border-rose-200 bg-rose-50 text-rose-800 font-bold rounded-xl text-sm"
             >
               ⚠️ {error}
             </div>
@@ -65,7 +65,7 @@ export default function ForgotPasswordPage() {
           {success && (
             <div 
               role="alert" 
-              className="mb-6 p-4 border-2 border-[#40916c] bg-[#eef5f0] text-[#2d6a4f] font-bold rounded-lg text-sm"
+              className="mb-6 p-4 border border-[#40916c] bg-[#eef5f0] text-[#2d6a4f] font-bold rounded-xl text-sm"
             >
               🎉 {success}
             </div>
@@ -73,7 +73,7 @@ export default function ForgotPasswordPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-extrabold text-[#1b4332] mb-2" htmlFor="email">
+              <label className="block text-sm font-extrabold text-[#1b4332] dark:text-ink mb-2" htmlFor="email">
                 Email Address
               </label>
               <input
@@ -83,23 +83,23 @@ export default function ForgotPasswordPage() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flat-input"
+                className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-3 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="flat-button flat-button-primary w-full mt-2"
+              className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-semibold text-base px-8 py-3.5 rounded-full shadow-sm hover:brightness-105 transition-all w-full cursor-pointer mt-2 disabled:opacity-50"
             >
-              {loading ? 'Sending Request...' : 'Send Reset Link'}
+              {loading ? 'Sending Link...' : 'Send Reset Link'}
             </button>
           </form>
 
-          <p className="text-center mt-6 text-sm font-bold text-[#6a7282]">
+          <p className="text-center text-sm font-bold text-[#6a7282] dark:text-muted mt-6">
             Remember your password?{' '}
-            <Link href="/signin" className="text-[#2d6a4f] hover:underline font-extrabold">
-              Sign In
+            <Link href="/signin" className="text-[#2d6a4f] dark:text-[#74c69d] hover:underline font-extrabold">
+              Sign in
             </Link>
           </p>
         </div>

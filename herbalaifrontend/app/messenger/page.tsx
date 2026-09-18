@@ -61,25 +61,25 @@ function formatDate(iso: string) {
 }
 
 function getRoleLabel(role: string) {
-  if (role === 'admin') return '🛡️ Admin';
-  if (role === 'botanist') return '🌿 Botanist';
-  return '🧑‍🌾 Contributor';
+  if (role === 'admin') return 'Admin Specialist';
+  if (role === 'botanist') return 'Botanical Researcher';
+  return 'Contributor';
 }
 
 function avatarDisplay(avatar: string, name: string, size = 'md') {
-  const dim = size === 'sm' ? 'h-9 w-9 text-sm' : 'h-11 w-11 text-base';
+  const dim = size === 'sm' ? 'h-8 w-8 text-xs' : 'h-10 w-10 text-sm';
   if (avatar?.startsWith('http')) {
     return (
       <img
         src={avatar}
         alt={name}
-        className={`${dim} rounded-full object-cover border-2 border-white shadow`}
+        className={`${dim} rounded-md object-cover border border-line shadow-xs`}
       />
     );
   }
   return (
     <div
-      className={`${dim} rounded-full bg-gradient-to-br from-[#40916c] to-[#74c69d] flex items-center justify-center text-white font-bold border-2 border-white shadow`}
+      className={`${dim} rounded-md bg-soft text-ink font-bold border border-line flex items-center justify-center shadow-xs`}
     >
       {avatar || name.charAt(0).toUpperCase()}
     </div>
@@ -434,8 +434,8 @@ function MessengerContent() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#f0f7f2]">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#2d6a4f] border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-canvas">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-line border-t-transparent" />
       </div>
     );
   }
@@ -443,40 +443,45 @@ function MessengerContent() {
   if (!user) return null;
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f4faf6] font-sans">
+    <div className="flex min-h-screen flex-col bg-canvas font-sans">
       <Navbar />
 
       <main className="flex flex-1 flex-col overflow-hidden px-0">
         {/* Page header */}
-        <div className="px-6 py-4 border-b border-[#1b4332]/10 bg-white">
-          <h1 className="text-xl font-extrabold text-[#1b4332]">Private Messenger</h1>
-          <p className="text-xs text-gray-500 mt-0.5">Direct messages with contributors and admins</p>
+        <div className="px-6 py-4 border-b border-line bg-panel flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-0.5">
+              <span className="font-mono-code text-[11px] uppercase tracking-wider text-[var(--primary)]">Ethnobotanical Consultation Dispatch</span>
+            </div>
+            <h1 className="font-editorial text-2xl font-normal text-ink">Researcher &amp; Curator Messenger</h1>
+          </div>
+          <p className="text-xs text-muted hidden sm:block font-mono-code">Direct Peer Dispatch</p>
         </div>
 
         <div className="flex min-h-[320px] overflow-hidden h-[calc(100dvh-160px)]">
           {/* ===== SIDEBAR ===== */}
-          <aside aria-label="Conversations" className={`${activeContact ? 'hidden md:flex' : 'flex'} w-full md:w-[280px] lg:w-[300px] shrink-0 flex-col border-r border-[#1b4332]/10 bg-white overflow-hidden`}>
-            <div className="px-4 py-3 border-b border-gray-100">
+          <aside aria-label="Conversations" className={`${activeContact ? 'hidden md:flex' : 'flex'} w-full md:w-[280px] lg:w-[300px] shrink-0 flex-col border-r border-line bg-panel overflow-hidden`}>
+            <div className="px-4 py-3 border-b border-line">
               <div className="flex items-center gap-2 mb-3">
-                <MessageSquare className="h-4 w-4 text-[#2d6a4f]" />
-                <span className="text-sm font-extrabold text-[#1b4332]">Messages</span>
+                <MessageSquare className="h-4 w-4 text-ink" />
+                <span className="text-sm font-extrabold text-ink">Messages</span>
                 <button
                   onClick={() => setShowUserPicker(true)}
-                  className="ml-auto h-11 w-11 rounded-full bg-[#40916c]/10 hover:bg-[#40916c]/20 flex items-center justify-center transition-colors"
+                  className="ml-auto h-11 w-11 rounded-full bg-soft hover:bg-soft flex items-center justify-center transition-colors"
                   title="New message"
                 >
-                  <UserPlus className="h-3.5 w-3.5 text-[#2d6a4f]" />
+                  <UserPlus className="h-3.5 w-3.5 text-ink" />
                 </button>
               </div>
               <div className="relative">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted" />
                 <input
                   type="text"
                   placeholder="Search conversations..."
                   aria-label="Search conversations"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-8 pr-3 py-2 text-xs rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:border-[#2d6a4f] transition-colors"
+                  className="w-full pl-8 pr-3 py-2 text-sm rounded-xl border border-line bg-panel focus:outline-none focus:border-line transition-colors"
                 />
               </div>
             </div>
@@ -485,13 +490,13 @@ function MessengerContent() {
             <div className="flex-1 overflow-y-auto">
               {filteredConversations.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full gap-3 py-12 px-4 text-center">
-                  <div className="h-12 w-12 rounded-full bg-[#40916c]/10 flex items-center justify-center">
-                    <MessageSquare className="h-6 w-6 text-[#40916c]/60" />
+                  <div className="h-12 w-12 rounded-full bg-soft flex items-center justify-center">
+                    <MessageSquare className="h-6 w-6 text-muted" />
                   </div>
-                  <p className="text-xs text-gray-600 font-semibold">No conversations yet.</p>
+                  <p className="text-sm text-muted font-semibold">No conversations yet.</p>
                   <button
                     onClick={() => setShowUserPicker(true)}
-                    className="text-xs font-extrabold text-[#2d6a4f] hover:underline"
+                    className="text-sm font-extrabold text-ink hover:underline"
                   >
                     Start a new chat →
                   </button>
@@ -503,20 +508,20 @@ function MessengerContent() {
                     <button
                       key={conv.contact.id}
                       onClick={() => openConversation(conv.contact)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors border-b border-gray-50 hover:bg-[#eef5f0] ${
-                        isActive ? 'bg-[#eef5f0] border-l-2 border-l-[#40916c]' : ''
+                      className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors border-b border-line hover:bg-soft ${
+                        isActive ? 'bg-soft border-l-2 border-l-[var(--primary)]' : ''
                       }`}
                     >
                       {avatarDisplay(conv.contact.avatar, conv.contact.name, 'sm')}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-1">
-                          <span className="text-sm font-extrabold text-[#1b4332] truncate">{conv.contact.name}</span>
+                          <span className="text-sm font-extrabold text-ink truncate">{conv.contact.name}</span>
                           {conv.lastTime && (
-                            <span className="text-[10px] text-gray-400 shrink-0">{formatDate(conv.lastTime)}</span>
+                            <span className="text-sm text-muted shrink-0">{formatDate(conv.lastTime)}</span>
                           )}
                         </div>
                         {conv.lastMessage && (
-                          <p className="text-xs text-gray-400 truncate mt-0.5">{conv.lastMessage}</p>
+                          <p className="text-sm text-muted truncate mt-0.5">{conv.lastMessage}</p>
                         )}
                       </div>
                     </button>
@@ -530,50 +535,50 @@ function MessengerContent() {
           <section aria-label="Conversation" className={`${activeContact ? 'flex' : 'hidden md:flex'} min-w-0 flex-1 flex-col overflow-hidden`}>
             {!activeContact ? (
               <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center px-6">
-                <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#40916c]/10 to-[#74c69d]/20 flex items-center justify-center shadow-inner">
-                  <MessageSquare className="h-9 w-9 text-[#40916c]/50" />
+                <div className="h-16 w-16 rounded-xl bg-soft border border-line flex items-center justify-center shadow-xs">
+                  <MessageSquare className="h-8 w-8 text-[var(--accent-moss)]" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-extrabold text-[#1b4332]">Select a Conversation</h2>
-                  <p className="text-sm text-gray-400 mt-1 max-w-xs">
-                    Choose a conversation from the sidebar or start a new private chat with a contributor.
+                  <h2 className="text-base font-bold text-ink">Select a Conversation</h2>
+                  <p className="text-xs text-muted mt-1 max-w-xs leading-relaxed">
+                    Choose a conversation from the sidebar or start a new direct consultation with a contributor.
                   </p>
                 </div>
                 <button
                   onClick={() => setShowUserPicker(true)}
-                  className="mt-2 inline-flex items-center gap-2 bg-gradient-to-r from-[#40916c] to-[#52b788] text-white text-sm font-extrabold px-5 py-2.5 rounded-full shadow hover:brightness-105 transition-all"
+                  className="flat-button flat-button-primary inline-flex items-center gap-1.5 text-xs mt-2"
                 >
-                  <UserPlus className="h-4 w-4" />
-                  New Message
+                  <UserPlus className="h-3.5 w-3.5" />
+                  <span>New Message</span>
                 </button>
               </div>
             ) : (
               <>
                 {/* Chat header */}
-                <header className="flex items-center gap-2 px-3 py-3 border-b border-[#1b4332]/10 bg-white shrink-0">
-                  <button type="button" aria-label="Back to conversations" onClick={() => { setActiveContact(null); router.replace('/messenger'); }} className="md:hidden flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[#2d6a4f] hover:bg-[#eef5f0]">
+                <header className="flex items-center gap-2 px-3 py-3 border-b border-line bg-panel shrink-0">
+                  <button type="button" aria-label="Back to conversations" onClick={() => { setActiveContact(null); router.replace('/messenger'); }} className="md:hidden flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink hover:bg-soft">
                     <ArrowLeft className="h-5 w-5" />
                   </button>
                   {avatarDisplay(activeContact.avatar, activeContact.name)}
                   <div className="flex-1 min-w-0">
-                    <p className="truncate font-extrabold text-[#1b4332] text-sm leading-tight">{activeContact.name}</p>
-                    <p className="text-[11px] text-[#52b788] font-semibold mt-0.5">{getRoleLabel(activeContact.role)}</p>
+                    <p className="truncate font-extrabold text-ink text-sm leading-tight">{activeContact.name}</p>
+                    <p className="text-sm text-muted font-semibold mt-0.5">{getRoleLabel(activeContact.role)}</p>
                   </div>
                 </header>
 
                 {/* Messages Panel */}
-                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-5 space-y-4 bg-gray-50/60">
+                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-5 space-y-4 bg-panel">
                   {loadingMessages ? (
                     <div className="flex justify-center py-10">
-                      <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#2d6a4f] border-t-transparent" />
+                      <div className="h-8 w-8 animate-spin rounded-full border-4 border-line border-t-transparent" />
                     </div>
                   ) : messages.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full gap-2 py-16 text-center">
                       <span className="text-3xl">👋</span>
-                      <p className="text-sm font-extrabold text-[#1b4332]">
+                      <p className="text-sm font-extrabold text-ink">
                         Say hello to {activeContact.name}!
                       </p>
-                      <p className="text-xs text-gray-400">This is the beginning of your conversation.</p>
+                      <p className="text-sm text-muted">This is the beginning of your conversation.</p>
                     </div>
                   ) : (
                     <>
@@ -583,7 +588,7 @@ function MessengerContent() {
                           type="button"
                           onClick={loadOlderMessages}
                           disabled={loadingOlderMessages}
-                          className="rounded-full border border-[#2d6a4f]/20 bg-white px-4 py-1.5 text-xs font-bold text-[#2d6a4f] shadow-sm hover:bg-[#eef5f0] disabled:opacity-60"
+                          className="rounded-full border border-line bg-panel px-4 py-1.5 text-sm font-bold text-ink shadow-sm hover:bg-soft disabled:opacity-60"
                         >
                           {loadingOlderMessages ? 'Loading…' : 'Load older messages'}
                         </button>
@@ -601,7 +606,7 @@ function MessengerContent() {
                               {activeContact.avatar?.startsWith('http') ? (
                                 <img src={activeContact.avatar} alt={activeContact.name} className="h-full w-full object-cover" />
                               ) : (
-                                <div className="h-full w-full rounded-full bg-gradient-to-br from-[#40916c] to-[#74c69d] flex items-center justify-center text-white text-xs font-bold">
+                                <div className="h-full w-full rounded-full bg-brand flex items-center justify-center text-on-brand text-sm font-bold">
                                   {activeContact.avatar || activeContact.name.charAt(0)}
                                 </div>
                               )}
@@ -613,8 +618,8 @@ function MessengerContent() {
                             
                             {/* Deleted Message */}
                             {msg.isDeleted ? (
-                              <div className="px-4 py-2.5 rounded-2xl text-xs italic bg-gray-200/60 text-gray-400 border border-gray-100 flex items-center gap-1.5 shadow-sm select-none">
-                                <AlertCircle className="h-3 w-3 text-gray-400" />
+                              <div className="px-4 py-2.5 rounded-2xl text-sm italic bg-panel text-muted border border-line flex items-center gap-1.5 shadow-sm select-none">
+                                <AlertCircle className="h-3 w-3 text-muted" />
                                 This message was deleted
                               </div>
                             ) : (
@@ -625,7 +630,7 @@ function MessengerContent() {
                                     <button 
                                       type="button"
                                       onClick={() => setActiveMenuMessageId(activeMenuMessageId === msg.id ? null : msg.id)}
-                                      className="h-11 w-11 rounded-full bg-white hover:bg-gray-100 border border-gray-100 shadow flex items-center justify-center text-gray-500 hover:text-gray-700"
+                                      className="h-11 w-11 rounded-full bg-panel hover:bg-panel border border-line shadow flex items-center justify-center text-muted hover:text-muted"
                                       aria-label="Message options"
                                     >
                                       <MoreVertical className="h-3 w-3" />
@@ -636,25 +641,25 @@ function MessengerContent() {
 
                                 {/* Inline Editing Layout */}
                                 {isEditing ? (
-                                  <div className="flex items-center gap-1.5 w-full bg-white border border-[#2d6a4f] rounded-xl px-2.5 py-1.5 shadow">
+                                  <div className="flex items-center gap-1.5 w-full bg-panel border border-line rounded-xl px-2.5 py-1.5 shadow">
                                     <input
                                       type="text"
                                       value={editInput}
                                       onChange={(e) => setEditInput(e.target.value)}
-                                      className="text-base text-[#1b4332] bg-transparent focus:outline-none flex-1 min-w-0 w-full"
+                                      className="text-base text-ink bg-transparent focus:outline-none flex-1 min-w-0 w-full"
                                       autoFocus
                                     />
                                     <button 
                                       onClick={() => handleEditSubmit(msg.id)}
                                       disabled={!editInput.trim()}
-                                      className="h-6 w-6 rounded-full bg-[#40916c] hover:bg-[#2d6a4f] text-white flex items-center justify-center transition-colors disabled:opacity-50"
+                                      className="h-6 w-6 rounded-full bg-brand hover:bg-brand text-on-brand flex items-center justify-center transition-colors disabled:opacity-50"
                                       title="Save edit"
                                     >
                                       <Check className="h-3 w-3" />
                                     </button>
                                     <button 
                                       onClick={() => { setEditingMessageId(null); setEditInput(''); }}
-                                      className="h-6 w-6 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center transition-colors"
+                                      className="h-6 w-6 rounded-full bg-panel hover:bg-panel text-muted flex items-center justify-center transition-colors"
                                       title="Cancel edit"
                                     >
                                       <X className="h-3 w-3" />
@@ -665,7 +670,7 @@ function MessengerContent() {
                                   <div className="flex flex-col gap-1">
                                     {/* Image Attachment (if present) */}
                                     {msg.imageUrl && (
-                                      <div className="overflow-hidden rounded-xl border border-gray-100 max-w-[240px] max-h-[180px] shadow-sm">
+                                      <div className="overflow-hidden rounded-xl border border-line max-w-[240px] max-h-[180px] shadow-sm">
                                         <a href={msg.imageUrl} target="_blank" rel="noopener noreferrer">
                                           <img 
                                             src={msg.imageUrl} 
@@ -679,10 +684,10 @@ function MessengerContent() {
                                     {/* Message Text (if text is present) */}
                                     {msg.content && (
                                       <div
-                                        className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm break-words ${
+                                        className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm leading-relaxed shadow-xs break-words ${
                                           isOwn
-                                            ? 'bg-gradient-to-br from-[#40916c] to-[#52b788] text-white rounded-br-sm'
-                                            : 'bg-white border border-gray-200 text-[#1b4332] rounded-bl-sm'
+                                            ? 'bg-[var(--botanical-forest)] text-white border border-[var(--botanical-forest)] rounded-br-xs'
+                                            : 'bg-panel border border-line text-ink rounded-bl-xs'
                                         }`}
                                       >
                                         {msg.content}
@@ -695,17 +700,17 @@ function MessengerContent() {
 
                             {/* In-flow actions cannot be clipped above the first message. */}
                             {isOwn && !msg.isDeleted && !isEditing && activeMenuMessageId === msg.id && (
-                              <div ref={menuRef} className="flex flex-wrap self-end rounded-xl border border-gray-200 bg-white shadow-sm">
+                              <div ref={menuRef} className="flex flex-wrap self-end rounded-xl border border-line bg-panel shadow-sm">
                                 {!msg.imageUrl && (
                                   <button type="button" onClick={() => {
                                     setEditingMessageId(msg.id);
                                     setEditInput(msg.content);
                                     setActiveMenuMessageId(null);
-                                  }} className="flex min-h-11 items-center gap-1.5 px-3 text-xs font-bold text-[#2d6a4f] hover:bg-[#eef5f0]">
+                                  }} className="flex min-h-11 items-center gap-1.5 px-3 text-sm font-bold text-ink hover:bg-soft">
                                     <Edit2 className="h-4 w-4" /> Edit
                                   </button>
                                 )}
-                                <button type="button" onClick={() => handleDeleteMessage(msg.id)} className="flex min-h-11 items-center gap-1.5 px-3 text-xs font-bold text-red-600 hover:bg-red-50">
+                                <button type="button" onClick={() => handleDeleteMessage(msg.id)} className="flex min-h-11 items-center gap-1.5 px-3 text-sm font-bold text-error-ink hover:bg-error-surface">
                                   <Trash2 className="h-4 w-4" /> Delete
                                 </button>
                               </div>
@@ -714,9 +719,9 @@ function MessengerContent() {
                             {/* Timestamp / Edited Badge */}
                             {!isEditing && (
                               <div className="flex items-center gap-1.5 px-1 mt-0.5">
-                                <span className="text-[9px] text-gray-400">{formatTime(msg.time)}</span>
+                                <span className="text-sm text-muted">{formatTime(msg.time)}</span>
                                 {msg.isEdited && !msg.isDeleted && (
-                                  <span className="text-[9px] text-gray-400 font-semibold italic">(edited)</span>
+                                  <span className="text-sm text-muted font-semibold italic">(edited)</span>
                                 )}
                               </div>
                             )}
@@ -730,11 +735,11 @@ function MessengerContent() {
                 </div>
 
                 {/* Input Bar Section */}
-                <div className="border-t border-[#1b4332]/10 bg-white px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shrink-0">
+                <div className="border-t border-line bg-panel px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shrink-0">
                   {/* File Upload Preview bar */}
                   {filePreviewUrl && (
-                    <div className="flex items-center gap-3 p-2 bg-[#f0f7f2] rounded-xl border border-[#40916c]/20 mb-2 max-w-max animate-fade-in shadow-inner">
-                      <div className="relative h-12 w-12 rounded-lg overflow-hidden border border-gray-200">
+                    <div className="flex items-center gap-3 p-2 bg-canvas rounded-xl border border-line mb-2 max-w-max animate-fade-in shadow-inner">
+                      <div className="relative h-12 w-12 rounded-lg overflow-hidden border border-line">
                         <img src={filePreviewUrl} alt="Upload preview" className="h-full w-full object-cover" />
                         <button 
                           type="button"
@@ -745,8 +750,8 @@ function MessengerContent() {
                         </button>
                       </div>
                       <div className="text-left shrink-0">
-                        <p className="text-[10px] text-[#2d6a4f] font-extrabold max-w-[120px] truncate">{selectedFile?.name}</p>
-                        <p className="text-[9px] text-gray-400 font-semibold">Ready to upload</p>
+                        <p className="text-sm text-ink font-extrabold max-w-[120px] truncate">{selectedFile?.name}</p>
+                        <p className="text-sm text-muted font-semibold">Ready to upload</p>
                       </div>
                     </div>
                   )}
@@ -757,7 +762,7 @@ function MessengerContent() {
                       type="button"
                       onClick={handleAttachmentClick}
                       disabled={isSending}
-                      className="h-10 w-10 rounded-full bg-gray-50 border border-gray-200 text-gray-500 flex items-center justify-center hover:bg-gray-100 hover:text-gray-700 transition-colors disabled:opacity-50 cursor-pointer shrink-0"
+                      className="h-10 w-10 rounded-full bg-panel border border-line text-muted flex items-center justify-center hover:bg-panel hover:text-muted transition-colors disabled:opacity-50 cursor-pointer shrink-0"
                       title="Attach image"
                     >
                       <Paperclip className="h-4 w-4" />
@@ -778,7 +783,7 @@ function MessengerContent() {
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       disabled={isSending}
-                      className="min-w-0 flex-1 px-3 py-2.5 text-base rounded-full border border-gray-200 bg-gray-50/60 text-[#1b4332] placeholder-gray-400 focus:outline-none focus:border-[#2d6a4f] focus:bg-white transition-all disabled:opacity-60"
+                      className="min-w-0 flex-1 px-3 py-2.5 text-base rounded-full border border-line bg-panel text-ink placeholder-muted focus:outline-none focus:border-line focus:bg-panel transition-all disabled:opacity-60"
                       aria-label="Message input"
                     />
 
@@ -786,10 +791,10 @@ function MessengerContent() {
                     <button
                       type="submit"
                       disabled={(!input.trim() && !selectedFile) || isSending}
-                      className="h-10 w-10 rounded-full bg-gradient-to-br from-[#40916c] to-[#52b788] text-white flex items-center justify-center shadow hover:brightness-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shrink-0"
+                      className="h-10 w-10 rounded-lg bg-[var(--primary)] text-white flex items-center justify-center shadow-xs hover:bg-[var(--primary)]/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shrink-0"
                       aria-label="Send message"
                     >
-                      <Send className="h-4 w-4 pl-0.5" />
+                      <Send className="h-4 w-4" />
                     </button>
                   </form>
                 </div>
@@ -801,48 +806,48 @@ function MessengerContent() {
 
       {/* ===== USER PICKER MODAL ===== */}
       {showUserPicker && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm px-4">
-          <div className="w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-              <h3 className="text-sm font-extrabold text-[#1b4332]">New Message</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30  px-4">
+          <div className="w-full max-w-sm bg-panel rounded-3xl shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-line">
+              <h3 className="text-sm font-extrabold text-ink">New Message</h3>
               <button
                 onClick={() => { setShowUserPicker(false); setUserPickerSearch(''); }}
-                className="h-7 w-7 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                className="h-7 w-7 rounded-full bg-panel hover:bg-panel flex items-center justify-center transition-colors"
               >
-                <X className="h-3.5 w-3.5 text-gray-500" />
+                <X className="h-3.5 w-3.5 text-muted" />
               </button>
             </div>
 
             <div className="px-5 pt-4 pb-2">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted" />
                 <input
                   type="text"
                   placeholder="Search users..."
                   value={userPickerSearch}
                   onChange={(e) => setUserPickerSearch(e.target.value)}
                   autoFocus
-                  className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:border-[#2d6a4f] transition-colors"
+                  className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-line bg-panel focus:outline-none focus:border-line transition-colors"
                 />
               </div>
             </div>
 
             <div className="max-h-72 overflow-y-auto px-2 pb-4">
               {filteredAllUsers.length === 0 ? (
-                <p className="text-center text-sm text-gray-400 py-8">No users found.</p>
+                <p className="text-center text-sm text-muted py-8">No users found.</p>
               ) : (
                 filteredAllUsers.map((u) => (
                   <button
                     key={u.id}
                     onClick={() => handleStartChat(u)}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#eef5f0] transition-colors text-left"
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-soft transition-colors text-left"
                   >
                     {avatarDisplay(u.avatar, u.name, 'sm')}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-extrabold text-[#1b4332] truncate">{u.name}</p>
-                      <p className="text-[11px] text-[#52b788] font-semibold">{getRoleLabel(u.role)}</p>
+                      <p className="text-sm font-extrabold text-ink truncate">{u.name}</p>
+                      <p className="text-sm text-muted font-semibold">{getRoleLabel(u.role)}</p>
                     </div>
-                    <ChevronRight className="h-4 w-4 text-gray-300 shrink-0" />
+                    <ChevronRight className="h-4 w-4 text-muted shrink-0" />
                   </button>
                 ))
               )}
@@ -859,8 +864,8 @@ function MessengerContent() {
 export default function MessengerPage() {
   return (
     <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center bg-[#f0f7f2]">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#2d6a4f] border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-canvas">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-line border-t-transparent" />
       </div>
     }>
       <MessengerContent />

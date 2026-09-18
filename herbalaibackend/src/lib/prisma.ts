@@ -48,6 +48,7 @@ if (globalForPrisma.prisma && globalForPrisma.databasePool && globalForPrisma.da
   const adapter = new PrismaPg(databasePool);
   prismaInstance = new PrismaClient({
     adapter,
+    transactionOptions: { maxWait: ENV.DB_TRANSACTION_MAX_WAIT_MS },
     log: ENV.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error', 'warn'],
   });
 }

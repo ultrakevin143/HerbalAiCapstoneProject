@@ -1,0 +1,72 @@
+[
+  {
+    "question": "What is PITAHC and what is its role in Philippine herbal medicine?",
+    "answer": "The Philippine Institute of Traditional and Alternative Health Care (PITAHC) is a Philippine government-owned and controlled corporation attached to the Department of Health. It was created under Republic Act No. 8423, the Traditional and Alternative Medicine Act of 1997. Its mandate includes research, advocacy, education, standards development, product development, and supporting the safe, effective, accessible integration of traditional, complementary, and integrative medicine into the Philippine health-care system.",
+    "category": "philippine-policy",
+    "tags": ["philippines", "pitahc", "doh", "republic act 8423", "tama", "government"],
+    "metadata": {"reviewStatus": "PHILIPPINE_GOVERNMENT_SOURCE", "jurisdiction": "Philippines", "sources": [{"title": "About PITAHC", "publisher": "Philippine Institute of Traditional and Alternative Health Care", "url": "https://pitahc.gov.ph/about-pitahc/", "accessedAt": "2026-09-17"}, {"title": "PITAHC Mandate", "publisher": "Philippine Institute of Traditional and Alternative Health Care", "url": "https://pitahc.gov.ph/about-pitahc/mandate/", "accessedAt": "2026-09-17"}]}
+  },
+  {
+    "question": "What is Republic Act No. 8423 or the Traditional and Alternative Medicine Act of 1997?",
+    "answer": "Republic Act No. 8423 created PITAHC to accelerate the development of traditional and alternative health care in the Philippines. PITAHC states that the law directs it to improve health-care quality and delivery for Filipinos through development of traditional and alternative health care and its integration into the national health-care delivery system. The law does not mean that every traditional claim is automatically proven; PITAHC's mandate emphasizes research, standards, quality control, and modalities shown to be safe and effective.",
+    "category": "philippine-policy",
+    "tags": ["philippines", "ra 8423", "republic act 8423", "traditional alternative medicine act", "pitahc"],
+    "metadata": {"reviewStatus": "PHILIPPINE_GOVERNMENT_SOURCE", "jurisdiction": "Philippines", "sources": [{"title": "PITAHC Mandate", "publisher": "Philippine Institute of Traditional and Alternative Health Care", "url": "https://pitahc.gov.ph/about-pitahc/mandate/", "accessedAt": "2026-09-17"}, {"title": "PITAHC Glossary of Terms", "publisher": "Philippine Institute of Traditional and Alternative Health Care", "url": "https://pitahc.gov.ph/glossary/", "accessedAt": "2026-09-17"}]}
+  },
+  {
+    "question": "How does PITAHC present evidence for medicinal plants in the Philippines?",
+    "answer": "The PITAHC Directory of Herbs separates pre-clinical findings from clinical findings and then provides condition-specific preparation reminders where available. Dr. Ai should preserve those evidence labels. A laboratory or pre-clinical finding must not be rewritten as proof of benefit in people, and a clinical label should be reported with the condition and setting stated by PITAHC. The directory also advises users to consult a health professional for proper diagnosis and advice.",
+    "category": "philippine-evidence",
+    "tags": ["philippines", "pitahc", "clinical evidence", "pre-clinical evidence", "directory of herbs"],
+    "metadata": {"reviewStatus": "PHILIPPINE_GOVERNMENT_SOURCE", "jurisdiction": "Philippines", "sources": [{"title": "Directory of Herbs", "publisher": "Philippine Institute of Traditional and Alternative Health Care", "url": "https://pitahc.gov.ph/herbs-directory/", "accessedAt": "2026-09-17"}]}
+  },
+  {
+    "question": "Does inclusion in the PITAHC Directory of Herbs mean an herb cures every related illness?",
+    "answer": "No. The PITAHC Directory is a guide to selected medicinal plants, their scientific names, reported evidence, traditional uses, and preparation reminders. Its entries are condition-specific and do not establish that an herb cures every disease with similar symptoms. The directory's own introduction advises consultation with a health professional for proper diagnosis and advice. Dr. Ai should therefore limit each claim to the use and evidence explicitly stated in the relevant entry.",
+    "category": "philippine-evidence",
+    "tags": ["philippines", "pitahc", "directory of herbs", "cure claims", "medical diagnosis"],
+    "metadata": {"reviewStatus": "PHILIPPINE_GOVERNMENT_SOURCE", "jurisdiction": "Philippines", "sources": [{"title": "Directory of Herbs", "publisher": "Philippine Institute of Traditional and Alternative Health Care", "url": "https://pitahc.gov.ph/herbs-directory/", "accessedAt": "2026-09-17"}]}
+  },
+  {
+    "question": "What does 'No Approved Therapeutic Claims' mean on a food or dietary supplement in the Philippines?",
+    "answer": "Under DOH-FDA Advisory No. 2012-008, the phrase 'NO APPROVED THERAPEUTIC CLAIMS' informs Philippine consumers that a food or dietary supplement has no FDA-approved curative or therapeutic effect. A product may be intended to support nutritional needs, but it must not be presented as an approved treatment or cure. Registration as a food supplement is not the same as approval of a medicine for treating disease.",
+    "category": "philippine-fda",
+    "tags": ["philippines", "fda philippines", "no approved therapeutic claims", "food supplement", "dietary supplement"],
+    "metadata": {"reviewStatus": "PHILIPPINE_GOVERNMENT_SOURCE", "jurisdiction": "Philippines", "sources": [{"title": "DOH-FDA Advisory No. 2012-008", "publisher": "Food and Drug Administration Philippines", "url": "https://www.fda.gov.ph/wp-content/uploads/2022/06/DOH-FDA_Advisory_No_2012-008.pdf", "accessedAt": "2026-09-17"}]}
+  },
+  {
+    "question": "Should a Filipino patient stop prescribed medicine in favor of an herbal food supplement?",
+    "answer": "The Philippine FDA advises the public not to stop prescribed medicines in favor of a food or dietary supplement unless advised by a physician. Food supplements with no approved therapeutic claims should not be treated as replacements for prescribed treatment. Questions about combining a particular herbal product with medication require review of the exact product and the patient's medicines by a qualified Philippine health professional.",
+    "category": "philippine-fda",
+    "tags": ["philippines", "prescribed medicine", "herbal supplement", "physician", "fda philippines"],
+    "metadata": {"reviewStatus": "PHILIPPINE_GOVERNMENT_SOURCE", "jurisdiction": "Philippines", "sources": [{"title": "DOH-FDA Advisory No. 2012-008", "publisher": "Food and Drug Administration Philippines", "url": "https://www.fda.gov.ph/wp-content/uploads/2022/06/DOH-FDA_Advisory_No_2012-008.pdf", "accessedAt": "2026-09-17"}]}
+  },
+  {
+    "question": "Are testimonials proof that an herbal supplement cures disease in the Philippines?",
+    "answer": "No. DOH-FDA Advisory No. 2012-008 warns consumers not to rely on curative claims for food or dietary supplements and states that testimonials and anecdotal information promoting healing or curing disease are not allowed as proof of therapeutic effect. Dr. Ai should rely on documented Philippine government or research sources, not advertisements, testimonials, influencer claims, or seller descriptions.",
+    "category": "philippine-fda",
+    "tags": ["philippines", "testimonials", "advertising", "curative claims", "fda philippines"],
+    "metadata": {"reviewStatus": "PHILIPPINE_GOVERNMENT_SOURCE", "jurisdiction": "Philippines", "sources": [{"title": "DOH-FDA Advisory No. 2012-008", "publisher": "Food and Drug Administration Philippines", "url": "https://www.fda.gov.ph/wp-content/uploads/2022/06/DOH-FDA_Advisory_No_2012-008.pdf", "accessedAt": "2026-09-17"}]}
+  },
+  {
+    "question": "Why should Philippine consumers check whether a commercial herbal product is FDA-registered?",
+    "answer": "The Philippine FDA warns against purchasing and consuming unregistered food products and food supplements because they have not completed the agency's registration process or received the required authorization. Under Republic Act No. 9711, health products require the applicable FDA authorization before manufacture, sale, distribution, promotion, or advertising. Consumers should check the current FDA verification resources and advisories for the exact product rather than assuming that the word 'herbal' means it is authorized.",
+    "category": "philippine-fda",
+    "tags": ["philippines", "fda registration", "unregistered product", "ra 9711", "commercial herbal product"],
+    "metadata": {"reviewStatus": "PHILIPPINE_GOVERNMENT_SOURCE", "jurisdiction": "Philippines", "sources": [{"title": "FDA Advisory No. 2019-057", "publisher": "Food and Drug Administration Philippines", "url": "https://www.fda.gov.ph/fda-advisory-no-2019-057-public-health-warning-against-the-purchase-and-consumption-of-the-following-unregistered-food-products-and-food-supplements-the-food-and-drug-administration-fda-advise/", "accessedAt": "2026-09-17"}, {"title": "FDA Verification Portal", "publisher": "Food and Drug Administration Philippines", "url": "https://verification.fda.gov.ph/", "accessedAt": "2026-09-17"}]}
+  },
+  {
+    "question": "Are a home-prepared medicinal plant remedy and a commercial herbal product the same?",
+    "answer": "No. PITAHC's herb directory may describe a specific fresh plant part and preparation method for a stated use, while commercial products are manufactured and regulated in particular forms and strengths. A home decoction should not be converted into a tablet or syrup dose, and a commercial product label should not be used to invent a home-preparation dose. Dr. Ai must keep the plant part, preparation, product form, and documented quantities separate.",
+    "category": "philippine-preparation",
+    "tags": ["philippines", "home preparation", "commercial product", "decoction", "dosage form", "pitahc"],
+    "metadata": {"reviewStatus": "PHILIPPINE_GOVERNMENT_SOURCE", "jurisdiction": "Philippines", "sources": [{"title": "Directory of Herbs", "publisher": "Philippine Institute of Traditional and Alternative Health Care", "url": "https://pitahc.gov.ph/herbs-directory/", "accessedAt": "2026-09-17"}, {"title": "DOH-FDA Advisory No. 2012-008", "publisher": "Food and Drug Administration Philippines", "url": "https://www.fda.gov.ph/wp-content/uploads/2022/06/DOH-FDA_Advisory_No_2012-008.pdf", "accessedAt": "2026-09-17"}]}
+  },
+  {
+    "question": "What sources should Dr. Ai prioritize for Philippine herbal medicine answers?",
+    "answer": "For Philippine herbal medicine questions, Dr. Ai should prioritize published records from PITAHC and the Department of Health, Philippine FDA registration and safety advisories for commercial products, and Philippine government-supported research sources when the underlying study details are available. It should identify the local and scientific plant names, preserve the source's evidence category and preparation details, and clearly say when the Philippine repository does not contain enough information.",
+    "category": "philippine-source-policy",
+    "tags": ["philippines", "source priority", "pitahc", "doh", "fda philippines", "philippine research"],
+    "metadata": {"reviewStatus": "PHILIPPINE_GOVERNMENT_SOURCE", "jurisdiction": "Philippines", "sources": [{"title": "PITAHC Mandate", "publisher": "Philippine Institute of Traditional and Alternative Health Care", "url": "https://pitahc.gov.ph/about-pitahc/mandate/", "accessedAt": "2026-09-17"}, {"title": "Directory of Herbs", "publisher": "Philippine Institute of Traditional and Alternative Health Care", "url": "https://pitahc.gov.ph/herbs-directory/", "accessedAt": "2026-09-17"}]}
+  }
+]

@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import DisplayPreferences from '../../components/DisplayPreferences';
 import api from '../../lib/axios';
 
 function VerifyEmailContent() {
@@ -41,60 +42,83 @@ function VerifyEmailContent() {
   }, [token]);
 
   return (
-    <main className="flex min-h-screen flex-col lg:flex-row bg-[#fafaf8]">
-      {/* Left side - brand */}
-      <div className="flex flex-col justify-center items-center lg:items-start lg:w-1/2 p-8 lg:p-20 bg-gradient-to-br from-[#1b4332] to-[#40916c] text-[#ffffff] text-center lg:text-left border-b lg:border-b-0 lg:border-r border-green-700/20">
-        <div className="flex items-center justify-center w-24 h-24 rounded-full bg-[#ffffff] text-4xl mb-6 shadow-md">
-          🌿
+    <main className="flex min-h-screen flex-col lg:flex-row bg-canvas">
+      {/* Left side: Archival Ethnobotanical Masthead */}
+      <div className="flex flex-col justify-between p-8 sm:p-12 lg:p-16 lg:w-1/2 bg-[#19261c] text-[#f5f2eb] border-b lg:border-b-0 lg:border-r border-[#2d3d31]">
+        <div className="space-y-6">
+          <div className="inline-flex items-center gap-2 rounded px-2.5 py-1 border border-[#3b4e40] bg-[#223326] text-[11px] font-mono uppercase tracking-widest text-[#c46238]">
+            <span>Accession Verification</span>
+            <span className="text-[#88998c]">·</span>
+            <span className="text-[#ede8df]">Electronic Dispatch</span>
+          </div>
+
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight font-editorial text-[#f5f2eb]">
+              HERBAL<span className="text-[#c46238] ml-1">·AI</span>
+            </h1>
+            <p className="mt-3 text-sm text-[#c4ceb7] max-w-md leading-relaxed">
+              Cryptographic verification of ethnobotanical research identities in accordance with RA 8423 archive protocols.
+            </p>
+          </div>
         </div>
-        <h1 className="text-4xl lg:text-6xl font-black tracking-tight mb-4">Herbal AI</h1>
-        <p className="text-lg lg:text-xl font-bold opacity-90 max-w-md">
-          Traditional Filipino medicine meets modern intelligence.
-        </p>
+
+        <div className="pt-8 mt-8 border-t border-[#2e4033] flex items-center justify-between text-[11px] font-mono text-[#88998c]">
+          <span>Security Standard · RA 8423 Archive</span>
+          <span>Verification Dispatch</span>
+        </div>
       </div>
 
-      {/* Right side - status card */}
-      <div className="flex flex-col justify-center items-center lg:w-1/2 p-6 lg:p-12">
-        <div className="w-full max-w-md bg-white border border-gray-100 rounded-2xl p-6 lg:p-8 shadow-xl text-center">
-          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] mb-6">Email Verification</h2>
+      {/* Right side: status card */}
+      <div className="flex flex-col justify-center items-center lg:w-1/2 p-6 sm:p-10 lg:p-14">
+        <div className="w-full max-w-md bg-panel border border-line rounded-lg p-6 sm:p-8 shadow-sm text-center">
+          <div className="flex items-center justify-between border-b border-line pb-3 mb-6">
+            <span className="font-mono text-[11px] uppercase tracking-wider text-muted">
+              Dispatch Confirmation
+            </span>
+            <DisplayPreferences />
+          </div>
+
+          <h2 className="text-2xl font-extrabold font-editorial text-ink mb-2">
+            Email Verification
+          </h2>
 
           {status === 'loading' && (
-            <div className="flex flex-col items-center justify-center space-y-4">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#40916c]"></div>
-              <p className="text-sm font-bold text-[#6a7282]">{message}</p>
+            <div className="flex flex-col items-center justify-center py-8 space-y-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-2 border-brand border-t-transparent"></div>
+              <p className="text-xs font-mono text-muted">{message}</p>
             </div>
           )}
 
           {status === 'success' && (
-            <div className="space-y-6">
-              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-green-50 text-3xl mx-auto border-2 border-[#40916c]/30 text-[#40916c]">
+            <div className="space-y-4 py-4">
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-soft text-brand mx-auto border border-line font-bold font-mono">
                 ✓
               </div>
-              <p className="text-sm font-bold text-[#2d6a4f] bg-[#eef5f0] p-4 rounded-lg border-2 border-[#40916c]/20">
-                🎉 {message}
+              <p className="text-xs font-medium text-ink bg-soft p-3.5 rounded border border-line">
+                {message}
               </p>
               <Link
                 href="/signin"
-                className="flat-button flat-button-primary w-full block text-center"
+                className="flat-button flat-button-primary w-full block text-center !text-sm mt-4"
               >
-                Sign In Now
+                Sign In to Registry
               </Link>
             </div>
           )}
 
           {status === 'error' && (
-            <div className="space-y-6">
-              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-red-50 text-3xl mx-auto border-2 border-danger/30 text-danger">
+            <div className="space-y-4 py-4">
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-error-surface text-danger mx-auto border border-error-ink/30 font-mono font-bold">
                 !
               </div>
-              <p className="text-sm font-bold text-danger bg-red-50 p-4 rounded-lg border-2 border-danger/20">
+              <p className="text-xs font-medium text-error-ink bg-error-surface p-3.5 rounded border border-error-ink/20">
                 {message}
               </p>
               <Link
                 href="/signin"
-                className="flat-button flat-button-secondary w-full block text-center"
+                className="flat-button flat-button-secondary w-full block text-center !text-sm mt-4"
               >
-                Go Back to Sign In
+                Return to Authentication
               </Link>
             </div>
           )}
@@ -107,8 +131,8 @@ function VerifyEmailContent() {
 export default function VerifyEmailPage() {
   return (
     <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center bg-[#fafaf8]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#40916c]"></div>
+      <div className="flex min-h-screen items-center justify-center bg-canvas">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-line"></div>
       </div>
     }>
       <VerifyEmailContent />

@@ -137,8 +137,31 @@ export const createComment = async (data: {
   content: string;
   parentCommentId?: number;
 }) => {
-  // Use transaction to create the comment and increment thread replies counter
   return prisma.$transaction(async (tx) => {
+    const thread = await tx.thread.findFirst({
+      where: { id: data.threadId, isDeleted: false },
+      select: { authorId: true, title: true },
+    });
+
+    if (!thread) {
+      throw new Error('Thread not found.');
+    }
+
+    const parentComment = data.parentCommentId
+      ? await tx.threadComment.findFirst({
+          where: {
+            id: data.parentCommentId,
+            threadId: data.threadId,
+            isDeleted: false,
+          },
+          select: { authorId: true },
+        })
+      : null;
+
+    if (data.parentCommentId && !parentComment) {
+      throw new Error('The comment you are replying to was not found.');
+    }
+
     const comment = await tx.threadComment.create({
       data,
       include: {
@@ -161,7 +184,32 @@ export const createComment = async (data: {
       },
     });
 
-    return comment;
+    const notificationRecipients = new Map<string, 'COMMUNITY_COMMENT' | 'COMMUNITY_REPLY'>();
+
+    if (thread.authorId !== data.authorId) {
+      notificationRecipients.set(thread.authorId, 'COMMUNITY_COMMENT');
+    }
+    if (parentComment && parentComment.authorId !== data.authorId) {
+      notificationRecipients.set(parentComment.authorId, 'COMMUNITY_REPLY');
+    }
+
+    const notifications = await Promise.all(
+      Array.from(notificationRecipients, ([userId, type]) =>
+        tx.notification.create({
+          data: {
+            userId,
+            title: type === 'COMMUNITY_REPLY'
+              ? `${comment.author.name} replied to your comment`
+              : `${comment.author.name} commented on your discussion`,
+            message: `New activity in “${thread.title}”.`,
+            type,
+            link: `/community/${data.threadId}#comment-${comment.id}`,
+          },
+        })
+      )
+    );
+
+    return { comment, notifications };
   });
 };
 

@@ -92,6 +92,10 @@ JWT_SECRET="your-super-secret-jwt-key"
 JWT_REFRESH_SECRET="your-super-secret-refresh-key"
 FRONTEND_URL="http://localhost:3000"
 GEMINI_API_KEY="your-gemini-api-key"
+DR_AI_CHAT_MODELS="gemini-3.5-flash-lite,gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.7-flash,gemini-3.6-flash,gemini-2.5-flash-lite"
+DR_AI_MODEL_TIMEOUT_MS=7000
+DR_AI_MAX_MODEL_ATTEMPTS=4
+DR_AI_MODEL_COOLDOWN_MS=60000
 ```
 
 Initialize database & seed 10 DOH plants:
@@ -169,6 +173,10 @@ For deploying to an Ubuntu VPS with Nginx reverse proxy, automatic SSL (Certbot)
 # 3. Deploy and update services
 ./scripts/deploy.sh
 ```
+
+### Railway + Vercel
+
+For the recommended split deployment, use Railway for the Express/PostgreSQL backend and Vercel for the Next.js frontend. Follow [`Docs/RAILWAY_VERCEL_DEPLOYMENT.md`](Docs/RAILWAY_VERCEL_DEPLOYMENT.md) for root directories, environment variables, migrations, health checks, and the one-time herb/knowledge-base bootstrap.
 
 ---
 

@@ -1,4 +1,4 @@
-import { searchSimilarKB } from "../../../repositories/knowledgebase.repository.js";
+import { findActiveKBByTerms, searchSimilarKB } from "../../../repositories/knowledgebase.repository.js";
 import { findAllHerbs, searchSimilarHerbs } from "../../../repositories/herb.repository.js";
 import { generateEmbedding, generateChatResponse, generateChatResponseStream } from "../core/gemini-service.js";
 import type { Content } from "@google/generative-ai";
@@ -62,31 +62,81 @@ interface PreparedDrAiContext {
   bestDistance: number;
 }
 
-async function prepareDrAiContext(question: string): Promise<PreparedDrAiContext> {
+type CatalogHerb = Awaited<ReturnType<typeof findAllHerbs>>['herbs'][number];
+
+const formatHerbContext = (herb: HerbQueryResult | CatalogHerb, index: number) =>
+  `[Herb ${index + 1}] Repository record (reviewed content; not a claim of clinical proof):\n${JSON.stringify({
+    localName: herb.localName,
+    scientificName: herb.scientificName,
+    medicinalUses: herb.medicinalUses,
+    preparation: herb.preparationMethod || 'Not documented in this record.',
+    dosageField: herb.dosage || 'Not documented in this record.',
+    warnings: herb.warnings || 'Not documented; this does not establish safety.',
+    ...('evidenceClass' in herb ? { evidenceClass: herb.evidenceClass } : {}),
+    ...('sources' in herb ? { references: herb.sources } : {}),
+  })}`;
+
+interface RetrievedKB {
+  id: string;
+  question: string | null;
+  answer: string;
+  category: string | null;
+  tags: string[];
+  metadata: unknown;
+  distance?: number;
+}
+
+const formatKBContext = (entries: RetrievedKB[]) => entries.map((entry, index) =>
+  `[FAQ ${index + 1}] ${JSON.stringify({
+    question: entry.question || 'Untitled Question',
+    answer: entry.answer,
+    category: entry.category,
+    tags: entry.tags,
+    sourceMetadata: entry.metadata,
+  })}`
+).join('\n\n');
+
+async function prepareDrAiContext(question: string, history: Content[] = []): Promise<PreparedDrAiContext> {
   const catalogStartedAt = performance.now();
   const { herbs: catalog } = await findAllHerbs();
   const normalizedQuestion = normalize(question);
-  const namedHerbs = catalog.filter((herb) =>
+  let namedHerbs = catalog.filter((herb) =>
     herb.isVerified !== false && [herb.localName, herb.scientificName]
       .map(normalize)
       .some((name) => name.length > 2 && normalizedQuestion.includes(name))
   ).slice(0, 2);
 
+  if (namedHerbs.length === 0 && /\b(it|its|that|this|those|them|prepare|preparation|dosage|dose|frequency|how much|how often)\b/i.test(question)) {
+    const previousUserQuestion = [...history].reverse().find((turn) => turn.role === 'user');
+    const previousText = normalize(previousUserQuestion?.parts.map((part) => part.text ?? '').join(' ') ?? '');
+    const previousHerbs = catalog.filter((herb) =>
+      [herb.localName, herb.scientificName].map(normalize)
+        .some((name) => name.length > 2 && previousText.includes(name))
+    );
+    if (previousHerbs.length === 1 && /\b(it|its|that|this|those|them)\b/i.test(question)) namedHerbs = previousHerbs;
+  }
+
   if (namedHerbs.length > 0) {
-    const context = "Verified Herb Information:\n" + namedHerbs.map((herb) =>
-      `Local Name: ${herb.localName} (Scientific: ${herb.scientificName})\n` +
-      `Medicinal Uses: ${herb.medicinalUses}\n` +
-      `Preparation: ${herb.preparationMethod}\n` +
-      `Dosage: ${herb.dosage}\n` +
-      `Warnings: ${herb.warnings || "None declared."}`
-    ).join("\n\n") + "\n\n";
+    const exactTerms = namedHerbs.flatMap((herb) => [
+      normalize(herb.localName),
+      normalize(herb.scientificName),
+      ...normalize(herb.localName).split(' '),
+    ]);
+    const namedKnowledge = await findActiveKBByTerms(exactTerms, 3);
+    const context = [
+      namedHerbs.map(formatHerbContext).join("\n\n"),
+      namedKnowledge.length > 0 ? `General Knowledge Base / FAQs:\n${formatKBContext(namedKnowledge)}` : '',
+    ].filter(Boolean).join('\n\n');
     return {
       context,
-      sources: namedHerbs.map((herb) => ({ type: "herb", title: herb.localName, distance: 0 })),
+      sources: [
+        ...namedHerbs.map((herb) => ({ type: "herb" as const, title: herb.localName, distance: 0 })),
+        ...namedKnowledge.map((entry) => ({ type: "kb" as const, title: entry.question, distance: 0 })),
+      ],
       embeddingMs: 0,
       retrievalMs: performance.now() - catalogStartedAt,
       herbSourceCount: namedHerbs.length,
-      knowledgeBaseSourceCount: 0,
+      knowledgeBaseSourceCount: namedKnowledge.length,
       bestDistance: 0,
     };
   }
@@ -135,18 +185,12 @@ async function prepareDrAiContext(question: string): Promise<PreparedDrAiContext
 
   let context = "";
   if (relevantHerbs.length > 0) {
-    context += "Verified Herb Information:\n" + relevantHerbs.map((h: HerbQueryResult) =>
-      `Local Name: ${h.localName} (Scientific: ${h.scientificName})\n` +
-      `Medicinal Uses: ${h.medicinalUses}\n` +
-      `Preparation: ${h.preparationMethod}\n` +
-      `Dosage: ${h.dosage}\n` +
-      `Warnings: ${h.warnings || "None declared."}`
+    context += relevantHerbs.map((herb, index) =>
+      formatHerbContext(catalog.find((entry) => entry.id === herb.id) ?? herb, index)
     ).join("\n\n") + "\n\n";
   }
   if (relevantKB.length > 0) {
-    context += "General Knowledge Base / FAQs:\n" + relevantKB.map((k: KBQueryResult) =>
-      `Q: ${k.question || "Untitled Question"}\nA: ${k.answer}`
-    ).join("\n\n") + "\n\n";
+    context += `General Knowledge Base / FAQs:\n${formatKBContext(relevantKB)}\n\n`;
   }
   if (!context) context = "No specific knowledge base or verified herb documents found matching this query in the database.";
 
@@ -180,7 +224,7 @@ const logMetrics = (question: string, prepared: PreparedDrAiContext, metrics: Dr
 export async function AskAIService(question: string, history: Content[] = []) {
   const totalStartedAt = performance.now();
   try {
-    const prepared = await prepareDrAiContext(question);
+    const prepared = await prepareDrAiContext(question, history);
     const generationStartedAt = performance.now();
     const answer = await generateChatResponse(question, prepared.context, history);
     const generationMs = performance.now() - generationStartedAt;
@@ -209,20 +253,14 @@ export async function AskAIService(question: string, history: Content[] = []) {
 
 export async function createDrAiStream(question: string, history: Content[] = []) {
   const totalStartedAt = performance.now();
-  const prepared = await prepareDrAiContext(question);
+  const prepared = await prepareDrAiContext(question, history);
   const generationStartedAt = performance.now();
   let firstChunkMs: number | undefined;
-  const sourceNames = prepared.sources.map((source) => source.title).slice(0, 2);
-  const initialText = sourceNames.length > 0
-    ? `I found verified Herbal AI information for ${sourceNames.join(" and ")}. Here is a clearer explanation:\n\n`
-    : "I could not find a sufficiently relevant verified record for that question. Here is what I can safely explain from the available context:\n\n";
   let reply = "";
 
   const chunks = async function* () {
-    firstChunkMs = performance.now() - generationStartedAt;
-    reply += initialText;
-    yield initialText;
     for await (const text of generateChatResponseStream(question, prepared.context, history)) {
+      firstChunkMs ??= performance.now() - generationStartedAt;
       reply += text;
       yield text;
     }

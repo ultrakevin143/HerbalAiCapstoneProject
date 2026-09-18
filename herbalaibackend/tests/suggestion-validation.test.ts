@@ -2,10 +2,10 @@ import { describe, it, expect } from 'vitest';
 import request from 'supertest';
 import app from '../src/app.js';
 import { generateAccessToken } from '../src/utils/jwt.js';
-import { suggestHerbSchema } from '../src/schema/suggest.schema.js';
+import { approveSuggestionSchema, requestSuggestionChangesSchema, suggestHerbSchema } from '../src/schema/suggest.schema.js';
 
 const token = generateAccessToken({ userId: 'validation-only-no-database-user', role: 'contributor' });
-const body = { localName: 'Test', scientificName: 'Test scientific', category: 'Other', medicinalUses: 'Test only', preparationMethod: 'Do not use', dosage: 'None' };
+const body = { localName: 'Test', scientificName: 'Test scientific', category: 'Other', medicinalUses: 'Test only', preparationMethod: 'Do not use', dosage: 'None', informationSource: 'Test reference' };
 describe('Suggestion validation before persistence/upload', () => {
   for (const field of Object.keys(body)) {
     it(`rejects whitespace-only ${field}`, () => {
@@ -29,5 +29,16 @@ describe('Suggestion validation before persistence/upload', () => {
   it('requires fields even when an image is absent', async () => {
     const res = await request(app).post('/api/suggest').set('Authorization', `Bearer ${token}`).send({});
     expect(res.status).toBe(400);
+  });
+
+  it('requires an explicit publishable evidence class for approval', () => {
+    expect(approveSuggestionSchema.safeParse({ body: {} }).success).toBe(false);
+    expect(approveSuggestionSchema.safeParse({ body: { evidenceClass: 'UNASSESSED' } }).success).toBe(false);
+    expect(approveSuggestionSchema.safeParse({ body: { evidenceClass: 'DOCUMENTED_TRADITIONAL_USE', revision: 0 } }).success).toBe(true);
+  });
+
+  it('requires meaningful reviewer notes when requesting changes', () => {
+    expect(requestSuggestionChangesSchema.safeParse({ body: { reviewNotes: 'Too short' } }).success).toBe(false);
+    expect(requestSuggestionChangesSchema.safeParse({ body: { reviewNotes: 'Please provide a primary research source.', revision: 0 } }).success).toBe(true);
   });
 });

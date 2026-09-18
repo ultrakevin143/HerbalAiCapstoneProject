@@ -321,10 +321,36 @@ export class ForumController {
       };
 
       if (parentCommentId) {
-        commentData.parentCommentId = parseInt(parentCommentId, 10);
+        const parsedParentCommentId = parseInt(parentCommentId, 10);
+        if (isNaN(parsedParentCommentId)) {
+          return res.status(400).json({
+            status: 'error',
+            code: 400,
+            message: 'Invalid parent comment ID.',
+          });
+        }
+
+        const parentComment = await forumRepo.findCommentById(parsedParentCommentId);
+        if (!parentComment || parentComment.threadId !== threadId || parentComment.isDeleted) {
+          return res.status(400).json({
+            status: 'error',
+            code: 400,
+            message: 'The comment you are replying to was not found.',
+          });
+        }
+        commentData.parentCommentId = parsedParentCommentId;
       }
 
-      const comment = await forumRepo.createComment(commentData);
+      const { comment, notifications } = await forumRepo.createComment(commentData);
+
+      try {
+        const { io } = await import('../server.js');
+        notifications.forEach((notification) => {
+          io.to(notification.userId).emit('notification', notification);
+        });
+      } catch (socketError) {
+        console.error('Failed to emit community notification:', socketError);
+      }
 
       return res.status(201).json({
         status: 'success',

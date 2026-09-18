@@ -1,0 +1,47 @@
+[
+  {
+    "question": "How is a Lagundi leaf decoction prepared for cough according to PITAHC?",
+    "answer": "PITAHC identifies the plant as Lagundi (Vitex negundo) and gives this preparation for cough: use crushed fresh Lagundi leaves; boil them uncovered in 2 cups of water until the liquid is reduced to half, or about 1 cup. The amount of crushed leaves is age-based: 1½ tablespoons for ages 2–6, 3 tablespoons for ages 7–12, and 6 tablespoons for ages 13 and above. These tablespoon measurements describe the amount of leaves used in the preparation, not the amount of finished decoction to drink. The PITAHC directory entry does not state how much finished liquid to take, how often to take it, how long to use it, or storage instructions. Those missing directions should not be guessed, especially for children; consult a qualified health professional for patient-specific use.",
+    "category": "herb-preparation",
+    "tags": ["lagundi", "vitex negundo", "cough", "decoction", "preparation", "pitahc"],
+    "metadata": {
+      "reviewStatus": "SOURCE_VERIFIED",
+      "limitations": [
+        "Finished-liquid dose is not stated on the cited page.",
+        "Frequency, duration, cooling, straining, and storage instructions are not stated on the cited page."
+      ],
+      "sources": [
+        {
+          "title": "Directory of Herbs — Lagundi",
+          "publisher": "Philippine Institute of Traditional and Alternative Health Care (PITAHC)",
+          "url": "https://pitahc.gov.ph/herbs-directory/",
+          "section": "Lagundi (Fil)",
+          "accessedAt": "2026-09-16"
+        }
+      ]
+    }
+  },
+  {
+    "question": "What evidence and use does PITAHC report for Lagundi?",
+    "answer": "PITAHC lists Lagundi (Vitex negundo) for cough and labels its clinical evidence as antitussive in the Philippine setting. The same directory separately lists pre-clinical findings as antimutagenic activity and a depressant effect on cardiac function. These categories must remain distinct: pre-clinical findings do not by themselves establish a treatment benefit in people. The directory entry supports describing Lagundi as having reported clinical antitussive evidence in the Philippine setting; it does not support claiming that Lagundi cures every cause of cough or replaces diagnosis and prescribed treatment.",
+    "category": "herb-evidence",
+    "tags": ["lagundi", "vitex negundo", "cough", "antitussive", "clinical evidence", "pitahc"],
+    "metadata": {
+      "reviewStatus": "SOURCE_VERIFIED",
+      "evidenceLabel": "Clinical: Antitussive (Philippine setting)",
+      "limitations": [
+        "The directory page lists references but does not provide study design or effect-size details.",
+        "The fact does not establish effectiveness for every cause or severity of cough."
+      ],
+      "sources": [
+        {
+          "title": "Directory of Herbs — Lagundi",
+          "publisher": "Philippine Institute of Traditional and Alternative Health Care (PITAHC)",
+          "url": "https://pitahc.gov.ph/herbs-directory/",
+          "section": "Lagundi (Fil)",
+          "accessedAt": "2026-09-16"
+        }
+      ]
+    }
+  }
+]

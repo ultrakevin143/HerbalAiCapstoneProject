@@ -9,6 +9,14 @@
     "start": "node dist/index.js",
     "lint": "eslint src",
     "seed": "tsx prisma/seed.ts",
+    "deploy:migrate": "prisma migrate deploy",
+    "deploy:bootstrap": "npm run seed && tsx prisma/import-built-in-herbs.ts --publish && tsx prisma/import-built-in-herbs.ts --publish --file content/herbs/expansion-batch-02.json && npm run kb:import",
+    "herbs:validate": "tsx prisma/import-built-in-herbs.ts --dry-run",
+    "herbs:status": "tsx prisma/import-built-in-herbs.ts --status",
+    "herbs:stage": "tsx prisma/import-built-in-herbs.ts --stage",
+    "herbs:publish": "tsx prisma/import-built-in-herbs.ts --publish",
+    "kb:import": "tsx prisma/import-kb-facts.ts",
+    "embed:herbs": "tsx prisma/reembed-herbs.ts",
     "test": "vitest run"
   },
   "prisma": {

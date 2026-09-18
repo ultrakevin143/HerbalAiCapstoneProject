@@ -21,10 +21,10 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
-  login: (email: string, password: string) => Promise<User | null>;
+  login: (identifier: string, password: string) => Promise<User | null>;
   signup: (data: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => Promise<void>;
   logout: () => Promise<void>;
-  checkSession: () => Promise<User | null>;
+  checkSession: (force?: boolean) => Promise<User | null>;
   updateProfile: (data: { name?: string; avatar?: string | null; bio?: string | null }) => Promise<User>;
 }
 
@@ -35,31 +35,49 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  const checkSession = async (): Promise<User | null> => {
+  const checkSession = async (force: boolean = false): Promise<User | null> => {
+    if (!force && typeof window !== 'undefined' && !localStorage.getItem('herbalai_has_session')) {
+      setUser(null);
+      setLoading(false);
+      return null;
+    }
+
     try {
       const response = await cachedApiGet('/auth/me', 2_000);
       if (response.data?.status === 'success' && response.data?.data?.user) {
         const userObj = response.data.data.user;
         setUser(userObj);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('herbalai_has_session', '1');
+        }
         return userObj;
       } else {
         setUser(null);
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('herbalai_has_session');
+        }
         return null;
       }
     } catch {
       setUser(null);
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('herbalai_has_session');
+      }
       return null;
     } finally {
       setLoading(false);
     }
   };
 
-  const login = async (email: string, password: string): Promise<User | null> => {
+  const login = async (identifier: string, password: string): Promise<User | null> => {
     setLoading(true);
     try {
-      await api.post('/auth/login', { email, password });
+      await api.post('/auth/login', { identifier: identifier.trim(), password });
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('herbalai_has_session', '1');
+      }
       invalidateApiGetCache('/auth/me');
-      const loggedInUser = await checkSession();
+      const loggedInUser = await checkSession(true);
       return loggedInUser;
     } catch (error) {
       setLoading(false);
@@ -85,6 +103,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error) {
       console.error('Logout request failed:', error);
     } finally {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('herbalai_has_session');
+      }
       setUser(null);
       invalidateApiGetCache();
       setLoading(false);
@@ -105,6 +126,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     checkSession();
 
     const handleAuthLogout = () => {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('herbalai_has_session');
+      }
       setUser(null);
       router.push('/signin');
     };

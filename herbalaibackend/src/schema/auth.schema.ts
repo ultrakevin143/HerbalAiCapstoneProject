@@ -17,9 +17,10 @@ export const signupSchema = z.object({
 
 export const loginSchema = z.object({
   body: z.object({
-    email: z.string().email("Invalid email address"),
+    identifier: z.string().trim().min(1).max(254).optional(),
+    email: z.string().trim().email("Invalid email address").optional(),
     password: z.string().min(1, "Password is required"),
-  }),
+  }).refine((body) => Boolean(body.identifier) !== Boolean(body.email), "Provide email or username"),
 });
 
 export const forgotPasswordSchema = z.object({

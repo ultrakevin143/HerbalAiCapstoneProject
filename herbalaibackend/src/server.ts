@@ -4,6 +4,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { verifyAccessToken } from './utils/jwt.js';
 import { closeDatabasePool, warmDatabasePool } from './lib/prisma.js';
+import { listen } from './lib/listen.js';
 
 const httpServer = createServer(app);
 
@@ -61,16 +62,27 @@ const startServer = async () => {
     // Pay the remote database connection cost before readiness instead of on the
     // first user's authenticated request. This does not cache user data.
     await warmDatabasePool();
-    httpServer.listen(ENV.PORT, () => {
-      console.log('--------------------------------------------------');
-      console.log(`🚀 ${ENV.APP_NAME} started successfully!`);
-      console.log(`📡 URL: ${ENV.BACKEND_URL}`);
-      console.log(`🌍 MODE: ${ENV.NODE_ENV}`);
-      console.log(`🔌 WebSockets enabled`);
-      console.log('--------------------------------------------------');
-    });
+    await listen(httpServer, ENV.PORT);
+    console.log('--------------------------------------------------');
+    console.log(`🚀 ${ENV.APP_NAME} started successfully!`);
+    console.log(`📡 URL: ${ENV.BACKEND_URL}`);
+    console.log(`🌍 MODE: ${ENV.NODE_ENV}`);
+    console.log(`🔌 WebSockets enabled`);
+    console.log('--------------------------------------------------');
   } catch (error) {
-    console.error('❌ CRITICAL: Could not start the engine:', error);
+    if ((error as NodeJS.ErrnoException).code === 'EADDRINUSE') {
+      console.error(`Port ${ENV.PORT} is already in use. Stop the existing backend or preview before starting another instance.`);
+    } else {
+      console.error('❌ CRITICAL: Could not start the engine:', error);
+    }
+    const exitTimer = setTimeout(() => process.exit(1), 5_000);
+    exitTimer.unref();
+    io.close();
+    try {
+      await closeDatabasePool();
+    } catch (cleanupError) {
+      console.error('Failed to close the database pool after startup failure:', cleanupError);
+    }
     process.exit(1);
   }
 };

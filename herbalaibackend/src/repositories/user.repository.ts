@@ -53,6 +53,17 @@ export const findUserByUsername = async (username: string) => {
   });
 };
 
+export const findUserByLoginIdentifier = async (identifier: string) => {
+  const normalized = identifier.trim();
+  const users = await prisma.user.findMany({
+    where: normalized.includes('@')
+      ? { email: { equals: normalized, mode: 'insensitive' } }
+      : { username: { equals: normalized, mode: 'insensitive' } },
+    take: 2,
+  });
+  return users.length === 1 ? users[0] : null;
+};
+
 const fetchSessionUsers = async (ids: string[]) => {
   const users = await prisma.user.findMany({
     where: { id: { in: ids } },

@@ -98,10 +98,10 @@ export const signup = async (data: SignupData) => {
   };
 };
 
-export const login = async (data: { email: string; password: string }) => {
-  const user = await userRepo.findUserByEmail(data.email);
+export const login = async (data: { identifier?: string; email?: string; password: string }) => {
+  const user = await userRepo.findUserByLoginIdentifier(data.identifier ?? data.email ?? '');
   if (!user) {
-    throw { status: 401, message: "Invalid email or password." };
+    throw { status: 401, message: "Invalid email/username or password." };
   }
 
   if (user.isBanned) {
@@ -110,7 +110,7 @@ export const login = async (data: { email: string; password: string }) => {
 
   const isPasswordValid = await comparePassword(data.password, user.password);
   if (!isPasswordValid) {
-    throw { status: 401, message: "Invalid email or password." };
+    throw { status: 401, message: "Invalid email/username or password." };
   }
 
   if (!user.emailVerified) {

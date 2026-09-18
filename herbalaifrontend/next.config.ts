@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const useConstrainedBuild = process.env.NEXT_CONSTRAINED_BUILD === "1";
 
 const nextConfig: NextConfig = {
+  devIndicators: false,
   experimental: useConstrainedBuild
     ? { cpus: 1, workerThreads: true }
     : undefined,

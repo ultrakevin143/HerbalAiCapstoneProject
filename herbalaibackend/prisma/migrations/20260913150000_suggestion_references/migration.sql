@@ -1,0 +1,3 @@
+ALTER TABLE "SuggestedHerb"
+  ADD COLUMN "references" JSONB NOT NULL DEFAULT '[]',
+  ADD COLUMN "revision" INTEGER NOT NULL DEFAULT 0;

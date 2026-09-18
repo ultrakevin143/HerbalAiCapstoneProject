@@ -7,6 +7,14 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import api from '../../lib/axios';
 import UserProfileModal from '../../components/UserProfileModal';
+import {
+  Search,
+  AlertCircle,
+  MessageSquare,
+  Pin,
+  Heart,
+  Eye,
+} from 'lucide-react';
 
 interface Thread {
   id: number;
@@ -82,7 +90,7 @@ export default function CommunityPage() {
       if (res.data?.status === 'success') {
         setThreads(res.data.data.threads || []);
       }
-    } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
+    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error('Failed to fetch threads:', err);
       setError(err.response?.data?.message || 'Failed to load discussions. Please try again.');
     } finally {
@@ -104,7 +112,7 @@ export default function CommunityPage() {
       case 'recipes':
         return 'Herbal Recipes';
       default:
-        return catId;
+        return 'General Discussion';
     }
   };
 
@@ -118,36 +126,36 @@ export default function CommunityPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-green-50">
+    <div className="min-h-screen flex flex-col bg-transparent font-sans text-ink">
       <Navbar />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-10">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-10">
         {/* Header Block */}
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-4 py-1.5 text-xs font-black text-green-700 shadow-sm uppercase tracking-wider mb-3">
-              👥 Observation & Community Board
+            <span className="inline-flex items-center gap-2 rounded-full border border-green-200 dark:border-line bg-green-50 dark:bg-soft px-4 py-1.5 text-xs font-black text-green-700 dark:text-green-300 shadow-sm uppercase tracking-wider mb-3">
+              👥 Observation &amp; Community Board
             </span>
-            <h1 className="text-4xl font-serif-custom font-black italic text-[#1b4332] tracking-tight">
+            <h1 className="text-4xl font-serif-custom font-black italic text-[#1b4332] dark:text-ink tracking-tight">
               Traditional Medicine Forum
             </h1>
-            <p className="text-[#2d6a4f] text-sm font-bold mt-1 max-w-xl">
+            <p className="text-[#2d6a4f] dark:text-muted text-sm font-bold mt-1 max-w-xl">
               Share observations, recipe logs, and discuss safe preparations of Philippine medicinal plants.
             </p>
           </div>
 
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             {isAuthenticated ? (
               <Link
                 href="/community/new"
-                className="flat-button flat-button-primary !py-3 !px-6 text-sm"
+                className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-semibold text-sm px-6 py-3 rounded-full shadow-sm hover:brightness-105 transition-all inline-flex items-center gap-2"
               >
-                ➕ Start Discussion
+                <span>➕ Start Discussion</span>
               </Link>
             ) : (
               <Link
                 href="/signin?callbackUrl=/community/new"
-                className="flat-button flat-button-secondary !py-3 !px-6 text-sm"
+                className="btn btn-outline border-2 border-[#2d6a4f] text-[#2d6a4f] dark:text-[#74c69d] font-semibold text-sm px-6 py-3 rounded-full hover:bg-[#2d6a4f]/10 transition-all"
               >
                 Sign In to Post
               </Link>
@@ -158,8 +166,8 @@ export default function CommunityPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
           {/* Left Column Sidebar: Categories */}
           <aside className="lg:col-span-1 space-y-4">
-            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-              <h2 className="text-sm font-black text-[#1b4332] uppercase tracking-wider border-b border-gray-100 pb-3 mb-4">
+            <div className="glass-card bg-white/50 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-5 shadow-sm">
+              <h2 className="text-sm font-black text-[#1b4332] dark:text-ink uppercase tracking-wider border-b border-gray-100 dark:border-line pb-3 mb-4">
                 Categories
               </h2>
               <div className="flex flex-col gap-1.5">
@@ -168,11 +176,11 @@ export default function CommunityPage() {
                   return (
                     <button
                       key={cat.id}
-                      onClick={() => setActiveCategory(cat.id as any /* eslint-disable-line @typescript-eslint/no-explicit-any */)}
-                      className={`flex items-center gap-3 w-full text-left px-4 py-3 rounded-xl text-sm font-extrabold border-2 border-transparent transition-all ${
+                      onClick={() => setActiveCategory(cat.id as any)} // eslint-disable-line @typescript-eslint/no-explicit-any
+                      className={`flex items-center gap-3 w-full text-left px-4 py-3 rounded-2xl text-sm font-extrabold border-2 border-transparent transition-all cursor-pointer ${
                         isActive
-                          ? 'bg-[#eef5f0] text-[#1b4332] border-[#2d6a4f]'
-                          : 'text-[#2d6a4f] hover:bg-[#eef5f0] hover:text-[#1b4332]'
+                          ? 'bg-[#eef5f0] dark:bg-soft text-[#1b4332] dark:text-ink border-[#2d6a4f]'
+                          : 'text-[#2d6a4f] dark:text-muted hover:bg-[#eef5f0] dark:hover:bg-soft hover:text-[#1b4332]'
                       }`}
                     >
                       <span className="text-base">{cat.icon}</span>
@@ -184,11 +192,11 @@ export default function CommunityPage() {
             </div>
 
             {/* Guideline Banner */}
-            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm text-xs font-semibold text-[#2d6a4f] space-y-3">
-              <p className="font-black text-[#1b4332] text-sm flex items-center gap-1.5">
+            <div className="glass-card bg-white/45 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-5 shadow-sm text-xs font-semibold text-[#2d6a4f] dark:text-muted space-y-3">
+              <p className="font-black text-[#1b4332] dark:text-ink text-sm flex items-center gap-1.5">
                 🛡️ Platform Guidelines
               </p>
-              <ul className="list-disc pl-4 space-y-1.5 text-gray-500">
+              <ul className="list-disc pl-4 space-y-1.5 text-gray-500 dark:text-muted">
                 <li>Be respectful of traditional herbal heritage practices.</li>
                 <li>Never prescribe; always speak of personal experiences or cited logs.</li>
                 <li>Cite DOH or PITAHC publications where possible.</li>
@@ -199,20 +207,20 @@ export default function CommunityPage() {
           {/* Right Column: Search & Thread list */}
           <section className="lg:col-span-3 space-y-6">
             {/* Search Input */}
-            <div className="relative w-full bg-white border border-gray-100 rounded-2xl p-4 shadow-sm flex items-center gap-3">
-              <span className="text-xl text-[#2d6a4f]">🔍</span>
+            <div className="relative w-full bg-white/70 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-full p-3 px-4 shadow-sm flex items-center gap-3">
+              <Search className="h-4 w-4 text-[#2d6a4f] dark:text-[#74c69d] shrink-0" />
               <input
                 type="text"
                 placeholder="Search discussion titles or content..."
                 aria-label="Search discussion titles or content"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-transparent focus:outline-none text-[#1b4332] font-semibold text-sm"
+                className="w-full bg-transparent focus:outline-none text-[#1b4332] dark:text-ink font-semibold text-sm placeholder-gray-400"
               />
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm('')}
-                  className="text-xs text-gray-400 hover:text-gray-600 font-extrabold"
+                  className="text-xs text-gray-500 hover:text-[#1b4332] font-bold px-2 cursor-pointer"
                 >
                   Clear
                 </button>
@@ -221,29 +229,30 @@ export default function CommunityPage() {
 
             {/* Error View */}
             {error && (
-              <div className="p-4 border border-rose-200 bg-rose-50 text-rose-800 font-extrabold rounded-xl text-sm">
-                ⚠️ {error}
+              <div className="p-4 border border-rose-200 bg-rose-50 text-rose-800 font-bold rounded-2xl text-sm flex items-center gap-2">
+                <AlertCircle className="h-5 w-5 shrink-0 text-rose-600" />
+                <span>{error}</span>
               </div>
             )}
 
             {/* Loading Spinner */}
             {loading ? (
-              <div className="flex flex-col items-center justify-center py-20 bg-white border border-gray-100 rounded-3xl shadow-sm gap-4">
-                <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#2d6a4f] border-t-transparent"></div>
-                <p className="text-[#2d6a4f] font-extrabold text-sm animate-pulse">Loading discussion threads...</p>
+              <div className="flex flex-col items-center justify-center py-20 bg-white/40 dark:bg-panel/60 border border-black/10 dark:border-line rounded-3xl shadow-sm gap-3">
+                <div className="h-8 w-8 animate-spin rounded-full border-3 border-[#2d6a4f] border-t-transparent"></div>
+                <p className="text-[#2d6a4f] font-bold text-xs">Loading discussions...</p>
               </div>
             ) : threads.length === 0 ? (
               /* EMPTY STATE */
-              <div className="flex flex-col items-center justify-center text-center rounded-3xl border border-dashed border-[#2d6a4f]/25 bg-white p-16 shadow-sm">
-                <span className="text-6xl mb-4">🍃</span>
-                <h3 className="font-serif-custom text-2xl font-black text-[#1b4332]">No Discussions Yet</h3>
-                <p className="mt-2 text-sm text-gray-500 font-bold max-w-sm leading-relaxed">
-                  There are currently no discussion threads in this category. The administrator or verified botanical experts will start by creating the platform welcome topic soon!
+              <div className="flex flex-col items-center justify-center text-center rounded-3xl border border-dashed border-[#2d6a4f]/30 bg-white/40 dark:bg-panel/60 p-12 shadow-sm">
+                <MessageSquare className="h-10 w-10 text-[#2d6a4f]/40 mb-3" />
+                <h3 className="text-lg font-bold text-[#1b4332] dark:text-ink">No Discussions Yet</h3>
+                <p className="mt-1 text-xs text-gray-500 dark:text-muted font-medium max-w-sm leading-relaxed">
+                  There are currently no discussion threads in this category. Start by logging an observation or asking a herbal question!
                 </p>
                 {isAuthenticated && (
                   <Link
                     href="/community/new"
-                    className="flat-button flat-button-primary mt-6 text-sm"
+                    className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-semibold text-xs px-5 py-2.5 rounded-full mt-4 shadow-sm hover:brightness-105 transition-all inline-block"
                   >
                     Start the First Discussion
                   </Link>
@@ -256,26 +265,30 @@ export default function CommunityPage() {
                   <Link
                     key={thread.id}
                     href={`/community/${thread.id}`}
-                    className="block bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-200 group"
+                    className="block glass-card bg-white/50 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all group"
                   >
                     <div className="flex items-start gap-4">
                       {/* Avatar */}
                       <div 
-                        className="h-12 w-12 rounded-full bg-gradient-to-br from-[#40916c] to-[#74c69d] border-2 border-white text-lg flex items-center justify-center shadow-sm cursor-pointer hover:opacity-85 transition-opacity shrink-0"
+                        className="h-11 w-11 rounded-full bg-[#eef5f0] dark:bg-soft border border-black/10 dark:border-line text-xs font-bold text-[#1b4332] dark:text-ink flex items-center justify-center shadow-xs cursor-pointer shrink-0 mt-0.5"
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
                           handleUserClick(thread.author);
                         }}
                       >
-                        {thread.author?.avatar || '👤'}
+                        {thread.author?.avatar?.startsWith('http') ? (
+                          <img src={thread.author.avatar} alt="Avatar" className="h-full w-full rounded-full object-cover" />
+                        ) : (
+                          <span>{thread.author?.name?.[0]?.toUpperCase() || 'U'}</span>
+                        )}
                       </div>
 
                       {/* Summary */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap mb-1">
                           <span 
-                            className="text-xs font-black text-[#1b4332] hover:underline cursor-pointer"
+                            className="text-xs font-bold text-[#1b4332] dark:text-ink hover:underline cursor-pointer"
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
@@ -284,37 +297,41 @@ export default function CommunityPage() {
                           >
                             {thread.author?.name}
                           </span>
-                          <span className="text-[10px] text-gray-400 font-bold">
+                          <span className="text-xs text-gray-400 dark:text-muted">
                             • {formatDate(thread.date)}
                           </span>
                           {thread.pinned && (
-                            <span className="text-[9px] bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 rounded-full uppercase tracking-wider font-extrabold flex items-center gap-1">
-                              📌 Pinned
+                            <span className="text-[10px] bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider inline-flex items-center gap-1">
+                              <Pin className="h-2.5 w-2.5" />
+                              Pinned
                             </span>
                           )}
-                          <span className="text-[10px] bg-[#eef5f0] border border-[#2d6a4f]/20 text-[#2d6a4f] px-2 py-0.5 rounded-full font-black uppercase tracking-wider">
+                          <span className="text-[10px] bg-[#eef5f0] dark:bg-soft border border-[#2d6a4f]/20 text-[#2d6a4f] dark:text-[#74c69d] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
                             {getCategoryLabel(thread.category)}
                           </span>
                         </div>
 
-                        <h3 className="font-serif-custom text-xl font-black text-[#1b4332] group-hover:text-[#2d6a4f] transition-colors line-clamp-1 mb-2">
+                        <h3 className="text-base font-bold text-[#1b4332] dark:text-ink group-hover:text-[#40916c] transition-colors line-clamp-1 mb-1 font-serif-custom italic">
                           {thread.title}
                         </h3>
 
-                        <p className="text-gray-500 font-semibold text-xs leading-relaxed line-clamp-2">
+                        <p className="text-gray-600 dark:text-muted text-xs leading-relaxed line-clamp-2">
                           {thread.content}
                         </p>
 
                         {/* Counts Row */}
-                        <div className="flex items-center gap-6 mt-4 text-xs font-bold text-gray-400">
-                          <span className="flex items-center gap-1.5">
-                            ❤️ {thread.likes} likes
+                        <div className="flex items-center gap-5 mt-3 text-xs font-semibold text-gray-500 dark:text-muted">
+                          <span className="flex items-center gap-1">
+                            <Heart className="h-3.5 w-3.5 text-gray-400" />
+                            <span>{thread.likes}</span>
                           </span>
-                          <span className="flex items-center gap-1.5">
-                            💬 {thread.replies} replies
+                          <span className="flex items-center gap-1">
+                            <MessageSquare className="h-3.5 w-3.5 text-gray-400" />
+                            <span>{thread.replies}</span>
                           </span>
-                          <span className="flex items-center gap-1.5">
-                            👁️ {thread.views} views
+                          <span className="flex items-center gap-1">
+                            <Eye className="h-3.5 w-3.5 text-gray-400" />
+                            <span>{thread.views}</span>
                           </span>
                         </div>
                       </div>
@@ -327,13 +344,12 @@ export default function CommunityPage() {
         </div>
       </main>
 
-      {/* Floating Action Button (FAB) redirecting to Dr. AI chat */}
+      {/* Floating Action Button */}
       <Link
         href="/chat"
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-gradient-to-r from-[#2d6a4f] to-[#52b788] text-white px-5 py-3 rounded-full shadow-lg hover:shadow-xl hover:brightness-105 active:scale-95 transition-all text-sm font-extrabold cursor-pointer border-2 border-white/20"
+        className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white px-5 py-3 rounded-full shadow-lg hover:brightness-105 transition-all text-xs font-bold"
       >
-        <span>🤖</span>
-        <span>Ask Dr. AI</span>
+        <span>🤖 Ask Dr.Ai</span>
       </Link>
 
       <UserProfileModal 

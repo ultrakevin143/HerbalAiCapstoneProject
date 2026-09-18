@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import api from '../../lib/axios';
 import { cachedApiGet, invalidateApiGetCache } from '../../lib/request-cache';
+import SuggestionReviewEditor, { type ReviewReference } from '../../components/SuggestionReviewEditor';
 import {
   Edit2,
   Trash2,
@@ -20,10 +21,16 @@ import {
   ShieldCheck,
   CheckCircle2,
   AlertCircle,
+  Download,
+  FileJson,
+  LoaderCircle,
+  Upload,
 } from 'lucide-react';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 interface Suggestion {
+  revision: number;
+  references?: ReviewReference[];
   id: number;
   submitterId: string;
   localName: string;
@@ -37,8 +44,10 @@ interface Suggestion {
   warnings?: string;
   informationSource?: string;
   imageUrl?: string;
-  status: 'Pending' | 'Approved' | 'Rejected';
+  status: 'Pending' | 'ChangesRequested' | 'Approved' | 'Rejected';
   submittedAt: string;
+  reviewNotes?: string;
+  evidenceClass?: 'DOH_PITAHC_LISTED' | 'EVIDENCE_SUPPORTED_PHILIPPINE_USE' | 'DOCUMENTED_TRADITIONAL_USE' | 'UNASSESSED';
 }
 
 interface Herb {
@@ -78,6 +87,14 @@ interface KBItem {
   updatedAt: string;
 }
 
+interface KBImportFact {
+  question: string;
+  answer: string;
+  category?: string;
+  tags?: string[];
+  metadata?: Record<string, unknown>;
+}
+
 interface AuditLog {
   id: number;
   adminId: string;
@@ -103,6 +120,7 @@ interface DashboardStats {
 }
 
 export default function AdminPage() {
+  const [reviewEditing, setReviewEditing] = useState<Suggestion | null>(null);
   const { user, loading, isAuthenticated, logout } = useAuth();
   const router = useRouter();
   
@@ -119,6 +137,8 @@ export default function AdminPage() {
   const [actioningId, setActioningId] = useState<number | null>(null);
   const [banActioningUserId, setBanActioningUserId] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [reviewNotesById, setReviewNotesById] = useState<Record<number, string>>({});
+  const [evidenceClassById, setEvidenceClassById] = useState<Record<number, string>>({});
 
   // Search filters
   const [librarySearch, setLibrarySearch] = useState('');
@@ -132,6 +152,7 @@ export default function AdminPage() {
   const [kbAnswer, setKbAnswer] = useState('');
   const [kbCategory, setKbCategory] = useState('');
   const [kbTags, setKbTags] = useState('');
+  const [isImportingKb, setIsImportingKb] = useState(false);
 
   // Herb Edit Modals and forms
   const [isHerbModalOpen, setIsHerbModalOpen] = useState(false);
@@ -248,7 +269,16 @@ export default function AdminPage() {
       setActioningId(id);
       setError(null);
       setSuccessMsg(null);
-      const res = await api.post(`/suggest/${id}/approve`);
+      const evidenceClass = evidenceClassById[id];
+      if (!evidenceClass) {
+        setError('Select an evidence classification before publishing.');
+        return;
+      }
+      const res = await api.post(`/suggest/${id}/approve`, {
+        revision: suggestions.find((suggestion) => suggestion.id === id)?.revision,
+        evidenceClass,
+        reviewNotes: reviewNotesById[id]?.trim() || undefined,
+      });
       if (res.data?.status === 'success') {
         invalidateApiGetCache('/herbs');
         setSuccessMsg(`Herb suggestion approved and added to the library!`);
@@ -269,12 +299,40 @@ export default function AdminPage() {
     }
   };
 
+  const handleRequestChanges = async (id: number) => {
+    const reviewNotes = reviewNotesById[id]?.trim();
+    if (!reviewNotes || reviewNotes.length < 10) {
+      setError('Provide at least 10 characters explaining the required changes.');
+      return;
+    }
+    try {
+      setActioningId(id);
+      setError(null);
+      setSuccessMsg(null);
+      const res = await api.post(`/suggest/${id}/request-changes`, {
+        reviewNotes, revision: suggestions.find((suggestion) => suggestion.id === id)?.revision,
+      });
+      if (res.data?.status === 'success') {
+        setSuccessMsg('Changes requested.');
+        setSuggestions((prev) => prev.map((suggestion) => (
+          suggestion.id === id ? { ...suggestion, status: 'ChangesRequested', reviewNotes } : suggestion
+        )));
+      }
+    } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
+      setError(err.response?.data?.message || 'Failed to request changes.');
+    } finally {
+      setActioningId(null);
+    }
+  };
+
   const handleReject = async (id: number) => {
     try {
       setActioningId(id);
       setError(null);
       setSuccessMsg(null);
-      const res = await api.post(`/suggest/${id}/reject`);
+      const res = await api.post(`/suggest/${id}/reject`, {
+        revision: suggestions.find((suggestion) => suggestion.id === id)?.revision,
+      });
       if (res.data?.status === 'success') {
         setSuccessMsg(`Suggestion has been rejected.`);
         setSuggestions((prev) =>
@@ -416,6 +474,75 @@ export default function AdminPage() {
     }
   };
 
+  const handleKbFileImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    try {
+      setError(null);
+      setSuccessMsg(null);
+      setIsImportingKb(true);
+      if (!file.name.toLowerCase().endsWith('.json')) throw new Error('Choose a JSON file.');
+      if (file.size > 1_000_000) throw new Error('The JSON file must be smaller than 1 MB.');
+
+      const parsed: unknown = JSON.parse(await file.text());
+      const records = Array.isArray(parsed) ? parsed : [parsed];
+      if (records.length === 0) throw new Error('The JSON file does not contain any facts.');
+      if (records.length > 50) throw new Error('Import up to 50 facts at a time.');
+
+      const facts: KBImportFact[] = records.map((record, index) => {
+        if (!record || typeof record !== 'object' || Array.isArray(record)) {
+          throw new Error(`Fact ${index + 1} must be a JSON object.`);
+        }
+        const fact = record as Record<string, unknown>;
+        if (typeof fact.question !== 'string' || fact.question.trim().length < 5) {
+          throw new Error(`Fact ${index + 1} needs a question of at least 5 characters.`);
+        }
+        if (typeof fact.answer !== 'string' || fact.answer.trim().length < 10) {
+          throw new Error(`Fact ${index + 1} needs an answer of at least 10 characters.`);
+        }
+        if (fact.tags !== undefined && (!Array.isArray(fact.tags) || !fact.tags.every((tag) => typeof tag === 'string'))) {
+          throw new Error(`Fact ${index + 1} has invalid tags.`);
+        }
+        if (fact.metadata !== undefined && (!fact.metadata || typeof fact.metadata !== 'object' || Array.isArray(fact.metadata))) {
+          throw new Error(`Fact ${index + 1} has invalid metadata.`);
+        }
+        const metadata = fact.metadata as Record<string, unknown> | undefined;
+        const sources = metadata?.sources;
+        if (typeof metadata?.jurisdiction !== 'string' || metadata.jurisdiction.trim().toLowerCase() !== 'philippines') {
+          throw new Error(`Fact ${index + 1} must declare metadata.jurisdiction as "Philippines".`);
+        }
+        if (!Array.isArray(sources) || sources.length === 0) {
+          throw new Error(`Fact ${index + 1} must include at least one Philippine-relevant source in metadata.sources.`);
+        }
+        return {
+          question: fact.question.trim(),
+          answer: fact.answer.trim(),
+          ...(typeof fact.category === 'string' && fact.category.trim() ? { category: fact.category.trim() } : {}),
+          ...(Array.isArray(fact.tags) ? { tags: fact.tags as string[] } : {}),
+          ...(fact.metadata ? { metadata: fact.metadata as Record<string, unknown> } : {}),
+        };
+      });
+
+      const res = await api.post('/knowledge-base/import', { facts });
+      if (res.data?.status === 'success') {
+        const kbRes = await api.get('/knowledge-base/all');
+        if (kbRes.data?.status === 'success') setKbList(kbRes.data.data || []);
+        const summary = res.data.data;
+        setSuccessMsg(`Imported ${summary.total} fact${summary.total === 1 ? '' : 's'}: ${summary.created} new, ${summary.updated} updated.`);
+      }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to import the knowledge base file.';
+      const apiMessage = typeof err === 'object' && err !== null && 'response' in err
+        ? (err as { response?: { data?: { message?: string } } }).response?.data?.message
+        : undefined;
+      setError(apiMessage || message);
+    } finally {
+      setIsImportingKb(false);
+    }
+  };
+
   const handleDeleteKbItem = async (id: string) => {
     if (!confirm('Are you sure you want to delete this knowledge base entry?')) return;
     try {
@@ -531,6 +658,11 @@ export default function AdminPage() {
 
   return (
     <div className="admin-shell">
+      {reviewEditing && <SuggestionReviewEditor suggestion={reviewEditing} onClose={() => setReviewEditing(null)} onSaved={() => {
+        setReviewEditing(null);
+        setSuccessMsg('Review edits saved.');
+        api.get('/suggest').then((response) => setSuggestions(response.data.data.suggestions)).catch(() => setError('Edits saved. Refresh to load the latest submissions.'));
+      }} />}
       {/* Sidebar Console */}
       <aside className={`admin-sidebar ${mobileNavOpen ? 'is-open' : ''}`}>
         <div className="admin-brand">
@@ -858,6 +990,17 @@ export default function AdminPage() {
                       </div>
 
                       {/* Content details */}
+                      <div className="mb-4 space-y-2 text-sm text-ink">
+                        <p><strong>Contributor source: </strong>{suggestion.informationSource || 'Not provided'}</p>
+                        <h3 className="font-bold">Reviewed references ({suggestion.references?.length || 0})</h3>
+                        {suggestion.references?.map((source, index) => <div key={index} className="rounded-lg border border-line p-3">
+                          {source.url ? <a href={source.url} target="_blank" rel="noopener noreferrer" className="underline">{source.title}</a> : <span>{source.title}</span>}
+                          <p>{source.publisher} {source.publishedAt}</p><p>{source.citation}</p>
+                          <p>Supports: {source.supports.map((claim) => ({ identity: 'Identity', medicinalUses: 'Uses', preparationMethod: 'Preparation', dosage: 'Dosage', warnings: 'Safety', isDohApproved: 'Official listing' })[claim] || claim).join(', ')}</p>
+                        </div>)}
+                        {suggestion.reviewNotes && <p className="whitespace-pre-wrap">Reviewer notes: {suggestion.reviewNotes}</p>}
+                        <button type="button" disabled={actioningId !== null} className="flat-button flat-button-secondary" onClick={() => setReviewEditing(suggestion)}>Edit & references</button>
+                      </div>
                       <div className="flex-1 space-y-4 text-sm font-semibold text-[#1b4332]">
                         <div>
                           <h4 className="text-[10px] font-extrabold tracking-wider uppercase text-gray-400">Medicinal Uses</h4>
@@ -877,10 +1020,36 @@ export default function AdminPage() {
                             {suggestion.warnings}
                           </div>
                         )}
+                        <div className="grid gap-3 border-t border-gray-100 pt-4">
+                          <label className="grid gap-1 text-xs font-extrabold text-[#1b4332]">
+                            Evidence classification
+                            <select
+                              value={evidenceClassById[suggestion.id] || ''}
+                              onChange={(event) => setEvidenceClassById((current) => ({ ...current, [suggestion.id]: event.target.value }))}
+                              className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold"
+                            >
+                              <option value="">Select before approval</option>
+                              <option value="DOH_PITAHC_LISTED">DOH/PITAHC listed</option>
+                              <option value="EVIDENCE_SUPPORTED_PHILIPPINE_USE">Evidence-supported Philippine use</option>
+                              <option value="DOCUMENTED_TRADITIONAL_USE">Documented traditional use</option>
+                            </select>
+                          </label>
+                          <label className="grid gap-1 text-xs font-extrabold text-[#1b4332]">
+                            Reviewer notes
+                            <textarea
+                              value={reviewNotesById[suggestion.id] || ''}
+                              onChange={(event) => setReviewNotesById((current) => ({ ...current, [suggestion.id]: event.target.value }))}
+                              rows={3}
+                              maxLength={2000}
+                              placeholder="Record the decision or explain required changes."
+                              className="resize-y rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold"
+                            />
+                          </label>
+                        </div>
                       </div>
 
                       {/* Action buttons */}
-                      <div className="mt-6 flex gap-3 border-t border-gray-50 pt-4">
+                      <div className="mt-6 grid grid-cols-1 gap-3 border-t border-gray-50 pt-4 sm:grid-cols-3">
                         <button
                           onClick={() => handleApprove(suggestion.id)}
                           disabled={actioningId !== null}
@@ -891,6 +1060,13 @@ export default function AdminPage() {
                           ) : (
                             'Approve & Publish'
                           )}
+                        </button>
+                        <button
+                          onClick={() => handleRequestChanges(suggestion.id)}
+                          disabled={actioningId !== null}
+                          className="flat-button flat-button-secondary !py-2 text-xs !border-amber-600 !text-amber-700 hover:!bg-amber-50"
+                        >
+                          Request Changes
                         </button>
                         <button
                           onClick={() => handleReject(suggestion.id)}
@@ -1105,6 +1281,54 @@ export default function AdminPage() {
                 </div>
               </div>
 
+              <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-[#8b9d83]/35 bg-[#8b9d83]/10 p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-start gap-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#606c38] text-white">
+                    <FileJson className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-extrabold text-[#1b4332]">Import reviewed RAG facts</p>
+                    <p className="mt-1 max-w-2xl text-xs leading-relaxed text-gray-600">
+                      Upload one fact or an array of up to 50 facts. Dr. AI creates fresh embeddings and updates matching questions.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex shrink-0 flex-wrap items-center gap-2">
+                  <a
+                    href="/templates/philippine-herbal-medicine-kb-facts.json"
+                    download
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[#606c38]/30 bg-white px-3 py-2 text-xs font-bold text-[#1b4332] transition hover:bg-[#8b9d83]/10"
+                  >
+                    <Download className="h-3.5 w-3.5" /> Philippine core
+                  </a>
+                  <a
+                    href="/templates/lagundi-kb-facts.json"
+                    download
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[#606c38]/30 bg-white px-3 py-2 text-xs font-bold text-[#1b4332] transition hover:bg-[#8b9d83]/10"
+                  >
+                    <Download className="h-3.5 w-3.5" /> Lagundi pack
+                  </a>
+                  <a
+                    href="/templates/pitahc-nine-herbs-kb-facts.json"
+                    download
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[#606c38]/30 bg-white px-3 py-2 text-xs font-bold text-[#1b4332] transition hover:bg-[#8b9d83]/10"
+                  >
+                    <Download className="h-3.5 w-3.5" /> Nine-herb pack
+                  </a>
+                  <label className={`inline-flex items-center gap-1.5 rounded-full bg-[#c66b3d] px-3 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-[#b85e34] ${isImportingKb ? 'cursor-wait opacity-70' : 'cursor-pointer'}`}>
+                    {isImportingKb ? <LoaderCircle className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
+                    {isImportingKb ? 'Importing…' : 'Import JSON'}
+                    <input
+                      type="file"
+                      accept="application/json,.json"
+                      disabled={isImportingKb}
+                      onChange={handleKbFileImport}
+                      className="sr-only"
+                    />
+                  </label>
+                </div>
+              </div>
+
               {filteredKbList.length === 0 ? (
                 <p className="text-sm font-semibold text-gray-500 text-center py-8">No knowledge base records found.</p>
               ) : (
@@ -1282,15 +1506,14 @@ export default function AdminPage() {
                                   <span className="text-gray-400 text-[11px] block font-mono">ID: {log.targetId}</span>
                                 )}
                               </td>
-                              <td className="py-3 px-4 max-w-xs truncate text-[11px] text-gray-600">
+                              <td className="py-3 px-4 max-w-md text-sm text-gray-600">
                                 {log.details ? (
-                                  <span className="font-mono bg-gray-50 px-2 py-1 rounded border border-gray-100">
-                                    {typeof log.details === 'object'
-                                      ? Object.entries(log.details)
-                                          .map(([k, v]) => `${k}: ${v}`)
-                                          .join(', ')
-                                      : String(log.details)}
-                                  </span>
+                                  <details>
+                                    <summary className="cursor-pointer font-semibold">View change details</summary>
+                                    <pre className="mt-2 max-h-80 overflow-auto whitespace-pre-wrap break-words rounded border border-gray-100 bg-gray-50 p-3 text-xs">
+                                      {typeof log.details === 'object' ? JSON.stringify(log.details, null, 2) : String(log.details)}
+                                    </pre>
+                                  </details>
                                 ) : (
                                   <span className="text-gray-300">-</span>
                                 )}

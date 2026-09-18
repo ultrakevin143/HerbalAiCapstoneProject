@@ -33,4 +33,13 @@ describe("Herb Suggestion & Verification Workflow", () => {
     expect(response.status).toBe(401);
     expect(response.body.status).toBe("error");
   });
+
+  it("POST /api/suggest/1/request-changes - should reject unauthenticated requests", async () => {
+    const response = await request(app).post("/api/suggest/1/request-changes").send({
+      reviewNotes: "Please provide a stronger research source.",
+    });
+
+    expect(response.status).toBe(401);
+    expect(response.body.status).toBe("error");
+  });
 });

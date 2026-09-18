@@ -1,0 +1,10 @@
+UPDATE "Herb" SET "medicinalUses" = 'Clinical evidence in the Philippine setting supports Lagundi''s antitussive (cough-relieving) use.' WHERE "localName" = 'Lagundi';
+UPDATE "Herb" SET "medicinalUses" = 'Clinical evidence in the Philippine setting supports diuretic and antiuricemic activity. Kidney-stone dissolution remains supported only by preclinical evidence.' WHERE "localName" = 'Sambong';
+UPDATE "Herb" SET "medicinalUses" = 'Clinical evidence has evaluated Ampalaya for blood-sugar control and metabolic syndrome. Its use should remain under professional guidance.' WHERE "localName" = 'Ampalaya';
+UPDATE "Herb" SET "medicinalUses" = 'Clinical studies have evaluated garlic for hyperlipidemia, hypertension, and arteriosclerosis.' WHERE "localName" = 'Bawang';
+UPDATE "Herb" SET "medicinalUses" = 'Clinical evidence includes gingivitis and acute diarrhea. Traditional use includes a topical wash for wounds or scabies and a gargle for swollen gums.' WHERE "localName" = 'Bayabas';
+UPDATE "Herb" SET "medicinalUses" = 'Clinical evidence in the Philippine setting supports analgesic use. Recorded traditional applications include toothache relief and topical use for headache.' WHERE "localName" = 'Yerba Buena';
+UPDATE "Herb" SET "medicinalUses" = 'Clinical evidence in the Philippine setting includes caries-preventive and antispasmodic activity. Traditional preparation guidance addresses stomach pain.' WHERE "localName" = 'Tsaang Gubat';
+UPDATE "Herb" SET "medicinalUses" = 'Clinical evidence supports antifungal and antiscabies activity, including topical use for ringworm and other fungal skin infections.' WHERE "localName" = 'Akapulko';
+UPDATE "Herb" SET "medicinalUses" = 'Clinical evidence supports anthelmintic activity, with recorded seed-use guidance for intestinal worms.' WHERE "localName" = 'Niyog-niyogan';
+UPDATE "Herb" SET "medicinalUses" = 'Clinical evidence includes anti-gout use, while antihyperuricemic activity remains supported by preclinical evidence.' WHERE "localName" = 'Ulasimang Bato';
