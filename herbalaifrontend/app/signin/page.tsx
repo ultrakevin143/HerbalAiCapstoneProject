@@ -46,7 +46,7 @@ export default function SignInPage() {
         <div className="flex items-center justify-center w-24 h-24 rounded-full bg-[#ffffff] text-4xl mb-6 shadow-md">
           🌿
         </div>
-        <h1 className="text-4xl lg:text-6xl font-serif-custom italic font-normal tracking-tight mb-4">Herbal AI</h1>
+        <h1 className="text-4xl lg:text-6xl font-serif-custom italic font-normal tracking-tight mb-4">Herbal-Ai</h1>
         <p className="text-lg lg:text-xl font-bold opacity-90 max-w-md">
           Preserving Filipino Herbal Medicine Heritage through Artificial Intelligence
         </p>
@@ -55,7 +55,7 @@ export default function SignInPage() {
       {/* Right side - form */}
       <div className="flex flex-col justify-center items-center lg:w-1/2 p-6 lg:p-12">
         <div className="w-full max-w-md glass-card bg-white/60 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-6 lg:p-8 shadow-xl">
-          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] dark:text-ink mb-6">Log into Herbal AI</h2>
+          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] dark:text-ink mb-6">Log into Herbal-Ai</h2>
           
           {error && (
             <div 

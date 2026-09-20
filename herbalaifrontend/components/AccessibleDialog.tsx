@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, type ReactNode } from 'react';
+import { X } from 'lucide-react';
 
 let openDialogs = 0;
 let previousOverflow = '';
@@ -40,6 +41,11 @@ export default function AccessibleDialog({ label, onClose, children }: { label: 
         first?.focus();
       }
     }}>
+      <div className="sticky top-0 z-10 mb-2 flex justify-end bg-panel">
+        <button type="button" onClick={onClose} aria-label={`Close ${label}`} className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-panel text-ink shadow-sm transition-colors hover:bg-soft">
+          <X className="h-5 w-5" />
+        </button>
+      </div>
       {children}
     </dialog>
   );

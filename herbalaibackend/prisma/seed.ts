@@ -238,7 +238,6 @@ async function main() {
       password: adminPassword,
       role: "admin",
       emailVerified: new Date(),
-      bio: "Official System Administrator of Herbal AI Repository.",
     },
   });
   console.log(`👤 Admin account seeded: ${admin.email} (role: ${admin.role})`);

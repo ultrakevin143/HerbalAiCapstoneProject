@@ -17,7 +17,6 @@ const profile = {
   name: 'Cache User',
   avatar: null,
   role: 'contributor',
-  bio: null,
   joined: new Date('2026-01-01'),
   isBanned: false,
   emailVerified: new Date('2026-01-01'),
@@ -66,20 +65,19 @@ describe('authenticated user cache', () => {
   });
 
   it('invalidates the cached profile immediately after a profile change', async () => {
-    const updatedProfile = { ...profile, name: 'Updated Cache User', bio: 'Updated bio' };
+    const updatedProfile = { ...profile, name: 'Updated Cache User' };
     findMany.mockResolvedValueOnce([profile]).mockResolvedValueOnce([updatedProfile]);
     update.mockResolvedValue(updatedProfile);
 
     await userRepo.findUserById(profile.id);
-    await userRepo.updateUserProfile(profile.id, { name: updatedProfile.name, bio: updatedProfile.bio });
+    await userRepo.updateUserProfile(profile.id, { name: updatedProfile.name });
     await expect(userRepo.findUserById(profile.id)).resolves.toMatchObject({
       name: updatedProfile.name,
-      bio: updatedProfile.bio,
     });
 
     expect(update).toHaveBeenCalledWith(expect.objectContaining({
       where: { id: profile.id },
-      data: { name: updatedProfile.name, bio: updatedProfile.bio },
+      data: { name: updatedProfile.name },
     }));
     expect(findMany).toHaveBeenCalledTimes(2);
   });

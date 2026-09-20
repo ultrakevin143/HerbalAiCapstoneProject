@@ -7,6 +7,7 @@ import { useAuth } from '../../../context/AuthContext';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import api from '../../../lib/axios';
+import io from 'socket.io-client';
 import UserProfileModal from '../../../components/UserProfileModal';
 import {
   ArrowLeft,
@@ -84,6 +85,7 @@ export default function ThreadDetailPage({
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
   const [replyingTo, setReplyingTo] = useState<Comment | null>(null);
   const commentFormRef = useRef<HTMLFormElement>(null);
+  const commentIdsRef = useRef<Set<number>>(new Set());
 
   // Profile modal popup state
   const [selectedProfile, setSelectedProfile] = useState<{ id: string; name: string; avatar?: string | null; role: string } | null>(null);
@@ -107,7 +109,14 @@ export default function ThreadDetailPage({
       const res = await api.get(`/forum/threads/${id}`);
       if (res.data?.status === 'success') {
         setThread(res.data.data.thread);
-        setComments(res.data.data.comments || []);
+        const fetchedComments: Comment[] = res.data.data.comments || [];
+        const fetchedIds = new Set(fetchedComments.map((comment) => comment.id));
+        fetchedIds.forEach((commentId) => commentIdsRef.current.add(commentId));
+        setComments((current) => {
+          const merged = [...fetchedComments, ...current.filter((comment) => comment.threadId === Number(id) && !fetchedIds.has(comment.id))];
+          commentIdsRef.current = new Set(merged.map((comment) => comment.id));
+          return merged;
+        });
         if (isAuthenticated) {
           const [likeStatus, commentLikeStatuses] = await Promise.all([
             api.get(`/forum/threads/${id}/like-status`),
@@ -135,6 +144,36 @@ export default function ThreadDetailPage({
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchThreadDetail();
   }, [id, fetchThreadDetail]);
+
+  useEffect(() => {
+    const backendUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000';
+    const socket = io(backendUrl);
+    const threadId = Number(id);
+    socket.on('connect', () => socket.emit('forum:join', threadId));
+    socket.on('forum:comment', (event: { threadId: number; comment: Comment }) => {
+      if (event.threadId !== threadId || commentIdsRef.current.has(event.comment.id)) return;
+      commentIdsRef.current.add(event.comment.id);
+      setComments((current) => [...current, event.comment]);
+      setThread((current) => current ? { ...current, replies: current.replies + 1 } : current);
+    });
+    return () => {
+      socket.emit('forum:leave', threadId);
+      socket.disconnect();
+    };
+  }, [id]);
+
+  useEffect(() => {
+    const scrollToReply = () => {
+      if (!/^#comment-\d+$/.test(window.location.hash)) return;
+      document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+    const handleHashChange = () => {
+      void fetchThreadDetail();
+    };
+    requestAnimationFrame(scrollToReply);
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [comments, fetchThreadDetail]);
 
   const handleLike = async () => {
     if (!thread || isLiking) return;
@@ -204,12 +243,14 @@ export default function ThreadDetailPage({
       });
 
       if (res.data?.status === 'success') {
-        setComments((prev) => [...prev, res.data.data.comment]);
+        const postedComment = res.data.data.comment as Comment;
+        if (!commentIdsRef.current.has(postedComment.id)) {
+          commentIdsRef.current.add(postedComment.id);
+          setComments((prev) => [...prev, postedComment]);
+          setThread((current) => current ? { ...current, replies: current.replies + 1 } : current);
+        }
         setCommentContent('');
         setReplyingTo(null);
-        if (thread) {
-          setThread({ ...thread, replies: thread.replies + 1 });
-        }
       }
     } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error('Failed to post comment:', err);
@@ -478,7 +519,7 @@ export default function ThreadDetailPage({
                   <div
                     key={comment.id}
                     id={`comment-${comment.id}`}
-                    className={`glass-card bg-white/50 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-2xl p-4 shadow-xs ${
+                    className={`glass-card bg-white/50 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-2xl p-4 shadow-xs target:ring-2 target:ring-[var(--primary)] ${
                       comment.isDeleted ? 'opacity-60' : ''
                     } ${comment.parentCommentId ? 'ml-5 sm:ml-10 border-l-2 border-l-[#40916c]/45' : ''} scroll-mt-24`}
                   >

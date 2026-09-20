@@ -35,7 +35,7 @@ app.use(cookieParser());
 // --- Simple Health Check Route (kept for backwards compatibility) ---
 app.get('/api/test', (req: Request, res: Response) => {
   res.status(200).json({ 
-    message: "Herbal AI Backend is running successfully!",
+    message: "Herbal-Ai Backend is running successfully!",
     status: 'success',
     timestamp: new Date().toISOString()
   });

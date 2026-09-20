@@ -77,7 +77,7 @@ export default function SignUpPage() {
         <div className="flex items-center justify-center w-24 h-24 rounded-full bg-[#ffffff] text-4xl mb-6 shadow-md">
           🌿
         </div>
-        <h1 className="text-4xl lg:text-6xl font-serif-custom italic font-normal tracking-tight mb-4">Herbal AI</h1>
+        <h1 className="text-4xl lg:text-6xl font-serif-custom italic font-normal tracking-tight mb-4">Herbal-Ai</h1>
         <p className="text-lg lg:text-xl font-bold opacity-90 max-w-md">
           Join contributors preserving Philippine traditional herbal medicine knowledge.
         </p>

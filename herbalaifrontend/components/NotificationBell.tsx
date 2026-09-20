@@ -149,7 +149,7 @@ export default function NotificationBell() {
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[var(--primary)] px-1 text-xs font-bold text-white shadow">
+          <span className="absolute -top-1 -right-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-forest px-1 text-xs font-bold text-white shadow">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
@@ -195,7 +195,7 @@ export default function NotificationBell() {
               >
                 <span className="truncate">{category}</span>
                 {categoryCounts[category] > 0 && (
-                  <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--primary)] px-1 text-[10px] text-white">
+                  <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-forest px-1 text-[10px] font-bold text-white">
                     {categoryCounts[category] > 99 ? '99+' : categoryCounts[category]}
                   </span>
                 )}

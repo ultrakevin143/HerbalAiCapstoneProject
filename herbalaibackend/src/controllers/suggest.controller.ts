@@ -337,7 +337,7 @@ export class SuggestController {
         const notif = await createNotification({
           userId: suggestion.submitterId,
           title: "Herb Suggestion Approved! 🎉",
-          message: `Your submitted herb "${suggestion.localName}" (${suggestion.scientificName}) has been approved and published to the Herbal AI Library.`,
+          message: `Your submitted herb "${suggestion.localName}" (${suggestion.scientificName}) has been approved and published to the Herbal-Ai Library.`,
           type: "SUGGESTION_UPDATE",
           link: herb ? `/library?id=${encodeURIComponent(herb.id)}` : '/library',
         });
@@ -355,7 +355,7 @@ export class SuggestController {
                 <h2 style="color: #2d6a4f;">Herb Suggestion Approved!</h2>
                 <p>Hello <strong>${submitter.name}</strong>,</p>
                 <p>Great news! Your contribution for <strong>${suggestion.localName}</strong> (<em>${suggestion.scientificName}</em>) has been reviewed and approved by our team.</p>
-                <p>It is now live in the verified Herbal AI Library for the community to learn from.</p>
+                <p>It is now live in the verified Herbal-Ai Library for the community to learn from.</p>
                 <p style="color: #666; font-size: 12px; margin-top: 20px;">Thank you for preserving Philippine traditional botanical knowledge!</p>
               </div>
             `,

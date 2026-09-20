@@ -39,7 +39,7 @@ describe('Self-service profile editing', () => {
     const response = await request(app)
       .patch('/api/auth/me')
       .set('Authorization', `Bearer ${token}`)
-      .send({ name: '  Updated Profile Name  ', avatar: '🌿', bio: '  Local herb advocate.  ' });
+      .send({ name: '  Updated Profile Name  ', avatar: '🌿' });
 
     expect(response.status).toBe(200);
     expect(response.body.data.user).toMatchObject({
@@ -48,14 +48,14 @@ describe('Self-service profile editing', () => {
       username,
       name: 'Updated Profile Name',
       avatar: '🌿',
-      bio: 'Local herb advocate.',
       role: 'contributor',
       isBanned: false,
     });
 
     const session = await request(app).get('/api/auth/me').set('Authorization', `Bearer ${token}`);
     expect(session.status).toBe(200);
-    expect(session.body.data.user).toMatchObject({ name: 'Updated Profile Name', bio: 'Local herb advocate.' });
+    expect(session.body.data.user).toMatchObject({ name: 'Updated Profile Name', avatar: '🌿' });
+    expect(session.body.data.user).not.toHaveProperty('bio');
   });
 
   it('rejects attempts to change protected account fields', async () => {
@@ -81,5 +81,10 @@ describe('Self-service profile editing', () => {
 
     expect(invalidName.status).toBe(400);
     expect(empty.status).toBe(400);
+    const bio = await request(app)
+      .patch('/api/auth/me')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ bio: 'This field is no longer supported.' });
+    expect(bio.status).toBe(400);
   });
 });

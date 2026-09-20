@@ -698,7 +698,7 @@ function MessengerContent() {
                                       <div
                                         className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm leading-relaxed shadow-xs break-words ${
                                           isOwn
-                                            ? 'bg-[var(--botanical-forest)] text-white border border-[var(--botanical-forest)] rounded-br-xs'
+                                            ? 'bg-forest text-white border border-forest rounded-br-xs'
                                             : 'bg-panel border border-line text-ink rounded-bl-xs'
                                         }`}
                                       >

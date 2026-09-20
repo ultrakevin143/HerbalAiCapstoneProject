@@ -69,6 +69,8 @@
   --ui-warning-ink: #8a4812;
   --ui-error-surface: #fdf2f2;
   --ui-error-ink: #991b1b;
+  --primary: #8b3d20;
+  --botanical-forest: #1f3325;
 }
 
 :root[data-theme="dark"] {
@@ -91,6 +93,8 @@
   --ui-warning-ink: #fde68a;
   --ui-error-surface: #331116;
   --ui-error-ink: #fca5a5;
+  --primary: #f3a47e;
+  --botanical-forest: #1f3325;
 }
 
 :root[data-text-size="large"] { font-size: 112.5%; }

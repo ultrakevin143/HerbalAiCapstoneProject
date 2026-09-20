@@ -17,7 +17,7 @@ export default function Footer() {
         {/* copyright and legal */}
         <div className="text-center md:text-right">
           <p className="text-xs font-bold text-[#2d6a4f] dark:text-muted mb-1">
-            © {new Date().getFullYear()} Herbal AI — Philippine Medicinal Plant Repository.
+            © {new Date().getFullYear()} Herbal-Ai — Philippine Medicinal Plant Repository.
           </p>
           <p className="text-[10px] font-bold text-[#6a7282] dark:text-muted">
             Uses publicly available DOH and PITAHC reference materials; not an institutional endorsement.

@@ -77,7 +77,7 @@ export default function Navbar() {
               <span className="font-serif-custom italic font-black text-xl">H</span>
             </div>
             <span className="font-serif-custom text-xl font-black italic tracking-tight text-[#1b4332] dark:text-ink whitespace-nowrap shrink-0">
-              Herbal <span className="text-[#40916c]">AI</span>
+              Herbal-<span className="text-[#40916c]">Ai</span>
             </span>
           </Link>
 

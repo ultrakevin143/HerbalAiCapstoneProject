@@ -14,7 +14,6 @@ type SessionUser = {
   name: string;
   avatar: string | null;
   role: string;
-  bio: string | null;
   joined: Date;
   isBanned: boolean;
   emailVerified: Date | null;
@@ -27,7 +26,6 @@ const toSessionUser = (user: SessionUser): SessionUser => ({
   name: user.name,
   avatar: user.avatar,
   role: user.role,
-  bio: user.bio,
   joined: user.joined,
   isBanned: user.isBanned,
   emailVerified: user.emailVerified,
@@ -74,7 +72,6 @@ const fetchSessionUsers = async (ids: string[]) => {
       name: true,
       avatar: true,
       role: true,
-      bio: true,
       joined: true,
       isBanned: true,
       emailVerified: true,
@@ -98,7 +95,6 @@ export const createUser = async (data: Prisma.UserCreateInput) => {
       name: true,
       avatar: true,
       role: true,
-      bio: true,
       joined: true,
       isBanned: true,
       emailVerified: true,
@@ -115,7 +111,6 @@ export const findAllUsers = async () => {
       name: true,
       avatar: true,
       role: true,
-      bio: true,
       joined: true,
       isBanned: true,
       emailVerified: true,
@@ -137,7 +132,6 @@ export const updateUserBanStatus = async (id: string, isBanned: boolean) => {
       name: true,
       avatar: true,
       role: true,
-      bio: true,
       joined: true,
       isBanned: true,
       emailVerified: true,
@@ -149,7 +143,7 @@ export const updateUserBanStatus = async (id: string, isBanned: boolean) => {
 
 export const updateUserProfile = async (
   id: string,
-  data: { name?: string; avatar?: string | null; bio?: string | null },
+  data: { name?: string; avatar?: string | null },
 ) => {
   const user = await prisma.user.update({
     where: { id },
@@ -161,7 +155,6 @@ export const updateUserProfile = async (
       name: true,
       avatar: true,
       role: true,
-      bio: true,
       joined: true,
       isBanned: true,
       emailVerified: true,

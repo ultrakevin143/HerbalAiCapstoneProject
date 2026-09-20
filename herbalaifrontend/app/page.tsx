@@ -13,7 +13,7 @@ export default function Home() {
         <section className="px-6 py-16 bg-transparent">
           <div className="mx-auto max-w-7xl">
             <h2 className="font-serif-custom italic font-normal text-center text-4xl md:text-5xl text-[#1b4332] dark:text-ink mb-12">
-              Why Herbal AI?
+              Why Herbal-Ai?
             </h2>
             <div className="feature-grid-3 grid grid-cols-1 md:grid-cols-3 gap-8">
               <FeatureCard icon="📚" title="Preserving Heritage">

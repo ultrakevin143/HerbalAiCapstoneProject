@@ -675,7 +675,7 @@ export default function AdminPage() {
             <Leaf className="h-5 w-5" />
           </div>
           <div>
-            <strong className="text-white font-black text-lg">Herbal AI</strong>
+            <strong className="text-white font-black text-lg">Herbal-Ai</strong>
             <span className="text-white/80 text-xs block font-bold">Admin Console</span>
           </div>
           <button type="button" className="admin-menu-toggle" aria-label="Toggle admin navigation" aria-expanded={mobileNavOpen} aria-controls="admin-navigation" onClick={() => setMobileNavOpen(!mobileNavOpen)}>

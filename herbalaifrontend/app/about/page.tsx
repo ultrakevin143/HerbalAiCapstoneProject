@@ -153,7 +153,7 @@ export default function AboutPage() {
             </h1>
 
             <p className="text-lg md:text-xl text-[#2d6a4f]/80 dark:text-muted leading-relaxed max-w-2xl mx-auto">
-              Herbal AI is a digital sanctuary dedicated to preserving Philippine traditional medicinal plant lore while providing scientifically verified preparation guides and interactive AI-driven consultations.
+              Herbal-Ai is a digital sanctuary dedicated to preserving Philippine traditional medicinal plant lore while providing scientifically verified preparation guides and interactive AI-driven consultations.
             </p>
 
             <div className="flex justify-center gap-4 pt-4">
@@ -196,7 +196,7 @@ export default function AboutPage() {
                     Heritage Digitization
                   </h3>
                   <p className="text-sm text-[#2d6a4f] dark:text-muted leading-relaxed">
-                    Traditional knowledge is often passed down orally, leaving it vulnerable to being forgotten. Herbal AI indexes local naming variations (Tagalog, Cebuano, Ilocano) and ancient preparation techniques to build an everlasting digital archive.
+                    Traditional knowledge is often passed down orally, leaving it vulnerable to being forgotten. Herbal-Ai indexes local naming variations (Tagalog, Cebuano, Ilocano) and ancient preparation techniques to build an everlasting digital archive.
                   </p>
                 </div>
               </div>
@@ -247,7 +247,7 @@ export default function AboutPage() {
                 The 10 Medicinal Plants
               </h2>
               <p className="text-[#2d6a4f] dark:text-muted font-bold text-sm max-w-xl mx-auto">
-                These plants are included in Philippine government medicinal-plant reference materials. Click a plant to review the educational preparation and safety information stored in Herbal AI.
+                These plants are included in Philippine government medicinal-plant reference materials. Click a plant to review the educational preparation and safety information stored in Herbal-Ai.
               </p>
             </div>
 
@@ -388,7 +388,7 @@ export default function AboutPage() {
               </h2>
 
               <p className="text-sm md:text-base font-bold text-[#2d6a4f] dark:text-muted leading-relaxed">
-                Herbal AI represents a dedicated Capstone initiative built to solve a critical issue: the gap between traditional folk wisdom and modern digital health applications. By providing a verified central registry, we aim to eliminate hazardous self-medication practices while honoring local botanical heritage.
+                Herbal-Ai represents a dedicated Capstone initiative built to solve a critical issue: the gap between traditional folk wisdom and modern digital health applications. By providing a verified central registry, we aim to eliminate hazardous self-medication practices while honoring local botanical heritage.
               </p>
               
               <div className="grid grid-cols-2 gap-4 text-xs font-semibold text-[#1b4332] dark:text-ink pt-2">

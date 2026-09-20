@@ -13,7 +13,6 @@ export default function ProfileEditorModal({ isOpen, onClose }: ProfileEditorMod
   const { user, updateProfile } = useAuth();
   const [name, setName] = useState(user?.name || '');
   const [avatar, setAvatar] = useState(user?.avatar || '');
-  const [bio, setBio] = useState(user?.bio || '');
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -26,7 +25,7 @@ export default function ProfileEditorModal({ isOpen, onClose }: ProfileEditorMod
     setMessage(null);
     setError(null);
     try {
-      await updateProfile({ name: name.trim(), avatar: avatar.trim() || null, bio: bio.trim() || null });
+      await updateProfile({ name: name.trim(), avatar: avatar.trim() || null });
       setMessage('Profile saved.');
     } catch (caught: unknown) {
       const apiMessage = typeof caught === 'object' && caught !== null && 'response' in caught
@@ -52,7 +51,7 @@ export default function ProfileEditorModal({ isOpen, onClose }: ProfileEditorMod
             <h2 id="profile-editor-title" className="flex items-center gap-2 text-xl font-extrabold text-ink">
               <UserRound className="h-5 w-5" /> Edit profile
             </h2>
-            <p className="mt-1 text-sm text-muted">Update the personal details shown around Herbal AI.</p>
+            <p className="mt-1 text-sm text-muted">Update the personal details shown around Herbal-Ai.</p>
           </div>
           <button type="button" onClick={onClose} aria-label="Close profile editor" className="rounded-full p-2 text-muted hover:bg-panel">
             <X className="h-5 w-5" />
@@ -68,12 +67,6 @@ export default function ProfileEditorModal({ isOpen, onClose }: ProfileEditorMod
             Avatar URL or emoji
             <input aria-label="Avatar URL or emoji" maxLength={500} value={avatar} onChange={(event) => setAvatar(event.target.value)} className="mt-1 w-full rounded-xl border border-line px-3 py-2 font-normal" />
           </label>
-          <label className="block text-sm font-bold text-ink">
-            Bio
-            <textarea aria-label="Bio" maxLength={1000} rows={4} value={bio} onChange={(event) => setBio(event.target.value)} className="mt-1 w-full resize-y rounded-xl border border-line px-3 py-2 font-normal" />
-            <span className="mt-1 block text-right text-sm font-normal text-muted">{bio.length}/1000</span>
-          </label>
-
           <div className="rounded-xl bg-panel p-3 text-sm text-muted">
             <p><strong>Username:</strong> {user.username}</p>
             <p className="mt-1"><strong>Email:</strong> {user.email}</p>

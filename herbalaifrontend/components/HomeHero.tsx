@@ -55,7 +55,7 @@ export default function HomeHero() {
               href="/library"
               className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-semibold text-base px-8 py-3.5 rounded-full shadow-sm hover:brightness-105 transition-all whitespace-nowrap"
             >
-              Browse Herbal AI
+              Browse Herbal-Ai
             </Link>
 
             {isAuthenticated ? (

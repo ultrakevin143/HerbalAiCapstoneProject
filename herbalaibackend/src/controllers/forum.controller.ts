@@ -348,6 +348,7 @@ export class ForumController {
         notifications.forEach((notification) => {
           io.to(notification.userId).emit('notification', notification);
         });
+        io.to(`forum:thread:${threadId}`).emit('forum:comment', { threadId, comment });
       } catch (socketError) {
         console.error('Failed to emit community notification:', socketError);
       }

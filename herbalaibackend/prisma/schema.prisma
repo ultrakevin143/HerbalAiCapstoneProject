@@ -22,7 +22,6 @@ model User {
   name          String
   avatar        String?
   role          Role      @default(contributor)
-  bio           String?
   joined        DateTime  @default(now())
   isBanned      Boolean   @default(false)
   emailVerified DateTime? @map("email_verified")

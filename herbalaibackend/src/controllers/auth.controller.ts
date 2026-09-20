@@ -193,7 +193,6 @@ export class AuthController {
       const data = {
         ...(req.body.name !== undefined && { name: req.body.name.trim() }),
         ...(req.body.avatar !== undefined && { avatar: req.body.avatar?.trim() || null }),
-        ...(req.body.bio !== undefined && { bio: req.body.bio?.trim() || null }),
       };
       const user = await userRepo.updateUserProfile(userId, data);
 
@@ -227,7 +226,7 @@ export class AuthController {
       const nonce = randomBytes(16).toString('base64');
       res.setHeader('Cache-Control', 'no-store');
       res.setHeader('Content-Security-Policy', `default-src 'none'; script-src 'nonce-${nonce}'; form-action ${ENV.FRONTEND_URL}; base-uri 'none'`);
-      res.type('html').send(`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Completing sign in</title></head><body><form method="post" action="${ENV.FRONTEND_URL}/api/auth/google/complete"><input type="hidden" name="refreshToken" value="${result.refreshToken}"><button type="submit">Continue to Herbal AI</button></form><script nonce="${nonce}">document.forms[0].submit()</script></body></html>`);
+      res.type('html').send(`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Completing sign in</title></head><body><form method="post" action="${ENV.FRONTEND_URL}/api/auth/google/complete"><input type="hidden" name="refreshToken" value="${result.refreshToken}"><button type="submit">Continue to Herbal-Ai</button></form><script nonce="${nonce}">document.forms[0].submit()</script></body></html>`);
     } catch (error) {
       next(error);
     }

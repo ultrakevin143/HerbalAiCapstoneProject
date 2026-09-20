@@ -510,7 +510,7 @@ function ChatContent() {
             </form>
 
             <p className="text-[10px] text-gray-500 dark:text-muted mt-2 text-center">
-              Disclaimer: Herbal AI references Philippine medicinal plant records and is intended for educational purposes only. Always consult a healthcare professional for medical conditions.
+              Disclaimer: Herbal-Ai references Philippine medicinal plant records and is intended for educational purposes only. Always consult a healthcare professional for medical conditions.
             </p>
           </div>
         </section>

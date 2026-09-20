@@ -28,7 +28,7 @@ router.use("/notifications", notificationRoutes);
 router.get("/health", (req, res) => {
   res.status(200).json({
     status: "success",
-    message: "Herbal AI APIs are functional",
+    message: "Herbal-Ai APIs are functional",
     timestamp: new Date().toISOString()
   });
 });

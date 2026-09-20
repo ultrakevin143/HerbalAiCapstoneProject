@@ -12,7 +12,6 @@ export interface User {
   name: string;
   avatar: string | null;
   role: string;
-  bio: string | null;
   joined: string;
   isBanned?: boolean;
 }
@@ -26,7 +25,7 @@ interface AuthContextType {
   signup: (data: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => Promise<void>;
   logout: () => Promise<void>;
   checkSession: (force?: boolean) => Promise<User | null>;
-  updateProfile: (data: { name?: string; avatar?: string | null; bio?: string | null }) => Promise<User>;
+  updateProfile: (data: { name?: string; avatar?: string | null }) => Promise<User>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -129,7 +128,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const updateProfile = async (data: { name?: string; avatar?: string | null; bio?: string | null }): Promise<User> => {
+  const updateProfile = async (data: { name?: string; avatar?: string | null }): Promise<User> => {
     const response = await api.patch('/auth/me', data);
     const updatedUser = response.data.data.user as User;
     invalidateApiGetCache('/auth/me');

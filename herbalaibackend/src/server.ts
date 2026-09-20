@@ -51,6 +51,18 @@ io.on('connection', (socket) => {
     console.log(`👤 Authenticated user ${socket.data.userId} auto-joined private room`);
   }
 
+  socket.on('forum:join', (threadId: unknown) => {
+    if (Number.isSafeInteger(threadId) && Number(threadId) > 0) {
+      socket.join(`forum:thread:${threadId}`);
+    }
+  });
+
+  socket.on('forum:leave', (threadId: unknown) => {
+    if (Number.isSafeInteger(threadId) && Number(threadId) > 0) {
+      socket.leave(`forum:thread:${threadId}`);
+    }
+  });
+
   socket.on('disconnect', () => {
     console.log(`🔌 Client disconnected: ${socket.id}`);
   });

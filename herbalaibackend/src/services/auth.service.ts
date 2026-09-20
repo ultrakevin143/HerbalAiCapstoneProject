@@ -29,7 +29,6 @@ interface SignupData {
   password: string;
   name: string;
   avatar?: string;
-  bio?: string;
 }
 
 export const signup = async (data: SignupData) => {
@@ -51,7 +50,6 @@ export const signup = async (data: SignupData) => {
     password: hashedPassword,
     name: data.name,
     avatar: data.avatar || null,
-    bio: data.bio || null,
   });
 
   const verificationToken = crypto.randomBytes(32).toString("hex");
@@ -146,7 +144,6 @@ export const login = async (data: { identifier?: string; email?: string; passwor
       name: user.name,
       role: user.role,
       avatar: user.avatar,
-      bio: user.bio,
       joined: user.joined,
     },
     accessToken,
@@ -247,7 +244,6 @@ export const googleLogin = async (code: string) => {
       password: hashedPassword,
       name: name ?? emailLocalPart,
       avatar: picture ?? null,
-      bio: null,
       emailVerified: new Date(),
     });
 
@@ -289,7 +285,6 @@ export const googleLogin = async (code: string) => {
       name: user.name,
       role: user.role,
       avatar: user.avatar,
-      bio: user.bio,
       joined: user.joined,
     },
     accessToken,

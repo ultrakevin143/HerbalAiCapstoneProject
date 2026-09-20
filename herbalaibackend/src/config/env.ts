@@ -9,7 +9,7 @@ const boundedInteger = (name: string, fallback: number, minimum: number, maximum
 };
 
 export const ENV = {
-  APP_NAME: process.env['APP_NAME'] || 'Herbal AI',
+  APP_NAME: process.env['APP_NAME'] || 'Herbal-Ai',
   PORT: parseInt(process.env['PORT'] || '5000', 10),
   NODE_ENV: process.env['NODE_ENV'] || 'development',
   DATABASE_URL: normalizeDatabaseUrl(process.env['DATABASE_URL']),
