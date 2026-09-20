@@ -4,6 +4,10 @@ const useConstrainedBuild = process.env.NEXT_CONSTRAINED_BUILD === "1";
 
 const nextConfig: NextConfig = {
   devIndicators: false,
+  async rewrites() {
+    const backendApi = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+    return [{ source: '/api/:path*', destination: `${backendApi}/:path*` }];
+  },
   experimental: useConstrainedBuild
     ? { cpus: 1, workerThreads: true }
     : undefined,

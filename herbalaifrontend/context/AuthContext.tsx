@@ -21,6 +21,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
+  sessionUnavailable: boolean;
   login: (identifier: string, password: string) => Promise<User | null>;
   signup: (data: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => Promise<void>;
   logout: () => Promise<void>;
@@ -33,11 +34,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [sessionUnavailable, setSessionUnavailable] = useState(false);
   const router = useRouter();
 
   const checkSession = async (force: boolean = false): Promise<User | null> => {
     if (!force && typeof window !== 'undefined' && !localStorage.getItem('herbalai_has_session')) {
       setUser(null);
+      setSessionUnavailable(false);
       setLoading(false);
       return null;
     }
@@ -47,21 +50,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (response.data?.status === 'success' && response.data?.data?.user) {
         const userObj = response.data.data.user;
         setUser(userObj);
+        setSessionUnavailable(false);
         if (typeof window !== 'undefined') {
           localStorage.setItem('herbalai_has_session', '1');
         }
         return userObj;
       } else {
         setUser(null);
+        setSessionUnavailable(false);
         if (typeof window !== 'undefined') {
           localStorage.removeItem('herbalai_has_session');
         }
         return null;
       }
-    } catch {
-      setUser(null);
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('herbalai_has_session');
+    } catch (error) {
+      const status = (error as { response?: { status?: number } }).response?.status;
+      if (status === 401 || status === 403) {
+        setUser(null);
+        setSessionUnavailable(false);
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('herbalai_has_session');
+        }
+      } else {
+        setSessionUnavailable(true);
       }
       return null;
     } finally {
@@ -72,16 +83,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (identifier: string, password: string): Promise<User | null> => {
     setLoading(true);
     try {
-      await api.post('/auth/login', { identifier: identifier.trim(), password });
+      const response = await api.post('/auth/login', { identifier: identifier.trim(), password });
+      const loggedInUser = response.data?.data?.user as User | undefined;
+      if (!loggedInUser) throw new Error('Login succeeded without a user profile.');
+      setUser(loggedInUser);
+      setSessionUnavailable(false);
       if (typeof window !== 'undefined') {
         localStorage.setItem('herbalai_has_session', '1');
       }
       invalidateApiGetCache('/auth/me');
-      const loggedInUser = await checkSession(true);
       return loggedInUser;
     } catch (error) {
-      setLoading(false);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -107,6 +122,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.removeItem('herbalai_has_session');
       }
       setUser(null);
+      setSessionUnavailable(false);
       invalidateApiGetCache();
       setLoading(false);
       router.push('/signin');
@@ -130,6 +146,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.removeItem('herbalai_has_session');
       }
       setUser(null);
+      setSessionUnavailable(false);
       router.push('/signin');
     };
 
@@ -145,6 +162,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         user,
         isAuthenticated: !!user,
         loading,
+        sessionUnavailable,
         login,
         signup,
         logout,

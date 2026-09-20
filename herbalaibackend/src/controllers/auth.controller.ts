@@ -4,6 +4,7 @@ import * as userRepo from "../repositories/user.repository.js";
 import { ENV } from "../config/env.js";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware.js";
 import { createAuditLog } from "../repositories/audit.repository.js";
+import { randomBytes } from "node:crypto";
 
 export class AuthController {
   private setAuthCookies(res: Response, tokens: { accessToken: string; refreshToken: string }) {
@@ -223,19 +224,23 @@ export class AuthController {
       }
 
       const result = await authService.googleLogin(code);
-
-      this.setAuthCookies(res, {
-        accessToken: result.accessToken,
-        refreshToken: result.refreshToken,
-      });
-
-      // Redirect to the frontend with the user info as query params
-      const redirectUrl = new URL(`${ENV.FRONTEND_URL}/auth/google/success`);
-      redirectUrl.searchParams.set('userId', result.user.id);
-      res.redirect(redirectUrl.toString());
+      const nonce = randomBytes(16).toString('base64');
+      res.setHeader('Cache-Control', 'no-store');
+      res.setHeader('Content-Security-Policy', `default-src 'none'; script-src 'nonce-${nonce}'; form-action ${ENV.FRONTEND_URL}; base-uri 'none'`);
+      res.type('html').send(`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Completing sign in</title></head><body><form method="post" action="${ENV.FRONTEND_URL}/api/auth/google/complete"><input type="hidden" name="refreshToken" value="${result.refreshToken}"><button type="submit">Continue to Herbal AI</button></form><script nonce="${nonce}">document.forms[0].submit()</script></body></html>`);
     } catch (error) {
       next(error);
     }
+  };
+
+  public socketToken = (req: Request, res: Response): void => {
+    const token = req.cookies?.accessToken as string | undefined;
+    if (!token) {
+      res.status(401).json({ status: 'error', message: 'Authentication required' });
+      return;
+    }
+    res.setHeader('Cache-Control', 'no-store');
+    res.status(200).json({ status: 'success', data: { token } });
   };
 
   public getAllUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {

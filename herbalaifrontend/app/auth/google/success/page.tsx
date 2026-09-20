@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../../context/AuthContext';
 
 export default function GoogleSuccessPage() {
-  const { checkSession, isAuthenticated, loading, user } = useAuth();
+  const { checkSession } = useAuth();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const initialized = useRef(false);
@@ -16,7 +16,12 @@ export default function GoogleSuccessPage() {
 
     const verifyAndRedirect = async () => {
       try {
-        await checkSession(true);
+        const verifiedUser = await checkSession(true);
+        if (!verifiedUser) {
+          setError('Failed to retrieve your session. Please try signing in again.');
+          return;
+        }
+        router.replace(verifiedUser.role === 'admin' ? '/admin' : '/');
       } catch (err) {
         console.error('Session check failed during Google login success verification:', err);
         setError('Failed to verify session. Please try signing in again.');
@@ -24,21 +29,7 @@ export default function GoogleSuccessPage() {
     };
 
     verifyAndRedirect();
-  }, [checkSession]);
-
-  useEffect(() => {
-    if (!loading) {
-      if (isAuthenticated) {
-        if (user?.role === 'admin') {
-          router.push('/admin');
-        } else {
-          router.push('/');
-        }
-      } else if (initialized.current) {
-        setError('Failed to retrieve user profile. Please try again.');
-      }
-    }
-  }, [loading, isAuthenticated, user, router]);
+  }, [checkSession, router]);
 
   if (error) {
     return (

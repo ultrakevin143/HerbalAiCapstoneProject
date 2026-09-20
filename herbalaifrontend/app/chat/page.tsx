@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import Navbar from '../../components/Navbar';
+import SessionUnavailable from '../../components/SessionUnavailable';
 import { cachedApiGet } from '../../lib/request-cache';
 import { streamDrAiResponse } from '../../lib/dr-ai-stream';
 import { Send, Sparkles, BookOpen, AlertCircle, ShieldAlert } from 'lucide-react';
@@ -38,7 +39,7 @@ const QUICK_PROMPTS = [
 ] as const;
 
 function ChatContent() {
-  const { user, isAuthenticated, loading } = useAuth();
+  const { user, isAuthenticated, loading, sessionUnavailable, checkSession } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -89,10 +90,10 @@ function ChatContent() {
 
   // Check auth and redirect if not authenticated
   useEffect(() => {
-    if (!loading && !isAuthenticated) {
+    if (!loading && !isAuthenticated && !sessionUnavailable) {
       router.push(`/signin?callbackUrl=${encodeURIComponent('/chat')}`);
     }
-  }, [loading, isAuthenticated, router]);
+  }, [loading, isAuthenticated, sessionUnavailable, router]);
 
   const handleSendQuery = React.useCallback(async (queryText: string) => {
     if (!queryText.trim() || isSending) return;
@@ -297,6 +298,10 @@ function ChatContent() {
         <p className="text-[#2d6a4f] dark:text-[#74c69d] font-extrabold animate-pulse font-sans">Connecting to Dr. AI...</p>
       </div>
     );
+  }
+
+  if (sessionUnavailable && !user) {
+    return <SessionUnavailable retry={() => { void checkSession(true); }} />;
   }
 
   if (!user) {

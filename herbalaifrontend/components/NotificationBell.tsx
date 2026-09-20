@@ -71,7 +71,12 @@ export default function NotificationBell() {
     loadNotifications();
 
     const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000';
-    const socket: Socket = io(socketUrl, { withCredentials: true });
+    const socket: Socket = io(socketUrl, { autoConnect: false });
+    api.get('/auth/socket-token').then((response) => {
+      if (!isMounted) return;
+      socket.auth = { token: response.data.data.token };
+      socket.connect();
+    }).catch((error) => console.error('Failed to authenticate notification connection:', error));
 
     socket.on('notification', (newNotif: NotificationItem) => {
       if (isMounted) {

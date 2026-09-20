@@ -57,6 +57,7 @@ router.get("/google/callback", authController.googleCallback);
 
 // Session Verification
 router.get("/me", authMiddleware.execute, authController.me);
+router.get("/socket-token", authMiddleware.execute, authController.socketToken);
 router.patch("/me", authMiddleware.execute, validateSchema(updateProfileSchema), authController.updateProfile);
 
 // Get All Users (Admin only check inside controller)

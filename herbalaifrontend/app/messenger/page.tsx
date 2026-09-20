@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import SessionUnavailable from '../../components/SessionUnavailable';
 import api from '../../lib/axios';
 import io, { Socket } from 'socket.io-client';
 import { 
@@ -88,7 +89,7 @@ function avatarDisplay(avatar: string, name: string, size = 'md') {
 
 // --- Main Content Component ---
 function MessengerContent() {
-  const { user, isAuthenticated, loading } = useAuth();
+  const { user, isAuthenticated, loading, sessionUnavailable, checkSession } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const targetUserId = searchParams.get('userId');
@@ -123,11 +124,11 @@ function MessengerContent() {
 
   // Redirect if not authenticated
   useEffect(() => {
-    if (!loading && !isAuthenticated) {
+    if (!loading && !isAuthenticated && !sessionUnavailable) {
       const callback = targetUserId ? `/messenger?userId=${targetUserId}` : '/messenger';
       router.push(`/signin?callbackUrl=${encodeURIComponent(callback)}`);
     }
-  }, [loading, isAuthenticated, router, targetUserId]);
+  }, [loading, isAuthenticated, sessionUnavailable, router, targetUserId]);
 
   // Click outside listener to close message menus
   useEffect(() => {
@@ -147,9 +148,15 @@ function MessengerContent() {
     const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace('/api', '');
 
     socketRef.current = io(backendUrl, {
-      withCredentials: true,
+      autoConnect: false,
       transports: ['websocket', 'polling'],
     });
+    let active = true;
+    api.get('/auth/socket-token').then((response) => {
+      if (!active || !socketRef.current) return;
+      socketRef.current.auth = { token: response.data.data.token };
+      socketRef.current.connect();
+    }).catch((error) => console.error('Failed to authenticate messenger connection:', error));
 
     socketRef.current.on('connect', () => {
       console.log('Connected to real-time messaging server');
@@ -240,6 +247,7 @@ function MessengerContent() {
     fetchAllUsers();
 
     return () => {
+      active = false;
       socketRef.current?.disconnect();
     };
   }, [isAuthenticated, user]);
@@ -438,6 +446,10 @@ function MessengerContent() {
         <div className="h-12 w-12 animate-spin rounded-full border-4 border-line border-t-transparent" />
       </div>
     );
+  }
+
+  if (sessionUnavailable && !user) {
+    return <SessionUnavailable retry={() => { void checkSession(true); }} />;
   }
 
   if (!user) return null;

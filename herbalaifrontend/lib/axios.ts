@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
+  baseURL: '/api',
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -35,11 +35,10 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // Do not attempt to refresh if the failed request itself is /auth/refresh-token, /auth/login, or /auth/me
+    // Do not attempt to refresh failed credential or refresh requests.
     if (
       originalRequest.url?.includes('/auth/refresh-token') ||
-      originalRequest.url?.includes('/auth/login') ||
-      originalRequest.url?.includes('/auth/me')
+      originalRequest.url?.includes('/auth/login')
     ) {
       return Promise.reject(error);
     }

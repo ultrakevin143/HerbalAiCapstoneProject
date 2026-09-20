@@ -13,7 +13,7 @@ export default function SignInPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const googleAuthUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/auth/google`;
+  const googleAuthUrl = '/api/auth/google';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,11 +22,11 @@ export default function SignInPage() {
 
     try {
       const loggedInUser = await login(identifier, password);
-      if (loggedInUser?.role === 'admin') {
-        router.push('/admin');
-      } else {
-        router.push('/');
-      }
+      const callbackUrl = new URLSearchParams(window.location.search).get('callbackUrl');
+      const safeCallback = callbackUrl?.startsWith('/') && !callbackUrl.startsWith('//') && !callbackUrl.includes('\\')
+        ? callbackUrl
+        : null;
+      router.push(safeCallback || (loggedInUser?.role === 'admin' ? '/admin' : '/'));
     } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error(err);
       setError(

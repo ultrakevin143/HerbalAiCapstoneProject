@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import SessionUnavailable from '../../components/SessionUnavailable';
 import { useRouter } from 'next/navigation';
 import api from '../../lib/axios';
 import { cachedApiGet, invalidateApiGetCache } from '../../lib/request-cache';
@@ -121,7 +122,7 @@ interface DashboardStats {
 
 export default function AdminPage() {
   const [reviewEditing, setReviewEditing] = useState<Suggestion | null>(null);
-  const { user, loading, isAuthenticated, logout } = useAuth();
+  const { user, loading, isAuthenticated, sessionUnavailable, checkSession, logout } = useAuth();
   const router = useRouter();
   
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -231,13 +232,13 @@ export default function AdminPage() {
     };
 
     if (!loading) {
-      if (!isAuthenticated) {
+      if (!isAuthenticated && !sessionUnavailable) {
         router.push('/signin');
       } else if (user?.role === 'admin') {
         fetchData();
       }
     }
-  }, [loading, isAuthenticated, user, router]);
+  }, [loading, isAuthenticated, sessionUnavailable, user, router]);
 
   // Audit records can change while the admin remains on this page. Refresh
   // them whenever the audit tab is opened instead of relying on mount-time data.
@@ -607,6 +608,10 @@ export default function AdminPage() {
         <p className="text-[#2d6a4f] font-extrabold animate-pulse">Loading console...</p>
       </div>
     );
+  }
+
+  if (sessionUnavailable && !user) {
+    return <SessionUnavailable retry={() => { void checkSession(true); }} />;
   }
 
   if (!user) {
