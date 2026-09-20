@@ -144,6 +144,12 @@ export default function SignInPage() {
               Sign up
             </Link>
           </p>
+          <Link
+            href="/"
+            className="mt-5 flex min-h-11 w-full items-center justify-center rounded-full border border-black/15 bg-white/70 px-5 py-3 text-sm font-semibold text-[#1b4332] transition-colors hover:bg-white dark:border-line dark:bg-soft dark:text-ink dark:hover:bg-panel"
+          >
+            Continue as guest
+          </Link>
         </div>
       </div>
     </main>
