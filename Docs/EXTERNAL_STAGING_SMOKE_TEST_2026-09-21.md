@@ -8,7 +8,7 @@ Browser: Google Chrome, Mercado profile
 ## Result
 
 Public staging smoke test: **Passed**.  
-Authenticated contributor staging test: **Passed with one AI-source defect recorded**.
+Authenticated contributor and administrator staging tests: **Passed**.
 
 ## HTTP and API checks
 
@@ -56,11 +56,29 @@ Observed single-request timings from the test workstation are diagnostic only, n
 | Logout | Pass | Returned to sign-in with the original callback URL |
 | Post-logout protection | Pass | A fresh `/chat` request redirected to sign-in |
 
-## Remaining multi-account or administrator checks
+## Authenticated administrator checks
 
-- Messenger real-time send/receive requires a second simultaneously signed-in account.
-- Community reply and live recipient notification require a second account.
-- Suggestion submission, administrator moderation and audit-log verification require controlled temporary data and an administrator session.
-- Google sign-in callback was not repeated because this run began from an already authenticated staging session.
+| Workflow | Result | Observation |
+|---|---|---|
+| Existing administrator session | Pass | Admin console rendered the `alias bb` administrator identity |
+| Dashboard and backend health | Pass | Dashboard loaded current staging statistics and health state |
+| Pending suggestions | Pass | Moderation queue loaded with zero pending records |
+| Herb administration | Pass | All Herbs loaded 37 records |
+| User administration | Pass | Users loaded 7 records |
+| Knowledge-base administration | Pass | Knowledge Base loaded 33 facts |
+| Audit trail | Pass | Immutable audit entries rendered with actor, timestamp, action and target |
+| Contributor RBAC | Pass | Contributor access to `/admin` remained denied |
+
+## Two-account real-time checks
+
+| Workflow | Result | Observation |
+|---|---|---|
+| Messenger admin-to-contributor | Pass | Edge received the admin message and unread badge without reload |
+| Messenger contributor-to-admin | Pass | Chrome received the contributor reply in the open conversation without reload |
+| Message notification category | Pass | Notification center placed the event under Messages with a direct conversation link |
+| Community live reply | Pass | Chrome displayed the contributor comment and updated reply count without reload |
+| Community notification category | Pass | Notification center placed the event under Community with `/community/14#comment-17` deep-link targeting |
+
+Temporary records used `[TEST 20260921]` prefixes. Browser confirmation-dialog automation stalled during cleanup, so the temporary conversation and discussion must be deleted manually from staging before final evidence capture. Google sign-in callback was not repeated because both accounts began from authenticated staging sessions.
 
 No credentials, tokens, personal health information or environment-variable values were captured in this report.
