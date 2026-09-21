@@ -10,6 +10,8 @@ const authMiddleware = new AuthMiddleware();
 
 // GET /api/herbs - Get all herbs for the library
 router.get('/', herbController.getAllHerbs);
+router.get('/categories', herbController.getCategories);
+router.get('/catalog', herbController.getCatalog);
 
 // GET /api/herbs/:id - Get a single herb's details
 router.get('/:id', herbController.getHerbById);
@@ -33,4 +35,3 @@ router.put('/:id', authMiddleware.execute, permittedRole([Role.admin]), herbCont
 router.delete('/:id', authMiddleware.execute, permittedRole([Role.admin]), herbController.deleteHerb);
 
 export default router;
-

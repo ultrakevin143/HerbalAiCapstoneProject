@@ -12,6 +12,22 @@ interface AuthenticatedRequest extends Request {
 }
 
 export class HerbController {
+  public getCatalog = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const herbs = await herbRepo.findHerbCatalog();
+      res.status(200).json({ status: 'success', data: { herbs } });
+    } catch (error) {
+      next(error);
+    }
+  };
+  public getCategories = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const categories = await herbRepo.findHerbCategories();
+      res.status(200).json({ status: 'success', data: { categories } });
+    } catch (error) {
+      next(error);
+    }
+  };
   /**
    * Get all approved herbs for the library with optional filtering and pagination.
    */
@@ -347,4 +363,3 @@ export class HerbController {
     }
   };
 }
-

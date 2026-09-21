@@ -117,6 +117,7 @@ body::before {
   pointer-events: none;
   z-index: -1;
   background-image: url('/images/botanical-bg-light.jpg');
+  background-image: image-set(url('/images/botanical-bg-light.webp') type('image/webp'), url('/images/botanical-bg-light.jpg') type('image/jpeg'));
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -128,6 +129,7 @@ body::before {
 :root[data-theme="dark"] body::before,
 .dark body::before {
   background-image: url('/images/botanical-bg-dark.jpg');
+  background-image: image-set(url('/images/botanical-bg-dark.webp') type('image/webp'), url('/images/botanical-bg-dark.jpg') type('image/jpeg'));
   opacity: 0.32;
 }
 

@@ -63,7 +63,7 @@ function ChatContent() {
   useEffect(() => {
     const fetchHerbs = async () => {
       try {
-        const res = await cachedApiGet('/herbs', 60_000);
+        const res = await cachedApiGet('/herbs/catalog', 60_000);
         if (res.data?.status === 'success') {
           const list = res.data.data.herbs || [];
           const mapping: Record<string, string> = {};

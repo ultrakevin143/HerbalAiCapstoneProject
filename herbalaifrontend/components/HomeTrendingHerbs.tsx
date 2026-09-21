@@ -27,7 +27,7 @@ export default function HomeTrendingHerbs() {
   const [herbs, setHerbs] = useState(fallbackHerbs);
 
   useEffect(() => {
-    cachedApiGet('/herbs', 60_000).then((response) => {
+    cachedApiGet('/herbs/catalog', 60_000).then((response) => {
       const list = response.data?.data?.herbs ?? [];
       const mapped = ['lagundi', 'sambong', 'yerba buena', 'bayabas'].map((target) => {
         const found = list.find((herb: { localName: string }) => herb.localName.toLowerCase().trim().includes(target));

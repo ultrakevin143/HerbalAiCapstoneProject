@@ -95,14 +95,21 @@ function MessengerContent() {
   const targetUserId = searchParams.get('userId');
 
   const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [conversationOffset, setConversationOffset] = useState(0);
+  const [hasMoreConversations, setHasMoreConversations] = useState(false);
+  const [loadingMoreConversations, setLoadingMoreConversations] = useState(false);
   const [allUsers, setAllUsers] = useState<UserProfile[]>([]);
   const [activeContact, setActiveContact] = useState<UserProfile | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedConversationSearch, setDebouncedConversationSearch] = useState('');
   const [showUserPicker, setShowUserPicker] = useState(false);
   const [userPickerSearch, setUserPickerSearch] = useState('');
+  const [hasMoreUsers, setHasMoreUsers] = useState(false);
+  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [userOffset, setUserOffset] = useState(0);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [loadingOlderMessages, setLoadingOlderMessages] = useState(false);
   const [hasOlderMessages, setHasOlderMessages] = useState(false);
@@ -121,6 +128,7 @@ function MessengerContent() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const prependingMessagesRef = useRef(false);
+  const conversationQueryRef = useRef(0);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -221,36 +229,68 @@ function MessengerContent() {
       }));
     });
 
-    const fetchConversations = async () => {
-      try {
-        const res = await api.get('/messages/conversations');
-        if (res.data?.status === 'success') {
-          setConversations(res.data.data.conversations || []);
-        }
-      } catch (err) {
-        console.error('Failed to fetch conversations', err);
-      }
-    };
-
-    const fetchAllUsers = async () => {
-      try {
-        const res = await api.get('/messages/users');
-        if (res.data?.status === 'success') {
-          setAllUsers(res.data.data.users || []);
-        }
-      } catch (err) {
-        console.error('Failed to fetch users', err);
-      }
-    };
-
-    fetchConversations();
-    fetchAllUsers();
-
     return () => {
       active = false;
       socketRef.current?.disconnect();
     };
   }, [isAuthenticated, user]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedConversationSearch(searchTerm.trim()), 250);
+    return () => window.clearTimeout(timer);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    let cancelled = false;
+    conversationQueryRef.current += 1;
+    api.get('/messages/conversations', { params: { limit: 25, offset: 0, search: debouncedConversationSearch } }).then((response) => {
+      if (cancelled || response.data?.status !== 'success') return;
+      const page: Conversation[] = response.data.data.conversations || [];
+      setConversations(page);
+      setConversationOffset(page.length);
+      setHasMoreConversations(Boolean(response.data.data.hasMore));
+    }).catch((error) => { if (!cancelled) console.error('Failed to fetch conversations', error); });
+    return () => { cancelled = true; };
+  }, [isAuthenticated, debouncedConversationSearch]);
+
+  const loadMoreConversations = async () => {
+    if (!hasMoreConversations || loadingMoreConversations) return;
+    const requestVersion = conversationQueryRef.current;
+    setLoadingMoreConversations(true);
+    try {
+      const response = await api.get('/messages/conversations', { params: { limit: 25, offset: conversationOffset, search: debouncedConversationSearch } });
+      if (requestVersion !== conversationQueryRef.current || response.data?.status !== 'success') return;
+      const page: Conversation[] = response.data.data.conversations || [];
+      setConversations((current) => [...current, ...page.filter((item) => !current.some((existing) => existing.contact.id === item.contact.id))]);
+      setConversationOffset((offset) => offset + page.length);
+      setHasMoreConversations(Boolean(response.data.data.hasMore));
+    } catch (error) {
+      console.error('Failed to load conversations', error);
+    } finally {
+      setLoadingMoreConversations(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!showUserPicker || !isAuthenticated) return;
+    let cancelled = false;
+    const timer = window.setTimeout(async () => {
+      setLoadingUsers(true);
+      try {
+        const response = await api.get('/messages/users', { params: { search: userPickerSearch, limit: 20, offset: userOffset } });
+        if (cancelled) return;
+        const nextUsers: UserProfile[] = response.data.data.users || [];
+        setAllUsers((current) => userOffset === 0 ? nextUsers : [...current, ...nextUsers]);
+        setHasMoreUsers(Boolean(response.data.data.hasMore));
+      } catch (error) {
+        if (!cancelled) console.error('Failed to fetch users', error);
+      } finally {
+        if (!cancelled) setLoadingUsers(false);
+      }
+    }, userOffset === 0 ? 250 : 0);
+    return () => { cancelled = true; window.clearTimeout(timer); };
+  }, [showUserPicker, isAuthenticated, userPickerSearch, userOffset]);
 
   // Auto scroll to bottom when messages update
   useEffect(() => {
@@ -316,25 +356,23 @@ function MessengerContent() {
 
   // Handle auto-opening conversation from query param
   useEffect(() => {
-    if (!targetUserId || allUsers.length === 0) return;
+    if (!targetUserId || !isAuthenticated) return;
     
     // Check if user is already the active contact
     if (activeContact?.id === targetUserId) return;
 
-    const contact = allUsers.find((u) => u.id === targetUserId);
-    if (contact) {
-      const timer = setTimeout(() => {
-        openConversation(contact);
-        
-        // Clean up search params from the URL
-        const url = new URL(window.location.href);
-        url.searchParams.delete('userId');
-        window.history.replaceState({}, '', url.pathname + url.search);
-      }, 0);
-
-      return () => clearTimeout(timer);
-    }
-  }, [targetUserId, allUsers, activeContact, openConversation]);
+    let cancelled = false;
+    api.get('/messages/users', { params: { id: targetUserId } }).then((response) => {
+      if (cancelled) return;
+      const contact = response.data.data.users?.[0] as UserProfile | undefined;
+      if (!contact) return;
+      void openConversation(contact);
+      const url = new URL(window.location.href);
+      url.searchParams.delete('userId');
+      window.history.replaceState({}, '', url.pathname + url.search);
+    }).catch((error) => console.error('Failed to open linked conversation', error));
+    return () => { cancelled = true; };
+  }, [targetUserId, isAuthenticated, activeContact, openConversation]);
 
   // Attachment attachment trigger
   const handleAttachmentClick = () => {
@@ -436,9 +474,7 @@ function MessengerContent() {
     c.contact.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const filteredAllUsers = allUsers.filter((u) =>
-    u.name.toLowerCase().includes(userPickerSearch.toLowerCase())
-  );
+  const filteredAllUsers = allUsers;
 
   if (loading) {
     return (
@@ -540,6 +576,7 @@ function MessengerContent() {
                   );
                 })
               )}
+              {hasMoreConversations && <button type="button" disabled={loadingMoreConversations} onClick={loadMoreConversations} className="w-full py-3 text-sm font-semibold text-ink disabled:opacity-50">{loadingMoreConversations ? 'Loading...' : 'Load more conversations'}</button>}
             </div>
           </aside>
 
@@ -837,7 +874,7 @@ function MessengerContent() {
                   type="text"
                   placeholder="Search users..."
                   value={userPickerSearch}
-                  onChange={(e) => setUserPickerSearch(e.target.value)}
+                  onChange={(e) => { setUserPickerSearch(e.target.value); setUserOffset(0); setAllUsers([]); }}
                   autoFocus
                   className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-line bg-panel focus:outline-none focus:border-line transition-colors"
                 />
@@ -846,7 +883,7 @@ function MessengerContent() {
 
             <div className="max-h-72 overflow-y-auto px-2 pb-4">
               {filteredAllUsers.length === 0 ? (
-                <p className="text-center text-sm text-muted py-8">No users found.</p>
+                <p className="text-center text-sm text-muted py-8">{loadingUsers ? 'Loading users...' : 'No users found.'}</p>
               ) : (
                 filteredAllUsers.map((u) => (
                   <button
@@ -863,6 +900,7 @@ function MessengerContent() {
                   </button>
                 ))
               )}
+              {hasMoreUsers && <button type="button" disabled={loadingUsers} onClick={() => setUserOffset((offset) => offset + 20)} className="w-full py-3 text-sm font-semibold text-ink disabled:opacity-50">Load more users</button>}
             </div>
           </div>
         </div>

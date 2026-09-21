@@ -65,6 +65,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error) {
       const status = (error as { response?: { status?: number } }).response?.status;
       if (status === 401 || status === 403) {
+        invalidateApiGetCache();
         setUser(null);
         setSessionUnavailable(false);
         if (typeof window !== 'undefined') {
@@ -90,7 +91,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (typeof window !== 'undefined') {
         localStorage.setItem('herbalai_has_session', '1');
       }
-      invalidateApiGetCache('/auth/me');
+      invalidateApiGetCache();
       return loggedInUser;
     } catch (error) {
       throw error;
@@ -141,6 +142,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     checkSession();
 
     const handleAuthLogout = () => {
+      invalidateApiGetCache();
       if (typeof window !== 'undefined') {
         localStorage.removeItem('herbalai_has_session');
       }

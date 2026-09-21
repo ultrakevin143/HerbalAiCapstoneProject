@@ -43,10 +43,19 @@ interface Herb {
 function LibraryContent() {
   const [herbs, setHerbs] = useState<Herb[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetching, setFetching] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [categories, setCategories] = useState<string[]>(['All']);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalHerbs, setTotalHerbs] = useState(0);
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   
   // Search and Filter State
-  const [searchTerm, setSearchTerm] = useState('');
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('q') || searchParams.get('search');
+  const idQuery = searchParams.get('id');
+  const [searchTerm, setSearchTerm] = useState(searchQuery || '');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [onlyDohApproved, setOnlyDohApproved] = useState(false);
   
@@ -54,84 +63,96 @@ function LibraryContent() {
   const [selectedHerb, setSelectedHerb] = useState<Herb | null>(null);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
 
-  const searchParams = useSearchParams();
-  const searchQuery = searchParams.get('q') || searchParams.get('search');
-  const idQuery = searchParams.get('id');
-
-  // Handle auto-select based on search query or id query
   useEffect(() => {
-    if (herbs.length > 0) {
-      if (idQuery) {
-        const found = herbs.find(h => h.id === idQuery);
-        if (found) {
-          // eslint-disable-next-line react-hooks/set-state-in-effect
-          setSelectedHerb(found);
-          return;
-        }
-      }
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase().trim();
-        const found = herbs.find(h => 
-          h.localName.toLowerCase() === query ||
-          h.scientificName.toLowerCase() === query ||
-          h.localName.toLowerCase().includes(query)
-        );
-        if (found) {
-          setSelectedHerb(found);
-        } else {
-          setSearchTerm(searchQuery);
-        }
-      }
-    }
-  }, [herbs, searchQuery, idQuery]);
+    const timer = window.setTimeout(() => setDebouncedSearch(searchTerm.trim()), 250);
+    return () => window.clearTimeout(timer);
+  }, [searchTerm]);
 
   useEffect(() => {
+    cachedApiGet('/herbs/categories', 60_000).then((response) => {
+      setCategories(['All', ...(response.data.data.categories || [])]);
+    }).catch(() => setError('Unable to load herb categories.'));
+  }, []);
+
+  // Open linked herbs even when they are not on the current list page.
+  useEffect(() => {
+    if (!idQuery) return;
+    let cancelled = false;
+    cachedApiGet(`/herbs/${encodeURIComponent(idQuery)}`, 60_000).then((response) => {
+      if (!cancelled && response.data.status === 'success') setSelectedHerb(response.data.data.herb);
+    }).catch(() => { if (!cancelled) setError('Linked herb was not found.'); });
+    return () => { cancelled = true; };
+  }, [idQuery]);
+
+  useEffect(() => {
+    if (!searchQuery) return;
+    const timer = window.setTimeout(() => { setSearchTerm(searchQuery); setPage(1); }, 0);
+    return () => window.clearTimeout(timer);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    let cancelled = false;
     const fetchHerbs = async () => {
       try {
-        setLoading(true);
+        setFetching(true);
         setError(null);
-        const response = await cachedApiGet('/herbs', 60_000);
+        const params = new URLSearchParams({ page: String(page), limit: '12' });
+        if (debouncedSearch) params.set('search', debouncedSearch);
+        if (selectedCategory !== 'All') params.set('category', selectedCategory);
+        if (onlyDohApproved) params.set('isDohApproved', 'true');
+        const response = await cachedApiGet(`/herbs?${params}`, 60_000);
+        if (cancelled) return;
         const res = response.data;
         if (res.status === 'success') {
           setHerbs(res.data.herbs || []);
+          if (searchQuery && debouncedSearch.toLowerCase() === searchQuery.trim().toLowerCase()) {
+            const query = searchQuery.trim().toLowerCase();
+            const match = (res.data.herbs as Herb[]).find((herb) => herb.localName.toLowerCase() === query || herb.scientificName.toLowerCase() === query);
+            if (match) setSelectedHerb(match);
+          }
+          setTotalPages(Math.max(1, res.data.totalPages || 1));
+          setTotalHerbs(res.data.total || 0);
         } else {
           setError('Failed to fetch herbs.');
         }
       } catch (err: unknown) {
+        if (cancelled) return;
         const message = err instanceof Error ? err.message : 'Error connecting to server.';
         setError(message);
       } finally {
-        setLoading(false);
+        if (!cancelled) { setLoading(false); setFetching(false); }
       }
     };
 
     fetchHerbs();
-  }, []);
+    return () => { cancelled = true; };
+  }, [page, debouncedSearch, selectedCategory, onlyDohApproved, searchQuery]);
 
-  // Get unique categories for filter
-  const categories = ['All', ...Array.from(new Set(herbs.map((h) => h.category)))];
-
-  const filteredHerbs = herbs.filter((herb) => {
-    const matchesSearch =
-      herb.localName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      herb.scientificName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (herb.cebuanoName && herb.cebuanoName.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      herb.medicinalUses.toLowerCase().includes(searchTerm.toLowerCase());
-      
-    const matchesCategory = selectedCategory === 'All' || herb.category === selectedCategory;
-    const matchesDoh = !onlyDohApproved || Boolean(herb.isDohApproved);
-    
-    return matchesSearch && matchesCategory && matchesDoh;
-  });
+  const filteredHerbs = herbs;
 
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col bg-transparent">
         <Navbar />
-        <div className="flex flex-1 flex-col items-center justify-center gap-4">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#2d6a4f] border-t-transparent"></div>
-          <p className="text-[#2d6a4f] dark:text-[#74c69d] font-extrabold animate-pulse">Loading Herbal Library...</p>
-        </div>
+        <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8 flex-1 w-full" role="status" aria-label="Loading herbal library">
+          <div className="mb-8 text-center">
+            <h1 className="font-serif-custom italic text-3xl text-[#1b4332] dark:text-ink md:text-5xl">Herbal Library</h1>
+            <p className="mt-4 text-sm text-muted">Loading Philippine medicinal plants...</p>
+          </div>
+          <div className="mx-auto mb-8 h-12 max-w-4xl rounded-full bg-[#2d6a4f]/10 dark:bg-panel animate-pulse motion-reduce:animate-none" />
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
+            {Array.from({ length: 6 }, (_, index) => (
+              <div key={index} className="overflow-hidden rounded-3xl border border-black/10 dark:border-line bg-white/45 dark:bg-panel/75">
+                <div className="h-52 bg-[#2d6a4f]/10 dark:bg-soft animate-pulse motion-reduce:animate-none" />
+                <div className="space-y-3 p-5">
+                  <div className="h-5 w-2/3 rounded bg-[#2d6a4f]/10 dark:bg-soft animate-pulse motion-reduce:animate-none" />
+                  <div className="h-3 w-1/2 rounded bg-[#2d6a4f]/10 dark:bg-soft animate-pulse motion-reduce:animate-none" />
+                  <div className="h-12 rounded bg-[#2d6a4f]/10 dark:bg-soft animate-pulse motion-reduce:animate-none" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </main>
       </div>
     );
   }
@@ -159,7 +180,7 @@ function LibraryContent() {
               placeholder="Search by name, scientific name, or uses..."
               aria-label="Search herbs by name, scientific name, or medicinal use"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
               className="search-input w-full bg-transparent border-none text-sm text-[#1b4332] dark:text-ink placeholder-gray-500 pl-8 focus:outline-none"
             />
             <span className="absolute left-4 text-gray-500 pointer-events-none">
@@ -170,7 +191,7 @@ function LibraryContent() {
           {/* DOH Validated Filter Toggle */}
           <button
             type="button"
-            onClick={() => setOnlyDohApproved(!onlyDohApproved)}
+            onClick={() => { setOnlyDohApproved(!onlyDohApproved); setPage(1); }}
             className={`h-[48px] px-5 rounded-full text-xs font-extrabold flex items-center gap-1.5 transition shrink-0 border ${
               onlyDohApproved
                 ? 'bg-[#1b4332] text-white border-[#1b4332] shadow-sm'
@@ -186,7 +207,7 @@ function LibraryContent() {
             <select
               aria-label="Filter herbs by category"
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={(e) => { setSelectedCategory(e.target.value); setPage(1); }}
               className="library-filter-btn h-[48px] w-full border border-black/10 dark:border-line bg-white/70 dark:bg-panel/75 backdrop-blur-md rounded-full px-5 text-sm font-semibold text-[#1b4332] dark:text-ink appearance-none focus:outline-none"
               style={{
                 backgroundImage: `url("data:image/svg+xml;utf8,<svg fill='%231b4332' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>")`,
@@ -209,6 +230,8 @@ function LibraryContent() {
             <span>{error}</span>
           </div>
         )}
+
+        <p className="mb-4 text-sm text-muted" aria-live="polite">{fetching ? 'Updating herbs...' : `${totalHerbs} herbs found`}</p>
 
         {/* Herbs Grid */}
         {filteredHerbs.length === 0 ? (
@@ -281,6 +304,14 @@ function LibraryContent() {
               </div>
             ))}
           </div>
+        )}
+
+        {totalPages > 1 && (
+          <nav aria-label="Herb pages" className="mt-8 flex items-center justify-center gap-4 text-sm text-ink">
+            <button type="button" disabled={page === 1 || fetching} onClick={() => setPage((current) => current - 1)} className="rounded-full border border-line px-4 py-2 disabled:opacity-40">Previous</button>
+            <span>Page {page} of {totalPages}</span>
+            <button type="button" disabled={page >= totalPages || fetching} onClick={() => setPage((current) => current + 1)} className="rounded-full border border-line px-4 py-2 disabled:opacity-40">Next</button>
+          </nav>
         )}
 
         {/* Detail Modal */}

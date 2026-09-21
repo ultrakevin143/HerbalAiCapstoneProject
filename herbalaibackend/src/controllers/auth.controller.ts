@@ -266,12 +266,20 @@ export class AuthController {
         return;
       }
 
-      const users = await userRepo.findAllUsers();
+      const requestedLimit = Number(req.query["limit"]);
+      const requestedPage = Number(req.query["page"]);
+      const limit = Number.isInteger(requestedLimit) && requestedLimit > 0 ? Math.min(requestedLimit, 100) : 25;
+      const page = Number.isInteger(requestedPage) && requestedPage > 0 ? Math.min(requestedPage, 10_000) : 1;
+      const users = await userRepo.findAllUsers(limit, (page - 1) * limit);
+      const total = await userRepo.countUsers();
       res.status(200).json({
         status: "success",
         code: 200,
         data: {
           users,
+          total,
+          page,
+          limit,
         }
       });
     } catch (error) {

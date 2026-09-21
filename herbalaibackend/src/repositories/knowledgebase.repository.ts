@@ -133,6 +133,27 @@ export const findAllKB = async () => {
   });
 };
 
+export const findKBPage = async (page: number, limit: number, search: string) => {
+  const where = search ? {
+    OR: [
+      { question: { contains: search, mode: 'insensitive' as const } },
+      { answer: { contains: search, mode: 'insensitive' as const } },
+      { category: { contains: search, mode: 'insensitive' as const } },
+    ],
+  } : {};
+  const [items, total] = await Promise.all([
+    prisma.knowledgeBase.findMany({
+      where,
+      select: { id: true, question: true, answer: true, category: true, tags: true, isActive: true, createdAt: true, updatedAt: true },
+      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+      take: limit,
+      skip: (page - 1) * limit,
+    }),
+    prisma.knowledgeBase.count({ where }),
+  ]);
+  return { items, total, page, limit };
+};
+
 /**
  * Find entry by ID
  */

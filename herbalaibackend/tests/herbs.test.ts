@@ -36,6 +36,26 @@ describe("Herb Library API Endpoints", () => {
     expect(response.body.data.totalPages).toBeGreaterThanOrEqual(1);
   });
 
+  it("GET /api/herbs/categories - lists categories across the full published catalog", async () => {
+    const [categoriesResponse, herbsResponse] = await Promise.all([
+      request(app).get("/api/herbs/categories"),
+      request(app).get("/api/herbs?page=1&limit=3"),
+    ]);
+    expect(categoriesResponse.status).toBe(200);
+    const categories: string[] = categoriesResponse.body.data.categories;
+    expect(categories.length).toBeGreaterThan(0);
+    expect(categories).toContain(herbsResponse.body.data.herbs[0].category);
+  });
+
+  it("GET /api/herbs/catalog - returns names for links without detailed herb content", async () => {
+    const response = await request(app).get("/api/herbs/catalog");
+    expect(response.status).toBe(200);
+    expect(response.body.data.herbs.length).toBeGreaterThan(0);
+    expect(response.body.data.herbs[0]).toEqual(expect.objectContaining({ id: expect.any(String), localName: expect.any(String) }));
+    expect(response.body.data.herbs[0]).not.toHaveProperty('medicinalUses');
+    expect(response.body.data.herbs[0]).not.toHaveProperty('sources');
+  });
+
   it("GET /api/herbs?search=Lagundi - should return matching search results", async () => {
     const response = await request(app).get("/api/herbs?search=Lagundi");
 

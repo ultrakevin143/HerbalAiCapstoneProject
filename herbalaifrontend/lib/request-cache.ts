@@ -25,10 +25,14 @@ export const cachedApiGet = async (
 
   const request = api.get(url)
     .then((response) => {
-      if (ttlMs > 0) responses.set(url, { response, expiresAt: Date.now() + ttlMs });
+      if (ttlMs > 0 && pending.get(url) === request) {
+        responses.set(url, { response, expiresAt: Date.now() + ttlMs });
+      }
       return response;
     })
-    .finally(() => pending.delete(url));
+    .finally(() => {
+      if (pending.get(url) === request) pending.delete(url);
+    });
 
   pending.set(url, request);
   return request;
@@ -37,9 +41,13 @@ export const cachedApiGet = async (
 export const invalidateApiGetCache = (prefix?: string): void => {
   if (!prefix) {
     responses.clear();
+    pending.clear();
     return;
   }
   for (const key of responses.keys()) {
     if (key.startsWith(prefix)) responses.delete(key);
+  }
+  for (const key of pending.keys()) {
+    if (key.startsWith(prefix)) pending.delete(key);
   }
 };

@@ -102,7 +102,7 @@ export const createUser = async (data: Prisma.UserCreateInput) => {
   });
 };
 
-export const findAllUsers = async () => {
+export const findAllUsers = async (limit = 25, offset = 0) => {
   return prisma.user.findMany({
     select: {
       id: true,
@@ -115,11 +115,13 @@ export const findAllUsers = async () => {
       isBanned: true,
       emailVerified: true,
     },
-    orderBy: {
-      joined: 'desc',
-    },
+    orderBy: [{ joined: 'desc' }, { id: 'desc' }],
+    take: limit,
+    skip: offset,
   });
 };
+
+export const countUsers = () => prisma.user.count();
 
 export const updateUserBanStatus = async (id: string, isBanned: boolean) => {
   const user = await prisma.user.update({

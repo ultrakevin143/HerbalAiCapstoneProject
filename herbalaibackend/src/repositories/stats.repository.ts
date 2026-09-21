@@ -2,29 +2,28 @@ import { prisma } from '../lib/prisma.js';
 
 export const statsRepository = {
   getSystemStats: async () => {
-    // Herbs by category
-    const herbsByCategoryRaw = await prisma.herb.groupBy({
-      by: ['category'],
-      _count: {
-        id: true,
-      },
-    });
-    
-    // Suggestions by status
-    const suggestionsByStatusRaw = await prisma.suggestedHerb.groupBy({
-      by: ['status'],
-      _count: {
-        id: true,
-      },
-    });
-    
-    // Forum threads by category
-    const threadsByCategoryRaw = await prisma.thread.groupBy({
-      by: ['category'],
-      _count: {
-        id: true,
-      },
-    });
+    const [herbsByCategoryRaw, suggestionsByStatusRaw, threadsByCategoryRaw, totalHerbs, totalUsers, totalKnowledgeFacts, recentSuggestions] = await Promise.all([
+      prisma.herb.groupBy({
+        by: ['category'],
+        _count: { id: true },
+      }),
+      prisma.suggestedHerb.groupBy({
+        by: ['status'],
+        _count: { id: true },
+      }),
+      prisma.thread.groupBy({
+        by: ['category'],
+        _count: { id: true },
+      }),
+      prisma.herb.count({ where: { publicationStatus: 'PUBLISHED', isVerified: true } }),
+      prisma.user.count(),
+      prisma.knowledgeBase.count(),
+      prisma.suggestedHerb.findMany({
+        select: { id: true, localName: true, scientificName: true, status: true },
+        orderBy: { submittedAt: 'desc' },
+        take: 4,
+      }),
+    ]);
 
     // Format for charting libraries
     const herbsByCategory = herbsByCategoryRaw.map((item) => ({
@@ -43,10 +42,13 @@ export const statsRepository = {
     }));
 
     return {
+      totalHerbs,
+      totalUsers,
+      totalKnowledgeFacts,
+      recentSuggestions,
       herbsByCategory,
       suggestionsByStatus,
       threadsByCategory,
     };
   },
 };
-

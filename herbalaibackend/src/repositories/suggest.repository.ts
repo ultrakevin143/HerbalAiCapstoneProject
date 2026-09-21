@@ -81,6 +81,20 @@ export const findAllSuggestions = async () => {
   });
 };
 
+export const findPendingSuggestionPage = async (page: number, limit: number) => {
+  const where = { status: 'Pending' as const };
+  const [suggestions, total] = await Promise.all([
+    prisma.suggestedHerb.findMany({
+      where,
+      orderBy: [{ submittedAt: 'desc' }, { id: 'desc' }],
+      take: limit,
+      skip: (page - 1) * limit,
+    }),
+    prisma.suggestedHerb.count({ where }),
+  ]);
+  return { suggestions, total, page, limit };
+};
+
 /**
  * Approves a suggestion by updating its status and inserting it as an approved Herb.
  */

@@ -43,6 +43,7 @@ export default function CommunityPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<'all' | 'growing' | 'safety' | 'recipes'>('all');
 
   // Profile popup state
@@ -67,6 +68,11 @@ export default function CommunityPage() {
     { id: 'recipes', name: 'Herbal Recipes', icon: '🍵' },
   ];
 
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedSearch(searchTerm.trim()), 250);
+    return () => window.clearTimeout(timer);
+  }, [searchTerm]);
+
   const fetchThreads = React.useCallback(async () => {
     try {
       setLoading(true);
@@ -77,8 +83,8 @@ export default function CommunityPage() {
       if (activeCategory !== 'all') {
         params.append('category', activeCategory);
       }
-      if (searchTerm.trim()) {
-        params.append('search', searchTerm.trim());
+      if (debouncedSearch) {
+        params.append('search', debouncedSearch);
       }
       
       const queryStr = params.toString();
@@ -96,7 +102,7 @@ export default function CommunityPage() {
     } finally {
       setLoading(false);
     }
-  }, [activeCategory, searchTerm]);
+  }, [activeCategory, debouncedSearch]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect

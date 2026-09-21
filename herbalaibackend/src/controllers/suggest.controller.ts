@@ -206,6 +206,16 @@ export class SuggestController {
         return;
       }
 
+      if (userRole === 'admin' && req.query['status'] === 'Pending') {
+        const requestedPage = Number(req.query['page']);
+        const requestedLimit = Number(req.query['limit']);
+        const page = Number.isInteger(requestedPage) && requestedPage > 0 ? Math.min(requestedPage, 10_000) : 1;
+        const limit = Number.isInteger(requestedLimit) && requestedLimit > 0 ? Math.min(requestedLimit, 25) : 10;
+        const result = await suggestRepo.findPendingSuggestionPage(page, limit);
+        res.status(200).json({ status: 'success', code: 200, data: result });
+        return;
+      }
+
       const suggestions = userRole === 'admin'
         ? await suggestRepo.findAllSuggestions()
         : await suggestRepo.findSuggestionsBySubmitter(userId);

@@ -143,7 +143,7 @@ export const getChatHistory = async (
  * plus the most recent message for preview in the sidebar.
  * Optimized via PostgreSQL DISTINCT ON for direct database execution.
  */
-export const getActiveConversations = async (userId: string) => {
+export const getActiveConversations = async (userId: string, search = "", limit = 25, offset = 0) => {
   type ConversationRow = {
     id: number;
     senderId: string;
@@ -159,6 +159,7 @@ export const getActiveConversations = async (userId: string) => {
   };
 
   const rows = await prisma.$queryRaw<ConversationRow[]>`
+    SELECT * FROM (
     SELECT DISTINCT ON (contact_id)
       m.id,
       m."senderId",
@@ -174,13 +175,15 @@ export const getActiveConversations = async (userId: string) => {
     FROM "ChatMessage" m
     JOIN "User" u ON u.id = (CASE WHEN m."senderId" = ${userId} THEN m."receiverId" ELSE m."senderId" END)
     WHERE m."senderId" = ${userId} OR m."receiverId" = ${userId}
-    ORDER BY contact_id, m.time DESC
+    ORDER BY contact_id, m.time DESC, m.id DESC
+    ) recent
+    WHERE recent.contact_name ILIKE ${`%${search}%`}
+    ORDER BY recent.time DESC, recent.contact_id ASC
+    LIMIT ${limit + 1} OFFSET ${offset}
   `;
 
-  // Sort conversations by latest message time
-  rows.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
-
-  return rows.map((row) => {
+  const hasMore = rows.length > limit;
+  const conversations = rows.slice(0, limit).map((row) => {
     let lastMsgText = row.content;
     if (row.isDeleted) {
       lastMsgText = "This message was deleted";
@@ -198,16 +201,18 @@ export const getActiveConversations = async (userId: string) => {
       lastTime: row.time,
     };
   });
+  return { conversations, hasMore };
 };
 
 /**
  * Get all users except the current user (for the "New Chat" user picker).
  */
-export const getMessageableUsers = async (currentUserId: string) => {
+export const getMessageableUsers = async (currentUserId: string, search = "", limit = 20, offset = 0) => {
   return prisma.user.findMany({
     where: {
       id: { not: currentUserId },
       isBanned: false,
+      ...(search ? { OR: [{ name: { contains: search, mode: "insensitive" } }, { username: { contains: search, mode: "insensitive" } }] } : {}),
     },
     select: {
       id: true,
@@ -215,6 +220,14 @@ export const getMessageableUsers = async (currentUserId: string) => {
       avatar: true,
       role: true,
     },
-    orderBy: { name: "asc" },
+    orderBy: [{ name: "asc" }, { id: "asc" }],
+    take: limit + 1,
+    skip: offset,
   });
 };
+
+export const getMessageableUserById = async (currentUserId: string, targetUserId: string) =>
+  prisma.user.findFirst({
+    where: { id: targetUserId, NOT: { id: currentUserId }, isBanned: false },
+    select: { id: true, name: true, avatar: true, role: true },
+  });

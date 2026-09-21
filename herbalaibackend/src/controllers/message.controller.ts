@@ -25,8 +25,19 @@ export const getUsers = async (
       return;
     }
 
-    const users = await messageRepo.getMessageableUsers(currentUserId);
-    res.status(200).json({ status: "success", data: { users } });
+    const targetUserId = typeof req.query["id"] === "string" ? req.query["id"] : undefined;
+    if (targetUserId) {
+      const selectedUser = await messageRepo.getMessageableUserById(currentUserId, targetUserId);
+      res.status(200).json({ status: "success", data: { users: selectedUser ? [selectedUser] : [], hasMore: false } });
+      return;
+    }
+    const search = typeof req.query["search"] === "string" ? req.query["search"].trim().slice(0, 100) : "";
+    const requestedLimit = Number(req.query["limit"]);
+    const requestedOffset = Number(req.query["offset"]);
+    const limit = Number.isInteger(requestedLimit) && requestedLimit > 0 ? Math.min(requestedLimit, 50) : 20;
+    const offset = Number.isInteger(requestedOffset) && requestedOffset >= 0 ? Math.min(requestedOffset, 100_000) : 0;
+    const rows = await messageRepo.getMessageableUsers(currentUserId, search, limit, offset);
+    res.status(200).json({ status: "success", data: { users: rows.slice(0, limit), hasMore: rows.length > limit } });
   } catch (error) {
     next(error);
   }
@@ -51,8 +62,13 @@ export const getConversations = async (
       return;
     }
 
-    const conversations = await messageRepo.getActiveConversations(currentUserId);
-    res.status(200).json({ status: "success", data: { conversations } });
+    const requestedLimit = Number(req.query["limit"]);
+    const requestedOffset = Number(req.query["offset"]);
+    const search = typeof req.query["search"] === "string" ? req.query["search"].trim().slice(0, 100) : "";
+    const limit = Number.isInteger(requestedLimit) && requestedLimit > 0 ? Math.min(requestedLimit, 50) : 25;
+    const offset = Number.isInteger(requestedOffset) && requestedOffset >= 0 ? Math.min(requestedOffset, 100_000) : 0;
+    const page = await messageRepo.getActiveConversations(currentUserId, search, limit, offset);
+    res.status(200).json({ status: "success", data: page });
   } catch (error) {
     next(error);
   }

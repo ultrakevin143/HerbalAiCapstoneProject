@@ -12,6 +12,7 @@ const authMiddleware = new AuthMiddleware();
 
 // Private Routes (Admin Only)
 router.get("/all", authMiddleware.execute, permittedRole([Role.admin]), knowledgeBaseController.getAllKnowledge);
+router.get("/page", authMiddleware.execute, permittedRole([Role.admin]), knowledgeBaseController.getKnowledgePage);
 router.post("/create", authMiddleware.execute, permittedRole([Role.admin]), validateSchema(createKnowledgeSchema), knowledgeBaseController.createKnowledge);
 router.post("/import", authMiddleware.execute, permittedRole([Role.admin]), validateSchema(importKnowledgeSchema), knowledgeBaseController.importKnowledge);
 router.patch("/:id", authMiddleware.execute, permittedRole([Role.admin]), validateSchema(updateKnowledgeSchema), knowledgeBaseController.updateKnowledge);

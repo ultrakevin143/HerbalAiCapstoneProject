@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware.js";
 import { createAuditLog } from "../repositories/audit.repository.js";
+import { findKBPage } from "../repositories/knowledgebase.repository.js";
 import {  
   CreateKnowledgeBaseService, 
   UpdateKnowledgeBaseService, 
@@ -10,6 +11,19 @@ import {
 } from "../services/ai/knowledge-base/index.js";
 
 export class KnowledgeBaseController {
+  public getKnowledgePage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const requestedPage = Number(req.query['page']);
+      const requestedLimit = Number(req.query['limit']);
+      const page = Number.isInteger(requestedPage) && requestedPage > 0 ? Math.min(requestedPage, 10_000) : 1;
+      const limit = Number.isInteger(requestedLimit) && requestedLimit > 0 ? Math.min(requestedLimit, 50) : 25;
+      const search = typeof req.query['search'] === 'string' ? req.query['search'].trim().slice(0, 100) : '';
+      const result = await findKBPage(page, limit, search);
+      res.status(200).json({ status: 'success', data: result });
+    } catch (error) {
+      next(error);
+    }
+  };
   public importKnowledge = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const result = await ImportKnowledgeBaseService(req.body.facts);

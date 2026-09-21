@@ -64,7 +64,7 @@ export const findAllHerbs = async (options: FindHerbsOptions = {}) => {
     };
 
     if (category && category.toLowerCase() !== 'all') {
-      where.category = { contains: category, mode: 'insensitive' };
+      where.category = { equals: category, mode: 'insensitive' };
     }
 
     if (isDohApproved !== undefined) {
@@ -103,6 +103,28 @@ export const findAllHerbs = async (options: FindHerbsOptions = {}) => {
     return { herbs, total };
   });
 };
+
+export const findHerbCategories = () => herbCache.getOrSet(
+  `${HERB_CACHE_PREFIX}categories`, HERB_CACHE_TTL_MS,
+  async () => {
+    const rows = await prisma.herb.findMany({
+      where: { publicationStatus: "PUBLISHED", isVerified: true },
+      select: { category: true },
+      distinct: ["category"],
+      orderBy: { category: "asc" },
+    });
+    return rows.map((row) => row.category);
+  }
+);
+
+export const findHerbCatalog = () => herbCache.getOrSet(
+  `${HERB_CACHE_PREFIX}catalog`, HERB_CACHE_TTL_MS,
+  () => prisma.herb.findMany({
+    where: { publicationStatus: "PUBLISHED", isVerified: true },
+    select: { id: true, localName: true, scientificName: true, cebuanoName: true, imageUrl: true },
+    orderBy: { localName: "asc" },
+  })
+);
 
 /**
  * Create herb with optional embedding vector

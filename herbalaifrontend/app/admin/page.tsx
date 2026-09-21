@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useAuth } from '../../context/AuthContext';
 import SessionUnavailable from '../../components/SessionUnavailable';
 import { useRouter } from 'next/navigation';
@@ -27,7 +28,19 @@ import {
   LoaderCircle,
   Upload,
 } from 'lucide-react';
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+
+const AdminDashboardCharts = dynamic(() => import('../../components/AdminDashboardCharts'), {
+  loading: () => (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8" role="status" aria-label="Loading dashboard charts">
+      {['Herbs by Category', 'Suggestions Status', 'Forum Discussions'].map((title) => (
+        <div key={title} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+          <h2 className="font-black italic text-lg text-[#1b4332] mb-4">{title}</h2>
+          <div className="h-64 rounded-xl bg-gray-100 animate-pulse motion-reduce:animate-none" />
+        </div>
+      ))}
+    </div>
+  ),
+});
 
 interface Suggestion {
   revision: number;
@@ -115,6 +128,10 @@ interface AuditLog {
 }
 
 interface DashboardStats {
+  totalHerbs: number;
+  totalUsers: number;
+  totalKnowledgeFacts: number;
+  recentSuggestions: Pick<Suggestion, 'id' | 'localName' | 'scientificName' | 'status'>[];
   herbsByCategory: { name: string; value: number }[];
   suggestionsByStatus: { name: string; value: number }[];
   threadsByCategory: { name: string; value: number }[];
@@ -126,9 +143,17 @@ export default function AdminPage() {
   const router = useRouter();
   
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [pendingPage, setPendingPage] = useState(1);
+  const [pendingTotal, setPendingTotal] = useState(0);
   const [allHerbs, setAllHerbs] = useState<Herb[]>([]);
+  const [herbsPage, setHerbsPage] = useState(1);
+  const [herbsTotal, setHerbsTotal] = useState(0);
   const [usersList, setUsersList] = useState<SystemUser[]>([]);
+  const [usersPage, setUsersPage] = useState(1);
+  const [usersTotal, setUsersTotal] = useState(0);
   const [kbList, setKbList] = useState<KBItem[]>([]);
+  const [kbPage, setKbPage] = useState(1);
+  const [kbTotal, setKbTotal] = useState(0);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
   const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(null);
   
@@ -143,7 +168,9 @@ export default function AdminPage() {
 
   // Search filters
   const [librarySearch, setLibrarySearch] = useState('');
+  const [debouncedLibrarySearch, setDebouncedLibrarySearch] = useState('');
   const [kbSearch, setKbSearch] = useState('');
+  const [debouncedKbSearch, setDebouncedKbSearch] = useState('');
   const [auditSearch, setAuditSearch] = useState('');
 
   // Knowledge Base Modals and forms
@@ -190,41 +217,78 @@ export default function AdminPage() {
   }, [successMsg]);
 
   useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedLibrarySearch(librarySearch.trim()), 250);
+    return () => window.clearTimeout(timer);
+  }, [librarySearch]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedKbSearch(kbSearch.trim()), 250);
+    return () => window.clearTimeout(timer);
+  }, [kbSearch]);
+
+  const refreshKbPage = async () => {
+    const response = await api.get('/knowledge-base/page', { params: { page: kbPage, limit: 25, search: debouncedKbSearch } });
+    if (response.data?.status === 'success') {
+      setKbList(response.data.data.items || []);
+      setKbTotal(response.data.data.total || 0);
+    }
+  };
+
+  const refreshPendingPage = async () => {
+    const response = await api.get('/suggest', { params: { status: 'Pending', page: pendingPage, limit: 10 } });
+    if (response.data?.status === 'success') {
+      const total = response.data.data.total || 0;
+      if (pendingPage > Math.max(1, Math.ceil(total / 10))) {
+        setPendingPage(Math.max(1, Math.ceil(total / 10)));
+        return;
+      }
+      setSuggestions(response.data.data.suggestions || []);
+      setPendingTotal(total);
+    }
+  };
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         setError(null);
         
-        const [suggestRes, herbsRes, usersRes, kbRes, statsRes, auditRes] = await Promise.all([
-          api.get('/suggest'),
-          cachedApiGet('/herbs', 60_000),
-          api.get('/auth/users'),
-          api.get('/knowledge-base/all'),
-          api.get('/stats/dashboard'),
-          api.get('/admin/audit-logs'),
-        ]);
-
-        if (suggestRes.data?.status === 'success') {
-          setSuggestions(suggestRes.data.data.suggestions || []);
+        if (activeTab === 'pending') {
+          const suggestRes = await api.get('/suggest', { params: { status: 'Pending', page: pendingPage, limit: 10 } });
+          if (suggestRes.data?.status === 'success') {
+            setSuggestions(suggestRes.data.data.suggestions || []);
+            setPendingTotal(suggestRes.data.data.total || 0);
+          }
         }
-
-        if (herbsRes.data?.status === 'success') {
-          setAllHerbs(herbsRes.data.data.herbs || []);
+        if (activeTab === 'dashboard') {
+          const statsRes = await api.get('/stats/dashboard');
+          if (statsRes.data?.status === 'success') setDashboardStats(statsRes.data.data);
         }
-
-        if (usersRes.data?.status === 'success') {
-          setUsersList(usersRes.data.data.users || []);
+        if (activeTab === 'library') {
+          const params = new URLSearchParams({ page: String(herbsPage), limit: '25' });
+          if (debouncedLibrarySearch) params.set('search', debouncedLibrarySearch);
+          const herbsRes = await cachedApiGet(`/herbs?${params}`, 60_000);
+          if (herbsRes.data?.status === 'success') {
+            setAllHerbs(herbsRes.data.data.herbs || []);
+            setHerbsTotal(herbsRes.data.data.total || 0);
+          }
         }
-
-        if (kbRes.data?.status === 'success') {
-          setKbList(kbRes.data.data || []);
+        if (activeTab === 'users') {
+          const usersRes = await api.get('/auth/users', { params: { page: usersPage, limit: 25 } });
+          if (usersRes.data?.status === 'success') {
+            setUsersList(usersRes.data.data.users || []);
+            setUsersTotal(usersRes.data.data.total || 0);
+          }
         }
-
-        if (statsRes.data?.status === 'success') {
-          setDashboardStats(statsRes.data.data);
+        if (activeTab === 'knowledgebase') {
+          const kbRes = await api.get('/knowledge-base/page', { params: { page: kbPage, limit: 25, search: debouncedKbSearch } });
+          if (kbRes.data?.status === 'success') {
+            setKbList(kbRes.data.data.items || []);
+            setKbTotal(kbRes.data.data.total || 0);
+          }
         }
-
-        if (auditRes.data?.status === 'success') {
-          setAuditLogs(auditRes.data.data.logs || []);
+        if (activeTab === 'audit') {
+          const auditRes = await api.get('/admin/audit-logs');
+          if (auditRes.data?.status === 'success') setAuditLogs(auditRes.data.data.logs || []);
         }
       } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
         setError(err.response?.data?.message || 'Error connecting to server.');
@@ -238,32 +302,7 @@ export default function AdminPage() {
         fetchData();
       }
     }
-  }, [loading, isAuthenticated, sessionUnavailable, user, router]);
-
-  // Audit records can change while the admin remains on this page. Refresh
-  // them whenever the audit tab is opened instead of relying on mount-time data.
-  useEffect(() => {
-    if (activeTab !== 'audit' || !isAuthenticated || user?.role !== 'admin') return;
-
-    let cancelled = false;
-    const refreshAuditLogs = async () => {
-      try {
-        const auditRes = await api.get('/admin/audit-logs');
-        if (!cancelled && auditRes.data?.status === 'success') {
-          setAuditLogs(auditRes.data.data.logs || []);
-        }
-      } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
-        if (!cancelled) {
-          setError(err.response?.data?.message || 'Unable to refresh audit logs.');
-        }
-      }
-    };
-
-    refreshAuditLogs();
-    return () => {
-      cancelled = true;
-    };
-  }, [activeTab, isAuthenticated, user?.role]);
+  }, [loading, isAuthenticated, sessionUnavailable, user?.role, router, activeTab, usersPage, herbsPage, debouncedLibrarySearch, kbPage, debouncedKbSearch, pendingPage]);
 
   const handleApprove = async (id: number) => {
     try {
@@ -283,15 +322,7 @@ export default function AdminPage() {
       if (res.data?.status === 'success') {
         invalidateApiGetCache('/herbs');
         setSuccessMsg(`Herb suggestion approved and added to the library!`);
-        // Update locally
-        setSuggestions((prev) =>
-          prev.map((s) => (s.id === id ? { ...s, status: 'Approved' } : s))
-        );
-        // Refresh herbs list
-        const herbsRes = await cachedApiGet('/herbs', 60_000, true);
-        if (herbsRes.data?.status === 'success') {
-          setAllHerbs(herbsRes.data.data.herbs || []);
-        }
+        await refreshPendingPage();
       }
     } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
       setError(err.response?.data?.message || 'Failed to approve suggestion.');
@@ -315,9 +346,7 @@ export default function AdminPage() {
       });
       if (res.data?.status === 'success') {
         setSuccessMsg('Changes requested.');
-        setSuggestions((prev) => prev.map((suggestion) => (
-          suggestion.id === id ? { ...suggestion, status: 'ChangesRequested', reviewNotes } : suggestion
-        )));
+        await refreshPendingPage();
       }
     } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
       setError(err.response?.data?.message || 'Failed to request changes.');
@@ -336,9 +365,7 @@ export default function AdminPage() {
       });
       if (res.data?.status === 'success') {
         setSuccessMsg(`Suggestion has been rejected.`);
-        setSuggestions((prev) =>
-          prev.map((s) => (s.id === id ? { ...s, status: 'Rejected' } : s))
-        );
+        await refreshPendingPage();
       }
     } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
       setError(err.response?.data?.message || 'Failed to reject suggestion.');
@@ -380,6 +407,7 @@ export default function AdminPage() {
         invalidateApiGetCache('/herbs');
         setSuccessMsg('Herb deleted successfully.');
         setAllHerbs((prev) => prev.filter((h) => h.id !== id));
+        setHerbsTotal((total) => Math.max(0, total - 1));
       }
     } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
       setError(err.response?.data?.message || 'Failed to delete herb.');
@@ -452,10 +480,7 @@ export default function AdminPage() {
         if (res.data?.status === 'success') {
           setSuccessMsg('Knowledge base entry updated successfully!');
           // Refresh list
-          const kbRes = await api.get('/knowledge-base/all');
-          if (kbRes.data?.status === 'success') {
-            setKbList(kbRes.data.data || []);
-          }
+          await refreshKbPage();
           closeKbModal();
         }
       } else {
@@ -463,10 +488,7 @@ export default function AdminPage() {
         if (res.data?.status === 'success') {
           setSuccessMsg('Knowledge base entry created successfully!');
           // Refresh list
-          const kbRes = await api.get('/knowledge-base/all');
-          if (kbRes.data?.status === 'success') {
-            setKbList(kbRes.data.data || []);
-          }
+          await refreshKbPage();
           closeKbModal();
         }
       }
@@ -528,8 +550,7 @@ export default function AdminPage() {
 
       const res = await api.post('/knowledge-base/import', { facts });
       if (res.data?.status === 'success') {
-        const kbRes = await api.get('/knowledge-base/all');
-        if (kbRes.data?.status === 'success') setKbList(kbRes.data.data || []);
+        await refreshKbPage();
         const summary = res.data.data;
         setSuccessMsg(`Imported ${summary.total} fact${summary.total === 1 ? '' : 's'}: ${summary.created} new, ${summary.updated} updated.`);
       }
@@ -553,6 +574,7 @@ export default function AdminPage() {
       if (res.data?.status === 'success') {
         setSuccessMsg('Knowledge base entry deleted successfully.');
         setKbList((prev) => prev.filter((item) => item.id !== id));
+        setKbTotal((total) => Math.max(0, total - 1));
       }
     } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
       setError(err.response?.data?.message || 'Failed to delete knowledge base entry.');
@@ -647,26 +669,21 @@ export default function AdminPage() {
   }
 
   const pendingSuggestions = suggestions.filter((s) => s.status === 'Pending');
-  const approvedSuggestions = suggestions.filter((s) => s.status === 'Approved');
+  const pendingCount = activeTab === 'pending'
+    ? pendingTotal
+    : dashboardStats?.suggestionsByStatus.find((entry) => entry.name === 'Pending')?.value ?? 0;
 
   // Filter lists
-  const filteredHerbs = allHerbs.filter(h => 
-    h.localName.toLowerCase().includes(librarySearch.toLowerCase()) ||
-    h.scientificName.toLowerCase().includes(librarySearch.toLowerCase())
-  );
+  const filteredHerbs = allHerbs;
 
-  const filteredKbList = kbList.filter(item =>
-    item.question.toLowerCase().includes(kbSearch.toLowerCase()) ||
-    item.answer.toLowerCase().includes(kbSearch.toLowerCase()) ||
-    (item.category && item.category.toLowerCase().includes(kbSearch.toLowerCase()))
-  );
+  const filteredKbList = kbList;
 
   return (
     <div className="admin-shell">
       {reviewEditing && <SuggestionReviewEditor suggestion={reviewEditing} onClose={() => setReviewEditing(null)} onSaved={() => {
         setReviewEditing(null);
         setSuccessMsg('Review edits saved.');
-        api.get('/suggest').then((response) => setSuggestions(response.data.data.suggestions)).catch(() => setError('Edits saved. Refresh to load the latest submissions.'));
+        refreshPendingPage().catch(() => setError('Edits saved. Refresh to load the latest submissions.'));
       }} />}
       {/* Sidebar Console */}
       <aside className={`admin-sidebar ${mobileNavOpen ? 'is-open' : ''}`}>
@@ -697,8 +714,8 @@ export default function AdminPage() {
           >
             <Clock className="h-4 w-4 shrink-0" />
             <span className="flex-1 text-left">Pending Suggestions</span>
-            {pendingSuggestions.length > 0 && (
-              <span className="admin-nav-badge">{pendingSuggestions.length}</span>
+            {pendingCount > 0 && (
+              <span className="admin-nav-badge">{pendingCount}</span>
             )}
           </button>
           <button 
@@ -773,136 +790,33 @@ export default function AdminPage() {
               <div className="admin-stat-grid grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
                 <div className="admin-stat-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                   <Leaf className="h-6 w-6 text-[#2d6a4f]" />
-                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{allHerbs.length}</div>
+                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{dashboardStats?.totalHerbs ?? '—'}</div>
                   <div className="label text-xs font-bold text-gray-500 uppercase tracking-wider">Total Herbs</div>
                 </div>
                 <div className="admin-stat-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                   <Clock className="h-6 w-6 text-amber-600" />
-                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{pendingSuggestions.length}</div>
+                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{dashboardStats?.suggestionsByStatus.find((entry) => entry.name === 'Pending')?.value ?? '—'}</div>
                   <div className="label text-xs font-bold text-gray-500 uppercase tracking-wider">Pending Review</div>
                 </div>
                 <div className="admin-stat-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                   <ShieldCheck className="h-6 w-6 text-emerald-600" />
-                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{approvedSuggestions.length}</div>
+                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{dashboardStats?.suggestionsByStatus.find((entry) => entry.name === 'Approved')?.value ?? '—'}</div>
                   <div className="label text-xs font-bold text-gray-500 uppercase tracking-wider">Approved Suggestions</div>
                 </div>
                 <div className="admin-stat-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                   <Users className="h-6 w-6 text-[#40916c]" />
-                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{usersList.length}</div>
+                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{dashboardStats?.totalUsers ?? '—'}</div>
                   <div className="label text-xs font-bold text-gray-500 uppercase tracking-wider">Total Users</div>
                 </div>
                 <div className="admin-stat-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                   <BookOpen className="h-6 w-6 text-teal-600" />
-                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{kbList.length}</div>
+                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{dashboardStats?.totalKnowledgeFacts ?? '—'}</div>
                   <div className="label text-xs font-bold text-gray-500 uppercase tracking-wider">FAQ Facts</div>
                 </div>
               </div>
 
-              {/* Charts Row */}
-              {dashboardStats && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-                  {/* Herbs By Category */}
-                  <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                    <h2 className="font-black italic text-lg text-[#1b4332] mb-4">
-                      Herbs by Category
-                    </h2>
-                    {dashboardStats.herbsByCategory.length === 0 ? (
-                      <p className="text-xs text-gray-500 text-center py-10">No data available</p>
-                    ) : (
-                      <div className="h-64 flex flex-col justify-between">
-                        <div className="h-36">
-                          <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-                            <PieChart>
-                              <Pie
-                                data={dashboardStats.herbsByCategory}
-                                dataKey="value"
-                                nameKey="name"
-                                cx="50%"
-                                cy="50%"
-                                innerRadius={25}
-                                outerRadius={48}
-                              >
-                                {dashboardStats.herbsByCategory.map((entry, index) => (
-                                  <Cell key={`cell-${index}`} fill={['#2d6a4f', '#40916c', '#52b788', '#74c69d', '#95d5b2'][index % 5]} />
-                                ))}
-                              </Pie>
-                              <Tooltip />
-                            </PieChart>
-                          </ResponsiveContainer>
-                        </div>
-                        <div tabIndex={0} role="region" aria-label="Herb category counts" className="h-[96px] overflow-y-auto mt-1 pr-1 space-y-1 scrollbar-thin">
-                          {dashboardStats.herbsByCategory.map((entry, index) => (
-                            <div key={entry.name} className="flex items-center justify-between text-[11px] border-b border-gray-50 pb-0.5">
-                              <div className="flex items-center gap-1.5 truncate">
-                                <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: ['#2d6a4f', '#40916c', '#52b788', '#74c69d', '#95d5b2'][index % 5] }}></span>
-                                <span className="truncate font-bold text-[#1b4332]/80" title={entry.name}>{entry.name}</span>
-                              </div>
-                              <span className="font-extrabold text-[#1b4332] pl-2">{entry.value}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
+              {dashboardStats && <AdminDashboardCharts data={dashboardStats} />}
 
-                  {/* Suggestions By Status */}
-                  <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                    <h2 className="font-black italic text-lg text-[#1b4332] mb-4">
-                      Suggestions Status
-                    </h2>
-                    {dashboardStats.suggestionsByStatus.length === 0 ? (
-                      <p className="text-xs text-gray-500 text-center py-10">No data available</p>
-                    ) : (
-                      <div className="h-64">
-                        <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-                          <BarChart data={dashboardStats.suggestionsByStatus}>
-                            <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                            <YAxis allowDecimals={false} />
-                            <Tooltip cursor={{ fill: '#f0f7f2' }} />
-                            <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-                              {dashboardStats.suggestionsByStatus.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.name === 'Approved' ? '#2d6a4f' : entry.name === 'Pending' ? '#d4a373' : '#e5989b'} />
-                              ))}
-                            </Bar>
-                          </BarChart>
-                        </ResponsiveContainer>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Forum Threads By Category */}
-                  <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                    <h2 className="font-black italic text-lg text-[#1b4332] mb-4">
-                      Forum Discussions
-                    </h2>
-                    {dashboardStats.threadsByCategory.length === 0 ? (
-                      <p className="text-xs text-gray-500 text-center py-10">No data available</p>
-                    ) : (
-                      <div className="h-64">
-                        <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-                          <PieChart>
-                            <Pie
-                              data={dashboardStats.threadsByCategory}
-                              dataKey="value"
-                              nameKey="name"
-                              cx="50%"
-                              cy="50%"
-                              innerRadius={50}
-                              outerRadius={80}
-                            >
-                              {dashboardStats.threadsByCategory.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={['#1b4332', '#2d6a4f', '#40916c'][index % 3]} />
-                              ))}
-                            </Pie>
-                            <Tooltip />
-                            <Legend />
-                          </PieChart>
-                        </ResponsiveContainer>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
 
               {/* Recent Activities */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -911,11 +825,11 @@ export default function AdminPage() {
                   <h2 className="font-black italic text-lg text-[#1b4332] mb-4">
                     Recent Contribution Requests
                   </h2>
-                  {suggestions.length === 0 ? (
+                  {!dashboardStats?.recentSuggestions.length ? (
                     <p className="text-sm font-semibold text-gray-500 text-center py-8">No activity registered yet.</p>
                   ) : (
                     <div className="space-y-4">
-                      {suggestions.slice(0, 4).map((s) => (
+                      {dashboardStats.recentSuggestions.map((s) => (
                         <div key={s.id} className="flex items-center justify-between border-b border-gray-50 pb-3 last:border-0 last:pb-0">
                           <div>
                             <h4 className="font-extrabold text-sm text-[#1b4332]">{s.localName}</h4>
@@ -941,8 +855,8 @@ export default function AdminPage() {
                   </h2>
                   <div tabIndex={0} role="region" aria-label="Console logs and health" className="space-y-4 font-mono text-xs text-[#2d6a4f] bg-[#eef5f0] p-4 rounded-xl max-h-[220px] overflow-y-auto">
                     <div>[INFO] {new Date().toISOString()} - Connection to database established successfully.</div>
-                    <div>[INFO] Loaded {allHerbs.length} published botanical records from PostgreSQL.</div>
-                    <div>[INFO] Loaded {kbList.length} RAG FAQs references.</div>
+                    <div>[INFO] {dashboardStats?.totalHerbs ?? '—'} published botanical records.</div>
+                    <div>[INFO] {dashboardStats?.totalKnowledgeFacts ?? '—'} RAG FAQ references.</div>
                     <div>[SUCCESS] Session verified for admin client user.</div>
                     <div>[HEALTH] Core API, authentication, database, and admin console checks completed.</div>
                   </div>
@@ -1085,6 +999,13 @@ export default function AdminPage() {
                   ))}
                 </div>
               )}
+              <div className="mt-6 flex items-center justify-between text-sm text-[#1b4332]">
+                <span>Page {pendingPage} of {Math.max(1, Math.ceil(pendingTotal / 10))} · {pendingTotal} pending</span>
+                <div className="flex gap-2">
+                  <button type="button" disabled={pendingPage === 1} onClick={() => setPendingPage((page) => page - 1)} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Previous</button>
+                  <button type="button" disabled={pendingPage * 10 >= pendingTotal} onClick={() => setPendingPage((page) => page + 1)} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Next</button>
+                </div>
+              </div>
             </div>
           )}
 
@@ -1093,7 +1014,7 @@ export default function AdminPage() {
             <div className="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <h2 className="font-black italic text-xl text-[#1b4332]">
-                  Published Herbs ({allHerbs.length})
+                  Published Herbs ({herbsTotal})
                 </h2>
                 
                 {/* Search Bar */}
@@ -1105,7 +1026,7 @@ export default function AdminPage() {
                     type="text"
                     placeholder="Search herbs..."
                     value={librarySearch}
-                    onChange={(e) => setLibrarySearch(e.target.value)}
+                    onChange={(e) => { setLibrarySearch(e.target.value); setHerbsPage(1); }}
                     className="w-full pl-9 pr-4 py-1.5 text-xs font-semibold rounded-full border border-gray-200 focus:outline-none focus:border-[#2d6a4f] bg-gray-50/50"
                   />
                 </div>
@@ -1173,6 +1094,13 @@ export default function AdminPage() {
                   </table>
                 </div>
               )}
+              <div className="mt-4 flex items-center justify-between text-sm text-[#1b4332]">
+                <span>Page {herbsPage} of {Math.max(1, Math.ceil(herbsTotal / 25))}</span>
+                <div className="flex gap-2">
+                  <button type="button" disabled={herbsPage === 1} onClick={() => setHerbsPage((page) => page - 1)} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Previous</button>
+                  <button type="button" disabled={herbsPage * 25 >= herbsTotal} onClick={() => setHerbsPage((page) => page + 1)} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Next</button>
+                </div>
+              </div>
             </div>
           )}
 
@@ -1248,6 +1176,13 @@ export default function AdminPage() {
                   </tbody>
                 </table>
               </div>
+              <div className="mt-4 flex items-center justify-between text-sm text-[#1b4332]">
+                <span>Page {usersPage} of {Math.max(1, Math.ceil(usersTotal / 25))} · {usersTotal} users</span>
+                <div className="flex gap-2">
+                  <button type="button" disabled={usersPage === 1} onClick={() => setUsersPage((page) => page - 1)} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Previous</button>
+                  <button type="button" disabled={usersPage * 25 >= usersTotal} onClick={() => setUsersPage((page) => page + 1)} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Next</button>
+                </div>
+              </div>
             </div>
           )}
 
@@ -1257,7 +1192,7 @@ export default function AdminPage() {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <div>
                   <h2 className="font-serif-custom font-black italic text-xl text-[#1b4332]">
-                    Dr. AI RAG Facts ({kbList.length})
+                    Dr. AI RAG Facts ({kbTotal})
                   </h2>
                   <p className="text-xs text-gray-500 mt-1">Manage QA resources used by Dr. AI to generate RAG responses</p>
                 </div>
@@ -1272,7 +1207,7 @@ export default function AdminPage() {
                       type="text"
                       placeholder="Search KB items..."
                       value={kbSearch}
-                      onChange={(e) => setKbSearch(e.target.value)}
+                      onChange={(e) => { setKbSearch(e.target.value); setKbPage(1); }}
                       className="w-full pl-9 pr-4 py-1.5 text-xs font-semibold rounded-full border border-gray-200 focus:outline-none focus:border-[#2d6a4f] bg-gray-50/50"
                     />
                   </div>
@@ -1407,6 +1342,13 @@ export default function AdminPage() {
                   </table>
                 </div>
               )}
+              <div className="mt-4 flex items-center justify-between text-sm text-[#1b4332]">
+                <span>Page {kbPage} of {Math.max(1, Math.ceil(kbTotal / 25))}</span>
+                <div className="flex gap-2">
+                  <button type="button" disabled={kbPage === 1} onClick={() => setKbPage((page) => page - 1)} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Previous</button>
+                  <button type="button" disabled={kbPage * 25 >= kbTotal} onClick={() => setKbPage((page) => page + 1)} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Next</button>
+                </div>
+              </div>
             </div>
           )}
 
