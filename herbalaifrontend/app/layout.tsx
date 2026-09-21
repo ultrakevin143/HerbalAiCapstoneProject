@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Newsreader, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import "./auth-layout.css";
 import { AuthProvider } from "../context/AuthContext";
 import { DisplayPreferenceSync } from "../components/DisplayPreferences";
 

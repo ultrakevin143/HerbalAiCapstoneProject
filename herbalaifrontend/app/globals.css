@@ -981,3 +981,17 @@ body.admin-app {
 :root[data-text-size="extra-large"] .auth-form-pane { height: auto; min-height: 100svh; overflow: visible; }
 
 @media (prefers-reduced-motion: reduce) { .dr-ai-mascot-animated { animation: none; } }
+
+@media (max-width: 639px) {
+  .auth-brand-panel { min-height: 0; gap: 0; padding: 1rem 1.25rem; }
+  .auth-brand-panel::after { width: 12rem; inset: auto -6rem -7rem auto; }
+  .auth-brand-content { display: flex; align-items: center; gap: 0.75rem; }
+  .auth-brand-panel h1 { font-size: 2rem; }
+  .auth-brand-mark { width: 2.5rem; height: 2.5rem; margin: 0; }
+  .auth-brand-kicker,
+  .auth-brand-lead,
+  .auth-brand-rule,
+  .auth-brand-points,
+  .auth-brand-footnote,
+  .auth-brand-watermark { display: none !important; }
+}

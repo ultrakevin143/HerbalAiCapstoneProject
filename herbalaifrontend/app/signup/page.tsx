@@ -73,10 +73,10 @@ export default function SignUpPage() {
   };
 
   return (
-    <main className="auth-shell font-sans">
+    <main className="auth-shell grid min-h-svh grid-cols-1 bg-canvas font-sans lg:h-svh lg:grid-cols-[minmax(23rem,0.92fr)_minmax(32rem,1.08fr)] lg:overflow-hidden">
       <AuthBrandPanel mode="signup" />
 
-      <div className="auth-form-pane auth-form-pane-signup">
+      <div className="auth-form-pane auth-form-pane-signup relative flex min-w-0 items-center justify-center px-5 pb-8 pt-20 lg:h-svh lg:overflow-hidden lg:px-8 lg:pb-3 lg:pt-14">
         <ThemeToggle className="auth-theme-toggle" />
         <div className="auth-form-card auth-form-card-signup glass-card">
           <p className="auth-form-eyebrow">Join the repository</p>
