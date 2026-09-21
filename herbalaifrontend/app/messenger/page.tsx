@@ -491,31 +491,32 @@ function MessengerContent() {
   if (!user) return null;
 
   return (
-    <div className="flex min-h-screen flex-col bg-canvas font-sans">
+    <div className="flex h-screen flex-col overflow-hidden bg-transparent font-sans text-ink">
       <Navbar />
 
-      <main className="flex flex-1 flex-col overflow-hidden px-0">
+      <main className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col overflow-hidden px-4 py-4 sm:px-6 sm:py-6">
         {/* Page header */}
-        <div className="px-6 py-4 border-b border-line bg-panel flex items-center justify-between">
+        <div className="mb-4 flex shrink-0 items-end justify-between gap-4 px-1 sm:mb-5">
           <div>
-            <div className="flex items-center gap-2 mb-0.5">
-              <span className="font-mono-code text-[11px] uppercase tracking-wider text-[var(--primary)]">Ethnobotanical Consultation Dispatch</span>
+            <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-green-700 shadow-sm dark:border-line dark:bg-soft dark:text-green-300">
+              <MessageSquare className="h-3.5 w-3.5" />
+              Direct messages
             </div>
-            <h1 className="font-editorial text-2xl font-normal text-ink">Researcher &amp; Curator Messenger</h1>
+            <h1 className="font-serif-custom text-3xl font-black italic tracking-tight text-[#1b4332] dark:text-ink sm:text-4xl">Messenger</h1>
+            <p className="mt-1 hidden text-sm font-semibold text-[#2d6a4f] dark:text-muted sm:block">Continue private conversations with Herbal-Ai community members.</p>
           </div>
-          <p className="text-xs text-muted hidden sm:block font-mono-code">Direct Peer Dispatch</p>
         </div>
 
-        <div className="flex min-h-[320px] overflow-hidden h-[calc(100dvh-160px)]">
+        <div className="glass-card flex min-h-[320px] flex-1 overflow-hidden rounded-3xl border border-black/10 bg-white/45 shadow-sm backdrop-blur-md dark:border-line dark:bg-panel/75">
           {/* ===== SIDEBAR ===== */}
-          <aside aria-label="Conversations" className={`${activeContact ? 'hidden md:flex' : 'flex'} w-full md:w-[280px] lg:w-[300px] shrink-0 flex-col border-r border-line bg-panel overflow-hidden`}>
+          <aside aria-label="Conversations" className={`${activeContact ? 'hidden md:flex' : 'flex'} w-full md:w-[280px] lg:w-[300px] shrink-0 flex-col border-r border-line bg-white/45 dark:bg-panel/80 overflow-hidden`}>
             <div className="px-4 py-3 border-b border-line">
               <div className="flex items-center gap-2 mb-3">
                 <MessageSquare className="h-4 w-4 text-ink" />
                 <span className="text-sm font-extrabold text-ink">Messages</span>
                 <button
                   onClick={() => setShowUserPicker(true)}
-                  className="ml-auto h-11 w-11 rounded-full bg-soft hover:bg-soft flex items-center justify-center transition-colors"
+                  className="ml-auto flex h-11 w-11 items-center justify-center rounded-full bg-[#eef5f0] text-[#1b4332] transition-colors hover:bg-[#dcecdf] dark:bg-soft dark:text-ink dark:hover:bg-panel"
                   title="New message"
                 >
                   <UserPlus className="h-3.5 w-3.5 text-ink" />
@@ -529,7 +530,7 @@ function MessengerContent() {
                   aria-label="Search conversations"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-8 pr-3 py-2 text-sm rounded-xl border border-line bg-panel focus:outline-none focus:border-line transition-colors"
+                  className="w-full rounded-full border border-line bg-white/70 py-2 pl-8 pr-3 text-sm transition-colors focus:border-[#40916c] focus:outline-none dark:bg-soft"
                 />
               </div>
             </div>
@@ -556,8 +557,8 @@ function MessengerContent() {
                     <button
                       key={conv.contact.id}
                       onClick={() => openConversation(conv.contact)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors border-b border-line hover:bg-soft ${
-                        isActive ? 'bg-soft border-l-2 border-l-[var(--primary)]' : ''
+                      className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors border-b border-line hover:bg-[#eef5f0] dark:hover:bg-soft ${
+                        isActive ? 'bg-[#eef5f0] dark:bg-soft border-l-2 border-l-[#40916c]' : ''
                       }`}
                     >
                       {avatarDisplay(conv.contact.avatar, conv.contact.name, 'sm')}
@@ -583,22 +584,22 @@ function MessengerContent() {
           {/* ===== MAIN CHAT AREA ===== */}
           <section aria-label="Conversation" className={`${activeContact ? 'flex' : 'hidden md:flex'} min-w-0 flex-1 flex-col overflow-hidden`}>
             {!activeContact ? (
-              <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center px-6">
-                <div className="h-16 w-16 rounded-xl bg-soft border border-line flex items-center justify-center shadow-xs">
-                  <MessageSquare className="h-8 w-8 text-[var(--accent-moss)]" />
+              <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[#40916c]/20 bg-[#eef5f0] shadow-sm dark:border-line dark:bg-soft">
+                  <MessageSquare className="h-8 w-8 text-[#2d6a4f] dark:text-[#74c69d]" />
                 </div>
                 <div>
-                  <h2 className="text-base font-bold text-ink">Select a Conversation</h2>
+                  <h2 className="font-serif-custom text-xl font-bold text-[#1b4332] dark:text-ink">Select a conversation</h2>
                   <p className="text-xs text-muted mt-1 max-w-xs leading-relaxed">
-                    Choose a conversation from the sidebar or start a new direct consultation with a contributor.
+                    Choose someone from your messages or begin a new conversation with a community member.
                   </p>
                 </div>
                 <button
                   onClick={() => setShowUserPicker(true)}
-                  className="flat-button flat-button-primary inline-flex items-center gap-1.5 text-xs mt-2"
+                  className="mt-2 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#40916c] to-[#74c69d] px-5 py-3 text-sm font-bold text-white shadow-sm transition-all hover:brightness-105"
                 >
                   <UserPlus className="h-3.5 w-3.5" />
-                  <span>New Message</span>
+                  <span>New message</span>
                 </button>
               </div>
             ) : (
