@@ -50,10 +50,10 @@ Summarize short access tokens, refresh-token rotation, logout revocation, server
 
 Report the current recorded baseline accurately:
 
-- 83 of 83 backend tests passed across 14 files.
+- 175 of 175 backend tests passed across 31 files.
 - 34 of 34 functional API checks passed.
 - 26 of 26 emulated responsive accessibility-width checks passed.
-- Frontend lint, TypeScript checks, and the 18-route production build passed.
+- Frontend lint, TypeScript checks, and the 20-route production build passed.
 
 Do not claim that automated or emulated checks replace participant UAT, physical-device acceptance, or adviser review.
 

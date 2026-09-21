@@ -29,9 +29,9 @@ Result: **13 of 13 leaf checks passed (100%)**. Two grounding prompts also passe
 
 | Area | Latest result | Evidence/status |
 |---|---|---|
-| Backend automated tests | 83/83 passed across 14 files | Verified 8 September 2026; includes profile authorization/validation, cache invalidation and safe post-login cache priming |
+| Backend automated tests | 175/175 passed across 31 files | Verified 21 September 2026 after the unknown-herb citation repair |
 | Backend lint, type check, production build | Passed | Verified |
-| Frontend lint and production build | Passed; 18 routes | Verified |
+| Frontend lint and production build | Passed; 20 routes | Verified 21 September 2026 |
 | Functional API audit | 34/34 exercised checks passed | `Docs/FUNCTIONAL_AUDIT_2026-09-01.md` |
 | Herb API cache | About 6034 ms cold, then 18 ms and 11 ms cached | Verified locally against remote DB |
 | Dr. AI retrieval | Lagundi-only citation; unknown herb returns no unrelated sources | Verified |
@@ -150,7 +150,7 @@ Before ending a test session:
 
 ## Session notes
 
-Account recovery: `Docs/ACCOUNT_RECOVERY_REHEARSAL_2026-09-06.md`. API concurrency and browser recovery passed; latest backend baseline is 83/83 across 14 files. Kevin confirmed successful use of real verification/reset emails for a temporary Gmail alias, with database evidence and cleanup. Mobile accessibility follow-up: 26/26 automated page-width scans report no violations/overflow after fixes; three keyboard scrollers passed. Physical Samsung A73 and manual accessibility acceptance remain pending; see `Docs/MOBILE_ACCESSIBILITY_FOLLOWUP_2026-09-06.md`.
+Account recovery: `Docs/ACCOUNT_RECOVERY_REHEARSAL_2026-09-06.md`. API concurrency and browser recovery passed; latest backend baseline is 173/173 across 31 files. Kevin confirmed successful use of real verification/reset emails for a temporary Gmail alias, with database evidence and cleanup. Mobile accessibility follow-up: 26/26 automated page-width scans report no violations/overflow after fixes; three keyboard scrollers passed. Physical Samsung A73 and manual accessibility acceptance remain pending; see `Docs/MOBILE_ACCESSIBILITY_FOLLOWUP_2026-09-06.md`.
 
 Mobile layout and remaining workflows: `Docs/MOBILE_FUNCTIONAL_REHEARSAL_2026-09-06.md`. Herb comments, admin ban/unban and logout passed. Repaired clipped phone Messenger/admin layouts, tablet navigation overflow and first-message touch actions; restored mobile notifications. Physical-device acceptance remains separate.
 

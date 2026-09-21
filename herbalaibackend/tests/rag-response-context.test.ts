@@ -57,6 +57,58 @@ describe('RAG response context', () => {
     expect(mocks.answer.mock.calls[0]?.[1]).toContain('Repository reference');
   });
 
+  it('rejects semantically close FAQ citations without meaningful query overlap', async () => {
+    mocks.kb.mockResolvedValue([
+      {
+        id: 'commercial-remedy',
+        question: 'Are a home-prepared remedy and a commercial herbal product the same?',
+        answer: 'They are not equivalent.',
+        category: 'general-safety',
+        tags: ['commercial-products'],
+        metadata: {},
+        distance: 0.08,
+      },
+      {
+        id: 'niyog-niyogan',
+        question: 'What evidence and safety guidance applies to Niyog-niyogan?',
+        answer: 'Use only the documented repository guidance.',
+        category: 'herb-safety',
+        tags: ['niyog-niyogan'],
+        metadata: {},
+        distance: 0.1,
+      },
+    ]);
+
+    const result = await AskAIService('What dosage should I take for moonflower xyz?');
+
+    expect(mocks.answer.mock.calls[0]?.[1]).toBe(
+      'No specific knowledge base or verified herb documents found matching this query in the database.'
+    );
+    expect(result.data?.sources).toEqual([]);
+  });
+
+  it('does not stream unrelated citations for an unknown herb', async () => {
+    mocks.kb.mockResolvedValue([
+      {
+        id: 'unrelated-faq',
+        question: 'How is Sambong traditionally prepared?',
+        answer: 'Follow the verified Sambong record.',
+        category: 'herb-preparation',
+        tags: ['sambong'],
+        metadata: {},
+        distance: 0.05,
+      },
+    ]);
+
+    const result = await createDrAiStream('What dosage should I take for moonflower xyz?');
+    for await (const chunk of result.chunks) void chunk;
+
+    expect(result.sources).toEqual([]);
+    expect(mocks.stream.mock.calls[0]?.[1]).toBe(
+      'No specific knowledge base or verified herb documents found matching this query in the database.'
+    );
+  });
+
   it('streams only generated content and retains the retrieved sources', async () => {
     const result = await createDrAiStream('Prepare Lagundi');
     const chunks: string[] = [];

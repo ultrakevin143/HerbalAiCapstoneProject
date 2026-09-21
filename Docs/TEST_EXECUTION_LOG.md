@@ -1,5 +1,13 @@
 # Herbal AI Test Execution Log
 
+## External staging public smoke test — 21 September 2026
+
+The Vercel frontend and Railway backend passed public external smoke testing. Six frontend route behaviors, backend health, herb retrieval, exact-origin credentialed CORS, signed-out authorization, timing headers, live library search/details/close behavior, protected Dr. AI redirect and the custom 404 were verified. Authenticated contributor checks then passed for route retention, grounded Lagundi retrieval, Messenger, Community, notification categories, suggestion access, contributor denial from Admin, logout and post-logout redirects. The unknown-herb refusal correctly withheld dosage but displayed unrelated FAQ citations; this is logged as `DEF-AI-02`. Multi-account real-time and administrator mutation checks remain pending. See `EXTERNAL_STAGING_SMOKE_TEST_2026-09-21.md`.
+
+## Defense preflight regression — 21 September 2026
+
+The defense preflight completed with **zero failures**. All required presentation and controlled-document artifacts were present, both environment files existed without exposing values, Google Chrome was available, and the 15-slide PowerPoint deck opened successfully. The full automated gate passed: **173/173 backend tests across 31 files**, backend TypeScript production build, frontend ESLint and TypeScript checks, and the **20-route** Next.js production build. Three expected warnings remain: the local demo services were intentionally stopped on ports 3000 and 5000, and the working tree contains reviewed local changes. Real participant UAT, staging performance, production recovery evidence, physical-device acceptance, and reviewer signatures remain separate human/environment gates.
+
 ## Cold-start diagnosis and UAT preparation — 7 September 2026
 
 Bounded layer measurements identified 2.1–4.0s fresh remote database connections and ~260–281ms warm query p95. Warming the configured pool plus Prisma query path before listen reduced one measured first authenticated request from 3503.9ms to 535.2ms; following request p95 was 18.3ms. A socket-only intermediate did not help and was superseded. A 10/50/100 distinct-user run had zero errors and p95 322.7/468.3/2413.4ms, so 100-user acceptance still fails. All 250 diagnostic/load fixtures were cleaned. Backend build/lint and local presentation rehearsal passed. Created controlled five-participant UAT script, result form and unsigned summary; UAT remains Not Started pending real participants. See `PERFORMANCE_COLD_START_DIAGNOSIS_2026-09-07.md` and `UAT_TEST_SCRIPT.md`.
@@ -180,6 +188,7 @@ Copy one row per execution. Store screenshots, recording links, or API logs in t
 | DEF-UI-01 | Minor | Dr. Ai response presentation | Markdown headings, lists, and horizontal rules were displayed as raw markers | Frontend | **Closed — Retest Passed 2026-09-04** | Authenticated Chrome prompt `Explain the verified uses and safety warnings for Lagundi.` rendered heading elements, list elements, and a visual separator with no raw `###`, `*`, or `---`; `Docs/BROWSER_CHECKLIST_REPORT_2026-09-02.md`; REG-2026-09-04-01 |
 | DEF-FORUM-01 | Major | Community reply deletion / SP-09 | Soft-deleted reply text reappeared after reload and remained exposed by the public detail API | Backend | **Closed — Retest Passed 2026-09-06** | Public response now masks deleted text; `tests/forum-deletion.test.ts` red/green regression and two-session browser retest |
 | DEF-PERF-01 | Major | PR-004 / PR-005 | Authenticated session lookup exceeds the 1 s p95 target and times out under 500-request load | Backend/Infrastructure | Open | `Docs/ACCESSIBILITY_PERFORMANCE_AUDIT_2026-09-04.md`; PERF-A11Y-2026-09-04-01 |
+| DEF-AI-02 | Moderate | Dr. AI unknown-source boundary | Unknown `moonflower xyz` correctly returns an insufficient-evidence refusal and no dosage, but the UI still displayed unrelated FAQ citations for commercial remedies and Niyog-niyogan | Backend/AI | **Fixed locally — staging retest pending** | Retrieval now requires meaningful lexical overlap in addition to vector distance; two regressions added; 175/175 backend tests, lint and build passed on 21 September 2026 |
 
 ### Performance profiling record
 

@@ -166,7 +166,9 @@ async function prepareDrAiContext(question: string, history: Content[] = []): Pr
   }));
   const strongestKBScore = Math.max(0, ...kbWithScores.map(({ lexicalScore }) => lexicalScore));
   const relevantKB = kbWithScores
-    .filter(({ lexicalScore }) => strongestKBScore < 0.3 || lexicalScore >= Math.max(0.2, strongestKBScore - 0.15))
+    .filter(({ lexicalScore }) =>
+      strongestKBScore >= 0.2 && lexicalScore >= Math.max(0.2, strongestKBScore - 0.15)
+    )
     .map(({ entry }) => entry);
   const hasStrongKBMatch = strongestKBScore >= 0.3;
 
