@@ -967,7 +967,7 @@ body.admin-app {
 
 @keyframes dr-ai-float { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-0.55rem) rotate(1deg); } }
 
-@media (min-width: 1024px) and (min-height: 680px) {
+@media (min-width: 1024px) {
   .auth-shell { height: 100svh; overflow: hidden; grid-template-columns: minmax(23rem, 0.92fr) minmax(32rem, 1.08fr); }
   .auth-brand-panel { min-height: 0; padding: clamp(2.5rem, 5vw, 5.5rem); }
   .auth-form-pane { height: 100svh; overflow: hidden; padding: 4rem 2rem 1.25rem; }

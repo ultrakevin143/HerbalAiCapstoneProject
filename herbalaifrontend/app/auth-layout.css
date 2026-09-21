@@ -91,12 +91,39 @@
 }
 .auth-theme-toggle:hover { border-color: var(--ui-line-strong); background: var(--ui-soft); }
 
-@media (min-width: 1024px) and (min-height: 680px) {
+@media (min-width: 1024px) {
   .auth-shell { height: 100svh; overflow: hidden; grid-template-columns: minmax(23rem, 0.92fr) minmax(32rem, 1.08fr); }
   .auth-brand-panel { min-height: 0; padding: clamp(2.5rem, 5vw, 5.5rem); }
   .auth-form-pane { height: 100svh; overflow: hidden; padding: 4rem 2rem 1.25rem; }
   .auth-form-pane-signup { padding-block: 3.6rem 0.75rem; }
   .auth-form-card-signup { padding: 1.1rem 1.5rem 1.2rem; }
+}
+
+@media (min-width: 1024px) and (max-height: 679px) {
+  .auth-brand-panel { padding: 2rem 3.5rem; }
+  .auth-brand-mark { width: 3.5rem; height: 3.5rem; margin-bottom: 1rem; }
+  .auth-brand-panel h1 { font-size: 3.8rem; }
+  .auth-brand-lead { margin-top: 0.75rem; font-size: 0.95rem; line-height: 1.45; }
+  .auth-brand-rule { margin: 1rem 0 0.8rem; }
+  .auth-brand-points { gap: 0.4rem; font-size: 0.78rem; }
+  .auth-form-pane { padding: 2.6rem 1.5rem 0.5rem; }
+  .auth-form-pane-signup { padding: 2.5rem 1.5rem 0.35rem; }
+  .auth-theme-toggle { top: 0.45rem; right: 0.75rem; min-height: 2.25rem; padding: 0.4rem 0.75rem; }
+  .auth-form-card-signup { padding: 0.5rem 1.25rem 0.55rem; }
+  .auth-form-card-signup h2 { margin-bottom: 0.4rem; font-size: 1.45rem; }
+  .auth-form-card-signup form { gap: 0.45rem; }
+  .auth-form-card-signup label { margin-bottom: 0.15rem; font-size: 0.75rem; }
+  .auth-form-card-signup input { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+  .auth-form-card-signup form + p { margin-top: 0.65rem; }
+  .auth-form-card-signup form + p + a { margin-top: 0.45rem; padding-top: 0.45rem; padding-bottom: 0.45rem; }
+  .auth-form-card:not(.auth-form-card-signup) { padding: 0.85rem 1.5rem; }
+  .auth-form-card:not(.auth-form-card-signup) h2 { margin-bottom: 0.7rem; font-size: 1.55rem; }
+  .auth-form-card:not(.auth-form-card-signup) form > * + * { margin-top: 0.5rem; }
+  .auth-form-card:not(.auth-form-card-signup) input { padding-top: 0.55rem; padding-bottom: 0.55rem; }
+  .auth-form-card:not(.auth-form-card-signup) form + div { margin-top: 0.65rem; }
+  .auth-form-card:not(.auth-form-card-signup) form + div .py-2 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+  .auth-form-card:not(.auth-form-card-signup) form + div + p { margin-top: 0.65rem; }
+  .auth-form-card:not(.auth-form-card-signup) form + div + p + a { margin-top: 0.55rem; padding-top: 0.55rem; padding-bottom: 0.55rem; }
 }
 
 @media (max-width: 639px) {
