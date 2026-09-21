@@ -4,7 +4,6 @@ import React, { useEffect, useState, useRef, useCallback, Suspense } from 'react
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
 import SessionUnavailable from '../../components/SessionUnavailable';
 import api from '../../lib/axios';
 import io, { Socket } from 'socket.io-client';
@@ -906,8 +905,6 @@ function MessengerContent() {
           </div>
         </div>
       )}
-
-      <Footer />
     </div>
   );
 }
