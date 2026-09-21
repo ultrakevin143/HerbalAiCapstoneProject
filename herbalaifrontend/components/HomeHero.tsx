@@ -13,10 +13,10 @@ export default function HomeHero() {
   const isStaff = user && (user.role === 'admin' || user.role === 'botanist');
 
   return (
-    <section className="relative px-6 flex items-center justify-center bg-transparent min-h-[calc(100vh-80px)] py-12 md:py-20">
-      <div className="mx-auto w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <section className="relative flex min-h-[calc(100vh-80px)] items-center justify-center bg-transparent px-4 py-10 sm:px-6 md:py-12 lg:py-20">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 md:grid-cols-12 md:gap-6 lg:gap-12">
         {/* Left Column: Welcome & Hero Text */}
-        <div className="lg:col-span-7 space-y-6">
+        <div className="space-y-6 md:col-span-6 md:space-y-4 lg:col-span-7 lg:space-y-6">
           <div className="hero-welcome-badge bg-white/60 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line text-[#2d6a4f] dark:text-[#74c69d] text-sm font-semibold px-4 py-2 rounded-full inline-block shadow-sm">
             {isAuthenticated ? (
               <span className="flex items-center gap-2">
@@ -36,14 +36,14 @@ export default function HomeHero() {
             )}
           </div>
 
-          <h1 className="hero-figma-title font-serif-custom italic font-normal text-6xl md:text-7xl lg:text-8xl text-[#1b4332] dark:text-ink leading-[1.05]">
+          <h1 className="hero-figma-title font-serif-custom text-5xl font-normal italic leading-[1.05] text-[#1b4332] dark:text-ink sm:text-6xl md:text-[3.5rem] lg:text-8xl">
             Herbal{' '}
             <span className="gradient-ai inline-block bg-gradient-to-r from-[#40916c] to-[#74c69d] bg-clip-text text-transparent">
               AI
             </span>
           </h1>
 
-          <p className="hero-figma-sub text-lg md:text-xl text-[#2d6a4f]/80 dark:text-muted leading-[1.55] max-w-[520px]">
+          <p className="hero-figma-sub max-w-[520px] text-base leading-[1.55] text-[#2d6a4f]/80 dark:text-muted md:text-sm lg:text-xl">
             {isAuthenticated
               ? isStaff
                 ? 'Review community submissions from the Admin Panel, or explore the public catalog as a member.'
@@ -51,10 +51,10 @@ export default function HomeHero() {
               : 'A Digital Repository of Philippine Herbal Medicine with AI-Assisted Preparation Guides.'}
           </p>
 
-          <div className="hero-figma-actions flex flex-wrap gap-4 pt-2">
+          <div className="hero-figma-actions flex flex-wrap gap-3 pt-2 lg:gap-4">
             <Link
               href="/library"
-              className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-semibold text-base px-8 py-3.5 rounded-full shadow-sm hover:brightness-105 transition-all whitespace-nowrap"
+              className="btn btn-gradient whitespace-nowrap rounded-full bg-gradient-to-r from-[#40916c] to-[#74c69d] px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:brightness-105 lg:px-8 lg:py-3.5 lg:text-base"
             >
               Browse Herbal-Ai
             </Link>
@@ -63,14 +63,14 @@ export default function HomeHero() {
               <>
                 <Link
                   href="/suggest"
-                  className="btn btn-glass bg-white/45 dark:bg-panel/75 backdrop-blur-md border border-white/60 dark:border-line text-[#2d6a4f] dark:text-ink font-semibold text-base px-8 py-3.5 rounded-full hover:bg-white/65 dark:hover:bg-panel transition-all shadow-sm whitespace-nowrap"
+                  className="btn btn-glass whitespace-nowrap rounded-full border border-white/60 bg-white/45 px-5 py-3 text-sm font-semibold text-[#2d6a4f] shadow-sm backdrop-blur-md transition-all hover:bg-white/65 dark:border-line dark:bg-panel/75 dark:text-ink dark:hover:bg-panel lg:px-8 lg:py-3.5 lg:text-base"
                 >
                   Suggest Herb
                 </Link>
                 {isStaff && (
                   <Link
                     href="/admin"
-                    className="btn btn-outline border-2 border-[#2d6a4f] dark:border-[#74c69d] text-[#2d6a4f] dark:text-[#74c69d] font-semibold text-base px-8 py-3.5 rounded-full hover:bg-[#2d6a4f]/10 transition-all whitespace-nowrap"
+                    className="btn btn-outline whitespace-nowrap rounded-full border-2 border-[#2d6a4f] px-5 py-3 text-sm font-semibold text-[#2d6a4f] transition-all hover:bg-[#2d6a4f]/10 dark:border-[#74c69d] dark:text-[#74c69d] lg:px-8 lg:py-3.5 lg:text-base"
                   >
                     Admin Panel
                   </Link>
@@ -79,7 +79,7 @@ export default function HomeHero() {
             ) : (
               <Link
                 href="/chat"
-                className="btn btn-glass bg-white/45 dark:bg-panel/75 backdrop-blur-md border border-white/60 dark:border-line text-[#2d6a4f] dark:text-ink font-semibold text-base px-8 py-3.5 rounded-full hover:bg-white/65 dark:hover:bg-panel transition-all shadow-sm whitespace-nowrap"
+                className="btn btn-glass whitespace-nowrap rounded-full border border-white/60 bg-white/45 px-5 py-3 text-sm font-semibold text-[#2d6a4f] shadow-sm backdrop-blur-md transition-all hover:bg-white/65 dark:border-line dark:bg-panel/75 dark:text-ink dark:hover:bg-panel lg:px-8 lg:py-3.5 lg:text-base"
               >
                 Ask Dr.Ai
               </Link>
@@ -88,8 +88,8 @@ export default function HomeHero() {
         </div>
 
         {/* Right Column: Dr. Ai Widget */}
-        <div className="lg:col-span-5 w-full">
-          <div className="glass-card dr-ai-widget bg-white/50 dark:bg-panel/85 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-6 shadow-md flex flex-col h-[420px]">
+        <div className="w-full md:col-span-6 lg:col-span-5">
+          <div className="glass-card dr-ai-widget flex h-[400px] flex-col rounded-3xl border border-black/10 bg-white/50 p-4 shadow-md backdrop-blur-md dark:border-line dark:bg-panel/85 sm:p-5 lg:h-[420px] lg:p-6">
             <div className="dr-ai-widget-header flex items-center justify-between border-b border-white/50 dark:border-line pb-4 mb-4">
               <div className="flex items-center gap-3">
                 <DrAiAvatar className="dr-ai-avatar h-12 w-12 text-[#1b4332] dark:text-[#e6f1e7]" />
@@ -110,17 +110,17 @@ export default function HomeHero() {
               className="dr-ai-messages flex-1 overflow-y-auto space-y-3 pr-1 text-xs"
             >
               <div className="flex gap-2">
-                <div className="dr-ai-bubble bot bg-white/70 dark:bg-soft text-[#1b4332] dark:text-ink rounded-[4px_16px_16px_16px] max-w-[88%] p-3 text-sm shadow-sm border border-black/5 dark:border-line">
+                <div className="dr-ai-bubble bot max-w-[88%] rounded-[4px_16px_16px_16px] border border-black/5 bg-white/70 p-3 text-xs text-[#1b4332] shadow-sm dark:border-line dark:bg-soft dark:text-ink lg:text-sm">
                   Hello! I&apos;m Dr.Ai. How can I help you with herbal medicine today?
                 </div>
               </div>
               <div className="flex gap-2 justify-end">
-                <div className="dr-ai-bubble user bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white rounded-[16px_16px_4px_16px] max-w-[88%] p-3 text-sm shadow-sm">
+                <div className="dr-ai-bubble user max-w-[88%] rounded-[16px_16px_4px_16px] bg-gradient-to-r from-[#40916c] to-[#74c69d] p-3 text-xs text-white shadow-sm lg:text-sm">
                   How do I prepare lagundi for cough?
                 </div>
               </div>
               <div className="flex gap-2">
-                <div className="dr-ai-bubble bot bg-white/70 dark:bg-soft text-[#1b4332] dark:text-ink rounded-[4px_16px_16px_16px] max-w-[88%] p-3 text-sm shadow-sm border border-black/5 dark:border-line">
+                <div className="dr-ai-bubble bot max-w-[88%] rounded-[4px_16px_16px_16px] border border-black/5 bg-white/70 p-3 text-xs text-[#1b4332] shadow-sm dark:border-line dark:bg-soft dark:text-ink lg:text-sm">
                   To prepare lagundi for cough relief: Boil 6–8 fresh lagundi leaves in 2 cups of water for 15 minutes. Let it cool, then strain. Drink ½ cup three times daily.
                 </div>
               </div>

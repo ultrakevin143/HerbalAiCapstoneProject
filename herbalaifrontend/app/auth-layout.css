@@ -91,6 +91,25 @@
 }
 .auth-theme-toggle:hover { border-color: var(--ui-line-strong); background: var(--ui-soft); }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+  .auth-shell {
+    height: 100svh;
+    overflow: hidden;
+    grid-template-columns: minmax(18rem, 0.88fr) minmax(23rem, 1.12fr);
+  }
+  .auth-brand-panel { min-height: 0; padding: 2rem; }
+  .auth-brand-mark { width: 3.5rem; height: 3.5rem; margin-bottom: 1.25rem; }
+  .auth-brand-panel h1 { font-size: clamp(3rem, 6vw, 4rem); }
+  .auth-brand-lead { margin-top: 1rem; font-size: 0.95rem; line-height: 1.5; }
+  .auth-brand-rule { margin: 1.2rem 0 1rem; }
+  .auth-brand-points { gap: 0.5rem; font-size: 0.78rem; }
+  .auth-brand-footnote { font-size: 0.66rem; }
+  .auth-form-pane { height: 100svh; overflow: hidden; padding: 4.25rem 1.25rem 1rem; }
+  .auth-form-pane-signup { padding-block: 3.5rem 0.6rem; }
+  .auth-form-card { padding: 1.25rem; }
+  .auth-form-card-signup { padding: 0.9rem 1.15rem; }
+}
+
 @media (min-width: 1024px) {
   .auth-shell { height: 100svh; overflow: hidden; grid-template-columns: minmax(23rem, 0.92fr) minmax(32rem, 1.08fr); }
   .auth-brand-panel { min-height: 0; padding: clamp(2.5rem, 5vw, 5.5rem); }
