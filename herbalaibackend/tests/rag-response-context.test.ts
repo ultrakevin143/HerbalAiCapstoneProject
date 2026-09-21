@@ -53,7 +53,7 @@ describe('RAG response context', () => {
 
   it('enriches semantic herb matches with the same evidence and references', async () => {
     mocks.herbs.mockResolvedValue([{ ...herb, distance: 0.1 }]);
-    await AskAIService('Traditional use');
+    await AskAIService('What is described in the record?');
     expect(mocks.answer.mock.calls[0]?.[1]).toContain('Repository reference');
   });
 
@@ -62,7 +62,7 @@ describe('RAG response context', () => {
       {
         id: 'commercial-remedy',
         question: 'Are a home-prepared remedy and a commercial herbal product the same?',
-        answer: 'They are not equivalent.',
+        answer: 'They are not equivalent and their dosage guidance may differ.',
         category: 'general-safety',
         tags: ['commercial-products'],
         metadata: {},
@@ -71,7 +71,7 @@ describe('RAG response context', () => {
       {
         id: 'niyog-niyogan',
         question: 'What evidence and safety guidance applies to Niyog-niyogan?',
-        answer: 'Use only the documented repository guidance.',
+        answer: 'Use only the documented dosage and preparation guidance.',
         category: 'herb-safety',
         tags: ['niyog-niyogan'],
         metadata: {},

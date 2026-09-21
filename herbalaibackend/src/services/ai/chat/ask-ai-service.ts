@@ -6,7 +6,9 @@ import type { HerbQueryResult } from "../../../repositories/herb.repository.js";
 import type { KBQueryResult } from "../../../repositories/knowledgebase.repository.js";
 
 const STOP_WORDS = new Set([
-  "a", "about", "and", "are", "for", "from", "how", "is", "it", "of", "on", "or", "the", "this", "to", "what", "with",
+  "a", "about", "and", "are", "dose", "dosage", "for", "from", "guidance", "herb", "herbal", "how", "is", "it",
+  "medicine", "of", "on", "or", "plant", "preparation", "prepare", "safety", "should", "take", "the", "this", "to",
+  "traditional", "use", "used", "uses", "what", "with",
 ]);
 
 const normalize = (value: string) =>
