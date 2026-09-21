@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
-import BrandMark from '../../components/BrandMark';
+import AuthBrandPanel from '../../components/AuthBrandPanel';
+import { ThemeToggle } from '../../components/DisplayPreferences';
 
 export default function SignUpPage() {
   const { signup } = useAuth();
@@ -72,22 +73,14 @@ export default function SignUpPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col lg:flex-row bg-transparent font-sans">
-      {/* Left side - brand */}
-      <div className="flex flex-col justify-center items-center lg:items-start lg:w-1/2 p-8 lg:p-20 bg-gradient-to-br from-[#1b4332] to-[#40916c] text-[#ffffff] text-center lg:text-left border-b lg:border-b-0 lg:border-r border-green-700/20">
-        <div className="flex items-center justify-center w-24 h-24 rounded-full bg-[#ffffff] mb-6 shadow-md">
-          <BrandMark className="h-16 w-16 text-[#1b4332]" />
-        </div>
-        <h1 className="text-4xl lg:text-6xl font-serif-custom italic font-normal tracking-tight mb-4">Herbal-Ai</h1>
-        <p className="text-lg lg:text-xl font-bold opacity-90 max-w-md">
-          Join contributors preserving Philippine traditional herbal medicine knowledge.
-        </p>
-      </div>
+    <main className="auth-shell font-sans">
+      <AuthBrandPanel mode="signup" />
 
-      {/* Right side - form */}
-      <div className="flex flex-col justify-center items-center lg:w-1/2 p-6 lg:p-12">
-        <div className="w-full max-w-md glass-card bg-white/60 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-6 lg:p-8 shadow-xl">
-          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] dark:text-ink mb-6">Create your account</h2>
+      <div className="auth-form-pane auth-form-pane-signup">
+        <ThemeToggle className="auth-theme-toggle" />
+        <div className="auth-form-card auth-form-card-signup glass-card">
+          <p className="auth-form-eyebrow">Join the repository</p>
+          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] dark:text-ink mb-4">Create your account</h2>
 
           {error && (
             <div
@@ -107,8 +100,8 @@ export default function SignUpPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-sm font-extrabold text-[#1b4332] dark:text-ink mb-1" htmlFor="firstName">
                   First Name
@@ -120,7 +113,7 @@ export default function SignUpPage() {
                   placeholder="Maria"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-3 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
+                  className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-2.5 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
                 />
               </div>
               <div>
@@ -134,7 +127,7 @@ export default function SignUpPage() {
                   placeholder="Santos"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-3 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
+                  className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-2.5 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
                 />
               </div>
             </div>
@@ -150,7 +143,7 @@ export default function SignUpPage() {
                 placeholder="maria_santos"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-3 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
+                className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-2.5 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
               />
             </div>
 
@@ -165,7 +158,7 @@ export default function SignUpPage() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-3 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
+                className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-2.5 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
               />
             </div>
 
@@ -180,7 +173,7 @@ export default function SignUpPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-3 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
+                className="w-full border border-black/10 dark:border-line bg-white/70 dark:bg-soft rounded-2xl px-4 py-2.5 text-sm text-[#1b4332] dark:text-ink focus:outline-none focus:ring-2 focus:ring-[#40916c]"
               />
               {/* Strength indicator */}
               <div className="mt-2 space-y-1">
@@ -194,13 +187,13 @@ export default function SignUpPage() {
             <button
               type="submit"
               disabled={loading}
-              className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-semibold text-base px-8 py-3.5 rounded-full shadow-sm hover:brightness-105 transition-all w-full cursor-pointer mt-2 disabled:opacity-50"
+              className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-semibold text-sm px-8 py-3 rounded-full shadow-sm hover:brightness-105 transition-all w-full cursor-pointer disabled:opacity-50"
             >
               {loading ? 'Creating Account...' : 'Create Account'}
             </button>
           </form>
 
-          <p className="text-center text-sm font-bold text-[#6a7282] dark:text-muted mt-6">
+          <p className="text-center text-sm font-bold text-[#6a7282] dark:text-muted mt-4">
             Already have an account?{' '}
             <Link href="/signin" className="text-[#2d6a4f] dark:text-[#74c69d] hover:underline font-extrabold">
               Sign in
@@ -208,7 +201,7 @@ export default function SignUpPage() {
           </p>
           <Link
             href="/"
-            className="mt-5 flex min-h-11 w-full items-center justify-center rounded-full border border-black/15 bg-white/70 px-5 py-3 text-sm font-semibold text-[#1b4332] transition-colors hover:bg-white dark:border-line dark:bg-soft dark:text-ink dark:hover:bg-panel"
+            className="mt-3 flex min-h-10 w-full items-center justify-center rounded-full border border-black/15 bg-white/70 px-5 py-2.5 text-sm font-semibold text-[#1b4332] transition-colors hover:bg-white dark:border-line dark:bg-soft dark:text-ink dark:hover:bg-panel"
           >
             Continue as guest
           </Link>

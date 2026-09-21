@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
-import BrandMark from '../../components/BrandMark';
+import AuthBrandPanel from '../../components/AuthBrandPanel';
+import { ThemeToggle } from '../../components/DisplayPreferences';
 
 export default function SignInPage() {
   const { login } = useAuth();
@@ -41,22 +42,14 @@ export default function SignInPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col lg:flex-row bg-transparent font-sans">
-      {/* Left side - brand */}
-      <div className="flex flex-col justify-center items-center lg:items-start lg:w-1/2 p-8 lg:p-20 bg-gradient-to-br from-[#1b4332] to-[#40916c] text-[#ffffff] text-center lg:text-left border-b lg:border-b-0 lg:border-r border-green-700/20">
-        <div className="flex items-center justify-center w-24 h-24 rounded-full bg-[#ffffff] mb-6 shadow-md">
-          <BrandMark className="h-16 w-16 text-[#1b4332]" />
-        </div>
-        <h1 className="text-4xl lg:text-6xl font-serif-custom italic font-normal tracking-tight mb-4">Herbal-Ai</h1>
-        <p className="text-lg lg:text-xl font-bold opacity-90 max-w-md">
-          Preserving Filipino Herbal Medicine Heritage through Artificial Intelligence
-        </p>
-      </div>
+    <main className="auth-shell font-sans">
+      <AuthBrandPanel mode="signin" />
 
-      {/* Right side - form */}
-      <div className="flex flex-col justify-center items-center lg:w-1/2 p-6 lg:p-12">
-        <div className="w-full max-w-md glass-card bg-white/60 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-6 lg:p-8 shadow-xl">
-          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] dark:text-ink mb-6">Log into Herbal-Ai</h2>
+      <div className="auth-form-pane">
+        <ThemeToggle className="auth-theme-toggle" />
+        <div className="auth-form-card glass-card">
+          <p className="auth-form-eyebrow">Welcome back</p>
+          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] dark:text-ink mb-5">Log into Herbal-Ai</h2>
           
           {error && (
             <div 
@@ -67,7 +60,7 @@ export default function SignInPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3.5">
             <div>
               <label className="block text-sm font-extrabold text-[#1b4332] dark:text-ink mb-2" htmlFor="identifier">
                 Email or username
@@ -118,7 +111,7 @@ export default function SignInPage() {
             </button>
           </form>
 
-          <div className="mt-6">
+          <div className="mt-5">
             <div className="relative flex py-2 items-center">
               <div className="flex-grow border-t border-gray-200 dark:border-line"></div>
               <span className="flex-shrink mx-4 text-gray-400 text-xs font-bold uppercase">or</span>
@@ -139,7 +132,7 @@ export default function SignInPage() {
             </a>
           </div>
 
-          <p className="text-center text-sm font-bold text-[#6a7282] dark:text-muted mt-6">
+          <p className="text-center text-sm font-bold text-[#6a7282] dark:text-muted mt-5">
             Don&apos;t have an account?{' '}
             <Link href="/signup" className="text-[#2d6a4f] dark:text-[#74c69d] hover:underline font-extrabold">
               Sign up
@@ -147,7 +140,7 @@ export default function SignInPage() {
           </p>
           <Link
             href="/"
-            className="mt-5 flex min-h-11 w-full items-center justify-center rounded-full border border-black/15 bg-white/70 px-5 py-3 text-sm font-semibold text-[#1b4332] transition-colors hover:bg-white dark:border-line dark:bg-soft dark:text-ink dark:hover:bg-panel"
+            className="mt-4 flex min-h-11 w-full items-center justify-center rounded-full border border-black/15 bg-white/70 px-5 py-3 text-sm font-semibold text-[#1b4332] transition-colors hover:bg-white dark:border-line dark:bg-soft dark:text-ink dark:hover:bg-panel"
           >
             Continue as guest
           </Link>

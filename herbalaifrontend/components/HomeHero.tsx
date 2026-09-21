@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
+import DrAiAvatar from './DrAiAvatar';
 
 export default function HomeHero() {
   const { user, isAuthenticated } = useAuth();
@@ -91,9 +92,7 @@ export default function HomeHero() {
           <div className="glass-card dr-ai-widget bg-white/50 dark:bg-panel/85 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-6 shadow-md flex flex-col h-[420px]">
             <div className="dr-ai-widget-header flex items-center justify-between border-b border-white/50 dark:border-line pb-4 mb-4">
               <div className="flex items-center gap-3">
-                <div className="dr-ai-avatar flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-[#40916c] to-[#74c69d] text-xl text-white shadow-sm">
-                  🤖
-                </div>
+                <DrAiAvatar className="dr-ai-avatar h-12 w-12 text-[#1b4332] dark:text-[#e6f1e7]" />
                 <div>
                   <h2 className="font-extrabold text-sm text-[#1b4332] dark:text-ink">Dr.Ai</h2>
                   <span className="dr-ai-status text-[#52b788] text-xs font-semibold">● Online</span>

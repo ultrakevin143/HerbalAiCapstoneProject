@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import Navbar from '../../components/Navbar';
 import SessionUnavailable from '../../components/SessionUnavailable';
+import DrAiAvatar from '../../components/DrAiAvatar';
 import { cachedApiGet } from '../../lib/request-cache';
 import { streamDrAiResponse } from '../../lib/dr-ai-stream';
 import { Send, Sparkles, BookOpen, AlertCircle, ShieldAlert } from 'lucide-react';
@@ -316,9 +317,7 @@ function ChatContent() {
         {/* Left column: Bot Profile & Instructions */}
         <aside className="order-2 md:order-1 md:col-span-1 min-w-0 space-y-6">
           <div className="glass-card bg-white/50 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-6 shadow-sm flex flex-col items-center text-center">
-            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-[#40916c] to-[#74c69d] text-3xl flex items-center justify-center text-white shadow-sm mb-4">
-              🤖
-            </div>
+            <DrAiAvatar className="h-16 w-16 mb-4 text-[#1b4332] dark:text-[#e6f1e7]" />
             <h1 className="text-lg font-extrabold text-[#1b4332] dark:text-ink">Dr. AI Assistant</h1>
             <p className="text-xs text-[#2d6a4f] dark:text-[#74c69d] font-bold mt-1">● Online &amp; Verified</p>
             <p className="text-xs text-gray-500 dark:text-muted mt-3 leading-relaxed">
@@ -399,9 +398,7 @@ function ChatContent() {
               return (
                 <div key={msg.id} data-message-role={msg.role} data-message-id={msg.id} className={`flex gap-3 ${isBot ? 'justify-start' : 'justify-end'}`}>
                   {isBot && (
-                    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#40916c] to-[#74c69d] text-base flex items-center justify-center text-white shadow-sm shrink-0 mt-0.5">
-                      🤖
-                    </div>
+                    <DrAiAvatar className="h-8 w-8 shrink-0 mt-0.5 text-[#1b4332] dark:text-[#e6f1e7]" />
                   )}
 
                   <div className="max-w-[85%] flex flex-col gap-1.5">
@@ -470,9 +467,7 @@ function ChatContent() {
 
             {isSending && (
               <div className="flex gap-3 justify-start">
-                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#40916c] to-[#74c69d] text-base flex items-center justify-center text-white shadow-sm shrink-0">
-                  🤖
-                </div>
+                <DrAiAvatar animated className="h-8 w-8 shrink-0 text-[#1b4332] dark:text-[#e6f1e7]" />
                 <div className="p-3.5 rounded-2xl bg-white dark:bg-soft border border-gray-200/80 dark:border-line text-xs font-semibold text-[#2d6a4f] dark:text-[#74c69d] flex items-center gap-2 shadow-sm">
                   <div className="h-2 w-2 rounded-full bg-[#40916c] animate-ping" />
                   <span>Dr. AI is researching verified herbal records...</span>

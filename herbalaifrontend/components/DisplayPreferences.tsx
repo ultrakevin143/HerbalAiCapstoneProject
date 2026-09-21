@@ -60,6 +60,22 @@ export function DisplayPreferenceSync() {
   return null;
 }
 
+export function ThemeToggle({ className = '' }: { className?: string }) {
+  const preferences = usePreferences();
+  const isDark = preferences.theme === 'dark';
+  return (
+    <button
+      type="button"
+      className={className}
+      aria-pressed={isDark}
+      onClick={() => savePreferences({ ...preferences, theme: isDark ? 'light' : 'dark' })}
+    >
+      {isDark ? <Sun size={17} aria-hidden="true" /> : <Moon size={17} aria-hidden="true" />}
+      <span>{isDark ? 'Light theme' : 'Dark theme'}</span>
+    </button>
+  );
+}
+
 export default function DisplayPreferences() {
   const preferences = usePreferences();
   const sizeId = useId();
