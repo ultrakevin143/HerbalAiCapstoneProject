@@ -490,23 +490,23 @@ function MessengerContent() {
   if (!user) return null;
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-transparent font-sans text-ink">
+    <div className="flex h-screen flex-col overflow-hidden bg-canvas font-sans text-ink">
       <Navbar />
 
-      <main className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col overflow-hidden px-4 py-4 sm:px-6 sm:py-6">
+      <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
         {/* Page header */}
-        <div className="mb-4 flex shrink-0 items-end justify-between gap-4 px-1 sm:mb-5">
+        <div className="flex shrink-0 items-center justify-between gap-4 border-b border-line bg-white/60 px-4 py-3 backdrop-blur-md dark:bg-panel/85 sm:px-6 sm:py-4">
           <div>
-            <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-green-700 shadow-sm dark:border-line dark:bg-soft dark:text-green-300">
+            <div className="mb-1 inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-wider text-[#2d6a4f] dark:text-[#74c69d]">
               <MessageSquare className="h-3.5 w-3.5" />
               Direct messages
             </div>
-            <h1 className="font-serif-custom text-3xl font-black italic tracking-tight text-[#1b4332] dark:text-ink sm:text-4xl">Messenger</h1>
-            <p className="mt-1 hidden text-sm font-semibold text-[#2d6a4f] dark:text-muted sm:block">Continue private conversations with Herbal-Ai community members.</p>
+            <h1 className="font-serif-custom text-2xl font-black italic tracking-tight text-[#1b4332] dark:text-ink sm:text-3xl">Messenger</h1>
           </div>
+          <p className="hidden max-w-sm text-right text-sm font-semibold text-[#2d6a4f] dark:text-muted sm:block">Private conversations with Herbal-Ai community members</p>
         </div>
 
-        <div className="glass-card flex min-h-[320px] flex-1 overflow-hidden rounded-3xl border border-black/10 bg-white/45 shadow-sm backdrop-blur-md dark:border-line dark:bg-panel/75">
+        <div className="flex min-h-[320px] flex-1 overflow-hidden bg-white/35 dark:bg-panel/55">
           {/* ===== SIDEBAR ===== */}
           <aside aria-label="Conversations" className={`${activeContact ? 'hidden md:flex' : 'flex'} w-full md:w-[280px] lg:w-[300px] shrink-0 flex-col border-r border-line bg-white/45 dark:bg-panel/80 overflow-hidden`}>
             <div className="px-4 py-3 border-b border-line">
