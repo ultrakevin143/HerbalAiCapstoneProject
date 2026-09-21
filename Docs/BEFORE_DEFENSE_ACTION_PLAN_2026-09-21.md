@@ -17,7 +17,7 @@ Status date: 21 September 2026
 | Priority | Gate | Owner | Evidence required | Status |
 |---|---|---|---|---|
 | P0 | Five-participant UAT | Project team | Five completed `UAT_RESULT_FORM.md` copies and signed/dated `UAT_SUMMARY.md` | Not Started |
-| P0 | Live staging smoke test | Project team | Public/API and contributor checks passed; admin/two-account checks and `DEF-AI-02` remain in `EXTERNAL_STAGING_SMOKE_TEST_2026-09-21.md` | In Progress |
+| P0 | Live staging smoke test | Project team | Public/API and contributor checks passed; `DEF-AI-02` closed live; admin/two-account checks remain in `EXTERNAL_STAGING_SMOKE_TEST_2026-09-21.md` | In Progress |
 | P0 | Backup and restore proof | Database owner | Successful backup, isolated restore, row-count checks and cleanup record | Not Run |
 | P1 | Physical-device acceptance | Project team | Phone/tablet model, browser, tested workflows, screenshots and defects | Not Run |
 | P1 | Security configuration review | Deployment owner | CORS, secure cookies, rate limits, secrets, OAuth redirect and role checks verified without recording secrets | Not Run |

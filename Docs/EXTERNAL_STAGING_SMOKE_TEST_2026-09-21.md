@@ -47,7 +47,7 @@ Observed single-request timings from the test workstation are diagnostic only, n
 | Existing authenticated session | Pass | Homepage rendered contributor navigation and account identity |
 | Dr. AI route retention | Pass | Opening Dr. AI did not return the authenticated user to sign-in |
 | Known-herb grounding | Pass | Lagundi answer used the Lagundi herb and FAQ records and included safety language |
-| Unknown-herb refusal | Defect found | Correctly refused dosage for `moonflower xyz`, but displayed two unrelated FAQ citations; `DEF-AI-02` is fixed locally and awaits staging deployment verification |
+| Unknown-herb refusal | Pass after repair | `moonflower xyz` returned an insufficient-evidence refusal, withheld dosage/preparation guidance, and displayed no source cards or unrelated citations after Railway activated commit `1500240` |
 | Messenger access | Pass | Conversation list, existing history, attachment control and composer rendered |
 | Community access | Pass | Categories, guidelines, search and discussion list rendered |
 | Notification center | Pass | All, Community and Messages categories rendered with working destination links |
