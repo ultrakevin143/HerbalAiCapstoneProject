@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import NotificationBell from './NotificationBell';
 import ProfileEditorModal from './ProfileEditorModal';
 import DisplayPreferences from './DisplayPreferences';
+import BrandMark from './BrandMark';
 
 export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuth();
@@ -73,11 +74,9 @@ export default function Navbar() {
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group shrink-0">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#40916c] to-[#74c69d] text-lg font-bold shadow-sm transition-transform group-hover:scale-105 text-white shrink-0">
-              <span className="font-serif-custom italic font-black text-xl">H</span>
-            </div>
-            <span className="font-serif-custom text-xl font-black italic tracking-tight text-[#1b4332] dark:text-ink whitespace-nowrap shrink-0">
-              Herbal-<span className="text-[#40916c]">Ai</span>
+            <BrandMark className="h-10 w-10 shrink-0 text-[#1b4332] dark:text-[#e6f1e7] transition-transform group-hover:scale-105" />
+            <span className="font-sans text-xl font-extrabold tracking-tight text-[#1b4332] dark:text-ink whitespace-nowrap shrink-0">
+              Herbal-<span className="text-[#2d6a4f] dark:text-[#b4e858]">Ai</span>
             </span>
           </Link>
 

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
+import BrandMark from '../../components/BrandMark';
 
 export default function SignInPage() {
   const { login } = useAuth();
@@ -43,8 +44,8 @@ export default function SignInPage() {
     <main className="flex min-h-screen flex-col lg:flex-row bg-transparent font-sans">
       {/* Left side - brand */}
       <div className="flex flex-col justify-center items-center lg:items-start lg:w-1/2 p-8 lg:p-20 bg-gradient-to-br from-[#1b4332] to-[#40916c] text-[#ffffff] text-center lg:text-left border-b lg:border-b-0 lg:border-r border-green-700/20">
-        <div className="flex items-center justify-center w-24 h-24 rounded-full bg-[#ffffff] text-4xl mb-6 shadow-md">
-          🌿
+        <div className="flex items-center justify-center w-24 h-24 rounded-full bg-[#ffffff] mb-6 shadow-md">
+          <BrandMark className="h-16 w-16 text-[#1b4332]" />
         </div>
         <h1 className="text-4xl lg:text-6xl font-serif-custom italic font-normal tracking-tight mb-4">Herbal-Ai</h1>
         <p className="text-lg lg:text-xl font-bold opacity-90 max-w-md">

@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import api from '../../lib/axios';
 import { cachedApiGet, invalidateApiGetCache } from '../../lib/request-cache';
 import SuggestionReviewEditor, { type ReviewReference } from '../../components/SuggestionReviewEditor';
+import BrandMark from '../../components/BrandMark';
 import {
   Edit2,
   Trash2,
@@ -688,9 +689,7 @@ export default function AdminPage() {
       {/* Sidebar Console */}
       <aside className={`admin-sidebar ${mobileNavOpen ? 'is-open' : ''}`}>
         <div className="admin-brand">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#1b4332] shadow-sm">
-            <Leaf className="h-5 w-5" />
-          </div>
+          <BrandMark className="h-9 w-9 shrink-0 text-white" />
           <div>
             <strong className="text-white font-black text-lg">Herbal-Ai</strong>
             <span className="text-white/80 text-xs block font-bold">Admin Console</span>
