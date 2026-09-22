@@ -1,8 +1,11 @@
 # Herbal-Ai Defense Readiness Completion Record
 
-Date: 22 September 2026  
-Branch: `codex/readability-accessibility`  
-Staging frontend: `https://herbal-ai-staging.vercel.app`  
+Date: 22 September 2026
+
+Branch: `codex/readability-accessibility`
+
+Staging frontend: `https://herbal-ai-staging.vercel.app`
+
 Staging backend: `https://herbalaicapstoneproject-staging.up.railway.app`
 
 ## Result
@@ -51,7 +54,8 @@ This proves application-table data serialization and isolated restoration for th
 
 ## Post-deployment performance
 
-Runner: `node scripts/run-staging-performance-test.mjs`  
+Runner: `node scripts/run-staging-performance-test.mjs`
+
 Samples: 20 measured requests per target after one warm-up request.
 
 | Target | p50 | p95 | Maximum | Errors |
@@ -67,4 +71,3 @@ These measurements are a low-volume defense-readiness sample from one workstatio
 1. Five participants must complete `Docs/UAT_RESULT_FORM.md` using `Docs/UAT_TEST_SCRIPT.md`.
 2. A project member must complete `Docs/PHYSICAL_DEVICE_ACCEPTANCE_2026-09-22.md` on the actual presentation phone/tablet.
 3. The project manager and adviser/reviewer must sign `Docs/UAT_SUMMARY.md` after defects are reconciled.
-
