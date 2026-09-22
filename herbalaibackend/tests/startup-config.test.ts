@@ -24,6 +24,30 @@ describe('database TLS compatibility', () => {
   });
 });
 
+it('fails closed when production JWT secrets use predictable defaults', async () => {
+  const result = await new Promise<{ code: number | null; output: string }>((resolve, reject) => {
+    const child = spawn(process.execPath, ['--import', 'tsx', '--eval', "import('./src/config/env.ts')"], {
+      cwd: fileURLToPath(new URL('../', import.meta.url)),
+      env: {
+        ...process.env,
+        NODE_ENV: 'production',
+        JWT_SECRET: 'herbalai_access_secret_change_in_prod',
+        JWT_REFRESH_SECRET: 'herbalai_refresh_secret_change_in_prod',
+      },
+      windowsHide: true,
+    });
+    let output = '';
+    child.stdout.on('data', chunk => { output += chunk.toString(); });
+    child.stderr.on('data', chunk => { output += chunk.toString(); });
+    child.on('error', reject);
+    child.on('close', code => resolve({ code, output }));
+  });
+
+  expect(result.code).not.toBe(0);
+  expect(result.output).toContain('Production requires unique JWT secrets');
+  expect(result.output).not.toContain(process.env.JWT_SECRET ?? 'unconfigured-local-secret');
+});
+
 it('rejects occupied ports through the startup promise without leaking error listeners', async () => {
   const occupied = createServer();
   const contender = createServer();

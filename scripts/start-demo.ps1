@@ -60,7 +60,7 @@ for ($attempt = 1; $attempt -le 30; $attempt++) {
     if ($backend.HasExited -or $frontend.HasExited) { break }
     $api = Invoke-RestMethod -Uri 'http://localhost:5000/api/health' -TimeoutSec 2
     $web = Invoke-WebRequest -Uri 'http://localhost:3000' -UseBasicParsing -TimeoutSec 2
-    if ($api.status -eq 'success' -and $web.StatusCode -eq 200 -and $web.Content -match '<title>Herbal AI') { $healthy = $true; break }
+    if ($api.status -eq 'success' -and $web.StatusCode -eq 200 -and $web.Content -match '<title>Herbal-Ai') { $healthy = $true; break }
   } catch {
     Start-Sleep -Milliseconds 750
   }

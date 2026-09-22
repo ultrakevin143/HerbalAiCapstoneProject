@@ -52,10 +52,13 @@ export const ENV = {
 };
 
 if (ENV.NODE_ENV === 'production') {
-  if (ENV.JWT_SECRET === 'herbalai_access_secret_change_in_prod') {
-    console.warn('⚠️ WARNING: Using default JWT_SECRET in production is insecure. Please set JWT_SECRET in .env');
-  }
-  if (ENV.JWT_REFRESH_SECRET === 'herbalai_refresh_secret_change_in_prod') {
-    console.warn('⚠️ WARNING: Using default JWT_REFRESH_SECRET in production is insecure. Please set JWT_REFRESH_SECRET in .env');
+  const jwtSecrets: Array<[name: string, value: string, fallback: string]> = [
+    ['JWT_SECRET', ENV.JWT_SECRET, 'herbalai_access_secret_change_in_prod'],
+    ['JWT_REFRESH_SECRET', ENV.JWT_REFRESH_SECRET, 'herbalai_refresh_secret_change_in_prod'],
+  ];
+  const invalidSecrets = jwtSecrets.filter(([, value, fallback]) => value === fallback || value.length < 32);
+
+  if (invalidSecrets.length > 0) {
+    throw new Error(`Production requires unique JWT secrets of at least 32 characters: ${invalidSecrets.map(([name]) => name).join(', ')}`);
   }
 }

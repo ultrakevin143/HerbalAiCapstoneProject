@@ -16,7 +16,7 @@ try {
     for (const path of ['/', '/library', '/about', '/signin', '/signup', '/forgot-password']) {
       const startErrors = errors.length;
       const response = await page.goto(`${base}${path}`, { waitUntil: 'networkidle' });
-      assert.ok((await page.title()).includes('Herbal AI'), 'Wrong app on port 3000');
+      assert.ok((await page.title()).includes('Herbal-Ai'), 'Wrong app on port 3000');
       const layout = await page.evaluate(() => ({
         viewport: innerWidth, width: document.documentElement.scrollWidth,
         headings: [...document.querySelectorAll('h1')].map(h => h.textContent?.trim()),
@@ -32,10 +32,11 @@ try {
     await page.waitForFunction(() => document.querySelectorAll('.library-herb-card').length === 1);
     assert.match(await cards.first().innerText(), /lagundi/i);
     await cards.first().click();
-    await page.getByRole('button', { name: 'Close modal', exact: true }).waitFor();
+    const closeDetailsButton = page.getByRole('button', { name: /Close .* details/i });
+    await closeDetailsButton.waitFor();
     const modalFits = await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1);
     failed ||= !modalFits;
-    await page.getByRole('button', { name: 'Close modal', exact: true }).click();
+    await closeDetailsButton.click();
     console.log(JSON.stringify({ workflow: 'Lagundi search, open and close details', viewport, pass: modalFits }));
     if (viewport.width < 768) {
       await page.getByRole('button', { name: 'Toggle Navigation Menu' }).click();

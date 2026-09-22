@@ -22,7 +22,7 @@ function Write-PreflightWarning {
   $warnings.Add("${Label}: ${Detail}")
 }
 
-Write-Host 'Herbal AI defense preflight' -ForegroundColor Cyan
+Write-Host 'Herbal-Ai defense preflight' -ForegroundColor Cyan
 Write-Host "Project: $projectRoot"
 
 $requiredFiles = @(
@@ -89,14 +89,14 @@ foreach ($port in 3000, 5000) {
     try {
       if ($port -eq 3000) {
         $response = Invoke-WebRequest -Uri 'http://localhost:3000' -UseBasicParsing -TimeoutSec 3
-        $healthy = $response.StatusCode -eq 200 -and $response.Content -match '<title>Herbal AI'
+        $healthy = $response.StatusCode -eq 200 -and $response.Content -match '<title>Herbal-Ai'
       } else {
         $response = Invoke-RestMethod -Uri 'http://localhost:5000/api/health' -TimeoutSec 3
         $healthy = $response.status -eq 'success'
       }
-      Write-Check "Port $port" $healthy 'Herbal AI service is listening and healthy'
+      Write-Check "Port $port" $healthy 'Herbal-Ai service is listening and healthy'
     } catch {
-      Write-Check "Port $port" $false 'occupied, but the expected Herbal AI health check failed'
+      Write-Check "Port $port" $false 'occupied, but the expected Herbal-Ai health check failed'
     }
   } else {
     Write-PreflightWarning "Port $port" 'free; start the production demo before browser rehearsal'

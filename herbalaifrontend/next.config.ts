@@ -4,6 +4,17 @@ const useConstrainedBuild = process.env.NEXT_CONSTRAINED_BUILD === "1";
 
 const nextConfig: NextConfig = {
   devIndicators: false,
+  async headers() {
+    return [{
+      source: '/:path*',
+      headers: [
+        { key: 'X-Content-Type-Options', value: 'nosniff' },
+        { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+        { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+        { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+      ],
+    }];
+  },
   async rewrites() {
     const backendApi = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
     return [{ source: '/api/:path*', destination: `${backendApi}/:path*` }];
