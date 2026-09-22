@@ -76,12 +76,28 @@ export function ThemeToggle({ className = '' }: { className?: string }) {
   );
 }
 
-export default function DisplayPreferences() {
+interface DisplayPreferencesProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export default function DisplayPreferences({ open, onOpenChange }: DisplayPreferencesProps = {}) {
   const preferences = usePreferences();
   const sizeId = useId();
   const isDark = preferences.theme === 'dark';
   return (
-    <details className="display-menu" onKeyDown={(event) => { if (event.key === 'Escape') { event.currentTarget.open = false; event.currentTarget.querySelector('summary')?.focus(); } }}>
+    <details
+      className="display-menu"
+      open={open}
+      onToggle={(event) => onOpenChange?.(event.currentTarget.open)}
+      onKeyDown={(event) => {
+        if (event.key === 'Escape') {
+          event.currentTarget.open = false;
+          onOpenChange?.(false);
+          event.currentTarget.querySelector('summary')?.focus();
+        }
+      }}
+    >
       <summary>Display</summary>
       <div className="reading-toolbar" role="group" aria-label="Reading preferences">
       <label htmlFor={sizeId}>Text size</label>

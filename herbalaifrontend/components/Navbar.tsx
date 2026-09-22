@@ -8,11 +8,14 @@ import NotificationBell from './NotificationBell';
 import ProfileEditorModal from './ProfileEditorModal';
 import DisplayPreferences from './DisplayPreferences';
 import BrandMark from './BrandMark';
+import { LogOut, Menu, Shield, Sprout, UserRound, X } from 'lucide-react';
+import { PwaInstallButton } from './PwaInstall';
 
 export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuth();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileDisplayOpen, setIsMobileDisplayOpen] = useState(false);
   const [isProfileEditorOpen, setIsProfileEditorOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -39,6 +42,7 @@ export default function Navbar() {
   }, [isUserMenuOpen]);
 
   const toggleMobileMenu = () => {
+    setIsMobileDisplayOpen(false);
     setIsMobileMenuOpen((prev) => !prev);
   };
 
@@ -224,7 +228,13 @@ export default function Navbar() {
 
           {/* Mobile hamburger button */}
           <div className="flex items-center gap-2 xl:hidden">
-            <DisplayPreferences />
+            <DisplayPreferences
+              open={isMobileDisplayOpen}
+              onOpenChange={(open) => {
+                setIsMobileDisplayOpen(open);
+                if (open) setIsMobileMenuOpen(false);
+              }}
+            />
             {isAuthenticated && <NotificationBell />}
             <button
               onClick={toggleMobileMenu}
@@ -232,33 +242,36 @@ export default function Navbar() {
               aria-label="Toggle navigation menu"
               aria-expanded={isMobileMenuOpen}
             >
-              <span className="text-xl">{isMobileMenuOpen ? '✕' : '☰'}</span>
+              {isMobileMenuOpen ? <X size={21} aria-hidden="true" /> : <Menu size={21} aria-hidden="true" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation Dropdown */}
         {isMobileMenuOpen && (
-          <div className="xl:hidden border-t border-black/10 dark:border-line mt-3 pt-3 space-y-2 pb-2 animate-in fade-in slide-in-from-top-2 duration-200">
-            {allLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block rounded-2xl px-4 py-2.5 text-sm font-extrabold transition-all ${
-                    isActive
-                      ? 'bg-[#eef5f0] dark:bg-soft text-[#1b4332] dark:text-ink'
-                      : 'text-[#2d6a4f] dark:text-muted hover:bg-[#eef5f0] dark:hover:bg-soft'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
+          <div className="xl:hidden mt-3 max-h-[calc(100dvh-5.5rem)] overflow-y-auto border-t border-black/10 pt-3 pb-2 dark:border-line animate-in fade-in slide-in-from-top-2 duration-200">
+            <div className="grid grid-cols-2 gap-2">
+              {allLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`rounded-xl px-3 py-2.5 text-center text-sm font-extrabold transition-all ${
+                      isActive
+                        ? 'bg-[#eef5f0] text-[#1b4332] ring-1 ring-[#2d6a4f]/20 dark:bg-soft dark:text-ink'
+                        : 'text-[#2d6a4f] hover:bg-[#eef5f0] dark:text-muted dark:hover:bg-soft'
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </div>
 
-            <div className="border-t border-black/10 dark:border-line pt-3 space-y-2">
+            <div className="mt-3 space-y-2 border-t border-black/10 pt-3 dark:border-line">
+              <PwaInstallButton onComplete={() => setIsMobileMenuOpen(false)} />
               {isAuthenticated ? (
                 <>
                   <button
@@ -267,36 +280,45 @@ export default function Navbar() {
                       setIsMobileMenuOpen(false);
                       setIsProfileEditorOpen(true);
                     }}
-                    className="flex w-full items-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-extrabold text-[#1b4332] dark:text-ink bg-white/60 dark:bg-soft"
+                    className="flex w-full items-center gap-3 rounded-xl bg-white/60 px-3 py-2.5 text-left text-sm font-extrabold text-[#1b4332] dark:bg-soft dark:text-ink"
                   >
-                    <span>👤 Profile ({user?.name})</span>
+                    <UserRound size={18} aria-hidden="true" className="shrink-0 text-[#40916c]" />
+                    <span className="min-w-0">
+                      <span className="block truncate">{user?.name || 'Profile'}</span>
+                      <span className="block text-xs font-semibold capitalize text-[#2d6a4f]/75 dark:text-muted">{user?.role || 'Member'}</span>
+                    </span>
                   </button>
 
-                  {isStaff && (
-                    <Link
-                      href="/admin"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="block rounded-2xl px-4 py-2.5 text-sm font-extrabold text-[#2d6a4f] dark:text-[#74c69d]"
-                    >
-                      Admin Panel
-                    </Link>
-                  )}
+                  <div className="grid grid-cols-2 gap-2">
+                    {isStaff && (
+                      <Link
+                        href="/admin"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center justify-center gap-2 rounded-xl border border-[#40916c]/25 px-3 py-2.5 text-sm font-extrabold text-[#2d6a4f] dark:text-[#74c69d]"
+                      >
+                        <Shield size={16} aria-hidden="true" />
+                        Admin
+                      </Link>
+                    )}
 
-                  <Link
-                    href="/suggest"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block rounded-2xl px-4 py-2.5 text-sm font-extrabold text-[#2d6a4f] dark:text-[#74c69d]"
-                  >
-                    Suggest Herb
-                  </Link>
+                    <Link
+                      href="/suggest"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center justify-center gap-2 rounded-xl border border-[#40916c]/25 px-3 py-2.5 text-sm font-extrabold text-[#2d6a4f] dark:text-[#74c69d]"
+                    >
+                      <Sprout size={16} aria-hidden="true" />
+                      Suggest Herb
+                    </Link>
+                  </div>
 
                   <button
                     onClick={() => {
                       setIsMobileMenuOpen(false);
                       handleLogout();
                     }}
-                    className="block w-full text-left rounded-2xl px-4 py-2.5 text-sm font-extrabold text-rose-600"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-extrabold text-[#b34f35] transition-colors hover:bg-[#b34f35]/10 dark:text-[#e58a70]"
                   >
+                    <LogOut size={16} aria-hidden="true" />
                     Log Out
                   </button>
                 </>

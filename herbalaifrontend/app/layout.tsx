@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Newsreader, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import "./auth-layout.css";
 import { AuthProvider } from "../context/AuthContext";
 import { DisplayPreferenceSync } from "../components/DisplayPreferences";
+import { PwaRegistration } from "../components/PwaInstall";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -33,6 +34,16 @@ export const metadata: Metadata = {
   authors: [{ name: "Herbal-Ai Team" }],
   applicationName: "Herbal-Ai",
   category: "education",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Herbal-Ai",
+  },
+  icons: {
+    icon: "/pwa-icon-192.png",
+    apple: "/pwa-icon-192.png",
+  },
   openGraph: {
     type: "website",
     title: "Herbal-Ai — Philippine Medicinal Plants Repository",
@@ -43,6 +54,10 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#1b4332",
 };
 
 export default function RootLayout({
@@ -59,6 +74,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans bg-canvas text-ink">
         <script dangerouslySetInnerHTML={{ __html: `try{const preferences=JSON.parse(localStorage.getItem('herbal-ai-display')||'{}');const isDark=preferences?.theme==='dark';document.documentElement.dataset.theme=isDark?'dark':'light';document.documentElement.classList.toggle('dark',isDark);document.documentElement.dataset.textSize=['large','extra-large'].includes(preferences?.size)?preferences.size:'normal'}catch{}` }} />
         <DisplayPreferenceSync />
+        <PwaRegistration />
         <AuthProvider>
           {children}
         </AuthProvider>
