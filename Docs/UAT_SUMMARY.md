@@ -2,6 +2,8 @@
 
 Status: **Not Started** until completed participant forms exist.
 
+After all five forms are completed, run `node scripts/summarize-uat.mjs` from the repository root. The command calculates scenario totals and refuses to treat blank or invalid statuses as completed evidence. Copy the verified totals into this summary, reconcile defects, and obtain the required signatures.
+
 Test period:
 Facilitator(s):
 Reviewer:
@@ -20,11 +22,11 @@ Reviewer:
 
 | Participant ID | Role | Device/browser | Completed date | Form location |
 |---|---|---|---|---|
-| UAT-01 |  |  |  |  |
-| UAT-02 |  |  |  |  |
-| UAT-03 |  |  |  |  |
-| UAT-04 |  |  |  |  |
-| UAT-05 |  |  |  |  |
+| UAT-01 |  |  |  | `Docs/UAT_2026-09-22/UAT-01.md` |
+| UAT-02 |  |  |  | `Docs/UAT_2026-09-22/UAT-02.md` |
+| UAT-03 |  |  |  | `Docs/UAT_2026-09-22/UAT-03.md` |
+| UAT-04 |  |  |  | `Docs/UAT_2026-09-22/UAT-04.md` |
+| UAT-05 |  |  |  | `Docs/UAT_2026-09-22/UAT-05.md` |
 
 ## Defect disposition
 
