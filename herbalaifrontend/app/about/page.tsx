@@ -12,6 +12,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import OptimizedFillImage from '../../components/OptimizedFillImage';
+import { useAuth } from '../../context/AuthContext';
 
 interface PitahcHerb {
   id: string;
@@ -25,6 +26,8 @@ interface PitahcHerb {
 }
 
 export default function AboutPage() {
+  const { isAuthenticated } = useAuth();
+
   const pitahcHerbs: PitahcHerb[] = [
     {
       id: 'lagundi',
@@ -135,8 +138,8 @@ export default function AboutPage() {
       {/* Top Navigation */}
       <Navbar />
 
-      <main className="flex-1 py-12 md:py-20 px-6">
-        <div className="mx-auto max-w-7xl space-y-16 md:space-y-24">
+      <main className="flex-1 px-4 py-8 sm:px-6 md:py-20">
+        <div className="mx-auto max-w-7xl space-y-12 md:space-y-24">
           
           {/* Page Hero Section */}
           <section className="text-center max-w-4xl mx-auto space-y-6">
@@ -153,7 +156,7 @@ export default function AboutPage() {
             </h1>
 
             <p className="text-lg md:text-xl text-[#2d6a4f]/80 dark:text-muted leading-relaxed max-w-2xl mx-auto">
-              Herbal-Ai is a digital sanctuary dedicated to preserving Philippine traditional medicinal plant lore while providing scientifically verified preparation guides and interactive AI-driven consultations.
+              Herbal-Ai is an educational repository for Philippine medicinal-plant knowledge, with source-linked preparation and safety information presented in a clearer digital format.
             </p>
 
             <div className="flex justify-center gap-4 pt-4">
@@ -167,7 +170,7 @@ export default function AboutPage() {
                 href="/chat"
                 className="btn btn-glass bg-white/45 dark:bg-panel/75 backdrop-blur-md border border-white/60 dark:border-line text-[#2d6a4f] dark:text-ink font-semibold text-sm px-8 py-3 rounded-full hover:bg-white/65 dark:hover:bg-panel transition-all shadow-sm"
               >
-                Consult Dr. AI
+                Ask Dr. Ai
               </Link>
             </div>
           </section>
@@ -179,7 +182,7 @@ export default function AboutPage() {
                 Our Core Philosophy
               </h2>
               <p className="text-[#2d6a4f] dark:text-muted font-bold text-sm max-w-md mx-auto">
-                How we combine ancestral remedies with clinical credibility.
+                How we preserve traditional knowledge while keeping evidence and safety boundaries visible.
               </p>
             </div>
 
@@ -210,7 +213,7 @@ export default function AboutPage() {
                     </svg>
                   </div>
                   <h3 className="font-serif-custom italic font-normal text-2xl text-[#1b4332] dark:text-ink mb-3">
-                    Clinical Validation
+                    Evidence Review
                   </h3>
                   <p className="text-sm text-[#2d6a4f] dark:text-muted leading-relaxed">
                     We align entries with publicly available Department of Health and PITAHC reference materials. Each record presents its cited uses, preparation guidance, dosage information, and safety precautions for educational review.
@@ -227,10 +230,10 @@ export default function AboutPage() {
                     </svg>
                   </div>
                   <h3 className="font-serif-custom italic font-normal text-2xl text-[#1b4332] dark:text-ink mb-3">
-                    Interactive Dr. AI
+                    Interactive Dr. Ai
                   </h3>
                   <p className="text-sm text-[#2d6a4f] dark:text-muted leading-relaxed">
-                    Access local herbal medicine wisdom on demand. Our smart chat assistant helps translate symptoms into verified preparation methods, translating complex botanical names into actionable, traditional household recipes.
+                    Ask questions using everyday language. Dr. Ai organizes matching repository records into clearer educational answers and avoids unsupported herb-specific guidance.
                   </p>
                 </div>
               </div>
@@ -324,7 +327,7 @@ export default function AboutPage() {
                     {/* Indications */}
                     <div>
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">
-                        Therapeutic Indications
+                        Documented Uses
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {activeHerb.indications.map((ind, idx) => (
@@ -348,10 +351,10 @@ export default function AboutPage() {
                       </p>
                     </div>
 
-                    {/* Scientific Fact */}
+                    {/* Evidence note */}
                     <div>
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">
-                        Scientific Verification
+                        Repository Evidence Note
                       </h4>
                       <p className="text-xs font-semibold text-[#2d6a4f] dark:text-[#74c69d] italic bg-[#74c69d]/10 border border-[#74c69d]/25 rounded-2xl p-4 flex items-start gap-2">
                         <Lightbulb className="h-4 w-4 shrink-0 text-[#40916c] mt-0.5" />
@@ -376,7 +379,7 @@ export default function AboutPage() {
           </section>
 
           {/* Collaborative Capstone Section */}
-          <section className="glass-card bg-white/45 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-8 md:p-12 shadow-sm grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+          <section className="glass-card grid grid-cols-1 items-center gap-8 rounded-3xl border border-black/10 bg-white/45 p-6 shadow-sm backdrop-blur-md dark:border-line dark:bg-panel/75 sm:p-8 md:grid-cols-12 md:p-12">
             <div className="md:col-span-7 space-y-6">
               <div className="inline-flex items-center bg-[#c9a040]/10 border border-[#c9a040]/30 text-[#c9a040] text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
                 <GraduationCap className="h-3.5 w-3.5 mr-1.5 text-[#c9a040]" />
@@ -388,7 +391,7 @@ export default function AboutPage() {
               </h2>
 
               <p className="text-sm md:text-base font-bold text-[#2d6a4f] dark:text-muted leading-relaxed">
-                Herbal-Ai represents a dedicated Capstone initiative built to solve a critical issue: the gap between traditional folk wisdom and modern digital health applications. By providing a verified central registry, we aim to eliminate hazardous self-medication practices while honoring local botanical heritage.
+                Herbal-Ai is a capstone initiative addressing the gap between traditional folk knowledge and accessible digital health education. It provides a reviewed repository that keeps sources, preparation notes, and safety limits visible while honoring local botanical heritage.
               </p>
               
               <div className="grid grid-cols-2 gap-4 text-xs font-semibold text-[#1b4332] dark:text-ink pt-2">
@@ -398,7 +401,7 @@ export default function AboutPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#52b788] shrink-0" />
-                  <span>Botanist-reviewed monographs</span>
+                  <span>Administrator-reviewed plant records</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#52b788] shrink-0" />
@@ -413,8 +416,8 @@ export default function AboutPage() {
 
             <div className="md:col-span-5 relative rounded-2xl overflow-hidden shadow-md aspect-video md:aspect-square bg-white border border-black/5">
               <OptimizedFillImage
-                src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=600&q=80"
-                alt="Science lab analyzing medicinal leaves"
+                src="/images/lagundi.png"
+                alt="Lagundi leaves documented in the Herbal-Ai medicinal-plant library"
                 sizes="(max-width: 768px) 100vw, 42vw"
                 className="w-full h-full object-cover opacity-90"
               />
@@ -422,20 +425,21 @@ export default function AboutPage() {
           </section>
 
           {/* Final Call to Action */}
-          <section className="text-center bg-gradient-to-br from-[#1b4332] to-[#2d6a4f] rounded-3xl p-8 md:p-12 text-white shadow-lg space-y-6 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-32 h-32 bg-white/5 rounded-full -translate-x-12 -translate-y-12"></div>
-            <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full translate-x-16 translate-y-16"></div>
+          {!isAuthenticated && (
+            <section className="relative space-y-6 overflow-hidden rounded-3xl bg-gradient-to-br from-[#1b4332] to-[#2d6a4f] p-6 text-center text-white shadow-lg sm:p-8 md:p-12">
+              <div className="absolute top-0 left-0 h-32 w-32 -translate-x-12 -translate-y-12 rounded-full bg-white/5"></div>
+              <div className="absolute right-0 bottom-0 h-48 w-48 translate-x-16 translate-y-16 rounded-full bg-white/5"></div>
 
             <span className="text-xs font-black uppercase tracking-widest text-[#74c69d]">
               Ready to Explore?
             </span>
             
             <h2 className="font-serif-custom italic font-normal text-3xl md:text-5xl max-w-2xl mx-auto leading-tight">
-              Begin your journey into traditional Philippine therapeutics
+              Explore documented Philippine herbal knowledge
             </h2>
             
             <p className="text-white/80 max-w-md mx-auto text-sm">
-              Register as a contributor to suggest new herbs, or open Dr. AI to receive guidelines on natural formulations instantly.
+              Create an account to suggest herbs, or ask Dr. Ai for source-grounded preparation and safety information from the repository.
             </p>
 
             <div className="flex flex-wrap justify-center gap-4 pt-4 relative z-10">
@@ -449,10 +453,11 @@ export default function AboutPage() {
                 href="/chat"
                 className="border border-white/45 bg-white/10 text-white font-bold text-sm px-8 py-3.5 rounded-full hover:bg-white/20 transition-all"
               >
-                Ask Dr. AI
+                Ask Dr. Ai
               </Link>
             </div>
-          </section>
+            </section>
+          )}
 
         </div>
       </main>
