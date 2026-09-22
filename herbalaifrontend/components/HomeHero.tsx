@@ -13,11 +13,11 @@ export default function HomeHero() {
   const isStaff = user && (user.role === 'admin' || user.role === 'botanist');
 
   return (
-    <section className="relative flex min-h-[calc(100vh-80px)] items-center justify-center bg-transparent px-4 py-10 sm:px-6 md:py-12 lg:py-20">
-      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 md:grid-cols-12 md:gap-6 lg:gap-12">
+    <section className="relative flex min-h-0 items-start justify-center bg-transparent px-4 pt-7 pb-10 sm:px-6 sm:pt-10 md:min-h-[calc(100vh-80px)] md:items-center md:py-12 lg:py-20">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-7 md:grid-cols-12 md:gap-6 lg:gap-12">
         {/* Left Column: Welcome & Hero Text */}
-        <div className="space-y-6 md:col-span-6 md:space-y-4 lg:col-span-7 lg:space-y-6">
-          <div className="hero-welcome-badge bg-white/60 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line text-[#2d6a4f] dark:text-[#74c69d] text-sm font-semibold px-4 py-2 rounded-full inline-block shadow-sm">
+        <div className="space-y-5 md:col-span-6 md:space-y-4 lg:col-span-7 lg:space-y-6">
+          <div className="hero-welcome-badge hidden bg-white/60 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line text-[#2d6a4f] dark:text-[#74c69d] text-sm font-semibold px-4 py-2 rounded-full shadow-sm sm:inline-block">
             {isAuthenticated ? (
               <span className="flex items-center gap-2">
                 👋 Welcome back, {user?.name?.split(' ')[0]}!
@@ -36,7 +36,7 @@ export default function HomeHero() {
             )}
           </div>
 
-          <h1 className="hero-figma-title font-serif-custom text-5xl font-normal italic leading-[1.05] text-[#1b4332] dark:text-ink sm:text-6xl md:text-[3.5rem] lg:text-8xl">
+          <h1 className="hero-figma-title font-serif-custom text-4xl font-normal italic leading-[1.05] text-[#1b4332] dark:text-ink sm:text-6xl md:text-[3.5rem] lg:text-8xl">
             Herbal{' '}
             <span className="gradient-ai inline-block bg-gradient-to-r from-[#40916c] to-[#74c69d] bg-clip-text text-transparent">
               AI
@@ -89,8 +89,8 @@ export default function HomeHero() {
 
         {/* Right Column: Dr. Ai Widget */}
         <div className="w-full md:col-span-6 lg:col-span-5">
-          <div className="glass-card dr-ai-widget flex h-[400px] flex-col rounded-3xl border border-black/10 bg-white/50 p-4 shadow-md backdrop-blur-md dark:border-line dark:bg-panel/85 sm:p-5 lg:h-[420px] lg:p-6">
-            <div className="dr-ai-widget-header flex items-center justify-between border-b border-white/50 dark:border-line pb-4 mb-4">
+          <div className="glass-card dr-ai-widget flex h-auto flex-col rounded-3xl border border-black/10 bg-white/50 p-4 shadow-md backdrop-blur-md dark:border-line dark:bg-panel/85 sm:p-5 md:h-[400px] lg:h-[420px] lg:p-6">
+            <div className="dr-ai-widget-header mb-3 flex items-center justify-between border-b border-white/50 pb-3 dark:border-line md:mb-4 md:pb-4">
               <div className="flex items-center gap-3">
                 <DrAiAvatar className="dr-ai-avatar h-12 w-12 text-[#1b4332] dark:text-[#e6f1e7]" />
                 <div>
@@ -107,7 +107,7 @@ export default function HomeHero() {
               tabIndex={0}
               role="region"
               aria-label="Dr. Ai conversation preview"
-              className="dr-ai-messages flex-1 overflow-y-auto space-y-3 pr-1 text-xs"
+              className="dr-ai-messages hidden flex-1 space-y-3 overflow-y-auto pr-1 text-xs md:block"
             >
               <div className="flex gap-2">
                 <div className="dr-ai-bubble bot max-w-[88%] rounded-[4px_16px_16px_16px] border border-black/5 bg-white/70 p-3 text-xs text-[#1b4332] shadow-sm dark:border-line dark:bg-soft dark:text-ink lg:text-sm">
@@ -131,7 +131,7 @@ export default function HomeHero() {
                 event.preventDefault();
                 if (query.trim()) router.push(`/chat?q=${encodeURIComponent(query.trim())}`);
               }}
-              className="dr-ai-input-row mt-3 flex gap-2 pt-2 border-t border-[#1b4332]/10 dark:border-line"
+              className="dr-ai-input-row mt-3 hidden gap-2 border-t border-[#1b4332]/10 pt-2 dark:border-line md:flex"
             >
               <input
                 value={query}
@@ -149,6 +149,14 @@ export default function HomeHero() {
                 ➤
               </button>
             </form>
+
+            <Link
+              href="/chat"
+              className="flex items-center justify-between gap-4 rounded-2xl bg-[#eef5f0]/80 px-4 py-3 text-sm font-bold text-[#1b4332] transition-colors hover:bg-[#d8eee0] dark:bg-soft dark:text-ink dark:hover:bg-[#26352a] md:hidden"
+            >
+              <span>Open Dr. Ai for herbal questions</span>
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
       </div>
