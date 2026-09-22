@@ -1,11 +1,11 @@
 # Herbal AI Before-Defense Action Plan
 
-Status date: 21 September 2026
+Status date: 22 September 2026
 
 ## Completed technical gate
 
 - Defense preflight: passed with zero failures.
-- Backend automated regression: 175/175 tests passed across 31 files.
+- Backend automated regression: 176/176 tests passed across 31 files.
 - Backend production build: passed.
 - Frontend ESLint and TypeScript checks: passed.
 - Frontend production build: passed with 20 routes.
@@ -17,11 +17,11 @@ Status date: 21 September 2026
 | Priority | Gate | Owner | Evidence required | Status |
 |---|---|---|---|---|
 | P0 | Five-participant UAT | Project team | Five completed `UAT_RESULT_FORM.md` copies and signed/dated `UAT_SUMMARY.md` | Not Started |
-| P0 | Live staging smoke test | Project team | Public/API, contributor, administrator and two-account real-time checks passed; `DEF-AI-02` closed live; remove `[TEST 20260921]` staging records before final evidence capture | Passed; Cleanup Pending |
-| P0 | Backup and restore proof | Database owner | Successful backup, isolated restore, row-count checks and cleanup record | Not Run |
+| P0 | Live staging smoke test | Project team | Public/API, contributor, administrator and two-account real-time checks passed; `DEF-AI-02` closed live; exact cleanup query found no remaining `[TEST 20260921]` records | Complete |
+| P0 | Backup and restore proof | Database owner | In-memory logical snapshot restored into an isolated Neon schema; 17 tables and 169 rows matched; temporary schema removed | Complete |
 | P1 | Physical-device acceptance | Project team | Phone/tablet model, browser, tested workflows, screenshots and defects | Not Run |
-| P1 | Security configuration review | Deployment owner | CORS, secure cookies, rate limits, secrets, OAuth redirect and role checks verified without recording secrets | Not Run |
-| P1 | Staging performance run | Deployment owner | p50/p95/error-rate report close to the deployed database | Not Run |
+| P1 | Security configuration review | Deployment owner | Live headers/CORS plus cookie, rate-limit, authorization, startup-secret and repository-secret controls verified without recording secrets | Complete |
+| P1 | Staging performance run | Deployment owner | 20-request post-deploy sample: homepage p95 277.5 ms, health p95 291.7 ms, herb catalog p95 355.8 ms, zero errors | Complete |
 | P2 | Adviser/panel review | Adviser/panel | Signed acceptance or documented revisions | Pending |
 
 ## UAT execution
