@@ -1,6 +1,6 @@
-# Herbal AI - Botanical Knowledge & AI-Assisted Healthcare System
+# Herbal-Ai — Philippine Medicinal Plants Repository
 
-Herbal AI is a full-stack, AI-powered botanical information repository and consultation platform dedicated to documenting, validating, and sharing Philippine traditional medicinal plant knowledge in compliance with Department of Health (DOH) guidelines.
+Herbal-Ai is a full-stack educational repository for documenting and sharing Philippine medicinal-plant knowledge. It combines a curated plant library, source-grounded AI assistance, community features, and an administrative review workflow. It is not a diagnostic service, a prescribing system, or an institutional DOH/PITAHC product.
 
 ---
 
@@ -26,13 +26,14 @@ graph TD
 
 ## Core Features
 
-1. **DOH-Validated Medicinal Plants Catalog**
-   * Pre-populated with the **10 DOH Scientifically Validated Plants** (*Lagundi, Sambong, Ampalaya, Bawang, Bayabas, Yerba Buena, Tsaang Gubat, Akapulko, Niyog-niyogan, Ulasimang Bato*).
+1. **Philippine Medicinal Plants Catalog**
+   * Includes the 10 medicinal plants commonly identified in Philippine DOH reference materials (*Lagundi, Sambong, Ampalaya, Bawang, Bayabas, Yerba Buena, Tsaang Gubat, Akapulko, Niyog-niyogan, Ulasimang Bato*) alongside additional reviewed Philippine plant records.
    * Local, scientific, and regional (Cebuano/Tagalog) names, preparation steps, dosages, and contraindications.
    * Semantic vector search via 768-dimension embeddings (`pgvector`).
 
-2. **Dr. AI - Retrieval-Augmented Generation (RAG) Assistant**
-   * Conversational botanical consultant providing referenced preparation instructions and medical safety disclaimers.
+2. **Dr. Ai — Retrieval-Augmented Generation (RAG) Assistant**
+   * Educational assistant that organizes relevant repository records into clear answers with source references and safety boundaries.
+   * Refuses unsupported herb-specific guidance when the repository lacks a sufficiently relevant verified source.
    * Session-based memory, input boundary protection, and rate limiting (30 requests / 10 minutes).
 
 3. **Contributor Suggestions & Administrative Moderation**
@@ -98,7 +99,7 @@ DR_AI_MAX_MODEL_ATTEMPTS=4
 DR_AI_MODEL_COOLDOWN_MS=60000
 ```
 
-Initialize database & seed 10 DOH plants:
+Initialize the database and load the configured seed catalog:
 ```bash
 npx prisma generate
 npx prisma db push
@@ -206,7 +207,7 @@ cd herbalaifrontend && npx tsc --noEmit
 - The frontend deduplicates concurrent herb/session/notification GET requests.
 - Messenger history uses a 50-message cursor and can load older pages on demand.
 - API responses expose `Server-Timing` and `X-Response-Time`; slow requests are logged as structured JSON.
-- Dr. AI reports separate embedding, retrieval, and generation timings without logging question content.
+- Dr. Ai reports separate embedding, retrieval, and generation timings without logging question content.
 
 Optional tuning values are documented in `.env.example`: `HERB_CACHE_TTL_MS`, `AUTH_USER_CACHE_TTL_MS`, `AUTH_USER_CACHE_MAX_ENTRIES`, `SLOW_REQUEST_THRESHOLD_MS`, `DR_AI_MAX_COSINE_DISTANCE`, and the bounded `DB_POOL_*` connection-pool settings. Slow-request logs include a pool snapshot (`total`, `idle`, and `waiting`) to identify database saturation. The authentication-user cache is intentionally short-lived and is invalidated immediately by application-managed ban, verification, and password changes.
 

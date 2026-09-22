@@ -28,9 +28,21 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Herbal-Ai — Philippine Medicinal Plants Repository",
-  description: "Explore traditional Philippine medicinal plants, search scientific formulations, and consult Dr. AI, an interactive chatbot for local herbal knowledge.",
-  keywords: ["medicinal plants", "philippines", "herbal medicine", "sari-sari health", "traditional herbs", "dr ai"],
+  description: "Explore documented Philippine medicinal plants and ask Dr. Ai for educational, source-grounded preparation and safety information.",
+  keywords: ["Philippine medicinal plants", "herbal medicine", "traditional plant knowledge", "PITAHC", "DOH medicinal plants", "Dr. Ai"],
   authors: [{ name: "Herbal-Ai Team" }],
+  applicationName: "Herbal-Ai",
+  category: "education",
+  openGraph: {
+    type: "website",
+    title: "Herbal-Ai — Philippine Medicinal Plants Repository",
+    description: "Educational, source-grounded information about Philippine medicinal plants.",
+    siteName: "Herbal-Ai",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

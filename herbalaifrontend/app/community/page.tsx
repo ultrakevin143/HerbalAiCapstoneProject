@@ -355,7 +355,7 @@ export default function CommunityPage() {
         href="/chat"
         className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white px-5 py-3 rounded-full shadow-lg hover:brightness-105 transition-all text-xs font-bold"
       >
-        <span>🤖 Ask Dr.Ai</span>
+        <span>🤖 Ask Dr. Ai</span>
       </Link>
 
       <UserProfileModal 

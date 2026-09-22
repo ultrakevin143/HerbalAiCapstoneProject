@@ -81,7 +81,7 @@ export default function HomeHero() {
                 href="/chat"
                 className="btn btn-glass whitespace-nowrap rounded-full border border-white/60 bg-white/45 px-5 py-3 text-sm font-semibold text-[#2d6a4f] shadow-sm backdrop-blur-md transition-all hover:bg-white/65 dark:border-line dark:bg-panel/75 dark:text-ink dark:hover:bg-panel lg:px-8 lg:py-3.5 lg:text-base"
               >
-                Ask Dr.Ai
+                Ask Dr. Ai
               </Link>
             )}
           </div>
@@ -94,7 +94,7 @@ export default function HomeHero() {
               <div className="flex items-center gap-3">
                 <DrAiAvatar className="dr-ai-avatar h-12 w-12 text-[#1b4332] dark:text-[#e6f1e7]" />
                 <div>
-                  <h2 className="font-extrabold text-sm text-[#1b4332] dark:text-ink">Dr.Ai</h2>
+                  <h2 className="font-extrabold text-sm text-[#1b4332] dark:text-ink">Dr. Ai</h2>
                   <span className="dr-ai-status text-[#52b788] text-xs font-semibold">● Online</span>
                 </div>
               </div>
@@ -111,7 +111,7 @@ export default function HomeHero() {
             >
               <div className="flex gap-2">
                 <div className="dr-ai-bubble bot max-w-[88%] rounded-[4px_16px_16px_16px] border border-black/5 bg-white/70 p-3 text-xs text-[#1b4332] shadow-sm dark:border-line dark:bg-soft dark:text-ink lg:text-sm">
-                  Hello! I&apos;m Dr.Ai. How can I help you with herbal medicine today?
+                  Hello! I&apos;m Dr. Ai. How can I help you with Philippine herbal medicine today?
                 </div>
               </div>
               <div className="flex gap-2 justify-end">
@@ -139,7 +139,7 @@ export default function HomeHero() {
                 type="text"
                 placeholder="Ask about herbal remedies..."
                 className="flex-1 border border-white/60 dark:border-line bg-white/70 dark:bg-soft rounded-full px-5 py-3 text-sm text-[#1b4332] dark:text-ink placeholder-emerald-800/40 dark:placeholder-muted/60 focus:outline-none focus:ring-2 focus:ring-[#40916c]"
-                aria-label="Ask Dr.Ai"
+                aria-label="Ask Dr. Ai"
               />
               <button
                 type="submit"
