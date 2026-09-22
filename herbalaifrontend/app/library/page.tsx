@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { cachedApiGet } from '../../lib/request-cache';
 import OptimizedFillImage from '../../components/OptimizedFillImage';
+import EmptyState from '../../components/EmptyState';
 
 interface Herb {
   id: string;
@@ -235,13 +236,11 @@ function LibraryContent() {
 
         {/* Herbs Grid */}
         {filteredHerbs.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border-4 border-dashed border-[#2d6a4f]/35 bg-white/40 dark:bg-panel/60 p-12 text-center shadow-md">
-            <Leaf className="h-12 w-12 text-[#2d6a4f]/30 stroke-[1.5] mb-3" />
-            <h2 className="font-serif-custom text-xl font-black text-[#1b4332] dark:text-ink">No herbs found</h2>
-            <p className="mt-2 text-sm text-[#6a7282] dark:text-muted">
-              Try adjusting your search terms or filter selection.
-            </p>
-          </div>
+          <EmptyState
+            icon={<Leaf />}
+            title="No herbs match these filters"
+            description="Clear the search or choose another category to view the published Philippine medicinal-plant records."
+          />
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filteredHerbs.map((herb) => (

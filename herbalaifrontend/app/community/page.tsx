@@ -7,6 +7,7 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import api from '../../lib/axios';
 import UserProfileModal from '../../components/UserProfileModal';
+import EmptyState from '../../components/EmptyState';
 import {
   Search,
   AlertCircle,
@@ -249,21 +250,19 @@ export default function CommunityPage() {
               </div>
             ) : threads.length === 0 ? (
               /* EMPTY STATE */
-              <div className="flex flex-col items-center justify-center text-center rounded-3xl border border-dashed border-[#2d6a4f]/30 bg-white/40 dark:bg-panel/60 p-12 shadow-sm">
-                <MessageSquare className="h-10 w-10 text-[#2d6a4f]/40 mb-3" />
-                <h3 className="text-lg font-bold text-[#1b4332] dark:text-ink">No Discussions Yet</h3>
-                <p className="mt-1 text-xs text-gray-500 dark:text-muted font-medium max-w-sm leading-relaxed">
-                  There are currently no discussion threads in this category. Start by logging an observation or asking a herbal question!
-                </p>
-                {isAuthenticated && (
+              <EmptyState
+                icon={<MessageSquare />}
+                title="No discussions match this view"
+                description="Clear the search, choose another category, or start a discussion about Philippine medicinal-plant knowledge."
+                action={isAuthenticated ? (
                   <Link
                     href="/community/new"
-                    className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-semibold text-xs px-5 py-2.5 rounded-full mt-4 shadow-sm hover:brightness-105 transition-all inline-block"
+                    className="empty-state-primary-action"
                   >
-                    Start the First Discussion
+                    Start a discussion
                   </Link>
-                )}
-              </div>
+                ) : undefined}
+              />
             ) : (
               /* THREADS LIST */
               <div className="space-y-4">

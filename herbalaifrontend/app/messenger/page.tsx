@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import Navbar from '../../components/Navbar';
 import SessionUnavailable from '../../components/SessionUnavailable';
+import EmptyState from '../../components/EmptyState';
 import api from '../../lib/axios';
 import io, { Socket } from 'socket.io-client';
 import { 
@@ -537,18 +538,18 @@ function MessengerContent() {
             {/* Conversation List */}
             <div className="flex-1 overflow-y-auto">
               {filteredConversations.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full gap-3 py-12 px-4 text-center">
-                  <div className="h-12 w-12 rounded-full bg-soft flex items-center justify-center">
-                    <MessageSquare className="h-6 w-6 text-muted" />
-                  </div>
-                  <p className="text-sm text-muted font-semibold">No conversations yet.</p>
-                  <button
-                    onClick={() => setShowUserPicker(true)}
-                    className="text-sm font-extrabold text-ink hover:underline"
-                  >
-                    Start a new chat →
-                  </button>
-                </div>
+                <EmptyState
+                  compact
+                  icon={<MessageSquare />}
+                  title={searchTerm ? 'No conversations found' : 'No conversations yet'}
+                  description={searchTerm ? 'Try another name or clear the search.' : 'Start a private conversation with a community member.'}
+                  action={(
+                    <button type="button" onClick={() => setShowUserPicker(true)} className="empty-state-text-action">
+                      Start a new chat
+                      <ChevronRight aria-hidden="true" size={16} />
+                    </button>
+                  )}
+                />
               ) : (
                 filteredConversations.map((conv) => {
                   const isActive = activeContact?.id === conv.contact.id;
@@ -621,14 +622,13 @@ function MessengerContent() {
                     <div className="flex justify-center py-10">
                       <div className="h-8 w-8 animate-spin rounded-full border-4 border-line border-t-transparent" />
                     </div>
-                  ) : messages.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center h-full gap-2 py-16 text-center">
-                      <span className="text-3xl">👋</span>
-                      <p className="text-sm font-extrabold text-ink">
-                        Say hello to {activeContact.name}!
-                      </p>
-                      <p className="text-sm text-muted">This is the beginning of your conversation.</p>
-                    </div>
+                ) : messages.length === 0 ? (
+                    <EmptyState
+                      compact
+                      icon={<MessageSquare />}
+                      title={`Start your conversation with ${activeContact.name}`}
+                      description="Messages in this conversation will appear here."
+                    />
                   ) : (
                     <>
                     {hasOlderMessages && (

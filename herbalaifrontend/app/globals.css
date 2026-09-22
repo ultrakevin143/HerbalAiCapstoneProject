@@ -1014,6 +1014,19 @@ body.admin-app {
 
 @keyframes route-state-shimmer { 100% { transform: translateX(100%); } }
 
+/* Consistent empty states */
+.empty-state { display: flex; min-height: 18rem; flex-direction: column; align-items: center; justify-content: center; padding: clamp(2rem, 6vw, 4rem); text-align: center; border: 1px dashed color-mix(in srgb, var(--ui-brand) 35%, var(--ui-line)); border-radius: 2rem; background: color-mix(in srgb, var(--ui-panel) 78%, transparent); }
+.empty-state-compact { min-height: 100%; padding: 2rem 1.25rem; border: 0; border-radius: 0; background: transparent; }
+.empty-state-icon { display: grid; width: 3.75rem; height: 3.75rem; place-items: center; margin-bottom: 1rem; border: 1px solid color-mix(in srgb, var(--ui-brand) 22%, var(--ui-line)); border-radius: 1.25rem; background: var(--ui-soft); color: var(--ui-brand); }
+.empty-state-icon svg { width: 1.65rem; height: 1.65rem; stroke-width: 1.7; }
+.empty-state h2 { color: var(--ui-ink); font-family: var(--font-serif-custom); font-size: clamp(1.25rem, 3vw, 1.65rem); font-weight: 800; line-height: 1.15; }
+.empty-state p { max-width: 30rem; margin-top: 0.55rem; color: var(--ui-muted); font-size: 0.88rem; line-height: 1.6; }
+.empty-state-action { margin-top: 1.25rem; }
+.empty-state-primary-action { display: inline-flex; min-height: 2.75rem; align-items: center; justify-content: center; padding: 0.7rem 1.2rem; border-radius: 999px; background: var(--ui-brand); color: white; font-size: 0.82rem; font-weight: 800; box-shadow: var(--shadow-sm-custom); }
+.empty-state-text-action { display: inline-flex; min-height: 2.75rem; align-items: center; gap: 0.35rem; color: var(--ui-brand); font-size: 0.86rem; font-weight: 800; }
+.empty-state-primary-action:focus-visible,
+.empty-state-text-action:focus-visible { outline: 3px solid color-mix(in srgb, var(--ui-brand) 35%, transparent); outline-offset: 3px; }
+
 @media (min-width: 1024px) {
   .auth-shell { height: 100svh; overflow: hidden; grid-template-columns: minmax(23rem, 0.92fr) minmax(32rem, 1.08fr); }
   .auth-brand-panel { min-height: 0; padding: clamp(2.5rem, 5vw, 5.5rem); }
