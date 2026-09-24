@@ -502,7 +502,7 @@ function MessengerContent() {
               <MessageSquare className="h-3.5 w-3.5" />
               Direct messages
             </div>
-            <h1 className="font-serif-custom text-2xl font-black italic tracking-tight text-[#1b4332] dark:text-ink sm:text-3xl">Messenger</h1>
+            <h1 className="font-sans text-2xl font-bold tracking-tight text-[#1b4332] dark:text-ink sm:text-3xl">Messenger</h1>
           </div>
           <p className="hidden max-w-sm text-right text-sm font-semibold text-[#2d6a4f] dark:text-muted sm:block">Private conversations with Herbal-Ai community members</p>
         </div>
@@ -596,7 +596,7 @@ function MessengerContent() {
                 </div>
                 <button
                   onClick={() => setShowUserPicker(true)}
-                  className="mt-2 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#40916c] to-[#74c69d] px-5 py-3 text-sm font-bold text-white shadow-sm transition-all hover:brightness-105"
+                  className="mt-2 inline-flex items-center gap-2 rounded-xl bg-[#2d6a4f] px-5 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-[#1b4332]"
                 >
                   <UserPlus className="h-3.5 w-3.5" />
                   <span>New message</span>

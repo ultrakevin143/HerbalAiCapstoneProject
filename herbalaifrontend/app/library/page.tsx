@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, Suspense } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '../../components/Navbar';
 import AccessibleDialog from '../../components/AccessibleDialog';
@@ -17,6 +18,10 @@ import {
 import { cachedApiGet } from '../../lib/request-cache';
 import OptimizedFillImage from '../../components/OptimizedFillImage';
 import EmptyState from '../../components/EmptyState';
+import { Alert, AlertDescription } from '../../components/ui/alert';
+import { Badge } from '../../components/ui/badge';
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
 
 interface Herb {
   id: string;
@@ -46,6 +51,7 @@ function LibraryContent() {
   const [loading, setLoading] = useState(true);
   const [fetching, setFetching] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [detailError, setDetailError] = useState<string | null>(null);
   const [categories, setCategories] = useState<string[]>(['All']);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -72,7 +78,7 @@ function LibraryContent() {
   useEffect(() => {
     cachedApiGet('/herbs/categories', 60_000).then((response) => {
       setCategories(['All', ...(response.data.data.categories || [])]);
-    }).catch(() => setError('Unable to load herb categories.'));
+    }).catch(() => undefined);
   }, []);
 
   // Open linked herbs even when they are not on the current list page.
@@ -81,7 +87,7 @@ function LibraryContent() {
     let cancelled = false;
     cachedApiGet(`/herbs/${encodeURIComponent(idQuery)}`, 60_000).then((response) => {
       if (!cancelled && response.data.status === 'success') setSelectedHerb(response.data.data.herb);
-    }).catch(() => { if (!cancelled) setError('Linked herb was not found.'); });
+    }).catch(() => { if (!cancelled) setDetailError('The linked herb could not be opened. You can search the library below.'); });
     return () => { cancelled = true; };
   }, [idQuery]);
 
@@ -133,22 +139,22 @@ function LibraryContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col bg-transparent">
+      <div className="operational-page min-h-screen flex flex-col">
         <Navbar />
         <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8 flex-1 w-full" role="status" aria-label="Loading herbal library">
           <div className="mb-8 text-center">
-            <h1 className="font-serif-custom italic text-3xl text-[#1b4332] dark:text-ink md:text-5xl">Herbal Library</h1>
+            <h1 className="font-sans text-3xl font-bold tracking-tight text-ink md:text-4xl">Herbal Library</h1>
             <p className="mt-4 text-sm text-muted">Loading Philippine medicinal plants...</p>
           </div>
-          <div className="mx-auto mb-8 h-12 max-w-4xl rounded-full bg-[#2d6a4f]/10 dark:bg-panel animate-pulse motion-reduce:animate-none" />
+          <div className="mx-auto mb-8 h-12 max-w-4xl rounded-full bg-soft animate-pulse motion-reduce:animate-none" />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
             {Array.from({ length: 6 }, (_, index) => (
-              <div key={index} className="overflow-hidden rounded-3xl border border-black/10 dark:border-line bg-white/45 dark:bg-panel/75">
-                <div className="h-52 bg-[#2d6a4f]/10 dark:bg-soft animate-pulse motion-reduce:animate-none" />
+              <div key={index} className="overflow-hidden rounded-3xl border border-line bg-panel">
+                <div className="h-52 bg-soft animate-pulse motion-reduce:animate-none" />
                 <div className="space-y-3 p-5">
-                  <div className="h-5 w-2/3 rounded bg-[#2d6a4f]/10 dark:bg-soft animate-pulse motion-reduce:animate-none" />
-                  <div className="h-3 w-1/2 rounded bg-[#2d6a4f]/10 dark:bg-soft animate-pulse motion-reduce:animate-none" />
-                  <div className="h-12 rounded bg-[#2d6a4f]/10 dark:bg-soft animate-pulse motion-reduce:animate-none" />
+                  <div className="h-5 w-2/3 rounded bg-soft animate-pulse motion-reduce:animate-none" />
+                  <div className="h-3 w-1/2 rounded bg-soft animate-pulse motion-reduce:animate-none" />
+                  <div className="h-12 rounded bg-soft animate-pulse motion-reduce:animate-none" />
                 </div>
               </div>
             ))}
@@ -159,62 +165,55 @@ function LibraryContent() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-transparent text-ink">
+    <div className="operational-page min-h-screen flex flex-col text-ink">
       <Navbar />
       <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8 flex-1 w-full">
         {/* Header */}
-        <div className="library-header mb-8 text-center">
-          <h1 className="font-serif-custom italic font-normal text-3xl text-[#1b4332] dark:text-ink md:text-5xl mb-4 leading-none">
+        <div className="library-header mb-6 text-center md:mb-8">
+          <h1 className="font-sans font-bold text-3xl tracking-tight text-ink md:text-4xl mb-4 leading-tight">
             Herbal Library
           </h1>
-          <p className="mt-2 text-sm text-[#2d6a4f] dark:text-muted font-medium max-w-2xl mx-auto">
+          <p className="mt-2 text-sm text-muted font-medium max-w-2xl mx-auto">
             Explore validated Philippine medicinal plants, their traditional uses, DOH guidelines, and preparations.
           </p>
         </div>
 
         {/* Search and Filter Section */}
-        <div className="mb-8 flex flex-col md:flex-row items-center gap-3 max-w-4xl mx-auto w-full">
+        <div className="mb-6 grid w-full max-w-4xl grid-cols-2 gap-2.5 mx-auto md:mb-8 md:flex md:items-center md:gap-3">
           {/* Search Input */}
-          <div className="library-search flex-1 relative flex items-center bg-white/70 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-full h-[48px] px-4 w-full shadow-xs">
-            <input
+          <div className="library-search relative col-span-2 w-full flex-1">
+            <Input
               type="text"
               placeholder="Search by name, scientific name, or uses..."
               aria-label="Search herbs by name, scientific name, or medicinal use"
               value={searchTerm}
               onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
-              className="search-input w-full bg-transparent border-none text-sm text-[#1b4332] dark:text-ink placeholder-gray-500 pl-8 focus:outline-none"
+              className="search-input h-12 pl-11"
             />
-            <span className="absolute left-4 text-gray-500 pointer-events-none">
+            <span className="absolute left-4 text-muted pointer-events-none">
               <Search className="h-4 w-4" />
             </span>
           </div>
 
           {/* DOH Validated Filter Toggle */}
-          <button
+          <Button
             type="button"
+            variant={onlyDohApproved ? 'default' : 'outline'}
+            aria-pressed={onlyDohApproved}
             onClick={() => { setOnlyDohApproved(!onlyDohApproved); setPage(1); }}
-            className={`h-[48px] px-5 rounded-full text-xs font-extrabold flex items-center gap-1.5 transition shrink-0 border ${
-              onlyDohApproved
-                ? 'bg-[#1b4332] text-white border-[#1b4332] shadow-sm'
-                : 'bg-white/70 dark:bg-panel/75 text-[#1b4332] dark:text-ink border-black/10 dark:border-line hover:bg-[#eef5f0] dark:hover:bg-soft'
-            }`}
+            className="h-12 min-w-0 px-3 text-xs sm:px-5 sm:text-sm"
           >
-            <ShieldCheck className={`h-4 w-4 ${onlyDohApproved ? 'text-[#74c69d]' : 'text-[#2d6a4f]'}`} />
-            <span>DOH Validated</span>
-          </button>
+            <ShieldCheck className="h-4 w-4" />
+            <span>DOH-listed</span>
+          </Button>
 
           {/* Category Selector */}
-          <div className="w-full md:w-56 shrink-0">
+          <div className="min-w-0 w-full md:w-56 shrink-0">
             <select
               aria-label="Filter herbs by category"
               value={selectedCategory}
               onChange={(e) => { setSelectedCategory(e.target.value); setPage(1); }}
-              className="library-filter-btn h-[48px] w-full border border-black/10 dark:border-line bg-white/70 dark:bg-panel/75 backdrop-blur-md rounded-full px-5 text-sm font-semibold text-[#1b4332] dark:text-ink appearance-none focus:outline-none"
-              style={{
-                backgroundImage: `url("data:image/svg+xml;utf8,<svg fill='%231b4332' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>")`,
-                backgroundPosition: 'right 16px center',
-                backgroundRepeat: 'no-repeat',
-              }}
+              className="library-filter-btn h-12 w-full rounded-xl border border-line bg-panel px-4 text-sm font-semibold text-ink focus:outline-none md:rounded-full md:px-5"
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat}>
@@ -226,16 +225,22 @@ function LibraryContent() {
         </div>
 
         {error && (
-          <div className="mb-6 rounded-xl border border-rose-200 bg-rose-50 p-4 text-rose-700 font-bold shadow-sm flex items-center gap-2">
+          <Alert variant="destructive" className="mb-6">
             <AlertCircle className="h-5 w-5 shrink-0" />
-            <span>{error}</span>
-          </div>
+            <AlertDescription>Unable to load herbs right now. Please refresh the page to try again.</AlertDescription>
+          </Alert>
+        )}
+        {detailError && !error && (
+          <Alert variant="warning" className="mb-6">
+            <AlertCircle className="h-5 w-5 shrink-0" />
+            <AlertDescription>{detailError}</AlertDescription>
+          </Alert>
         )}
 
-        <p className="mb-4 text-sm text-muted" aria-live="polite">{fetching ? 'Updating herbs...' : `${totalHerbs} herbs found`}</p>
+        {!error && <p className="mb-4 text-sm text-muted" aria-live="polite">{fetching ? 'Updating herbs...' : `${totalHerbs} herbs found`}</p>}
 
         {/* Herbs Grid */}
-        {filteredHerbs.length === 0 ? (
+        {error ? null : filteredHerbs.length === 0 ? (
           <EmptyState
             icon={<Leaf />}
             title="No herbs match these filters"
@@ -247,10 +252,10 @@ function LibraryContent() {
               <div
                 key={herb.id}
                 onClick={() => setSelectedHerb(herb)}
-                className="glass-card herb-figma-card library-herb-card group flex flex-col rounded-3xl border border-black/10 dark:border-line bg-white/45 dark:bg-panel/75 backdrop-blur-md overflow-hidden shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-200 cursor-pointer"
+                className="herb-figma-card library-herb-card group flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-line bg-panel shadow-sm transition-colors hover:border-line-strong"
               >
                 {/* Image & Category Overlay */}
-                <div className="herb-figma-img h-52 w-full bg-gradient-to-r from-[#40916c] to-[#74c69d] relative overflow-hidden flex items-center justify-center">
+                <div className="herb-figma-img relative flex h-44 w-full items-center justify-center overflow-hidden bg-soft sm:h-48 lg:h-52">
                   <div className="absolute inset-0 flex items-center justify-center text-white/30">
                     <Leaf className="h-16 w-16 stroke-[1.5]" />
                   </div>
@@ -269,33 +274,33 @@ function LibraryContent() {
                   
                   {/* DOH Badge */}
                   {herb.isDohApproved && (
-                    <span className="absolute top-4 left-4 inline-flex items-center gap-1 bg-[#1b4332] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full z-10 shadow">
+                    <Badge variant="outline" className="herb-doh-badge absolute z-10">
                       <ShieldCheck className="h-3.5 w-3.5 text-[#74c69d]" />
-                      <span>DOH Approved</span>
-                    </span>
+                      <span>DOH-listed plant</span>
+                    </Badge>
                   )}
 
-                  <span className="herb-figma-badge absolute top-4 right-4 bg-[#2d6a4f] text-white text-[10px] font-bold uppercase px-3 py-1 rounded-full z-10">
+                  <Badge variant="outline" className="herb-figma-badge absolute z-10">
                     {herb.category}
-                  </span>
+                  </Badge>
                 </div>
 
                 {/* Info Body */}
                 <div className="herb-figma-body p-5 flex-grow flex flex-col justify-between">
                   <div>
-                    <h2 className="font-serif-custom italic font-normal text-xl text-[#1b4332] dark:text-ink">
+                    <h2 className="font-sans text-xl font-bold tracking-tight text-ink">
                       {herb.localName}
                     </h2>
-                    <p className="herb-figma-sci text-xs italic text-gray-500 dark:text-muted mt-1">
+                    <p className="herb-figma-sci text-xs italic text-muted mt-1">
                       {herb.scientificName} {herb.cebuanoName ? `(${herb.cebuanoName})` : ''}
                     </p>
                     
-                    <p className="text-sm font-semibold text-[#2d6a4f] dark:text-muted line-clamp-3 mt-3">
+                    <p className="text-sm font-medium text-muted line-clamp-3 mt-3">
                       {herb.medicinalUses}
                     </p>
                   </div>
 
-                  <div className="herb-figma-link mt-4 flex items-center justify-between text-xs text-[#40916c] dark:text-[#74c69d] font-bold border-t border-[#1b4332]/10 dark:border-line pt-3">
+                  <div className="herb-figma-link mt-4 flex items-center justify-between text-xs text-accent font-bold border-t border-line pt-3">
                     <span>View preparation & dosage</span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </div>
@@ -305,21 +310,21 @@ function LibraryContent() {
           </div>
         )}
 
-        {totalPages > 1 && (
+        {!error && totalPages > 1 && (
           <nav aria-label="Herb pages" className="mt-8 flex items-center justify-center gap-4 text-sm text-ink">
-            <button type="button" disabled={page === 1 || fetching} onClick={() => setPage((current) => current - 1)} className="rounded-full border border-line px-4 py-2 disabled:opacity-40">Previous</button>
+            <Button type="button" variant="outline" disabled={page === 1 || fetching} onClick={() => setPage((current) => current - 1)}>Previous</Button>
             <span>Page {page} of {totalPages}</span>
-            <button type="button" disabled={page >= totalPages || fetching} onClick={() => setPage((current) => current + 1)} className="rounded-full border border-line px-4 py-2 disabled:opacity-40">Next</button>
+            <Button type="button" variant="outline" disabled={page >= totalPages || fetching} onClick={() => setPage((current) => current + 1)}>Next</Button>
           </nav>
         )}
 
         {/* Detail Modal */}
         {selectedHerb && (
           <AccessibleDialog label={`${selectedHerb.localName} details`} onClose={() => { setSelectedHerb(null); setIsImageExpanded(false); }}>
-            <div className="flex flex-col md:flex-row gap-6 border-b-2 border-[#eef5f0] dark:border-line pb-6 mb-6">
+            <div className="flex flex-col md:flex-row gap-6 border-b border-line pb-6 mb-6">
               <div
                 onClick={() => selectedHerb.imageUrl && selectedHerb.imageUrl.trim() !== '' && setIsImageExpanded(true)}
-                className={`h-40 w-full md:w-40 bg-[#eef5f0] dark:bg-soft rounded-xl border border-gray-200 dark:border-line relative overflow-hidden flex items-center justify-center shrink-0 ${
+                className={`h-40 w-full md:w-40 bg-soft rounded-xl border border-line relative overflow-hidden flex items-center justify-center shrink-0 ${
                   selectedHerb.imageUrl && selectedHerb.imageUrl.trim() !== '' ? 'cursor-zoom-in group/img' : ''
                 }`}
               >
@@ -338,26 +343,26 @@ function LibraryContent() {
                     </div>
                   </>
                 ) : (
-                  <Leaf className="h-16 w-16 text-[#2d6a4f]/30 stroke-[1.5]" />
+                  <Leaf className="h-16 w-16 text-accent/40 stroke-[1.5]" />
                 )}
               </div>
 
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="inline-block rounded-full bg-green-50 dark:bg-soft border border-green-200 dark:border-line px-3 py-1 text-xs font-extrabold text-green-700 dark:text-green-300">
+                  <Badge variant="secondary">
                     {selectedHerb.category}
-                  </span>
+                  </Badge>
                   {selectedHerb.isDohApproved && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-[#1b4332] text-white px-2.5 py-1 text-xs font-extrabold">
-                      <ShieldCheck className="h-3.5 w-3.5 text-[#74c69d]" />
-                      <span>DOH Approved</span>
-                    </span>
+                    <Badge>
+                      <ShieldCheck className="h-3.5 w-3.5" />
+                      <span>DOH-listed plant</span>
+                    </Badge>
                   )}
                 </div>
-                <h2 className="font-serif-custom text-3xl font-black text-[#1b4332] dark:text-ink">
+                <h2 className="font-serif-custom text-3xl font-black text-ink">
                   {selectedHerb.localName}
                 </h2>
-                <p className="text-sm italic text-[#40916c] dark:text-[#74c69d] font-semibold">
+                <p className="text-sm italic text-accent font-semibold">
                   {selectedHerb.scientificName} {selectedHerb.cebuanoName ? `(${selectedHerb.cebuanoName})` : ''}
                 </p>
               </div>
@@ -365,30 +370,36 @@ function LibraryContent() {
 
             {/* DOH Official Endorsement Banner */}
             {selectedHerb.isDohApproved && (
-              <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-[#e8f5e9] dark:bg-soft border border-[#a3ef95]/60 dark:border-line text-[#1b4332] dark:text-ink text-xs font-bold mb-6">
-                <ShieldCheck className="h-5 w-5 text-[#2d6a4f] shrink-0" />
+              <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-soft border border-line text-ink text-xs font-bold mb-6">
+                <ShieldCheck className="h-5 w-5 text-accent shrink-0" />
                 <span>Included among the medicinal plants recognized in Philippine Department of Health reference materials.</span>
               </div>
             )}
 
-            <div className="space-y-6 text-[#1b4332] dark:text-ink flex-1">
+            <Button asChild className="mb-6 h-12">
+              <Link href={`/chat?q=${encodeURIComponent(`What preparation and safety information is available for ${selectedHerb.localName}?`)}`}>
+                Ask Dr. Ai about this plant
+              </Link>
+            </Button>
+
+            <div className="space-y-6 text-ink flex-1">
               <div>
-                <h4 className="text-xs font-extrabold tracking-wider uppercase text-[#6a7282] dark:text-muted mb-1">Medicinal Uses</h4>
-                <p className="text-sm font-semibold leading-relaxed bg-[#eef5f0]/50 dark:bg-soft rounded-xl p-3 border border-[#2d6a4f]/10 dark:border-line">
+                <h4 className="text-xs font-extrabold tracking-wider uppercase text-muted mb-1">Medicinal Uses</h4>
+                <p className="text-sm font-medium leading-relaxed bg-soft rounded-xl p-3 border border-line">
                   {selectedHerb.medicinalUses}
                 </p>
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">
                 <div>
-                  <h4 className="text-xs font-extrabold tracking-wider uppercase text-[#6a7282] dark:text-muted mb-1">Preparation Method</h4>
-                  <p className="text-sm font-semibold leading-relaxed bg-[#eef5f0]/50 dark:bg-soft rounded-xl p-3 border border-[#2d6a4f]/10 dark:border-line">
+                  <h4 className="text-xs font-extrabold tracking-wider uppercase text-muted mb-1">Preparation Method</h4>
+                  <p className="text-sm font-medium leading-relaxed bg-soft rounded-xl p-3 border border-line">
                     {selectedHerb.preparationMethod}
                   </p>
                 </div>
                 <div>
-                  <h4 className="text-xs font-extrabold tracking-wider uppercase text-[#6a7282] dark:text-muted mb-1">Dosage & Frequency</h4>
-                  <p className="text-sm font-semibold leading-relaxed bg-[#eef5f0]/50 dark:bg-soft rounded-xl p-3 border border-[#2d6a4f]/10 dark:border-line">
+                  <h4 className="text-xs font-extrabold tracking-wider uppercase text-muted mb-1">Dosage & Frequency</h4>
+                  <p className="text-sm font-medium leading-relaxed bg-soft rounded-xl p-3 border border-line">
                     {selectedHerb.dosage}
                   </p>
                 </div>
@@ -396,8 +407,8 @@ function LibraryContent() {
 
               {selectedHerb.regionFound && (
                 <div>
-                  <h4 className="text-xs font-extrabold tracking-wider uppercase text-[#6a7282] dark:text-muted mb-1">Region Found</h4>
-                  <p className="text-sm font-semibold bg-[#eef5f0]/50 dark:bg-soft rounded-xl p-3 border border-[#2d6a4f]/10 dark:border-line">
+                  <h4 className="text-xs font-extrabold tracking-wider uppercase text-muted mb-1">Region Found</h4>
+                  <p className="text-sm font-medium bg-soft rounded-xl p-3 border border-line">
                     {selectedHerb.regionFound}
                   </p>
                 </div>
@@ -428,7 +439,7 @@ function LibraryContent() {
                 alt={selectedHerb.localName}
                 className="max-w-full md:max-w-3xl lg:max-w-5xl h-auto max-h-[75vh] object-contain rounded-xl shadow-2xl border border-white/10"
               />
-              <p className="mt-3 text-center text-sm font-bold text-[#1b4332] dark:text-ink">
+              <p className="mt-3 text-center text-sm font-bold text-ink">
                 {selectedHerb.localName} <span className="italic text-gray-500">({selectedHerb.scientificName})</span>
               </p>
             </div>
@@ -443,11 +454,11 @@ export default function LibraryPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex flex-col bg-transparent">
+        <div className="operational-page min-h-screen flex flex-col">
           <Navbar />
           <div className="flex flex-1 flex-col items-center justify-center gap-4">
-            <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#2d6a4f] border-t-transparent"></div>
-            <p className="text-[#2d6a4f] font-extrabold animate-pulse">Loading Herbal Library...</p>
+            <div className="h-12 w-12 animate-spin rounded-full border-4 border-brand border-t-transparent"></div>
+            <p className="text-muted font-extrabold animate-pulse">Loading Herbal Library...</p>
           </div>
         </div>
       }

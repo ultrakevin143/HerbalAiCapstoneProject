@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../components/ui";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *, .dark, .dark *));
 
@@ -28,6 +29,22 @@
 }
 
 @theme inline {
+  --color-background: var(--ui-canvas);
+  --color-foreground: var(--ui-ink);
+  --color-card: var(--ui-panel);
+  --color-card-foreground: var(--ui-ink);
+  --color-popover: var(--ui-panel);
+  --color-popover-foreground: var(--ui-ink);
+  --color-primary: var(--ui-brand);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--ui-soft);
+  --color-secondary-foreground: var(--ui-ink);
+  --color-muted-foreground: var(--ui-muted);
+  --color-accent-foreground: var(--ui-ink);
+  --color-destructive: var(--ui-error-ink);
+  --color-border: var(--ui-line);
+  --color-input: var(--ui-line);
+  --color-ring: var(--ui-focus);
   --color-canvas: var(--ui-canvas);
   --color-panel: var(--ui-panel);
   --color-soft: var(--ui-soft);
@@ -37,6 +54,7 @@
   --color-line-strong: var(--ui-line-strong);
   --color-brand: var(--ui-brand);
   --color-brand-hover: var(--ui-brand-hover);
+  --color-accent: var(--ui-accent);
   --color-forest-theme: var(--ui-forest);
   --color-ochre-theme: var(--ui-ochre);
   --color-moss-theme: var(--ui-moss);
@@ -49,56 +67,58 @@
   --color-success-ink: var(--ui-ink);
 }
 
-:root, body.admin-app {
+:root {
   color-scheme: light;
-  /* Archival Herbarium Monograph - Light Specimen Parchment */
-  --ui-canvas: #f5f2eb;
-  --ui-panel: #fcfaf6;
-  --ui-soft: #ede6d8;
-  --ui-ink: #172018;
-  --ui-muted: #526055;
-  --ui-line: #dad3c4;
-  --ui-line-strong: #bcb29e;
-  --ui-brand: #c46238;
-  --ui-brand-hover: #ad532c;
-  --ui-forest: #1f3325;
+  --radius: .75rem;
+  --ui-canvas: #f7f8f4;
+  --ui-panel: #ffffff;
+  --ui-soft: #e3efe4;
+  --ui-ink: #1e2922;
+  --ui-muted: #526157;
+  --ui-line: #d9e2d9;
+  --ui-line-strong: #a8baa9;
+  --ui-brand: #286344;
+  --ui-brand-hover: #1d4f36;
+  --ui-accent: #286344;
+  --ui-forest: #286344;
   --ui-ochre: #b88628;
   --ui-moss: #4f6a44;
-  --ui-focus: #c46238;
+  --ui-focus: #286344;
   --ui-warning-surface: #fef7ec;
   --ui-warning-ink: #8a4812;
   --ui-error-surface: #fdf2f2;
   --ui-error-ink: #991b1b;
-  --primary: #8b3d20;
+  --primary: #286344;
   --botanical-forest: #1f3325;
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  /* Archival Herbarium Monograph - Nocturnal Specimen Cabinet */
-  --ui-canvas: #121713;
-  --ui-panel: #18221b;
-  --ui-soft: #202d24;
-  --ui-ink: #ede8df;
-  --ui-muted: #9eaba0;
-  --ui-line: #29382d;
-  --ui-line-strong: #3d5243;
-  --ui-brand: #e0764a;
-  --ui-brand-hover: #ee865b;
-  --ui-forest: #2e4e39;
-  --ui-ochre: #dda13b;
-  --ui-moss: #6f9660;
-  --ui-focus: #e0764a;
+  --ui-canvas: #171c19;
+  --ui-panel: #242b26;
+  --ui-soft: #303a32;
+  --ui-ink: #f2f5ef;
+  --ui-muted: #bdcac0;
+  --ui-line: #3b483e;
+  --ui-line-strong: #657869;
+  --ui-brand: #347a55;
+  --ui-brand-hover: #286744;
+  --ui-accent: #a8d8b0;
+  --ui-forest: #347a55;
+  --ui-ochre: #d6b979;
+  --ui-moss: #a2c392;
+  --ui-focus: #a8d8b0;
   --ui-warning-surface: #2d1c08;
   --ui-warning-ink: #fde68a;
   --ui-error-surface: #331116;
   --ui-error-ink: #fca5a5;
-  --primary: #f3a47e;
+  --primary: #a8d8b0;
   --botanical-forest: #1f3325;
 }
 
-:root[data-text-size="large"] { font-size: 112.5%; }
-:root[data-text-size="extra-large"] { font-size: 125%; }
+:root { --reading-text-size: 1rem; --reading-detail-size: 1.0625rem; }
+:root[data-text-size="large"] { --reading-text-size: 1.0625rem; --reading-detail-size: 1.125rem; }
+:root[data-text-size="extra-large"] { --reading-text-size: 1.125rem; --reading-detail-size: 1.1875rem; }
 
 body {
   font-family: var(--font-sans), 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
@@ -109,31 +129,54 @@ body {
   position: relative;
 }
 
-/* Subtle, atmospheric botanical background watermark */
-body::before {
+.home-hero {
+  isolation: isolate;
+  overflow: hidden;
+  background: #17251d;
+}
+
+.home-hero::before,
+.home-hero::after {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: -1;
-  background-image: url('/images/botanical-bg-light.jpg');
-  background-image: image-set(url('/images/botanical-bg-light.webp') type('image/webp'), url('/images/botanical-bg-light.jpg') type('image/jpeg'));
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  opacity: 0.35;
-  transition: opacity 0.3s ease;
 }
 
-:root[data-theme="dark"] body::before,
-.dark body::before {
-  background-image: url('/images/botanical-bg-dark.jpg');
-  background-image: image-set(url('/images/botanical-bg-dark.webp') type('image/webp'), url('/images/botanical-bg-dark.jpg') type('image/jpeg'));
-  opacity: 0.32;
+.home-hero::before {
+  background: url('/images/mount-isarog-forest.jpg') center 52% / cover no-repeat;
 }
 
-body.admin-app::before {
+.home-hero::after {
+  background: linear-gradient(90deg, rgb(10 25 16 / .68), rgb(10 25 16 / .4) 48%, rgb(10 25 16 / .26));
+}
+
+@media (max-width: 767px) {
+  .home-hero::after {
+    background: linear-gradient(180deg, rgb(10 25 16 / .76), rgb(10 25 16 / .58) 52%, rgb(10 25 16 / .78));
+  }
+  .site-nav.home-site-nav { position: relative; }
+}
+
+.operational-page {
+  background: var(--ui-canvas);
+}
+
+.operational-page :where(p, li) {
+  line-height: 1.65;
+}
+
+.operational-page :where(.text-\[10px\]) {
+  font-size: .75rem;
+  line-height: 1.4;
+}
+
+.category-rail {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.category-rail::-webkit-scrollbar {
   display: none;
 }
 
@@ -146,8 +189,8 @@ body.admin-app::before {
 }
 
 :root[data-theme="dark"] .glass-header {
-  background: rgba(18, 23, 19, 0.78) !important;
-  border-bottom: 1px solid rgba(41, 56, 45, 0.6) !important;
+  background: color-mix(in srgb, var(--ui-panel) 90%, transparent) !important;
+  border-bottom: 1px solid var(--ui-line) !important;
 }
 
 .glass-card {
@@ -159,8 +202,8 @@ body.admin-app::before {
 }
 
 :root[data-theme="dark"] .glass-card {
-  background: rgba(24, 34, 27, 0.76) !important;
-  border: 1px solid rgba(61, 82, 67, 0.45) !important;
+  background: color-mix(in srgb, var(--ui-panel) 92%, transparent) !important;
+  border: 1px solid var(--ui-line) !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35) !important;
 }
 
@@ -185,7 +228,11 @@ body.admin-app::before {
 body:not(.admin-app) :where(button, select) { min-height: 2.75rem; }
 button:not(:disabled), select { cursor: pointer; }
 button:disabled { cursor: not-allowed; }
-::selection { background: #c46238; color: #ffffff; }
+::selection { background: var(--ui-soft); color: var(--ui-ink); }
+:root[data-theme="dark"] ::selection { background: var(--ui-accent); color: var(--ui-canvas); }
+:root[data-theme="dark"] :is(.auth-form-eyebrow, .not-found-kicker, .system-state-kicker, .empty-state-icon, .empty-state-text-action) {
+  color: var(--ui-accent);
+}
 
 /* Tactile Archival Buttons */
 .flat-button, .btn {
@@ -310,16 +357,16 @@ button:disabled { cursor: not-allowed; }
 .reading-toolbar {
   position: absolute; z-index: 60; right: 0; top: calc(100% + .5rem);
   display: grid; gap: .75rem; width: min(16rem, calc(100vw - 2rem));
-  padding: 1rem; border: 1px solid rgba(216, 208, 192, 0.85); border-radius: 12px;
-  background: rgba(252, 250, 246, 0.88);
+  padding: 1rem; border: 1px solid var(--ui-line); border-radius: 12px;
+  background: color-mix(in srgb, var(--ui-panel) 96%, transparent);
   backdrop-filter: blur(18px) saturate(180%);
   -webkit-backdrop-filter: blur(18px) saturate(180%);
   box-shadow: 0 12px 36px -4px rgba(31, 51, 37, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 :root[data-theme="dark"] .reading-toolbar,
 .dark .reading-toolbar {
-  border: 1px solid rgba(61, 82, 67, 0.6);
-  background: rgba(24, 34, 27, 0.88);
+  border: 1px solid var(--ui-line);
+  background: color-mix(in srgb, var(--ui-panel) 96%, transparent);
   box-shadow: 0 16px 40px -4px rgba(0, 0, 0, 0.5);
 }
 .reading-toolbar select, .reading-toolbar button {
@@ -330,17 +377,17 @@ button:disabled { cursor: not-allowed; }
 .reading-toolbar button[aria-pressed="true"] { background: var(--ui-soft); font-weight: 600; }
 .site-nav {
   position: sticky; top: 0; z-index: 40; width: 100%; flex-shrink: 0;
-  background: rgba(252, 250, 246, 0.82);
+  background: color-mix(in srgb, var(--ui-panel) 94%, transparent);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border-bottom: 1px solid rgba(216, 208, 192, 0.75);
+  border-bottom: 1px solid var(--ui-line);
   box-shadow: 0 4px 20px -2px rgba(31, 51, 37, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
   transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
 }
 :root[data-theme="dark"] .site-nav,
 .dark .site-nav {
-  background: rgba(24, 34, 27, 0.82);
-  border-bottom: 1px solid rgba(41, 56, 45, 0.8);
+  background: color-mix(in srgb, var(--ui-panel) 90%, transparent);
+  border-bottom: 1px solid var(--ui-line);
   box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.35);
 }
 .site-nav a[aria-current="page"] { background: var(--ui-soft); color: var(--ui-ink); font-weight: 600; }
@@ -360,51 +407,51 @@ button:disabled { cursor: not-allowed; }
 }
 :root[data-theme="dark"] .site-menu,
 .dark .site-menu {
-  border: 1px solid rgba(61, 82, 67, 0.6);
-  background: rgba(24, 34, 27, 0.88);
+  border: 1px solid var(--ui-line);
+  background: color-mix(in srgb, var(--ui-panel) 96%, transparent);
   box-shadow: 0 16px 40px -4px rgba(0, 0, 0, 0.5);
 }
 
 /* Universal Glassmorphism Classes */
 .glass-header {
-  background: rgba(252, 250, 246, 0.82) !important;
+  background: color-mix(in srgb, var(--ui-panel) 94%, transparent) !important;
   backdrop-filter: blur(16px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-  border-bottom: 1px solid rgba(216, 208, 192, 0.75) !important;
+  border-bottom: 1px solid var(--ui-line) !important;
   box-shadow: 0 4px 20px -2px rgba(31, 51, 37, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
 }
 :root[data-theme="dark"] .glass-header,
 .dark .glass-header {
-  background: rgba(24, 34, 27, 0.82) !important;
-  border-bottom: 1px solid rgba(41, 56, 45, 0.8) !important;
+  background: color-mix(in srgb, var(--ui-panel) 90%, transparent) !important;
+  border-bottom: 1px solid var(--ui-line) !important;
   box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.35);
 }
 
 .glass-panel {
-  background: rgba(252, 250, 246, 0.88) !important;
+  background: color-mix(in srgb, var(--ui-panel) 96%, transparent) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-  border: 1px solid rgba(216, 208, 192, 0.85) !important;
+  border: 1px solid var(--ui-line) !important;
   box-shadow: 0 12px 36px -4px rgba(31, 51, 37, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 :root[data-theme="dark"] .glass-panel,
 .dark .glass-panel {
-  background: rgba(24, 34, 27, 0.88) !important;
-  border: 1px solid rgba(61, 82, 67, 0.6) !important;
+  background: color-mix(in srgb, var(--ui-panel) 96%, transparent) !important;
+  border: 1px solid var(--ui-line) !important;
   box-shadow: 0 16px 40px -4px rgba(0, 0, 0, 0.5);
 }
 
 .glass-pill {
-  background: rgba(252, 250, 246, 0.82) !important;
+  background: color-mix(in srgb, var(--ui-panel) 94%, transparent) !important;
   backdrop-filter: blur(12px) saturate(160%) !important;
   -webkit-backdrop-filter: blur(12px) saturate(160%) !important;
-  border: 1px solid rgba(216, 208, 192, 0.75) !important;
+  border: 1px solid var(--ui-line) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 :root[data-theme="dark"] .glass-pill,
 .dark .glass-pill {
-  background: rgba(24, 34, 27, 0.82) !important;
-  border: 1px solid rgba(61, 82, 67, 0.6) !important;
+  background: color-mix(in srgb, var(--ui-panel) 90%, transparent) !important;
+  border: 1px solid var(--ui-line) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 .hero-wordmark {
@@ -435,7 +482,7 @@ button:disabled { cursor: not-allowed; }
   letter-spacing: .05em;
   text-transform: uppercase;
 }
-.about-title { font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.2; letter-spacing: -.025em; }
+.about-title { font-size: clamp(2.25rem, 4.5vw, 4.5rem); line-height: 1.04; letter-spacing: -.04em; }
 .library-header { padding: 1.5rem 0; }
 .library-herb-card { box-shadow: none; }
 .library-herb-card:focus-within { outline: 3px solid var(--ui-focus); outline-offset: 3px; }
@@ -445,20 +492,33 @@ button:disabled { cursor: not-allowed; }
   position: fixed;
   inset: 0;
   margin: auto;
-  width: min(48rem, calc(100% - 2rem));
+  width: min(56rem, calc(100% - 2rem));
   max-height: calc(100dvh - 2rem);
   overflow: auto;
   overscroll-behavior: contain;
-  border: 1px solid rgba(216, 208, 192, 0.85);
-  border-radius: 1.5rem;
-  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid var(--ui-line);
+  border-radius: 1rem;
+  padding: clamp(1rem, 2.5vw, 2rem);
   background: var(--ui-panel);
   color: var(--ui-ink);
   box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.25);
 }
+.herb-detail-dialog .dialog-close-button {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  margin: 0 0 -2.75rem auto;
+}
+.herb-detail-dialog .dialog-content {
+  padding-top: .25rem;
+}
+.herb-detail-dialog {
+  scrollbar-color: var(--ui-line-strong) transparent;
+  scrollbar-width: thin;
+}
 :root[data-theme="dark"] .herb-detail-dialog,
 .dark .herb-detail-dialog {
-  border: 1px solid rgba(61, 82, 67, 0.6);
+  border: 1px solid var(--ui-line);
   box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.6);
 }
 .herb-detail-dialog::backdrop {
@@ -466,10 +526,20 @@ button:disabled { cursor: not-allowed; }
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
-.herb-detail-dialog .detail-copy { font-size: 1.125rem; line-height: 1.75; white-space: pre-line; }
+@media (max-width: 639px) {
+  .herb-detail-dialog {
+    width: calc(100% - 1rem);
+    max-height: calc(100dvh - 1rem);
+    padding: 1rem;
+  }
+  .herb-detail-dialog .dialog-close-button {
+    margin-bottom: -2.5rem;
+  }
+}
+.herb-detail-dialog .detail-copy { font-size: var(--reading-detail-size); line-height: 1.7; white-space: pre-line; }
 .herb-detail-dialog h3 { font-size: 1.125rem; font-weight: 700; margin-bottom: .5rem; }
 .chat-page { position: fixed; inset: 0; height: var(--chat-height, 100dvh); display: flex; flex-direction: column; overflow: hidden; }
-.chat-main { display: flex; flex: 1; min-height: 0; width: 100%; max-width: 64rem; margin: 0 auto; padding: 1rem; }
+.chat-main { display: flex; flex: 1; min-height: 0; width: 100%; max-width: 76rem; margin: 0 auto; padding: .75rem 1rem 1rem; gap: 1rem; }
 .chat-panel { display: flex; flex: 1; flex-direction: column; min-height: 0; min-width: 0; overflow: hidden; border-radius: 1rem; }
 .chat-panel > header { padding: .75rem 1rem; }
 .chat-panel > header p { font-size: .8125rem; }
@@ -479,10 +549,13 @@ button:disabled { cursor: not-allowed; }
 .chat-safety { font-size: .8125rem; line-height: 1.4; color: var(--ui-muted); margin-top: .5rem; }
 .quick-prompts { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
 .quick-prompts button { border: 1px solid var(--ui-line); border-radius: 999px; padding: .375rem .75rem; font-size: .8125rem; background: var(--ui-panel); color: var(--ui-muted); }
-.library-herb-card .herb-figma-badge, .herb-figma-img > span { font-size: .75rem; font-weight: 500; text-transform: none; letter-spacing: 0; padding: .25rem .625rem; background: var(--ui-panel); color: var(--ui-ink); border: 1px solid var(--ui-line); max-width: calc(100% - 2rem); }
+.library-herb-card .herb-figma-badge, .library-herb-card .herb-doh-badge { font-size: .6875rem; line-height: 1.2; font-weight: 700; text-transform: none; letter-spacing: 0; padding: .3rem .55rem; background: color-mix(in srgb, var(--ui-panel) 96%, transparent); color: var(--ui-ink); border: 1px solid var(--ui-line-strong); max-width: 48%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 2px 8px rgb(23 32 24 / .08); }
+.library-herb-card .herb-figma-badge { inset: auto .75rem .75rem auto; }
+.library-herb-card .herb-doh-badge { inset: .75rem auto auto .75rem; }
 .library-herb-card h2 { font-size: 1.125rem; }
 .herb-figma-sci { font-size: .875rem; }
 @media (max-width: 639px) {
+  :where(input, select, textarea) { font-size: 1rem; }
   .site-nav .display-menu { position: static; }
   .site-nav .reading-toolbar { top: 100%; right: 1rem; width: calc(100vw - 2rem); max-width: 20rem; }
   .chat-main { padding: .375rem; }
@@ -496,7 +569,7 @@ button:disabled { cursor: not-allowed; }
   .chat-panel > header p, .chat-composer > div:first-child { display: none; }
   .chat-composer { padding-block: .375rem; }
 }
-.chat-messages p, .chat-messages ul, .chat-messages ol { font-size: 1.125rem; line-height: 1.75; }
+.chat-messages p, .chat-messages ul, .chat-messages ol { font-size: var(--reading-text-size); line-height: 1.65; }
 @media (max-width: 639px) {
   .reading-toolbar { justify-content: flex-start; }
   .hero-section { padding: 2.5rem 1rem; }
@@ -1069,4 +1142,22 @@ body.admin-app {
   .auth-brand-points,
   .auth-brand-footnote,
   .auth-brand-watermark { display: none !important; }
+}
+
+.home-herb-link img {
+  transition: transform 280ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.home-herb-link:is(:hover, :focus-visible) img { transform: scale(1.035); }
+
+.home-question-link {
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.home-question-link:is(:hover, :focus-visible) { border-color: rgba(255, 255, 255, .48); }
+
+@media (prefers-reduced-motion: reduce) {
+  .home-herb-link img { transition: none; }
+  .home-herb-link:is(:hover, :focus-visible) img { transform: none; }
+  .home-question-link svg { transition: none; transform: none; }
 }

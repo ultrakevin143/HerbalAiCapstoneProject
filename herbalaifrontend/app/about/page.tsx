@@ -148,9 +148,9 @@ export default function AboutPage() {
               Preserving Traditional Wisdom
             </div>
             
-            <h1 className="font-serif-custom italic font-normal text-4xl sm:text-6xl md:text-7xl text-[#1b4332] dark:text-ink leading-tight">
+            <h1 className="about-title mx-auto max-w-4xl font-serif-custom font-semibold text-[#1b4332] dark:text-ink">
               Bridging Heritage &{' '}
-              <span className="gradient-ai bg-gradient-to-r from-[#40916c] to-[#74c69d] bg-clip-text text-transparent">
+              <span className="text-[var(--ui-brand)] dark:text-accent">
                 Technology
               </span>
             </h1>
@@ -162,7 +162,7 @@ export default function AboutPage() {
             <div className="flex justify-center gap-4 pt-4">
               <Link
                 href="/library"
-                className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-semibold text-sm px-8 py-3 rounded-full shadow-sm hover:brightness-105 transition-all"
+                className="btn border-[#2d6a4f] bg-[#2d6a4f] text-white font-semibold text-sm px-8 py-3 rounded-full shadow-sm hover:bg-[#1b4332] transition-colors"
               >
                 Browse Library
               </Link>
@@ -190,7 +190,7 @@ export default function AboutPage() {
               {/* Feature 1 */}
               <div className="glass-card bg-white/45 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-8 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
                 <div>
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white mb-6 group-hover:rotate-6 transition-transform shadow-sm">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#2d6a4f] text-white mb-6 shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
@@ -207,7 +207,7 @@ export default function AboutPage() {
               {/* Feature 2 */}
               <div className="glass-card bg-white/45 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-8 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
                 <div>
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white mb-6 group-hover:rotate-6 transition-transform shadow-sm">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#2d6a4f] text-white mb-6 shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
@@ -224,7 +224,7 @@ export default function AboutPage() {
               {/* Feature 3 */}
               <div className="glass-card bg-white/45 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-8 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
                 <div>
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white mb-6 group-hover:rotate-6 transition-transform shadow-sm">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#2d6a4f] text-white mb-6 shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                     </svg>
@@ -267,7 +267,7 @@ export default function AboutPage() {
                       onClick={() => setActiveHerb(herb)}
                       className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between h-[110px] group cursor-pointer ${
                         isActive
-                          ? 'bg-gradient-to-br from-[#40916c] to-[#74c69d] text-white border-transparent shadow-md translate-x-1'
+                          ? 'bg-[#2d6a4f] text-white border-[#2d6a4f] shadow-sm'
                           : 'bg-white/45 dark:bg-panel/75 hover:bg-white/70 dark:hover:bg-panel border-black/10 dark:border-line text-[#1b4332] dark:text-ink hover:-translate-y-0.5'
                       }`}
                     >
@@ -306,7 +306,7 @@ export default function AboutPage() {
                       </div>
 
                       {/* Plant graphic */}
-                      <div className="relative h-20 w-20 bg-gradient-to-tr from-[#40916c]/20 to-[#74c69d]/20 rounded-2xl flex items-center justify-center border border-[#40916c]/10 overflow-hidden shrink-0 shadow-inner">
+                      <div className="relative h-20 w-20 bg-soft rounded-2xl flex items-center justify-center border border-line overflow-hidden shrink-0">
                         {activeHerb.image ? (
                           <OptimizedFillImage
                             src={activeHerb.image}
@@ -426,7 +426,7 @@ export default function AboutPage() {
 
           {/* Final Call to Action */}
           {!isAuthenticated && (
-            <section className="relative space-y-6 overflow-hidden rounded-3xl bg-gradient-to-br from-[#1b4332] to-[#2d6a4f] p-6 text-center text-white shadow-lg sm:p-8 md:p-12">
+            <section className="relative space-y-6 overflow-hidden rounded-2xl bg-[#1b4332] p-6 text-center text-white shadow-md sm:p-8 md:p-12">
               <div className="absolute top-0 left-0 h-32 w-32 -translate-x-12 -translate-y-12 rounded-full bg-white/5"></div>
               <div className="absolute right-0 bottom-0 h-48 w-48 translate-x-16 translate-y-16 rounded-full bg-white/5"></div>
 
