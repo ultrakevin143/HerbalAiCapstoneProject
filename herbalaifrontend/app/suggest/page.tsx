@@ -368,7 +368,7 @@ export default function SuggestHerbPage() {
           /* SUCCESS SCREEN */
           <div className="glass-card bg-white/60 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-8 shadow-xl mb-12">
             <div className="flex flex-col items-center text-center max-w-xl mx-auto space-y-6">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#40916c] to-[#74c69d] text-3xl shadow-sm text-white">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#2d6a4f] text-3xl shadow-sm text-white">
                 ✅
               </div>
               
@@ -425,7 +425,7 @@ export default function SuggestHerbPage() {
               <div className="flex flex-col sm:flex-row gap-4 w-full justify-center pt-4">
                 <button
                   onClick={handleReset}
-                  className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-semibold text-sm px-6 py-3 rounded-full shadow-sm hover:brightness-105 transition-all"
+                  className="btn border-[#2d6a4f] bg-[#2d6a4f] text-white font-semibold text-sm px-6 py-3 rounded-full shadow-sm hover:bg-[#1b4332] transition-colors"
                 >
                   {user?.role === 'admin' ? 'Add Another Plant' : 'Suggest Another Plant'}
                 </button>
@@ -704,7 +704,7 @@ export default function SuggestHerbPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-semibold text-base px-8 py-3.5 rounded-full shadow-sm hover:brightness-105 transition-all flex-1 cursor-pointer disabled:opacity-50"
+                className="btn border-[#2d6a4f] bg-[#2d6a4f] text-white font-semibold text-base px-8 py-3.5 rounded-full shadow-sm hover:bg-[#1b4332] transition-colors flex-1 cursor-pointer disabled:opacity-50"
               >
                 {isSubmitting
                   ? 'Submitting Suggestion...'

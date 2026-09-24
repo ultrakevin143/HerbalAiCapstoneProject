@@ -10,6 +10,7 @@ import DisplayPreferences from './DisplayPreferences';
 import BrandMark from './BrandMark';
 import { LogOut, Menu, Shield, Sprout, UserRound, X } from 'lucide-react';
 import { PwaInstallButton } from './PwaInstall';
+import { Button } from './ui/button';
 
 export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuth();
@@ -74,13 +75,13 @@ export default function Navbar() {
 
   return (
     <>
-      <nav aria-label="Main navigation" className="site-nav sticky top-0 z-50 w-full glass-header px-4 sm:px-6 py-3 shadow-sm">
+      <nav aria-label="Main navigation" className={`site-nav sticky top-0 z-50 w-full glass-header px-4 sm:px-6 py-2 shadow-sm ${pathname === '/' ? 'home-site-nav' : ''}`}>
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group shrink-0">
-            <BrandMark className="h-10 w-10 shrink-0 text-[#1b4332] dark:text-[#e6f1e7] transition-transform group-hover:scale-105" />
+            <BrandMark className="h-9 w-9 shrink-0 text-[#1b4332] dark:text-[#e6f1e7] transition-transform group-hover:scale-105" />
             <span className="font-sans text-xl font-extrabold tracking-tight text-[#1b4332] dark:text-ink whitespace-nowrap shrink-0">
-              Herbal-<span className="text-[#2d6a4f] dark:text-[#b4e858]">Ai</span>
+              Herbal-<span className="text-[#2d6a4f] dark:text-accent">Ai</span>
             </span>
           </Link>
 
@@ -94,7 +95,7 @@ export default function Navbar() {
                   href={link.href}
                   className={`rounded-full px-3 py-1.5 text-xs font-extrabold transition-all border-2 border-transparent whitespace-nowrap shrink-0 ${
                     isActive
-                      ? 'bg-[#eef5f0] dark:bg-soft text-[#1b4332] dark:text-ink border-[#2d6a4f]'
+                      ? 'bg-[#eef5f0] dark:bg-soft text-[#1b4332] dark:text-ink border-[#2d6a4f] dark:border-line-strong'
                       : 'text-[#2d6a4f] dark:text-muted hover:bg-[#eef5f0] dark:hover:bg-soft hover:text-[#1b4332] dark:hover:text-ink'
                   }`}
                 >
@@ -108,13 +109,7 @@ export default function Navbar() {
           <div className="hidden xl:flex items-center gap-3 shrink-0">
             {isAuthenticated ? (
               <>
-                <Link
-                  href="/suggest"
-                  className="bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-bold text-xs px-4 py-2 rounded-full shadow-xs hover:brightness-105 transition-all shrink-0 whitespace-nowrap inline-flex items-center justify-center gap-1.5"
-                >
-                  <span>🌱</span>
-                  <span>Suggest Herb</span>
-                </Link>
+                <Button asChild size="sm"><Link href="/suggest"><Sprout size={15} aria-hidden="true" />Suggest Herb</Link></Button>
 
                 <NotificationBell />
 
@@ -143,13 +138,13 @@ export default function Navbar() {
                   </button>
 
                   {isUserMenuOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl border border-black/10 dark:border-line bg-white/95 dark:bg-[#18221b]/95 backdrop-blur-xl shadow-xl p-3 space-y-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl border border-black/10 dark:border-line bg-white/95 dark:bg-panel/95 backdrop-blur-xl shadow-xl p-3 space-y-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                       {/* User Info Header */}
                       <div className="px-3 py-2 border-b border-black/5 dark:border-line flex items-center gap-3">
                         {user?.avatar?.startsWith('http') ? (
                           <img src={user.avatar} alt="Avatar" className="h-9 w-9 rounded-full object-cover shadow-sm" />
                         ) : (
-                          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#40916c] to-[#74c69d] text-xs font-bold text-white uppercase shadow-sm">
+                          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2d6a4f] text-xs font-bold text-white uppercase shadow-sm">
                             {user?.name ? user.name.charAt(0) : 'U'}
                           </span>
                         )}
@@ -210,35 +205,18 @@ export default function Navbar() {
             ) : (
               <>
                 <DisplayPreferences />
-                <Link
-                  href="/signin"
-                  className="text-xs font-extrabold text-[#2d6a4f] dark:text-ink px-3 py-1.5 hover:underline shrink-0 whitespace-nowrap"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/signup"
-                  className="bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-bold text-xs px-4 py-2 rounded-full shadow-xs hover:brightness-105 transition-all shrink-0 whitespace-nowrap inline-flex items-center justify-center"
-                >
-                  Get Started
-                </Link>
+                <Button asChild variant="ghost" size="sm"><Link href="/signin">Sign In</Link></Button>
+                <Button asChild size="sm"><Link href="/signup">Get Started</Link></Button>
               </>
             )}
           </div>
 
           {/* Mobile hamburger button */}
           <div className="flex items-center gap-2 xl:hidden">
-            <DisplayPreferences
-              open={isMobileDisplayOpen}
-              onOpenChange={(open) => {
-                setIsMobileDisplayOpen(open);
-                if (open) setIsMobileMenuOpen(false);
-              }}
-            />
             {isAuthenticated && <NotificationBell />}
             <button
               onClick={toggleMobileMenu}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 dark:border-line bg-white/80 dark:bg-panel text-[#1b4332] dark:text-ink cursor-pointer"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-black/10 dark:border-line bg-white/80 dark:bg-panel text-[#1b4332] dark:text-ink cursor-pointer"
               aria-label="Toggle navigation menu"
               aria-expanded={isMobileMenuOpen}
             >
@@ -250,6 +228,13 @@ export default function Navbar() {
         {/* Mobile Navigation Dropdown */}
         {isMobileMenuOpen && (
           <div className="xl:hidden mt-3 max-h-[calc(100dvh-5.5rem)] overflow-y-auto border-t border-black/10 pt-3 pb-2 dark:border-line animate-in fade-in slide-in-from-top-2 duration-200">
+            <div className="mb-3 flex items-center justify-between rounded-xl border border-line bg-panel px-3 py-2">
+              <span className="text-sm font-bold text-ink">Display preferences</span>
+              <DisplayPreferences
+                open={isMobileDisplayOpen}
+                onOpenChange={setIsMobileDisplayOpen}
+              />
+            </div>
             <div className="grid grid-cols-2 gap-2">
               {allLinks.map((link) => {
                 const isActive = pathname === link.href;
@@ -324,20 +309,8 @@ export default function Navbar() {
                 </>
               ) : (
                 <div className="flex flex-col gap-2 px-2 pt-1">
-                  <Link
-                    href="/signin"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="btn btn-outline border-2 border-[#2d6a4f] text-[#2d6a4f] dark:text-ink font-bold text-center py-2.5 rounded-full"
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    href="/signup"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-bold text-center py-2.5 rounded-full shadow-sm"
-                  >
-                    Get Started
-                  </Link>
+                  <Button asChild variant="outline" className="w-full"><Link href="/signin" onClick={() => setIsMobileMenuOpen(false)}>Sign In</Link></Button>
+                  <Button asChild className="w-full"><Link href="/signup" onClick={() => setIsMobileMenuOpen(false)}>Get Started</Link></Button>
                 </div>
               )}
             </div>
