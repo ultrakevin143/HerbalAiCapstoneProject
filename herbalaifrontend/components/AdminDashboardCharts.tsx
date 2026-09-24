@@ -1,6 +1,7 @@
 'use client';
 
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { Cell, Pie, PieChart } from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 type ChartEntry = { name: string; value: number };
 
@@ -10,73 +11,92 @@ interface ChartData {
   threadsByCategory: ChartEntry[];
 }
 
-const herbColors = ['#2d6a4f', '#40916c', '#52b788', '#74c69d', '#95d5b2'];
-const threadColors = ['#1b4332', '#2d6a4f', '#40916c'];
+const categoryColors = ['#286344', '#4a8a62', '#75ae83', '#a7cba8', '#bd9973', '#819c73'];
+const suggestionStatuses = [
+  { name: 'Pending', label: 'Pending', color: 'var(--ui-ochre)' },
+  { name: 'Approved', label: 'Approved', color: 'var(--ui-brand)' },
+  { name: 'Rejected', label: 'Rejected', color: 'var(--ui-error-ink)' },
+  { name: 'ChangesRequested', label: 'Revision Needed', color: 'var(--ui-warning-ink)' },
+] as const;
 
-export default function AdminDashboardCharts({ data }: { data: ChartData }) {
+function DonutCard({ title, entries }: { title: string; entries: ChartEntry[] }) {
+  const total = entries.reduce((sum, entry) => sum + entry.value, 0);
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-        <h2 className="font-black italic text-lg text-[#1b4332] mb-4">Herbs by Category</h2>
-        {data.herbsByCategory.length === 0 ? <p className="text-xs text-gray-500 text-center py-10">No data available</p> : (
-          <div className="h-64 flex flex-col justify-between">
-            <div className="h-36">
-              <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-                <PieChart>
-                  <Pie data={data.herbsByCategory} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={25} outerRadius={48}>
-                    {data.herbsByCategory.map((entry, index) => <Cell key={entry.name} fill={herbColors[index % herbColors.length]} />)}
+    <Card className="min-w-0">
+      <CardHeader><CardTitle className="text-base text-ink">{title}</CardTitle></CardHeader>
+      <CardContent className="pt-4">
+        {total === 0 ? (
+          <p className="flex min-h-64 items-center justify-center text-sm text-muted">No data available</p>
+        ) : (
+          <div className="flex min-h-64 flex-col items-center gap-4">
+            <div className="relative h-40 w-40 shrink-0" aria-hidden="true">
+                <PieChart width={160} height={160}>
+                  <Pie data={entries} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={55} outerRadius={76} stroke="var(--ui-panel)" strokeWidth={2} isAnimationActive={false}>
+                    {entries.map((entry, index) => <Cell key={entry.name} fill={categoryColors[index % categoryColors.length]} />)}
                   </Pie>
-                  <Tooltip />
                 </PieChart>
-              </ResponsiveContainer>
+              <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-2xl font-semibold tabular-nums text-ink">{total}</span>
+                <span className="text-xs text-muted">total</span>
+              </div>
             </div>
-            <div tabIndex={0} role="region" aria-label="Herb category counts" className="h-[96px] overflow-y-auto mt-1 pr-1 space-y-1 scrollbar-thin">
-              {data.herbsByCategory.map((entry, index) => (
-                <div key={entry.name} className="flex items-center justify-between text-[11px] border-b border-gray-50 pb-0.5">
-                  <div className="flex items-center gap-1.5 truncate">
-                    <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: herbColors[index % herbColors.length] }} />
-                    <span className="truncate font-bold text-[#1b4332]/80" title={entry.name}>{entry.name}</span>
-                  </div>
-                  <span className="font-extrabold text-[#1b4332] pl-2">{entry.value}</span>
+            <div className="max-h-32 w-full overflow-y-auto pr-1" role="list" aria-label={`${title} counts`}>
+              {entries.map((entry, index) => (
+                <div key={entry.name} role="listitem" className="flex min-h-8 items-center justify-between gap-3 border-b border-border py-1 text-sm last:border-0">
+                  <span className="flex min-w-0 items-center gap-2 text-muted">
+                    <span className="size-2.5 shrink-0 rounded-full" style={{ backgroundColor: categoryColors[index % categoryColors.length] }} aria-hidden="true" />
+                    <span className="truncate" title={entry.name}>{entry.name}</span>
+                  </span>
+                  <span className="shrink-0 font-medium tabular-nums text-ink">{entry.value}</span>
                 </div>
               ))}
             </div>
           </div>
         )}
-      </div>
-      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-        <h2 className="font-black italic text-lg text-[#1b4332] mb-4">Suggestions Status</h2>
-        {data.suggestionsByStatus.length === 0 ? <p className="text-xs text-gray-500 text-center py-10">No data available</p> : (
-          <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-              <BarChart data={data.suggestionsByStatus}>
-                <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                <YAxis allowDecimals={false} />
-                <Tooltip cursor={{ fill: '#f0f7f2' }} />
-                <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-                  {data.suggestionsByStatus.map((entry) => <Cell key={entry.name} fill={entry.name === 'Approved' ? '#2d6a4f' : entry.name === 'Pending' ? '#d4a373' : '#e5989b'} />)}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+      </CardContent>
+    </Card>
+  );
+}
+
+function StatusCard({ entries }: { entries: ChartEntry[] }) {
+  const total = entries.reduce((sum, entry) => sum + entry.value, 0);
+  const counts = new Map(entries.map((entry) => [entry.name, entry.value]));
+
+  return (
+    <Card className="min-w-0 lg:flex lg:flex-col">
+      <CardHeader><CardTitle className="text-base text-ink">Suggestions Status</CardTitle></CardHeader>
+      <CardContent className="pt-4 lg:flex lg:flex-1 lg:items-center">
+          <div className="grid w-full gap-4">
+            {suggestionStatuses.map(({ name, label, color }) => {
+              const value = counts.get(name) ?? 0;
+              return (
+                <div key={name}>
+                  <div className="mb-2 flex items-center justify-between gap-3 text-sm">
+                    <span className="flex min-w-0 items-center gap-2 font-medium text-ink">
+                      <span className="size-2.5 shrink-0 rounded-full" style={{ backgroundColor: color }} aria-hidden="true" />
+                      {label}
+                    </span>
+                    <span className="tabular-nums text-muted">{value}</span>
+                  </div>
+                  <div className="h-2 overflow-hidden rounded-full bg-secondary" role="meter" aria-label={label} aria-valuemin={0} aria-valuemax={Math.max(total, 1)} aria-valuenow={value}>
+                    <div className="h-full rounded-full" style={{ width: `${total ? value / total * 100 : 0}%`, backgroundColor: color }} />
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        )}
-      </div>
-      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-        <h2 className="font-black italic text-lg text-[#1b4332] mb-4">Forum Discussions</h2>
-        {data.threadsByCategory.length === 0 ? <p className="text-xs text-gray-500 text-center py-10">No data available</p> : (
-          <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-              <PieChart>
-                <Pie data={data.threadsByCategory} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={50} outerRadius={80}>
-                  {data.threadsByCategory.map((entry, index) => <Cell key={entry.name} fill={threadColors[index % threadColors.length]} />)}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        )}
-      </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function AdminDashboardCharts({ data }: { data: ChartData }) {
+  return (
+    <div className="mb-8 grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <DonutCard title="Herbs by Category" entries={data.herbsByCategory} />
+      <StatusCard entries={data.suggestionsByStatus} />
+      <DonutCard title="Forum Discussions" entries={data.threadsByCategory} />
     </div>
   );
 }

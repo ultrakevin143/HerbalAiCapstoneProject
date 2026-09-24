@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../../context/AuthContext';
+import DrAiAvatar from '../../../../components/DrAiAvatar';
 
 export default function GoogleSuccessPage() {
   const { checkSession } = useAuth();
@@ -50,14 +51,9 @@ export default function GoogleSuccessPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-6 text-center">
-      <div className="w-full max-w-md rounded-2xl border-4 border-forest bg-surface p-8 shadow-[8px_8px_0px_0px_rgba(27,67,50,1)]">
-        <div className="mb-6 flex justify-center">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-forest border-t-accent"></div>
-        </div>
-        <h1 className="mb-2 text-2xl font-extrabold text-forest animate-pulse">Completing Google Login</h1>
-        <p className="font-semibold text-ink">Verifying secure credentials and setting up your workspace...</p>
-      </div>
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-6 text-center" role="status" aria-live="polite">
+      <DrAiAvatar className="h-20 w-20" animated />
+      <p className="text-base font-medium text-ink">Signing you in...</p>
     </div>
   );
 }

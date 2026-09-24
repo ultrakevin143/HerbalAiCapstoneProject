@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import SuggestionStatusBadge, { type SuggestionStatus } from '../../components/SuggestionStatusBadge';
 import api from '../../lib/axios';
 import {
   UploadCloud,
@@ -24,7 +25,7 @@ interface Submission {
   warnings?: string | null;
   informationSource?: string | null;
   imageUrl?: string | null;
-  status: 'Pending' | 'Approved' | 'Rejected' | 'ChangesRequested';
+  status: SuggestionStatus;
   reviewNotes?: string | null;
   createdAt: string;
   updatedAt: string;
@@ -302,14 +303,12 @@ export default function SuggestHerbPage() {
             <div className="mt-4 grid gap-4">
               {submissions.map((submission) => (
                 <article key={submission.id} className="rounded-2xl border border-black/10 dark:border-line bg-white/70 dark:bg-panel p-4 text-[#1b4332] dark:text-ink">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="min-w-0">
                       <h3 className="font-bold text-base">{submission.localName}</h3>
                       <p className="italic text-xs text-gray-500 dark:text-muted mt-0.5">{submission.scientificName}</p>
                     </div>
-                    <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-black/10 bg-white/80 dark:bg-soft text-gray-700 dark:text-muted uppercase tracking-wider">
-                      {submission.status === 'ChangesRequested' ? 'Revision Needed' : submission.status}
-                    </span>
+                    <SuggestionStatusBadge status={submission.status} />
                   </div>
                   {submission.reviewNotes && (
                     <p className="mt-2.5 text-xs text-gray-700 dark:text-muted whitespace-pre-wrap bg-[#eef5f0]/60 dark:bg-soft p-3 rounded-xl border border-black/5 dark:border-line">

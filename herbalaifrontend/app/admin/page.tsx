@@ -9,6 +9,9 @@ import api from '../../lib/axios';
 import { cachedApiGet, invalidateApiGetCache } from '../../lib/request-cache';
 import SuggestionReviewEditor, { type ReviewReference } from '../../components/SuggestionReviewEditor';
 import BrandMark from '../../components/BrandMark';
+import SuggestionStatusBadge, { type SuggestionStatus } from '../../components/SuggestionStatusBadge';
+import { Button } from '../../components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import {
   Edit2,
   Trash2,
@@ -32,12 +35,12 @@ import {
 
 const AdminDashboardCharts = dynamic(() => import('../../components/AdminDashboardCharts'), {
   loading: () => (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8" role="status" aria-label="Loading dashboard charts">
+    <div className="mb-8 grid grid-cols-1 gap-4 lg:grid-cols-3" role="status" aria-label="Loading dashboard charts">
       {['Herbs by Category', 'Suggestions Status', 'Forum Discussions'].map((title) => (
-        <div key={title} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-          <h2 className="font-black italic text-lg text-[#1b4332] mb-4">{title}</h2>
-          <div className="h-64 rounded-xl bg-gray-100 animate-pulse motion-reduce:animate-none" />
-        </div>
+        <Card key={title}>
+          <CardHeader><CardTitle className="text-base">{title}</CardTitle></CardHeader>
+          <CardContent className="pt-5"><div className="h-64 rounded-lg bg-secondary animate-pulse motion-reduce:animate-none" /></CardContent>
+        </Card>
       ))}
     </div>
   ),
@@ -59,8 +62,9 @@ interface Suggestion {
   warnings?: string;
   informationSource?: string;
   imageUrl?: string;
-  status: 'Pending' | 'ChangesRequested' | 'Approved' | 'Rejected';
+  status: SuggestionStatus;
   submittedAt: string;
+  reviewedAt?: string | null;
   reviewNotes?: string;
   evidenceClass?: 'DOH_PITAHC_LISTED' | 'EVIDENCE_SUPPORTED_PHILIPPINE_USE' | 'DOCUMENTED_TRADITIONAL_USE' | 'UNASSESSED';
 }
@@ -138,14 +142,26 @@ interface DashboardStats {
   threadsByCategory: { name: string; value: number }[];
 }
 
+type SuggestionFilter = 'All' | SuggestionStatus;
+
+const suggestionFilters: { value: SuggestionFilter; label: string }[] = [
+  { value: 'All', label: 'All' },
+  { value: 'Pending', label: 'Pending' },
+  { value: 'Approved', label: 'Approved' },
+  { value: 'Rejected', label: 'Rejected' },
+  { value: 'ChangesRequested', label: 'Revision Needed' },
+];
+
 export default function AdminPage() {
   const [reviewEditing, setReviewEditing] = useState<Suggestion | null>(null);
   const { user, loading, isAuthenticated, sessionUnavailable, checkSession, logout } = useAuth();
   const router = useRouter();
   
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
-  const [pendingPage, setPendingPage] = useState(1);
-  const [pendingTotal, setPendingTotal] = useState(0);
+  const [suggestionsPage, setSuggestionsPage] = useState(1);
+  const [suggestionFilter, setSuggestionFilter] = useState<SuggestionFilter>('Pending');
+  const [suggestionsLoading, setSuggestionsLoading] = useState(false);
+  const [suggestionsLoaded, setSuggestionsLoaded] = useState(false);
   const [allHerbs, setAllHerbs] = useState<Herb[]>([]);
   const [herbsPage, setHerbsPage] = useState(1);
   const [herbsTotal, setHerbsTotal] = useState(0);
@@ -235,18 +251,17 @@ export default function AdminPage() {
     }
   };
 
-  const refreshPendingPage = async () => {
-    const response = await api.get('/suggest', { params: { status: 'Pending', page: pendingPage, limit: 10 } });
-    if (response.data?.status === 'success') {
-      const total = response.data.data.total || 0;
-      if (pendingPage > Math.max(1, Math.ceil(total / 10))) {
-        setPendingPage(Math.max(1, Math.ceil(total / 10)));
-        return;
-      }
+  const refreshSuggestions = React.useCallback(async () => {
+    setSuggestionsLoading(true);
+    try {
+      const response = await api.get('/suggest');
+      if (response.data?.status !== 'success') throw new Error('Unable to load suggestions.');
       setSuggestions(response.data.data.suggestions || []);
-      setPendingTotal(total);
+    } finally {
+      setSuggestionsLoading(false);
+      setSuggestionsLoaded(true);
     }
-  };
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -254,11 +269,7 @@ export default function AdminPage() {
         setError(null);
         
         if (activeTab === 'pending') {
-          const suggestRes = await api.get('/suggest', { params: { status: 'Pending', page: pendingPage, limit: 10 } });
-          if (suggestRes.data?.status === 'success') {
-            setSuggestions(suggestRes.data.data.suggestions || []);
-            setPendingTotal(suggestRes.data.data.total || 0);
-          }
+          await refreshSuggestions();
         }
         if (activeTab === 'dashboard') {
           const statsRes = await api.get('/stats/dashboard');
@@ -292,7 +303,7 @@ export default function AdminPage() {
           if (auditRes.data?.status === 'success') setAuditLogs(auditRes.data.data.logs || []);
         }
       } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
-        setError(err.response?.data?.message || 'Error connecting to server.');
+        setError(err.response?.data?.message || (activeTab === 'pending' ? 'Unable to load suggestions. Please try again.' : 'Error connecting to server.'));
       }
     };
 
@@ -303,7 +314,7 @@ export default function AdminPage() {
         fetchData();
       }
     }
-  }, [loading, isAuthenticated, sessionUnavailable, user?.role, router, activeTab, usersPage, herbsPage, debouncedLibrarySearch, kbPage, debouncedKbSearch, pendingPage]);
+  }, [loading, isAuthenticated, sessionUnavailable, user?.role, router, activeTab, usersPage, herbsPage, debouncedLibrarySearch, kbPage, debouncedKbSearch, refreshSuggestions]);
 
   const handleApprove = async (id: number) => {
     try {
@@ -323,7 +334,7 @@ export default function AdminPage() {
       if (res.data?.status === 'success') {
         invalidateApiGetCache('/herbs');
         setSuccessMsg(`Herb suggestion approved and added to the library!`);
-        await refreshPendingPage();
+        await refreshSuggestions();
       }
     } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
       setError(err.response?.data?.message || 'Failed to approve suggestion.');
@@ -347,7 +358,7 @@ export default function AdminPage() {
       });
       if (res.data?.status === 'success') {
         setSuccessMsg('Changes requested.');
-        await refreshPendingPage();
+        await refreshSuggestions();
       }
     } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
       setError(err.response?.data?.message || 'Failed to request changes.');
@@ -366,7 +377,7 @@ export default function AdminPage() {
       });
       if (res.data?.status === 'success') {
         setSuccessMsg(`Suggestion has been rejected.`);
-        await refreshPendingPage();
+        await refreshSuggestions();
       }
     } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
       setError(err.response?.data?.message || 'Failed to reject suggestion.');
@@ -669,10 +680,16 @@ export default function AdminPage() {
     );
   }
 
-  const pendingSuggestions = suggestions.filter((s) => s.status === 'Pending');
+  const pendingSuggestions = suggestions.filter((suggestion) => suggestion.status === 'Pending');
   const pendingCount = activeTab === 'pending'
-    ? pendingTotal
+    ? pendingSuggestions.length
     : dashboardStats?.suggestionsByStatus.find((entry) => entry.name === 'Pending')?.value ?? 0;
+  const filteredSuggestions = suggestionFilter === 'All'
+    ? suggestions
+    : suggestions.filter((suggestion) => suggestion.status === suggestionFilter);
+  const suggestionPageCount = Math.max(1, Math.ceil(filteredSuggestions.length / 10));
+  const currentSuggestionsPage = Math.min(suggestionsPage, suggestionPageCount);
+  const visibleSuggestions = filteredSuggestions.slice((currentSuggestionsPage - 1) * 10, currentSuggestionsPage * 10);
 
   // Filter lists
   const filteredHerbs = allHerbs;
@@ -684,7 +701,7 @@ export default function AdminPage() {
       {reviewEditing && <SuggestionReviewEditor suggestion={reviewEditing} onClose={() => setReviewEditing(null)} onSaved={() => {
         setReviewEditing(null);
         setSuccessMsg('Review edits saved.');
-        refreshPendingPage().catch(() => setError('Edits saved. Refresh to load the latest submissions.'));
+        refreshSuggestions().catch(() => setError('Edits saved. Refresh to load the latest submissions.'));
       }} />}
       {/* Sidebar Console */}
       <aside className={`admin-sidebar ${mobileNavOpen ? 'is-open' : ''}`}>
@@ -712,7 +729,7 @@ export default function AdminPage() {
             className={`admin-nav-link flex items-center gap-2.5 ${activeTab === 'pending' ? 'active' : ''}`}
           >
             <Clock className="h-4 w-4 shrink-0" />
-            <span className="flex-1 text-left">Pending Suggestions</span>
+            <span className="flex-1 text-left">Suggestions</span>
             {pendingCount > 0 && (
               <span className="admin-nav-badge">{pendingCount}</span>
             )}
@@ -764,7 +781,7 @@ export default function AdminPage() {
 
       {/* Main Viewport */}
       <div className="admin-main">
-        <main className="admin-content bg-[#f8faf7] p-8">
+        <main className={`admin-content p-8 ${activeTab === 'dashboard' || activeTab === 'pending' ? 'bg-canvas' : 'bg-[#f8faf7]'}`}>
           {error && (
             <div className="mb-6 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-rose-800 font-bold shadow-sm flex items-center gap-2">
               <AlertCircle className="h-5 w-5 text-rose-600 shrink-0" />
@@ -782,57 +799,48 @@ export default function AdminPage() {
           {/* TAB 1: DASHBOARD */}
           {activeTab === 'dashboard' && (
             <div>
-              <h1 className="text-2xl font-black text-[#1b4332] italic mb-6">
+              <h1 className="mb-6 text-2xl font-semibold text-ink">
                 Dashboard Overview
               </h1>
               {/* Stats Row */}
-              <div className="admin-stat-grid grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
-                <div className="admin-stat-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                  <Leaf className="h-6 w-6 text-[#2d6a4f]" />
-                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{dashboardStats?.totalHerbs ?? '—'}</div>
-                  <div className="label text-xs font-bold text-gray-500 uppercase tracking-wider">Total Herbs</div>
-                </div>
-                <div className="admin-stat-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                  <Clock className="h-6 w-6 text-amber-600" />
-                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{dashboardStats?.suggestionsByStatus.find((entry) => entry.name === 'Pending')?.value ?? '—'}</div>
-                  <div className="label text-xs font-bold text-gray-500 uppercase tracking-wider">Pending Review</div>
-                </div>
-                <div className="admin-stat-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                  <ShieldCheck className="h-6 w-6 text-emerald-600" />
-                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{dashboardStats?.suggestionsByStatus.find((entry) => entry.name === 'Approved')?.value ?? '—'}</div>
-                  <div className="label text-xs font-bold text-gray-500 uppercase tracking-wider">Approved Suggestions</div>
-                </div>
-                <div className="admin-stat-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                  <Users className="h-6 w-6 text-[#40916c]" />
-                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{dashboardStats?.totalUsers ?? '—'}</div>
-                  <div className="label text-xs font-bold text-gray-500 uppercase tracking-wider">Total Users</div>
-                </div>
-                <div className="admin-stat-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                  <BookOpen className="h-6 w-6 text-teal-600" />
-                  <div className="value text-3xl font-black text-[#1b4332] mt-2">{dashboardStats?.totalKnowledgeFacts ?? '—'}</div>
-                  <div className="label text-xs font-bold text-gray-500 uppercase tracking-wider">FAQ Facts</div>
-                </div>
+              <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5 lg:gap-4">
+                {[
+                  { label: 'Total Herbs', value: dashboardStats?.totalHerbs, icon: Leaf },
+                  { label: 'Pending Review', value: dashboardStats?.suggestionsByStatus.find((entry) => entry.name === 'Pending')?.value, icon: Clock },
+                  { label: 'Approved Suggestions', value: dashboardStats?.suggestionsByStatus.find((entry) => entry.name === 'Approved')?.value, icon: ShieldCheck },
+                  { label: 'Total Users', value: dashboardStats?.totalUsers, icon: Users },
+                  { label: 'FAQ Facts', value: dashboardStats?.totalKnowledgeFacts, icon: BookOpen },
+                ].map(({ label, value, icon: Icon }) => (
+                  <Card key={label} className="min-w-0">
+                    <CardContent className="flex min-h-36 flex-col justify-between gap-4 pt-5">
+                      <Icon className="size-5 text-accent" aria-hidden="true" />
+                      <div>
+                        <div className="text-3xl font-semibold tabular-nums text-ink">{value ?? '—'}</div>
+                        <div className="mt-1 text-xs font-medium leading-snug text-muted">{label}</div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
 
               {dashboardStats && <AdminDashboardCharts data={dashboardStats} />}
 
 
               {/* Recent Activities */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 {/* Recent Suggestions */}
-                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                  <h2 className="font-black italic text-lg text-[#1b4332] mb-4">
-                    Recent Contribution Requests
-                  </h2>
+                <Card>
+                  <CardHeader><CardTitle className="text-base text-ink">Recent Contribution Requests</CardTitle></CardHeader>
+                  <CardContent className="pt-4">
                   {!dashboardStats?.recentSuggestions.length ? (
-                    <p className="text-sm font-semibold text-gray-500 text-center py-8">No activity registered yet.</p>
+                    <p className="py-8 text-center text-sm text-muted">No activity registered yet.</p>
                   ) : (
                     <div className="space-y-4">
                       {dashboardStats.recentSuggestions.map((s) => (
-                        <div key={s.id} className="flex items-center justify-between border-b border-gray-50 pb-3 last:border-0 last:pb-0">
+                        <div key={s.id} className="flex items-center justify-between gap-3 border-b border-border pb-3 last:border-0 last:pb-0">
                           <div>
-                            <h4 className="font-extrabold text-sm text-[#1b4332]">{s.localName}</h4>
-                            <p className="text-xs italic text-gray-500">{s.scientificName}</p>
+                            <h4 className="text-sm font-semibold text-ink">{s.localName}</h4>
+                            <p className="text-xs italic text-muted">{s.scientificName}</p>
                           </div>
                           <span className={`text-[10px] px-2.5 py-1 rounded-full font-black uppercase tracking-wider border ${
                             s.status === 'Pending' ? 'bg-amber-50 text-amber-700 border-amber-200' :
@@ -845,64 +853,84 @@ export default function AdminPage() {
                       ))}
                     </div>
                   )}
-                </div>
+                  </CardContent>
+                </Card>
 
                 {/* System Activity */}
-                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                  <h2 className="font-black italic text-lg text-[#1b4332] mb-4">
-                    Console Logs & Health
-                  </h2>
-                  <div tabIndex={0} role="region" aria-label="Console logs and health" className="space-y-4 font-mono text-xs text-[#2d6a4f] bg-[#eef5f0] p-4 rounded-xl max-h-[220px] overflow-y-auto">
+                <Card>
+                  <CardHeader><CardTitle className="text-base text-ink">Console Logs & Health</CardTitle></CardHeader>
+                  <CardContent className="pt-4">
+                  <div tabIndex={0} role="region" aria-label="Console logs and health" className="max-h-[220px] space-y-4 overflow-y-auto rounded-lg bg-secondary p-4 font-mono text-xs text-ink">
                     <div>[INFO] {new Date().toISOString()} - Connection to database established successfully.</div>
                     <div>[INFO] {dashboardStats?.totalHerbs ?? '—'} published botanical records.</div>
                     <div>[INFO] {dashboardStats?.totalKnowledgeFacts ?? '—'} RAG FAQ references.</div>
                     <div>[SUCCESS] Session verified for admin client user.</div>
                     <div>[HEALTH] Core API, authentication, database, and admin console checks completed.</div>
                   </div>
-                </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           )}
 
-          {/* TAB 2: PENDING SUGGESTIONS */}
+          {/* TAB 2: SUGGESTIONS */}
           {activeTab === 'pending' && (
-            <div>
-              <h1 className="text-2xl font-black text-[#1b4332] italic mb-6">
-                Pending Contributions
-              </h1>
-              {pendingSuggestions.length === 0 ? (
-                <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-[#2d6a4f]/25 bg-white p-12 text-center">
-                  <span className="text-5xl mb-4">🌿</span>
-                  <h3 className="text-xl font-black text-[#1b4332]">All Cleared!</h3>
-                  <p className="mt-2 text-sm text-gray-500 font-bold max-w-sm">
-                    No contribution suggestions require approval right now. Check back later!
-                  </p>
+            <div aria-busy={suggestionsLoading}>
+              <h1 className="mb-2 text-2xl font-semibold text-ink">Herb Suggestions</h1>
+              <p className="mb-6 text-sm text-muted">Review pending submissions and revisit previous decisions.</p>
+              <div role="group" aria-label="Filter suggestions by status" className="mb-6 flex flex-wrap gap-2">
+                {suggestionFilters.map(({ value, label }) => (
+                  <Button
+                    key={value}
+                    type="button"
+                    size="sm"
+                    variant={suggestionFilter === value ? 'default' : 'outline'}
+                    aria-pressed={suggestionFilter === value}
+                    onClick={() => { setSuggestionFilter(value); setSuggestionsPage(1); }}
+                    className="min-h-10 gap-2 px-3"
+                  >
+                    {label}
+                    <span className="tabular-nums opacity-75">{value === 'All' ? suggestions.length : suggestions.filter((suggestion) => suggestion.status === value).length}</span>
+                  </Button>
+                ))}
+              </div>
+              {!suggestionsLoaded ? (
+                <div role="status" aria-label="Loading suggestions" className="grid gap-3">
+                  {[1, 2].map((item) => <div key={item} className="h-32 animate-pulse rounded-xl bg-secondary motion-reduce:animate-none" />)}
                 </div>
-              ) : (
+              ) : error && suggestions.length === 0 ? null : visibleSuggestions.length === 0 ? (
+                <Card>
+                  <CardContent className="py-10 text-center">
+                    <h2 className="text-lg font-semibold text-ink">No suggestions to show</h2>
+                    <p className="mt-2 text-sm text-muted">{suggestionFilter === 'Pending' ? 'New submissions will appear here for review.' : 'There are no submissions with this status yet.'}</p>
+                  </CardContent>
+                </Card>
+              ) : suggestionFilter === 'Pending' ? (
                 <div className="grid gap-6 md:grid-cols-2">
-                  {pendingSuggestions.map((suggestion) => (
-                    <div
+                  {visibleSuggestions.map((suggestion) => (
+                    <Card
                       key={suggestion.id}
-                      className="flex flex-col rounded-3xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-200"
+                      className="flex flex-col p-5"
                     >
                       {/* Submitter Info & Actions */}
-                      <div className="flex items-start justify-between gap-4 border-b border-gray-100 pb-4 mb-4">
-                        <div>
-                          <span className="inline-block rounded-full bg-[#eef5f0] border border-[#2d6a4f]/20 px-3 py-1 text-xs font-bold text-[#1b4332] mb-2">
+                      <div className="mb-4 flex flex-wrap items-start justify-between gap-4 border-b border-border pb-4">
+                        <div className="min-w-0">
+                          <span className="mb-2 inline-block rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-ink">
                             {suggestion.category}
                           </span>
-                          <h2 className="text-2xl font-black text-[#1b4332]">
+                          <CardTitle className="text-xl text-ink">
                             {suggestion.localName}
-                          </h2>
-                          <p className="text-xs italic text-[#40916c] font-extrabold mt-0.5">
+                          </CardTitle>
+                          <p className="mt-0.5 text-sm italic text-muted">
                             {suggestion.scientificName} {suggestion.cebuanoName ? `(${suggestion.cebuanoName})` : ''}
                           </p>
                         </div>
+                        <SuggestionStatusBadge status={suggestion.status} />
                         {suggestion.imageUrl && (
                           <img
                             src={suggestion.imageUrl}
                             alt={suggestion.localName}
-                            className="h-16 w-16 rounded-xl object-cover border border-gray-100 shadow-sm"
+                            className="h-16 w-16 rounded-lg border border-border object-cover"
                           />
                         )}
                       </div>
@@ -911,40 +939,40 @@ export default function AdminPage() {
                       <div className="mb-4 space-y-2 text-sm text-ink">
                         <p><strong>Contributor source: </strong>{suggestion.informationSource || 'Not provided'}</p>
                         <h3 className="font-bold">Reviewed references ({suggestion.references?.length || 0})</h3>
-                        {suggestion.references?.map((source, index) => <div key={index} className="rounded-lg border border-line p-3">
+                        {suggestion.references?.map((source, index) => <div key={index} className="rounded-lg border border-border p-3">
                           {source.url ? <a href={source.url} target="_blank" rel="noopener noreferrer" className="underline">{source.title}</a> : <span>{source.title}</span>}
                           <p>{source.publisher} {source.publishedAt}</p><p>{source.citation}</p>
                           <p>Supports: {source.supports.map((claim) => ({ identity: 'Identity', medicinalUses: 'Uses', preparationMethod: 'Preparation', dosage: 'Dosage', warnings: 'Safety', isDohApproved: 'Official listing' })[claim] || claim).join(', ')}</p>
                         </div>)}
                         {suggestion.reviewNotes && <p className="whitespace-pre-wrap">Reviewer notes: {suggestion.reviewNotes}</p>}
-                        <button type="button" disabled={actioningId !== null} className="flat-button flat-button-secondary" onClick={() => setReviewEditing(suggestion)}>Edit & references</button>
+                        <Button type="button" size="sm" variant="outline" disabled={actioningId !== null} onClick={() => setReviewEditing(suggestion)}>Edit & references</Button>
                       </div>
-                      <div className="flex-1 space-y-4 text-sm font-semibold text-[#1b4332]">
+                      <div className="flex-1 space-y-4 text-sm text-ink">
                         <div>
-                          <h4 className="text-[10px] font-extrabold tracking-wider uppercase text-gray-400">Medicinal Uses</h4>
-                          <p className="mt-1 text-xs">{suggestion.medicinalUses}</p>
+                          <h4 className="text-xs font-semibold text-muted">Medicinal Uses</h4>
+                          <p className="mt-1 text-sm">{suggestion.medicinalUses}</p>
                         </div>
                         <div>
-                          <h4 className="text-[10px] font-extrabold tracking-wider uppercase text-gray-400">Preparation</h4>
-                          <p className="mt-1 text-xs">{suggestion.preparationMethod}</p>
+                          <h4 className="text-xs font-semibold text-muted">Preparation</h4>
+                          <p className="mt-1 text-sm">{suggestion.preparationMethod}</p>
                         </div>
                         <div>
-                          <h4 className="text-[10px] font-extrabold tracking-wider uppercase text-gray-400">Dosage</h4>
-                          <p className="mt-1 text-xs">{suggestion.dosage}</p>
+                          <h4 className="text-xs font-semibold text-muted">Dosage</h4>
+                          <p className="mt-1 text-sm">{suggestion.dosage}</p>
                         </div>
                         {suggestion.warnings && (
-                          <div className="rounded-xl border border-amber-200 bg-amber-50/55 p-3 text-xs text-amber-800">
-                            <span className="font-extrabold block text-amber-900 mb-1 uppercase tracking-wider text-[9px]">⚠️ Warning Alert:</span>
+                          <div className="rounded-lg border border-warning-ink/25 bg-warning-surface p-3 text-sm text-warning-ink">
+                            <span className="mb-1 flex items-center gap-1.5 font-semibold"><AlertCircle className="size-4" aria-hidden="true" /> Safety warning</span>
                             {suggestion.warnings}
                           </div>
                         )}
-                        <div className="grid gap-3 border-t border-gray-100 pt-4">
-                          <label className="grid gap-1 text-xs font-extrabold text-[#1b4332]">
+                        <div className="grid gap-3 border-t border-border pt-4">
+                          <label className="grid gap-1 text-sm font-medium text-ink">
                             Evidence classification
                             <select
                               value={evidenceClassById[suggestion.id] || ''}
                               onChange={(event) => setEvidenceClassById((current) => ({ ...current, [suggestion.id]: event.target.value }))}
-                              className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold"
+                              className="min-h-11 rounded-lg border border-input bg-card px-3 py-2 text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                             >
                               <option value="">Select before approval</option>
                               <option value="DOH_PITAHC_LISTED">DOH/PITAHC listed</option>
@@ -952,7 +980,7 @@ export default function AdminPage() {
                               <option value="DOCUMENTED_TRADITIONAL_USE">Documented traditional use</option>
                             </select>
                           </label>
-                          <label className="grid gap-1 text-xs font-extrabold text-[#1b4332]">
+                          <label className="grid gap-1 text-sm font-medium text-ink">
                             Reviewer notes
                             <textarea
                               value={reviewNotesById[suggestion.id] || ''}
@@ -960,51 +988,91 @@ export default function AdminPage() {
                               rows={3}
                               maxLength={2000}
                               placeholder="Record the decision or explain required changes."
-                              className="resize-y rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold"
+                              className="resize-y rounded-lg border border-input bg-card px-3 py-2 text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                             />
                           </label>
                         </div>
                       </div>
 
                       {/* Action buttons */}
-                      <div className="mt-6 grid grid-cols-1 gap-3 border-t border-gray-50 pt-4 sm:grid-cols-3">
-                        <button
+                      <div className="mt-6 grid grid-cols-1 gap-3 border-t border-border pt-4 sm:grid-cols-3">
+                        <Button
+                          type="button"
                           onClick={() => handleApprove(suggestion.id)}
                           disabled={actioningId !== null}
-                          className="flex-1 flat-button flat-button-primary !py-2 text-xs"
+                          className="w-full text-xs"
                         >
                           {actioningId === suggestion.id ? (
                             <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white border-t-transparent inline-block"></span>
                           ) : (
                             'Approve & Publish'
                           )}
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
                           onClick={() => handleRequestChanges(suggestion.id)}
                           disabled={actioningId !== null}
-                          className="flat-button flat-button-secondary !py-2 text-xs !border-amber-600 !text-amber-700 hover:!bg-amber-50"
+                          className="w-full border-warning-ink text-xs text-warning-ink hover:bg-warning-surface"
                         >
                           Request Changes
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
                           onClick={() => handleReject(suggestion.id)}
                           disabled={actioningId !== null}
-                          className="flex-1 flat-button flat-button-secondary !py-2 text-xs !border-rose-600 !text-rose-600 hover:!bg-rose-50"
+                          className="w-full border-error-ink text-xs text-error-ink hover:bg-error-surface"
                         >
                           Reject
-                        </button>
+                        </Button>
                       </div>
-                    </div>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid gap-3">
+                  {visibleSuggestions.map((suggestion) => (
+                    <Card key={suggestion.id}>
+                      <CardContent className="pt-5">
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <CardTitle className="text-base text-ink">{suggestion.localName}</CardTitle>
+                            <p className="text-sm italic text-muted">{suggestion.scientificName}</p>
+                          </div>
+                          <SuggestionStatusBadge status={suggestion.status} />
+                        </div>
+                        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
+                          <span>{suggestion.category}</span>
+                          <span>Submitted {new Date(suggestion.submittedAt).toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                          {suggestion.reviewedAt && <span>Reviewed {new Date(suggestion.reviewedAt).toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' })}</span>}
+                        </div>
+                        {suggestion.reviewNotes && (
+                          <p className="mt-4 whitespace-pre-wrap rounded-lg bg-secondary p-3 text-sm text-ink"><strong className="mr-1">Reviewer notes:</strong>{suggestion.reviewNotes}</p>
+                        )}
+                        <details className="mt-4 border-t border-border pt-3 text-sm text-ink">
+                          <summary className="cursor-pointer font-medium text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">View submission details</summary>
+                          <div className="mt-3 grid gap-2 text-muted">
+                            <p><strong className="text-ink">Medicinal uses:</strong> {suggestion.medicinalUses}</p>
+                            <p><strong className="text-ink">Preparation:</strong> {suggestion.preparationMethod}</p>
+                            <p><strong className="text-ink">Dosage:</strong> {suggestion.dosage}</p>
+                            {suggestion.informationSource && <p><strong className="text-ink">Source:</strong> {suggestion.informationSource}</p>}
+                          </div>
+                        </details>
+                      </CardContent>
+                    </Card>
                   ))}
                 </div>
               )}
-              <div className="mt-6 flex items-center justify-between text-sm text-[#1b4332]">
-                <span>Page {pendingPage} of {Math.max(1, Math.ceil(pendingTotal / 10))} · {pendingTotal} pending</span>
-                <div className="flex gap-2">
-                  <button type="button" disabled={pendingPage === 1} onClick={() => setPendingPage((page) => page - 1)} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Previous</button>
-                  <button type="button" disabled={pendingPage * 10 >= pendingTotal} onClick={() => setPendingPage((page) => page + 1)} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Next</button>
+              {suggestionsLoaded && filteredSuggestions.length > 10 && (
+                <div className="mt-6 flex flex-wrap items-center justify-between gap-3 text-sm text-muted">
+                  <span>Page {currentSuggestionsPage} of {suggestionPageCount} · {filteredSuggestions.length} suggestions</span>
+                  <div className="flex gap-2">
+                    <Button type="button" size="sm" variant="outline" disabled={currentSuggestionsPage === 1} onClick={() => setSuggestionsPage(currentSuggestionsPage - 1)}>Previous</Button>
+                    <Button type="button" size="sm" variant="outline" disabled={currentSuggestionsPage === suggestionPageCount} onClick={() => setSuggestionsPage(currentSuggestionsPage + 1)}>Next</Button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           )}
 

@@ -20,7 +20,7 @@ const escapeHtml = (str: string): string =>
 const googleClient = new OAuth2Client(
   ENV.GOOGLE_CLIENT_ID,
   ENV.GOOGLE_CLIENT_SECRET,
-  `${ENV.BACKEND_URL}/api/auth/google/callback`
+  ENV.GOOGLE_REDIRECT_URI
 );
 
 interface SignupData {

@@ -225,8 +225,62 @@ export class AuthController {
       const result = await authService.googleLogin(code);
       const nonce = randomBytes(16).toString('base64');
       res.setHeader('Cache-Control', 'no-store');
-      res.setHeader('Content-Security-Policy', `default-src 'none'; script-src 'nonce-${nonce}'; form-action ${ENV.FRONTEND_URL}; base-uri 'none'`);
-      res.type('html').send(`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Completing sign in</title></head><body><form method="post" action="${ENV.FRONTEND_URL}/api/auth/google/complete"><input type="hidden" name="refreshToken" value="${result.refreshToken}"><button type="submit">Continue to Herbal-Ai</button></form><script nonce="${nonce}">document.forms[0].submit()</script></body></html>`);
+      res.setHeader('Content-Security-Policy', `default-src 'none'; script-src 'nonce-${nonce}'; style-src 'nonce-${nonce}'; form-action ${ENV.FRONTEND_URL}; base-uri 'none'`);
+      res.type('html').send(`<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Completing sign in</title>
+  <style nonce="${nonce}">
+    body { min-height: 100vh; margin: 0; display: grid; place-items: center; background: #f7f8f4; color: #1e2922; font: 16px system-ui, sans-serif; }
+    main { max-width: 28rem; padding: 2rem; text-align: center; visibility: hidden; }
+    main.is-visible { visibility: visible; }
+    .avatar { width: 4.5rem; height: 4.5rem; margin: 0 auto 1.25rem; color: #286344; animation: breathe 1.8s ease-in-out infinite; }
+    .avatar svg { display: block; width: 100%; height: 100%; }
+    h1 { margin: 0 0 .5rem; font-size: 1.25rem; }
+    p { margin: 0 0 1.5rem; color: #526157; line-height: 1.5; }
+    button { min-height: 44px; padding: .65rem 1rem; border: 0; border-radius: .75rem; background: #286344; color: #fff; font: inherit; cursor: pointer; }
+    button[hidden] { display: none; }
+    @keyframes breathe { 50% { opacity: .7; transform: scale(.96); } }
+    @media (prefers-reduced-motion: reduce) { .avatar { animation: none; } }
+  </style>
+  <noscript><style nonce="${nonce}">main { visibility: visible; }</style></noscript>
+</head>
+<body>
+  <main>
+    <div class="avatar" aria-hidden="true">
+      <svg viewBox="0 0 64 64" fill="none" focusable="false">
+        <circle cx="32" cy="32" r="30" fill="currentColor" opacity="0.12" />
+        <path d="M32 8C43 17 44 32 32 43C20 32 21 17 32 8Z" fill="currentColor" />
+        <path d="M32 16V46" stroke="#f7f8f4" stroke-width="2.5" stroke-linecap="round" />
+        <path d="M20 48C25 43 29 42 32 46C35 42 39 43 44 48" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+        <circle cx="27" cy="28" r="4.5" fill="#f7f8f4" stroke="#b4e858" stroke-width="2" />
+        <circle cx="37" cy="28" r="4.5" fill="#f7f8f4" stroke="#b4e858" stroke-width="2" />
+        <path d="M31.5 28H32.5M23 27L20 25M41 27L44 25" stroke="#b4e858" stroke-width="2" stroke-linecap="round" />
+        <circle cx="27" cy="28" r="1.25" fill="currentColor" />
+        <circle cx="37" cy="28" r="1.25" fill="currentColor" />
+        <path d="M28 35C30.5 37 33.5 37 36 35" stroke="#f7f8f4" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </div>
+    <h1>Completing Google sign-in</h1>
+    <p id="status" role="status">Taking you back to Herbal Ai.</p>
+    <form method="post" action="${ENV.FRONTEND_URL}/api/auth/google/complete">
+      <input type="hidden" name="refreshToken" value="${result.refreshToken}">
+      <button id="manual-continue" type="submit" hidden>Continue to Herbal Ai</button>
+      <noscript><button type="submit">Continue to Herbal Ai</button></noscript>
+    </form>
+  </main>
+  <script nonce="${nonce}">
+    window.setTimeout(() => {
+      document.getElementById('status').textContent = 'This is taking longer than expected. You can continue manually.';
+      document.getElementById('manual-continue').hidden = false;
+      document.querySelector('main').classList.add('is-visible');
+    }, 8000);
+    document.forms[0].submit();
+  </script>
+</body>
+</html>`);
     } catch (error) {
       next(error);
     }

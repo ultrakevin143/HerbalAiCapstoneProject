@@ -8,7 +8,7 @@ import NotificationBell from './NotificationBell';
 import ProfileEditorModal from './ProfileEditorModal';
 import DisplayPreferences from './DisplayPreferences';
 import BrandMark from './BrandMark';
-import { LogOut, Menu, Shield, Sprout, UserRound, X } from 'lucide-react';
+import { ChevronDown, LogOut, Menu, Pencil, Shield, Sprout, UserRound, X } from 'lucide-react';
 import { PwaInstallButton } from './PwaInstall';
 import { Button } from './ui/button';
 
@@ -120,7 +120,7 @@ export default function Navbar() {
                     onClick={() => setIsUserMenuOpen((prev) => !prev)}
                     aria-label="User account menu"
                     aria-expanded={isUserMenuOpen}
-                    className="flex items-center gap-2 rounded-full pl-1.5 pr-3 py-1.5 text-xs font-extrabold border border-black/10 dark:border-line bg-white/80 dark:bg-panel shadow-xs hover:bg-[#eef5f0] dark:hover:bg-soft transition-all cursor-pointer shrink-0 whitespace-nowrap"
+                    className="flex items-center gap-2 rounded-full pl-1.5 pr-3 py-1.5 text-xs font-extrabold border border-border bg-popover text-popover-foreground shadow-xs hover:bg-secondary transition-colors cursor-pointer shrink-0 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     {user?.avatar?.startsWith('http') ? (
                       <img src={user.avatar} alt="Avatar" className="h-6 w-6 rounded-full object-cover shadow-xs" />
@@ -132,13 +132,11 @@ export default function Navbar() {
                     <span className="text-[#1b4332] dark:text-ink max-w-[120px] truncate">
                       {user?.name}
                     </span>
-                    <span className="text-[10px] text-gray-500 dark:text-muted transition-transform duration-200">
-                      {isUserMenuOpen ? '▲' : '▼'}
-                    </span>
+                    <ChevronDown className={`size-4 text-muted transition-transform duration-150 ${isUserMenuOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
                   </button>
 
                   {isUserMenuOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl border border-black/10 dark:border-line bg-white/95 dark:bg-panel/95 backdrop-blur-xl shadow-xl p-3 space-y-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="absolute right-0 top-full z-50 mt-2 w-64 space-y-2 rounded-xl border border-border bg-popover p-2 text-popover-foreground shadow-lg">
                       {/* User Info Header */}
                       <div className="px-3 py-2 border-b border-black/5 dark:border-line flex items-center gap-3">
                         {user?.avatar?.startsWith('http') ? (
@@ -160,9 +158,9 @@ export default function Navbar() {
                           <Link
                             href="/admin"
                             onClick={() => setIsUserMenuOpen(false)}
-                            className="flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-xs font-bold text-[#1b4332] dark:text-ink hover:bg-[#eef5f0] dark:hover:bg-soft transition-colors"
+                            className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                           >
-                            <span className="text-sm">🛡️</span>
+                            <Shield className="size-4 shrink-0 text-muted" aria-hidden="true" />
                             <span>Admin Panel</span>
                           </Link>
                         )}
@@ -173,9 +171,9 @@ export default function Navbar() {
                             setIsUserMenuOpen(false);
                             setIsProfileEditorOpen(true);
                           }}
-                          className="flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-xs font-bold text-[#1b4332] dark:text-ink hover:bg-[#eef5f0] dark:hover:bg-soft transition-colors text-left cursor-pointer"
+                          className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-left text-sm font-medium text-foreground transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
                         >
-                          <span className="text-sm">✏️</span>
+                          <Pencil className="size-4 shrink-0 text-muted" aria-hidden="true" />
                           <span>Edit Profile</span>
                         </button>
 
@@ -192,9 +190,9 @@ export default function Navbar() {
                             setIsUserMenuOpen(false);
                             handleLogout();
                           }}
-                          className="flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors text-left cursor-pointer"
+                          className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-left text-sm font-medium text-destructive transition-colors hover:bg-error-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
                         >
-                          <span className="text-sm">🚪</span>
+                          <LogOut className="size-4 shrink-0" aria-hidden="true" />
                           <span>Log Out</span>
                         </button>
                       </div>

@@ -28,7 +28,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Herbal-Ai — Philippine Medicinal Plants Repository",
+  title: "Herbal Ai",
   description: "Explore documented Philippine medicinal plants and ask Dr. Ai for educational, source-grounded preparation and safety information.",
   keywords: ["Philippine medicinal plants", "herbal medicine", "traditional plant knowledge", "PITAHC", "DOH medicinal plants", "Dr. Ai"],
   authors: [{ name: "Herbal-Ai Team" }],

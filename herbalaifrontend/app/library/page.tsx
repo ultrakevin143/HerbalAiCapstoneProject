@@ -190,8 +190,8 @@ function LibraryContent() {
               onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
               className="search-input h-12 pl-11"
             />
-            <span className="absolute left-4 text-muted pointer-events-none">
-              <Search className="h-4 w-4" />
+            <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-muted">
+              <Search className="h-4 w-4" aria-hidden="true" />
             </span>
           </div>
 

@@ -36,6 +36,7 @@ export const ENV = {
   DR_AI_MODEL_COOLDOWN_MS: boundedInteger('DR_AI_MODEL_COOLDOWN_MS', 60_000, 0, 300_000),
   GOOGLE_CLIENT_ID: process.env['GOOGLE_CLIENT_ID'] || '',
   GOOGLE_CLIENT_SECRET: process.env['GOOGLE_CLIENT_SECRET'] || '',
+  GOOGLE_REDIRECT_URI: process.env['GOOGLE_REDIRECT_URI'] || `${process.env['BACKEND_URL'] || 'http://localhost:5000'}/api/auth/google/callback`,
   CLOUDINARY_CLOUD_NAME: process.env['CLOUDINARY_CLOUD_NAME'] || '',
   CLOUDINARY_API_KEY: process.env['CLOUDINARY_API_KEY'] || '',
   CLOUDINARY_API_SECRET: process.env['CLOUDINARY_API_SECRET'] || '',
