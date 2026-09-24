@@ -187,7 +187,7 @@ export default function SignUpPage() {
             <button
               type="submit"
               disabled={loading}
-              className="btn border-[#2d6a4f] bg-[#2d6a4f] text-white font-semibold text-sm px-8 py-3 rounded-full shadow-sm hover:bg-[#1b4332] transition-colors w-full cursor-pointer disabled:opacity-50"
+              className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-semibold text-sm px-8 py-3 rounded-full shadow-sm hover:brightness-105 transition-all w-full cursor-pointer disabled:opacity-50"
             >
               {loading ? 'Creating Account...' : 'Create Account'}
             </button>

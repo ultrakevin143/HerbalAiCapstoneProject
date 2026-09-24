@@ -41,10 +41,12 @@ export default function AccessibleDialog({ label, onClose, children }: { label: 
         first?.focus();
       }
     }}>
-      <button type="button" onClick={onClose} aria-label={`Close ${label}`} className="dialog-close-button flex h-11 w-11 items-center justify-center rounded-full border border-line bg-panel text-ink shadow-sm transition-colors hover:bg-soft">
-        <X className="h-5 w-5" />
-      </button>
-      <div className="dialog-content">{children}</div>
+      <div className="sticky top-0 z-10 mb-2 flex justify-end bg-panel">
+        <button type="button" onClick={onClose} aria-label={`Close ${label}`} className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-panel text-ink shadow-sm transition-colors hover:bg-soft">
+          <X className="h-5 w-5" />
+        </button>
+      </div>
+      {children}
     </dialog>
   );
 }

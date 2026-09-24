@@ -310,18 +310,18 @@ function ChatContent() {
   }
 
   return (
-    <div className="chat-page operational-page font-sans">
+    <div className="min-h-screen flex flex-col bg-transparent font-sans">
       <Navbar />
 
-      <main className="chat-main">
+      <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Left column: Bot Profile & Instructions */}
-        <aside className="hidden w-64 min-w-0 shrink-0 space-y-4 xl:block">
+        <aside className="order-2 md:order-1 md:col-span-1 min-w-0 space-y-6">
           <div className="glass-card bg-white/50 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-6 shadow-sm flex flex-col items-center text-center">
             <DrAiAvatar className="h-16 w-16 mb-4 text-[#1b4332] dark:text-[#e6f1e7]" />
-            <h1 className="text-lg font-extrabold text-[#1b4332] dark:text-ink">Dr. Ai Assistant</h1>
-            <p className="text-xs text-[#2d6a4f] dark:text-[#74c69d] font-bold mt-1">AI-assisted reference</p>
+            <h1 className="text-lg font-extrabold text-[#1b4332] dark:text-ink">Dr. AI Assistant</h1>
+            <p className="text-xs text-[#2d6a4f] dark:text-[#74c69d] font-bold mt-1">● Online &amp; Verified</p>
             <p className="text-xs text-gray-500 dark:text-muted mt-3 leading-relaxed">
-              Uses the herbal library and linked reference material to answer questions. Always check the cited sources.
+              Equipped with RAG technology to retrieve direct botanical records and FAQ resources from our secure databases.
             </p>
           </div>
 
@@ -348,12 +348,12 @@ function ChatContent() {
         </aside>
 
         {/* Right column: Active Chat Box */}
-        <section className="chat-panel glass-card bg-white/55 dark:bg-panel/85 backdrop-blur-md border border-black/10 dark:border-line shadow-sm">
+        <section className="order-1 md:order-2 min-w-0 md:col-span-3 flex flex-col glass-card bg-white/55 dark:bg-panel/85 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl overflow-hidden shadow-sm h-[calc(100dvh-8rem)] min-h-[450px] md:h-[650px]">
           {/* Header */}
           <header className="px-5 py-4 border-b border-black/10 dark:border-line flex items-center justify-between gap-2 bg-white/70 dark:bg-panel/90 shrink-0">
             <div>
-              <h2 className="font-extrabold text-[#1b4332] dark:text-ink text-base">Ask Dr. Ai</h2>
-              <p className="text-xs text-gray-600 dark:text-muted">Ask about a plant, preparation method, or safety note</p>
+              <h2 className="font-extrabold text-[#1b4332] dark:text-ink text-base">Consultation Session</h2>
+              <p className="text-xs text-gray-600 dark:text-muted">Ask about plants, symptoms, or home preparation guidelines</p>
             </div>
             <button
               onClick={() => {
@@ -374,7 +374,7 @@ function ChatContent() {
           </header>
 
           {/* Message List Area */}
-          <div ref={messageListRef} aria-label="Conversation messages" role="log" aria-live="polite" className="chat-messages p-4 md:p-5 space-y-4 bg-transparent">
+          <div ref={messageListRef} aria-label="Conversation messages" className="flex-1 overflow-y-auto p-6 space-y-4 bg-transparent">
             {/* Quick Prompts */}
             <div className="flex items-center flex-wrap gap-2 pb-2">
               <span className="text-[10px] font-bold text-gray-500 dark:text-muted uppercase tracking-wider mr-1">
@@ -407,7 +407,7 @@ function ChatContent() {
                       className={`p-4 rounded-3xl ${
                         isBot
                           ? 'bg-white dark:bg-soft border border-gray-200/80 dark:border-line rounded-tl-sm text-[#1b4332] dark:text-ink shadow-sm'
-                          : 'bg-[#2d6a4f] text-white rounded-tr-sm shadow-sm'
+                          : 'bg-gradient-to-br from-[#40916c] to-[#52b788] text-white rounded-tr-sm shadow-sm'
                       }`}
                     >
                       {isBot ? (
@@ -434,7 +434,7 @@ function ChatContent() {
                                 onClick={() => router.push(`/library?id=${matchedId}`)}
                                 className="inline-flex items-center gap-1 text-[10px] font-extrabold text-[#2d6a4f] dark:text-[#74c69d] bg-[#eef5f0] dark:bg-soft border border-[#2d6a4f]/25 dark:border-line px-2.5 py-0.5 rounded-full hover:bg-[#2d6a4f] hover:text-white transition-all cursor-pointer"
                               >
-                              {src.title}
+                                🌿 {src.title}
                               </button>
                             );
                           }
@@ -444,7 +444,7 @@ function ChatContent() {
                               key={sIdx}
                               className="inline-flex items-center gap-1 text-[10px] font-bold text-gray-600 dark:text-muted bg-gray-100 dark:bg-soft border border-gray-200 dark:border-line px-2 py-0.5 rounded-full"
                             >
-                              <BookOpen className="h-3 w-3" aria-hidden="true" /> {src.title}
+                              📖 {src.title}
                             </span>
                           );
                         })}
@@ -470,14 +470,14 @@ function ChatContent() {
                 <DrAiAvatar animated className="h-8 w-8 shrink-0 text-[#1b4332] dark:text-[#e6f1e7]" />
                 <div className="p-3.5 rounded-2xl bg-white dark:bg-soft border border-gray-200/80 dark:border-line text-xs font-semibold text-[#2d6a4f] dark:text-[#74c69d] flex items-center gap-2 shadow-sm">
                   <div className="h-2 w-2 rounded-full bg-[#40916c] animate-ping" />
-                  <span>Dr. Ai is checking source-linked herbal records...</span>
+                  <span>Dr. AI is researching verified herbal records...</span>
                 </div>
               </div>
             )}
           </div>
 
           {/* Input Area */}
-          <div className="chat-composer border-t border-black/10 dark:border-line bg-white/70 dark:bg-panel/90">
+          <div className="p-4 border-t border-black/10 dark:border-line bg-white/70 dark:bg-panel/90 shrink-0">
             {chatError && (
               <div role="alert" className="mb-3 p-3 rounded-xl border border-rose-200 bg-rose-50 text-rose-800 text-xs font-semibold flex items-center gap-2">
                 <ShieldAlert className="h-4 w-4 shrink-0 text-rose-600" />
@@ -487,20 +487,17 @@ function ChatContent() {
 
             <form onSubmit={handleSubmit} className="flex gap-2">
               <input
-                id="chat-question"
                 type="text"
-                maxLength={1000}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask Dr. Ai about a plant, preparation, or safety warning..."
+                placeholder="Ask Dr. AI about Philippine medicinal plants, dosages, or warnings..."
                 disabled={isSending}
                 className="flex-1 bg-white dark:bg-soft border border-black/10 dark:border-line rounded-full px-5 py-3 text-sm text-[#1b4332] dark:text-ink placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#40916c]"
-                aria-label="Type message"
               />
               <button
                 type="submit"
                 disabled={isSending || !input.trim()}
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#2d6a4f] text-white shadow-sm transition-colors hover:bg-[#1b4332] disabled:cursor-not-allowed disabled:opacity-50"
+                className="h-11 w-11 rounded-full bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white flex items-center justify-center cursor-pointer hover:brightness-105 disabled:opacity-50 shadow-sm transition-all shrink-0"
                 aria-label="Send message"
               >
                 <Send className="h-4 w-4" />
@@ -523,7 +520,7 @@ export default function ChatPage() {
       fallback={
         <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[#f0f7f2] dark:bg-canvas">
           <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#2d6a4f] border-t-transparent"></div>
-          <p className="text-[#2d6a4f] font-extrabold animate-pulse font-sans">Loading Dr. Ai...</p>
+          <p className="text-[#2d6a4f] font-extrabold animate-pulse font-sans">Loading Dr. AI...</p>
         </div>
       }
     >

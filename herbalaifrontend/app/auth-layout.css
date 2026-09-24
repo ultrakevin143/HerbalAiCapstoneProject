@@ -91,11 +91,6 @@
 }
 .auth-theme-toggle:hover { border-color: var(--ui-line-strong); background: var(--ui-soft); }
 
-:root[data-theme="dark"] .auth-brand-panel { background: #294638; }
-:root[data-theme="dark"] :is(.auth-brand-mark, .auth-brand-kicker, .auth-brand-watermark) { color: var(--ui-accent); }
-:root[data-theme="dark"] .auth-brand-rule span { border-color: var(--ui-accent); }
-:root[data-theme="dark"] .auth-brand-points li::before { border-color: var(--ui-accent); }
-
 @media (min-width: 768px) and (max-width: 1023px) {
   .auth-shell {
     height: 100svh;

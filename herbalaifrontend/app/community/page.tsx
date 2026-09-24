@@ -133,14 +133,17 @@ export default function CommunityPage() {
   };
 
   return (
-    <div className="operational-page community-page min-h-screen flex flex-col font-sans text-ink">
+    <div className="min-h-screen flex flex-col bg-transparent font-sans text-ink">
       <Navbar />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-10">
         {/* Header Block */}
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-sans font-bold text-[#1b4332] dark:text-ink tracking-tight sm:text-4xl">
+            <span className="inline-flex items-center gap-2 rounded-full border border-green-200 dark:border-line bg-green-50 dark:bg-soft px-4 py-1.5 text-xs font-black text-green-700 dark:text-green-300 shadow-sm uppercase tracking-wider mb-3">
+              👥 Observation &amp; Community Board
+            </span>
+            <h1 className="text-4xl font-serif-custom font-black italic text-[#1b4332] dark:text-ink tracking-tight">
               Traditional Medicine Forum
             </h1>
             <p className="text-[#2d6a4f] dark:text-muted text-sm font-bold mt-1 max-w-xl">
@@ -152,9 +155,9 @@ export default function CommunityPage() {
             {isAuthenticated ? (
               <Link
                 href="/community/new"
-                className="btn inline-flex items-center gap-2 rounded-xl border-[#2d6a4f] bg-[#2d6a4f] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#1b4332]"
+                className="btn btn-gradient bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white font-semibold text-sm px-6 py-3 rounded-full shadow-sm hover:brightness-105 transition-all inline-flex items-center gap-2"
               >
-                <span>Start discussion</span>
+                <span>➕ Start Discussion</span>
               </Link>
             ) : (
               <Link
@@ -170,21 +173,21 @@ export default function CommunityPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
           {/* Left Column Sidebar: Categories */}
           <aside className="lg:col-span-1 space-y-4">
-            <div className="rounded-2xl border border-line bg-panel p-3 shadow-sm lg:p-5">
-              <h2 className="hidden text-sm font-black text-[#1b4332] dark:text-ink uppercase tracking-wider border-b border-gray-100 dark:border-line pb-3 mb-4 lg:block">
+            <div className="glass-card bg-white/50 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-5 shadow-sm">
+              <h2 className="text-sm font-black text-[#1b4332] dark:text-ink uppercase tracking-wider border-b border-gray-100 dark:border-line pb-3 mb-4">
                 Categories
               </h2>
-              <div className="category-rail flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:gap-1.5 lg:overflow-visible lg:pb-0">
+              <div className="flex flex-col gap-1.5">
                 {categories.map((cat) => {
                   const isActive = activeCategory === cat.id;
                   return (
                     <button
                       key={cat.id}
                       onClick={() => setActiveCategory(cat.id as any)} // eslint-disable-line @typescript-eslint/no-explicit-any
-                      className={`flex shrink-0 items-center gap-2 rounded-xl border px-3 py-2.5 text-left text-sm font-bold transition-colors lg:w-full lg:px-4 lg:py-3 ${
+                      className={`flex items-center gap-3 w-full text-left px-4 py-3 rounded-2xl text-sm font-extrabold border-2 border-transparent transition-all cursor-pointer ${
                         isActive
                           ? 'bg-[#eef5f0] dark:bg-soft text-[#1b4332] dark:text-ink border-[#2d6a4f]'
-                          : 'border-line text-[#2d6a4f] dark:text-muted hover:bg-[#eef5f0] dark:hover:bg-soft hover:text-[#1b4332]'
+                          : 'text-[#2d6a4f] dark:text-muted hover:bg-[#eef5f0] dark:hover:bg-soft hover:text-[#1b4332]'
                       }`}
                     >
                       <span className="text-base">{cat.icon}</span>
@@ -196,15 +199,7 @@ export default function CommunityPage() {
             </div>
 
             {/* Guideline Banner */}
-            <details className="rounded-2xl border border-line bg-panel p-4 text-sm text-muted lg:hidden">
-              <summary className="cursor-pointer font-bold text-ink">Community safety guidelines</summary>
-              <ul className="mt-3 list-disc space-y-2 pl-5">
-                <li>Respect traditional herbal heritage practices.</li>
-                <li>Share observations rather than prescriptions.</li>
-                <li>Cite DOH or PITAHC publications where possible.</li>
-              </ul>
-            </details>
-            <div className="hidden rounded-2xl border border-line bg-panel p-5 text-xs font-semibold text-muted shadow-sm space-y-3 lg:block">
+            <div className="glass-card bg-white/45 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-5 shadow-sm text-xs font-semibold text-[#2d6a4f] dark:text-muted space-y-3">
               <p className="font-black text-[#1b4332] dark:text-ink text-sm flex items-center gap-1.5">
                 🛡️ Platform Guidelines
               </p>
@@ -357,9 +352,9 @@ export default function CommunityPage() {
       {/* Floating Action Button */}
       <Link
         href="/chat"
-        className="fixed bottom-5 right-5 z-50 inline-flex items-center gap-2 rounded-full bg-[#2d6a4f] px-5 py-3 text-xs font-bold text-white shadow-lg transition-colors hover:bg-[#1b4332]"
+        className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 bg-gradient-to-r from-[#40916c] to-[#74c69d] text-white px-5 py-3 rounded-full shadow-lg hover:brightness-105 transition-all text-xs font-bold"
       >
-        <span>Ask Dr. Ai</span>
+        <span>🤖 Ask Dr. Ai</span>
       </Link>
 
       <UserProfileModal 
