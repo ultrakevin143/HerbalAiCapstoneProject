@@ -137,7 +137,7 @@ export default function NewThreadPage() {
         )}
 
         {/* Discussion Editor Form */}
-        <form onSubmit={handleSubmit} className="glass-card bg-white/55 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-6 lg:p-8 shadow-sm space-y-6">
+        <form onSubmit={handleSubmit} className="glass-card bg-white/55 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-4 sm:p-6 lg:p-8 shadow-sm space-y-6">
           <div>
             <label className="block text-sm font-extrabold text-[#1b4332] dark:text-ink mb-2" htmlFor="title">
               Discussion Title <span className="text-rose-600">*</span>

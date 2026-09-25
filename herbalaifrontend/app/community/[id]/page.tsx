@@ -346,7 +346,7 @@ export default function ThreadDetailPage({
     <div className="min-h-screen flex flex-col bg-transparent font-sans text-ink">
       <Navbar />
 
-      <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-10">
+      <main className="flex-1 max-w-4xl w-full mx-auto px-3 py-6 sm:px-6 sm:py-10">
         {/* Navigation back link */}
         <button
           onClick={() => router.push('/community')}
@@ -357,12 +357,12 @@ export default function ThreadDetailPage({
         </button>
 
         {/* THREAD CONTAINER */}
-        <article className="glass-card bg-white/55 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-6 lg:p-8 shadow-sm mb-6">
+        <article className="glass-card bg-white/55 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-4 sm:p-6 lg:p-8 shadow-sm mb-6">
           {/* Top row metadata */}
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#1b4332]/10 dark:border-line pb-4 mb-5">
-            <div className="flex items-center gap-3">
+            <div className="flex min-w-0 items-center gap-3">
               <div 
-                className="h-10 w-10 rounded-full bg-[#eef5f0] dark:bg-soft border border-black/10 dark:border-line text-xs font-bold text-[#1b4332] dark:text-ink flex items-center justify-center shadow-xs cursor-pointer"
+                className="h-10 w-10 shrink-0 rounded-full bg-[#eef5f0] dark:bg-soft border border-black/10 dark:border-line text-xs font-bold text-[#1b4332] dark:text-ink flex items-center justify-center shadow-xs cursor-pointer"
                 onClick={() => handleUserClick(thread.author)}
               >
                 {thread.author?.avatar?.startsWith('http') ? (
@@ -371,9 +371,9 @@ export default function ThreadDetailPage({
                   <span>{thread.author?.name?.[0]?.toUpperCase() || 'U'}</span>
                 )}
               </div>
-              <div>
+              <div className="min-w-0">
                 <p 
-                  className="text-xs font-bold text-[#1b4332] dark:text-ink cursor-pointer hover:underline inline-flex items-center gap-1.5"
+                  className="text-xs font-bold text-[#1b4332] dark:text-ink cursor-pointer hover:underline inline-flex max-w-full flex-wrap items-center gap-1.5 [overflow-wrap:anywhere]"
                   onClick={() => handleUserClick(thread.author)}
                 >
                   <span>{thread.author?.name}</span>
@@ -405,21 +405,20 @@ export default function ThreadDetailPage({
           </div>
 
           {/* Title & Body */}
-          <h1 className="font-serif-custom italic text-2xl sm:text-4xl font-bold text-[#1b4332] dark:text-ink tracking-tight mb-4">
+          <h1 className="font-serif-custom italic text-2xl sm:text-4xl font-bold text-[#1b4332] dark:text-ink tracking-tight mb-4 [overflow-wrap:anywhere]">
             {thread.title}
           </h1>
 
-          <div className="text-gray-700 dark:text-muted text-sm leading-relaxed whitespace-pre-wrap mb-6">
+          <div className="text-gray-700 dark:text-muted text-sm leading-relaxed whitespace-pre-wrap mb-6 [overflow-wrap:anywhere]">
             {thread.content}
           </div>
 
           {/* Bottom actions stats bar */}
-          <div className="flex items-center justify-between gap-4 border-t border-[#1b4332]/10 dark:border-line pt-3.5 text-xs font-bold text-gray-500 dark:text-muted">
-            <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[#1b4332]/10 dark:border-line pt-3.5 text-xs font-bold text-gray-500 dark:text-muted">
               <button
                 onClick={handleLike}
                 disabled={isLiking}
-                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border transition-colors cursor-pointer ${
+                className={`inline-flex min-h-10 items-center gap-1.5 px-3 py-1 rounded-full border transition-colors cursor-pointer ${
                   hasLiked
                     ? 'border-[#40916c] bg-[#40916c] text-white'
                     : 'border-black/10 hover:border-[#40916c] text-[#1b4332] dark:text-ink'
@@ -428,12 +427,11 @@ export default function ThreadDetailPage({
                 <Heart className={`h-3.5 w-3.5 ${hasLiked ? 'fill-current' : ''}`} />
                 <span>{thread.likes} {hasLiked ? 'Liked' : 'Like'}</span>
               </button>
-              <span className="inline-flex items-center gap-1 text-gray-500">
+              <span className="inline-flex items-center gap-1 whitespace-nowrap text-gray-500">
                 <MessageSquare className="h-3.5 w-3.5" />
                 <span>{thread.replies} Replies</span>
               </span>
-            </div>
-            <span className="inline-flex items-center gap-1 text-gray-400">
+            <span className="inline-flex items-center gap-1 whitespace-nowrap text-gray-400 sm:ml-auto">
               <Eye className="h-3.5 w-3.5" />
               <span>{thread.views} Views</span>
             </span>
@@ -448,7 +446,7 @@ export default function ThreadDetailPage({
 
           {/* Comment Form */}
           {isAuthenticated ? (
-            <form ref={commentFormRef} onSubmit={handleSubmitComment} className="glass-card bg-white/50 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-5 shadow-xs space-y-3">
+            <form ref={commentFormRef} onSubmit={handleSubmitComment} className="glass-card bg-white/50 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-4 sm:p-5 shadow-xs space-y-3">
               <label htmlFor="comment" className="block text-xs font-bold text-[#1b4332] dark:text-ink uppercase tracking-wider">
                 {replyingTo ? 'Write a Reply' : 'Leave a Comment'}
               </label>
@@ -488,7 +486,7 @@ export default function ThreadDetailPage({
               </div>
             </form>
           ) : (
-            <div className="glass-card bg-white/40 dark:bg-panel/60 border border-black/10 dark:border-line rounded-3xl p-6 text-center">
+            <div className="glass-card bg-white/40 dark:bg-panel/60 border border-black/10 dark:border-line rounded-3xl p-4 text-center sm:p-6">
               <p className="text-xs text-gray-500 dark:text-muted font-medium mb-3">
                 Sign in to leave a comment and join the discussion.
               </p>
@@ -519,9 +517,9 @@ export default function ThreadDetailPage({
                   <div
                     key={comment.id}
                     id={`comment-${comment.id}`}
-                    className={`glass-card bg-white/50 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-2xl p-4 shadow-xs target:ring-2 target:ring-[var(--primary)] ${
+                    className={`glass-card bg-white/50 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-2xl p-3 shadow-xs target:ring-2 target:ring-[var(--primary)] sm:p-4 ${
                       comment.isDeleted ? 'opacity-60' : ''
-                    } ${comment.parentCommentId ? 'ml-5 sm:ml-10 border-l-2 border-l-[#40916c]/45' : ''} scroll-mt-24`}
+                    } ${comment.parentCommentId ? 'sm:ml-10 border-l-2 border-l-[#40916c]/45' : ''} scroll-mt-24`}
                   >
                     <div className="flex items-start gap-3">
                       {/* Avatar */}
@@ -555,7 +553,7 @@ export default function ThreadDetailPage({
                           </span>
                         </div>
 
-                        <p className={`text-xs leading-relaxed text-gray-700 dark:text-muted whitespace-pre-wrap ${
+                        <p className={`text-xs leading-relaxed text-gray-700 dark:text-muted whitespace-pre-wrap [overflow-wrap:anywhere] ${
                           comment.isDeleted ? 'italic text-gray-400' : ''
                         }`}>
                           {comment.content}
@@ -569,7 +567,7 @@ export default function ThreadDetailPage({
 
                         {/* Comment actions row */}
                         {!comment.isDeleted && (
-                          <div className="flex items-center justify-between gap-4 mt-2.5 pt-2 border-t border-[#1b4332]/10 dark:border-line text-xs font-medium text-gray-500">
+                          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 mt-2.5 pt-2 border-t border-[#1b4332]/10 dark:border-line text-xs font-medium text-gray-500">
                             <button
                               type="button"
                               onClick={() => handleCommentLike(comment.id)}
@@ -581,7 +579,7 @@ export default function ThreadDetailPage({
                               <Heart className={`h-3 w-3 ${likedCommentIds.has(comment.id) ? 'fill-current text-[#40916c]' : ''}`} />
                               <span>{comment.likes} {likedCommentIds.has(comment.id) ? 'liked' : 'likes'}</span>
                             </button>
-                            <div className="flex items-center gap-3">
+                            <div className="ml-auto flex flex-wrap items-center gap-3">
                               {isAuthenticated && (
                                 <button
                                   type="button"

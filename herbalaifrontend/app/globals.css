@@ -972,6 +972,10 @@ body.admin-app {
   padding: 5rem 1.25rem 2rem;
 }
 .auth-form-card { width: 100%; max-width: 29rem; padding: clamp(1.35rem, 3vw, 2rem); border: 1px solid var(--ui-line); border-radius: 1.75rem; background: color-mix(in srgb, var(--ui-panel) 92%, transparent); box-shadow: 0 18px 50px rgb(23 32 24 / 0.1); }
+@media (max-width: 279px) {
+  .auth-form-pane { padding-inline: 0.75rem; }
+  .auth-form-card { padding: 0.9rem; }
+}
 .auth-form-card-signup { max-width: 31rem; }
 .auth-form-eyebrow { color: var(--ui-brand); margin-bottom: 0.45rem; }
 .auth-theme-toggle {

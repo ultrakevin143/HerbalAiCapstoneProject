@@ -159,7 +159,7 @@ export default function AboutPage() {
               Herbal-Ai is an educational repository for Philippine medicinal-plant knowledge, with source-linked preparation and safety information presented in a clearer digital format.
             </p>
 
-            <div className="flex justify-center gap-4 pt-4">
+            <div className="flex flex-col justify-center gap-3 pt-4 min-[360px]:flex-row min-[360px]:gap-4">
               <Link
                 href="/library"
                 className="btn border-[#2d6a4f] bg-[#2d6a4f] text-white font-semibold text-sm px-8 py-3 rounded-full shadow-sm hover:bg-[#1b4332] transition-colors"
@@ -394,7 +394,7 @@ export default function AboutPage() {
                 Herbal-Ai is a capstone initiative addressing the gap between traditional folk knowledge and accessible digital health education. It provides a reviewed repository that keeps sources, preparation notes, and safety limits visible while honoring local botanical heritage.
               </p>
               
-              <div className="grid grid-cols-2 gap-4 text-xs font-semibold text-[#1b4332] dark:text-ink pt-2">
+              <div className="grid grid-cols-1 gap-4 text-xs font-semibold text-[#1b4332] dark:text-ink pt-2 min-[360px]:grid-cols-2">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-[#52b788] shrink-0" />
                   <span>Community-submitted data</span>

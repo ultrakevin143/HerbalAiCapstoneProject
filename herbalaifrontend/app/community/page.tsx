@@ -275,9 +275,9 @@ export default function CommunityPage() {
                   <Link
                     key={thread.id}
                     href={`/community/${thread.id}`}
-                    className="block glass-card bg-white/50 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all group"
+                    className="block glass-card bg-white/50 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-4 sm:p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all group"
                   >
-                    <div className="flex items-start gap-4">
+                    <div className="flex items-start gap-3 sm:gap-4">
                       {/* Avatar */}
                       <div 
                         className="h-11 w-11 rounded-full bg-[#eef5f0] dark:bg-soft border border-black/10 dark:border-line text-xs font-bold text-[#1b4332] dark:text-ink flex items-center justify-center shadow-xs cursor-pointer shrink-0 mt-0.5"
@@ -321,7 +321,7 @@ export default function CommunityPage() {
                           </span>
                         </div>
 
-                        <h3 className="text-base font-bold text-[#1b4332] dark:text-ink group-hover:text-[#40916c] transition-colors line-clamp-1 mb-1 font-serif-custom italic">
+                        <h3 className="text-base font-bold text-[#1b4332] dark:text-ink group-hover:text-[#40916c] transition-colors line-clamp-2 sm:line-clamp-1 mb-1 font-serif-custom italic [overflow-wrap:anywhere]">
                           {thread.title}
                         </h3>
 
