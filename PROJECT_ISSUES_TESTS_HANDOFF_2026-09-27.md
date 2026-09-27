@@ -42,6 +42,7 @@ Purpose: one root entry point for future SRS, SPMP, SDD, STD, deployment, and de
 | Frontend build/lint | ESLint and the Next.js production build passed; `/privacy` is among 22 generated routes. |
 | Local privacy page | `http://localhost:3001/privacy` returned HTTP 200 and was viewed in Chrome. `localhost` is accessible on the developer computer, not from a phone through that address. |
 | Public verification | Commit `851a232` reached Vercel Production and Railway staging on 27 September. `https://herbalaiph.vercel.app/privacy` returned HTTP 200 and rendered in Chrome. At 320, 390, 768, and 1440px viewport widths, the page had no document-level horizontal overflow. Railway logs reported `20260927150000_track_email_verification_requirement` applied successfully; the new deployment was Active. Backend `/api/health` returned 200. A login attempt with a non-existent test identifier returned 401, not the pre-migration 500. No real account was created in this smoke test. |
+| Live verification preflight | On 27 September, public `/privacy`, public `/signup`, and backend `/api/health` returned HTTP 200; login with a synthetic non-existent identifier returned 401. A resend-verification request with a synthetic non-existent email returned HTTP 200 and explicitly said verification is temporarily disabled. No email or account was created. This does **not** pass the new-account verification workflow. |
 
 ## Release sequence and stop conditions
 
@@ -53,6 +54,8 @@ Purpose: one root entry point for future SRS, SPMP, SDD, STD, deployment, and de
 6. After mail durability is proven, enable verification, test one **new** email/password registration, receive and use its verification link, then sign in. Confirm a pre-existing unverified account can still sign in. Stop and roll back the variable if mail fails.
 
 Release checkpoint: code and privacy page are live at `851a232`; the email-verification switch remains **off**. The live mailbox verification flow, long-lived Gmail authorization, full database-writing regression suite, and formal UAT remain open. Do not call these passed based on the public page or health check alone.
+
+Google Cloud branding checkpoint: the live home page, live `/privacy` URL, and exact `herbalaiph.vercel.app` authorized domain were saved on the dedicated mail-only OAuth app. The app remained in Testing; publishing and replacing its expiring sender authorization were not completed at this checkpoint.
 
 Rollback: restore `REQUIRE_EMAIL_VERIFICATION=false` first if verification delivery fails. The migration is additive, so older application code can ignore the new column; redeploying the previous known-good commit is the code rollback path. Do not roll back database state by deleting user rows.
 
