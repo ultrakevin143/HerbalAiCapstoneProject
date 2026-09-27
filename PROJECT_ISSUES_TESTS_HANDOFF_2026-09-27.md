@@ -57,6 +57,34 @@ Release checkpoint: code and privacy page are live at `851a232`; the email-verif
 
 Google Cloud branding checkpoint: the live home page, live `/privacy` URL, and exact `herbalaiph.vercel.app` authorized domain were saved on the dedicated mail-only OAuth app. The app remained in Testing; publishing and replacing its expiring sender authorization were not completed at this checkpoint.
 
+## Later controlled live auth check — 27 September 2026
+
+This section supersedes the earlier checkpoint only where it records a newer observation. It is not a full-app UAT sign-off.
+
+| Flow | Observed result |
+| --- | --- |
+| Public pages and protected entry points | Home, library, community, sign-in, and privacy returned HTTP 200. Public herbs, herb categories, and forum threads returned 200. Unauthenticated `/api/auth/me` and `/api/chat` returned 401. |
+| Signup with verification off | Disposable password account `hae2e0927154111123` was created with HTTP 201 and `verificationRequired=false`; password login, `/api/auth/me`, logout, and forgot-password request returned 200. Its reset email arrived in the Gmail inbox and linked to the live reset form. No password reset was submitted, so completed recovery remains unverified. |
+| Temporary verification-on test | Railway `REQUIRE_EMAIL_VERIFICATION` was deployed as `true` for one controlled test. Disposable account `havfy0927154621225` received HTTP 201 with `verificationRequired=true` and `verificationEmailSent=true`; login before verifying returned 403. Its verification email arrived. Resend returned 200 and revoked the original link; that link showed an invalid-token error. The replacement link verified successfully, password login and `/api/auth/me` then returned 200, and logout succeeded. Reusing the redeemed link showed an invalid-token error. |
+| Negative cases | Invalid verification and password-reset tokens returned 400. A forgot-password request for a nonexistent address returned the neutral 200 response. |
+| Restored live state | Railway `REQUIRE_EMAIL_VERIFICATION=false` was redeployed after the test; the service was Active, health returned 200, and the resend endpoint again reported verification temporarily disabled. This temporary test does not mean verification is now mandatory for public signups. |
+| Mail OAuth | The dedicated `Herbal-Ai Mail` Google OAuth app was published to **In production**. Google Cloud's Verification Center still reports branding/data access verification outstanding for its sensitive scope. The Railway refresh token was issued while the app was in Testing; its long-term validity has not been established, and replacement/re-authorization is pending. |
+| Local verification UI | `herbalaifrontend/app/verify-email/page.tsx` was aligned to the sign-in/sign-up layout and given an error-state resend form. The local production build passed. The page was visually checked at desktop, 768px, 390px, and 320px in light/dark; no document-level horizontal overflow was observed. This UI change is local and not yet released. |
+
+The two disposable usernames above remain in the live user table until explicitly cleaned up. Do not count them as participants in UAT. The legacy unverified-account login path and the completion of a password reset were not directly verified live in this check; focused mocked auth/mailer tests passed 19/19. Do not claim those live flows passed based on this record.
+
+## Published verification UI and violet-profile signup test — 27 September 2026
+
+Commit `fd053a3` updated only `herbalaifrontend/app/verify-email/page.tsx` and was pushed to the deployment branch. The public `/verify-email` page showed the shared authentication layout and a resend form. Submitting a nonexistent synthetic address through that form returned the neutral resend message. The Railway backend deployment for the commit was Active.
+
+With `REQUIRE_EMAIL_VERIFICATION=true` temporarily deployed, a disposable `HerbalAi Test` account was created through the public signup form in the connected violet Chrome profile. The signup UI instructed the user to check email. The matching `Herbal-Ai - Verify Your Email` message arrived in the intended Gmail mailbox but was classified as **Spam**, not Inbox. Gmail described it as similar to previously reported spam. The link pointed to the public `/verify-email` route and produced `Email verified successfully. You can now log in.` Reusing that link showed an invalid/expired-token error. Password sign-in then reached the authenticated home page with the test user's account menu; logout returned to sign-in. The user entered and submitted the signup password themselves; the password and verification token are intentionally omitted here. The disposable account remains in the live database.
+
+Email landing in Spam is a deliverability issue, not a missing-send failure. This one successful live send does not establish long-term validity of the existing Gmail refresh token or guarantee future Inbox placement. Password-reset completion, Google sign-in, and broader UAT remain outside this controlled test.
+
+After this check, the user chose to keep `REQUIRE_EMAIL_VERIFICATION=true`; the live flow sends an email **link**, not a numeric code. Do not assume the earlier `false` setting was restored. The one-hour per-account password-reset email cooldown has since been implemented locally but is **not yet deployed**. The existing per-IP limiter is already live.
+
+The pending cooldown reserves a timestamp atomically on the user row, sends at most one accepted reset email per account in a rolling hour, keeps the same neutral response for unknown or repeated requests, and releases the reservation if delivery fails or is suppressed. The migration backfills recent active reset requests. Prisma validation, backend build, lint, and 23 focused mocked tests passed. The database-backed recovery tests were updated but not run: the local Neon database already had three unrelated pending migrations before this change. No migration or cooldown change has been applied to Railway yet.
+
 Rollback: restore `REQUIRE_EMAIL_VERIFICATION=false` first if verification delivery fails. The migration is additive, so older application code can ignore the new column; redeploying the previous known-good commit is the code rollback path. Do not roll back database state by deleting user rows.
 
 ## Document map for future revisions

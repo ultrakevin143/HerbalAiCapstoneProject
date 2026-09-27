@@ -395,30 +395,39 @@ export const resendEmailVerification = async (email: string) => {
 export const forgotPassword = async (email: string) => {
   const user = await userRepo.findUserByEmail(email);
 
-  // Security: always return neutral response to prevent email enumeration
-  const neutralResponse = { message: "If an account with that email exists, a password reset link has been sent." };
+  const neutralResponse = {
+    message: "If an account with that email exists, a password reset link has been sent. Check your email and Spam folder; if you requested one recently, wait an hour before trying again.",
+  };
 
   if (!user) {
     return neutralResponse;
   }
 
-  // Revoke all previous pending PASSWORD_RESET tokens to prevent token accumulation
-  await tokenRepo.revokeAllUserTokensByType(user.id, "PASSWORD_RESET");
+  const requestedAt = new Date();
+  const cooldownStart = new Date(requestedAt.getTime() - 60 * 60 * 1000);
+  const claimed = await userRepo.claimPasswordResetRequest(user.id, requestedAt, cooldownStart);
+  if (!claimed) return neutralResponse;
 
   const resetToken = crypto.randomBytes(32).toString("hex");
-  const expiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000); // 1 hour
+  const expiresAt = new Date(requestedAt.getTime() + 60 * 60 * 1000);
 
-  await tokenRepo.createToken({
-    userId: user.id,
-    type: "PASSWORD_RESET",
-    token: resetToken,
-    expiresAt,
-  });
+  let resetTokenRecord: Awaited<ReturnType<typeof tokenRepo.createToken>>;
+  try {
+    resetTokenRecord = await tokenRepo.createToken({
+      userId: user.id,
+      type: "PASSWORD_RESET",
+      token: resetToken,
+      expiresAt,
+    });
+  } catch (error) {
+    await userRepo.releasePasswordResetRequest(user.id, requestedAt);
+    throw error;
+  }
 
   const resetUrl = `${ENV.FRONTEND_URL}/reset-password?token=${resetToken}`;
 
   try {
-    await sendMail({
+    const delivery = await sendMail({
       to: user.email,
       subject: `${ENV.APP_NAME} - Reset Your Password`,
       html: `
@@ -435,8 +444,23 @@ export const forgotPassword = async (email: string) => {
         </div>
       `,
     });
+    if (delivery?.suppressed) throw new Error("Password reset email was suppressed.");
   } catch (err) {
     console.error("Failed to send password reset email:", err);
+    const cleanup = await Promise.allSettled([
+      tokenRepo.revokeToken(resetTokenRecord.id),
+      userRepo.releasePasswordResetRequest(user.id, requestedAt),
+    ]);
+    for (const result of cleanup) {
+      if (result.status === "rejected") console.error("Failed to clean up password reset request:", result.reason);
+    }
+    return neutralResponse;
+  }
+
+  try {
+    await tokenRepo.revokeOtherUserTokensByType(user.id, "PASSWORD_RESET", resetTokenRecord.id);
+  } catch (error) {
+    console.error("Failed to revoke previous password reset links:", error);
   }
 
   return neutralResponse;

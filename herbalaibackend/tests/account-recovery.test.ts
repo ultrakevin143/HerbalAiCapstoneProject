@@ -115,18 +115,40 @@ describe('Registration and account recovery (mail intercepted)', () => {
     expect((await request(app).post('/api/auth/refresh-token').send({ refreshToken: session.body.data.refreshToken })).status).toBe(401);
   }, 40000);
 
-  it('rejects replaced, expired and wrong-purpose reset tokens without changing the password', async () => {
+  it('keeps a reset link during the cooldown, then replaces it after an hour', async () => {
     const user = await signup();
     const verification = await token(user.id, 'EMAIL_VERIFY');
     await request(app).post('/api/auth/forgot-password').send({ email: user.email }).expect(200);
     const first = await token(user.id, 'PASSWORD_RESET');
     await request(app).post('/api/auth/forgot-password').send({ email: user.email }).expect(200);
+    expect((await token(user.id, 'PASSWORD_RESET')).id).toBe(first.id);
+    expect(sendMail.mock.calls.filter(([message]) => message.to === user.email && message.html.includes('/reset-password?'))).toHaveLength(1);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { passwordResetRequestedAt: new Date(Date.now() - 60 * 60 * 1000 - 1000) },
+    });
+    await request(app).post('/api/auth/forgot-password').send({ email: user.email }).expect(200);
     const replacement = await token(user.id, 'PASSWORD_RESET');
+    expect(replacement.id).not.toBe(first.id);
     await prisma.token.update({ where: { id: replacement.id }, data: { expiresAt: new Date(Date.now() - 1000) } });
     for (const value of [first.token, replacement.token, verification.token, 'invalid-token']) {
       expect((await request(app).post('/api/auth/reset-password').send({ token: value, password: password + '-changed' })).status).toBe(400);
     }
     expect((await prisma.user.findUniqueOrThrow({ where: { id: user.id } })).password).toBe(user.password);
+  }, 40000);
+
+  it('sends only one reset link for concurrent requests to the same account', async () => {
+    const user = await signup();
+    const responses = await Promise.all([
+      request(app).post('/api/auth/forgot-password').send({ email: user.email }),
+      request(app).post('/api/auth/forgot-password').send({ email: user.email }),
+    ]);
+
+    expect(responses.map(response => response.status)).toEqual([200, 200]);
+    expect(responses[0].body.message).toBe(responses[1].body.message);
+    expect(sendMail.mock.calls.filter(([message]) => message.to === user.email && message.html.includes('/reset-password?'))).toHaveLength(1);
+    expect(await prisma.token.count({ where: { userId: user.id, type: 'PASSWORD_RESET', revokedAt: null } })).toBe(1);
   }, 40000);
 
   it('allows only one concurrent redemption of a password reset link', async () => {

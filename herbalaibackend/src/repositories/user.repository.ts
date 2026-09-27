@@ -45,6 +45,27 @@ export const findUserByEmail = async (email: string) => {
   });
 };
 
+export const claimPasswordResetRequest = async (userId: string, requestedAt: Date, cooldownStart: Date): Promise<boolean> => {
+  const result = await prisma.user.updateMany({
+    where: {
+      id: userId,
+      OR: [
+        { passwordResetRequestedAt: null },
+        { passwordResetRequestedAt: { lte: cooldownStart } },
+      ],
+    },
+    data: { passwordResetRequestedAt: requestedAt },
+  });
+  return result.count === 1;
+};
+
+export const releasePasswordResetRequest = async (userId: string, requestedAt: Date): Promise<void> => {
+  await prisma.user.updateMany({
+    where: { id: userId, passwordResetRequestedAt: requestedAt },
+    data: { passwordResetRequestedAt: null },
+  });
+};
+
 export const findUserByUsername = async (username: string) => {
   return prisma.user.findFirst({
     where: { username: { equals: username, mode: 'insensitive' } },
