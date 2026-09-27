@@ -21,7 +21,7 @@ Configure these deployment settings in Railway:
 - Healthcheck path: `/api/health`
 - Healthcheck timeout: `300`
 
-Add a PostgreSQL service from the pgvector template, confirm the `vector` extension is available, and keep its TCP proxy disabled when the backend runs in the same Railway project. Configure the backend with a Railway reference to the database service's private URL (the current staging service is named `pgvector`):
+For a new Railway-hosted database, add a PostgreSQL service from the pgvector template, confirm the `vector` extension is available, and keep its TCP proxy disabled when the backend runs in the same Railway project. The Railway project has a service named `pgvector`, but the 27 September 2026 pre-deploy log showed this backend connecting to a Neon-hosted database named `neondb`; do not assume the Railway database is the active one or replace the current `DATABASE_URL` during a routine release. If intentionally using Railway's pgvector service, configure the backend with its private URL reference:
 
 ```env
 DATABASE_URL=${{pgvector.DATABASE_URL_PRIVATE}}

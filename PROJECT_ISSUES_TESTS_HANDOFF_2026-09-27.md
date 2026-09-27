@@ -17,7 +17,7 @@ Purpose: one root entry point for future SRS, SPMP, SDD, STD, deployment, and de
 | Frontend | `https://herbalaiph.vercel.app`; `/privacy` returned HTTP 404 before this release |
 | Backend | `https://herbalaicapstoneproject-staging.up.railway.app/api/health` returned HTTP 200; health alone does not prove authenticated workflows |
 | Mail | Gmail API sender code was deployed in `2e1a770`; one real reset email was observed in the sender mailbox in the earlier session |
-| Email verification | Railway setting was reported as `REQUIRE_EMAIL_VERIFICATION=false`; confirm the setting again before any account test |
+| Email verification | Railway `REQUIRE_EMAIL_VERIFICATION=false` was confirmed in the service Variables UI after deployment; new signups currently skip verification |
 | Mail OAuth | The dedicated mail OAuth app was still in Google's External **Testing** state; the observed refresh-token lifetime was approximately seven days |
 
 ## Problems and disposition
@@ -30,6 +30,7 @@ Purpose: one root entry point for future SRS, SPMP, SDD, STD, deployment, and de
 | AUTH-02 | With verification temporarily off, older password accounts can exist with no `emailVerified` timestamp. A global flip to true would block them under the old login check. | Local, not yet live: additive `email_verification_required` migration defaults existing rows to false; new password accounts created with verification enabled get true. Login checks the per-account flag. Verify migration succeeds before changing the Railway setting. |
 | PRIV-01 | Google Cloud branding required a public privacy URL. The user reviewed and accepted a policy draft restricted to Herbal-Ai's implemented data flows. | Local `/privacy` page is prepared for release. It was not public at the start of this handoff. Check the public URL after deployment, then use it in Google Cloud branding. |
 | UI-01 | User previously reported a very narrow community-thread layout problem in a 226px viewport. | Responsive repairs were committed in `44834dd`; this handoff does not claim a new 226px physical-device retest. Use existing mobile reports and repeat the target viewport before closing the issue. |
+| DEPLOY-01 | Railway shows a `pgvector` service, but the 27 September pre-deploy Prisma log connected to a database named `neondb` at a Neon host. | Document the observed Neon connection in the SDD rather than assuming the Railway database service is active. Do not switch database providers as part of this release. Confirm backups and the source of `DATABASE_URL` separately. |
 
 ## Verification for this change
 
@@ -40,7 +41,7 @@ Purpose: one root entry point for future SRS, SPMP, SDD, STD, deployment, and de
 | Backend build/lint and broader tests | Backend TypeScript build and ESLint passed. A four-file DB-independent Vitest run passed **26/26**. A separate five-file selection passed **29/30**: the sole failed check in `tests/auth.test.ts` queried the local `.env` database before the new column existed (`P2022`), returning 500 instead of its expected 401. This is a migration-order/environment failure, not evidence that production auth passed. No migration was run against that database. |
 | Frontend build/lint | ESLint and the Next.js production build passed; `/privacy` is among 22 generated routes. |
 | Local privacy page | `http://localhost:3001/privacy` returned HTTP 200 and was viewed in Chrome. `localhost` is accessible on the developer computer, not from a phone through that address. |
-| Public verification | Pending deployment. Check the public `/privacy` page, backend health, and a controlled new email/password account without exposing a real password in test records. |
+| Public verification | Commit `851a232` reached Vercel Production and Railway staging on 27 September. `https://herbalaiph.vercel.app/privacy` returned HTTP 200 and rendered in Chrome. At 320, 390, 768, and 1440px viewport widths, the page had no document-level horizontal overflow. Railway logs reported `20260927150000_track_email_verification_requirement` applied successfully; the new deployment was Active. Backend `/api/health` returned 200. A login attempt with a non-existent test identifier returned 401, not the pre-migration 500. No real account was created in this smoke test. |
 
 ## Release sequence and stop conditions
 
@@ -50,6 +51,8 @@ Purpose: one root entry point for future SRS, SPMP, SDD, STD, deployment, and de
 4. Check the Vercel public `/privacy` route and backend health. Confirm the frontend and backend deployments both use the release commit.
 5. Keep `REQUIRE_EMAIL_VERIFICATION=false` until the Gmail sender authorization is durable and a controlled new-account delivery test can be completed. Changing this variable is a separate production security step.
 6. After mail durability is proven, enable verification, test one **new** email/password registration, receive and use its verification link, then sign in. Confirm a pre-existing unverified account can still sign in. Stop and roll back the variable if mail fails.
+
+Release checkpoint: code and privacy page are live at `851a232`; the email-verification switch remains **off**. The live mailbox verification flow, long-lived Gmail authorization, full database-writing regression suite, and formal UAT remain open. Do not call these passed based on the public page or health check alone.
 
 Rollback: restore `REQUIRE_EMAIL_VERIFICATION=false` first if verification delivery fails. The migration is additive, so older application code can ignore the new column; redeploying the previous known-good commit is the code rollback path. Do not roll back database state by deleting user rows.
 
