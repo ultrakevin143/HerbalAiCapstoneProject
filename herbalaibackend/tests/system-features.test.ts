@@ -1,5 +1,17 @@
-import { describe, it, expect } from "vitest";
+import { afterAll, beforeAll, describe, it, expect, vi } from "vitest";
+import { randomUUID } from "node:crypto";
 import request from "supertest";
+
+vi.mock("../src/services/ai/core/gemini-service.js", () => ({
+  generateEmbedding: vi.fn(async () => Array(768).fill(0.01)),
+  generateChatResponse: vi.fn(async () => "The documented Lagundi record supports cough relief [Herb 1]. Consult a clinician for persistent symptoms."),
+  generateChatResponseStream: vi.fn(async function* () {
+    yield "The documented Lagundi record supports cough relief [Herb 1]. ";
+    yield "Consult a clinician for persistent symptoms.";
+  }),
+  resetGeminiFallbackState: vi.fn(),
+}));
+
 import app from "../src/app.js";
 import { generateAccessToken } from "../src/utils/jwt.js";
 import { prisma } from "../src/lib/prisma.js";
@@ -9,11 +21,6 @@ describe("Herbal AI - Comprehensive System Features & AI Chat Verification", () 
   const contributorToken = generateAccessToken({
     userId: "test-user-id-001",
     role: "contributor",
-  });
-
-  const adminToken = generateAccessToken({
-    userId: "test-admin-id-001",
-    role: "admin",
   });
 
   describe("1. Core Feature: Dr. Ai Assistant (RAG Chat with pgvector & Gemini)", () => {
@@ -203,6 +210,38 @@ describe("Herbal AI - Comprehensive System Features & AI Chat Verification", () 
   });
 
   describe("6. Platform Analytics & Admin Features", () => {
+    const adminId = randomUUID();
+    const contributorId = randomUUID();
+    const adminToken = generateAccessToken({ userId: adminId, role: "admin" });
+    const currentContributorToken = generateAccessToken({ userId: contributorId, role: "contributor" });
+
+    beforeAll(async () => {
+      await prisma.user.createMany({
+        data: [
+          {
+            id: adminId,
+            username: `test-admin-${adminId}`,
+            email: `test-admin-${adminId}@example.com`,
+            password: "test-only",
+            name: "Test Admin",
+            role: "admin",
+          },
+          {
+            id: contributorId,
+            username: `test-contributor-${contributorId}`,
+            email: `test-contributor-${contributorId}@example.com`,
+            password: "test-only",
+            name: "Test Contributor",
+            role: "contributor",
+          },
+        ],
+      });
+    });
+
+    afterAll(async () => {
+      await prisma.user.deleteMany({ where: { id: { in: [adminId, contributorId] } } });
+    });
+
     it("GET /api/stats/dashboard - returns platform statistics for admin", async () => {
       const res = await request(app)
         .get("/api/stats/dashboard")
@@ -215,7 +254,7 @@ describe("Herbal AI - Comprehensive System Features & AI Chat Verification", () 
     it("GET /api/admin/audit-logs - rejects non-admin users", async () => {
       const res = await request(app)
         .get("/api/admin/audit-logs")
-        .set("Authorization", `Bearer ${contributorToken}`);
+        .set("Authorization", `Bearer ${currentContributorToken}`);
       expect(res.status).toBe(403);
     });
 
