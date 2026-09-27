@@ -20,6 +20,7 @@ export default function SignUpPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [signupUncertain, setSignupUncertain] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
@@ -40,6 +41,7 @@ export default function SignUpPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setSignupUncertain(false);
     setSuccess(null);
     setResendMessage(null);
 
@@ -72,10 +74,11 @@ export default function SignUpPage() {
       }
 
     } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-      console.error(err);
+      const uncertainResponse = !err.response || [502, 504].includes(err.response.status);
+      setSignupUncertain(uncertainResponse);
       setCanResend(err.response?.status === 409 && err.response?.data?.verificationRequired === true);
       setError(
-        (err.response?.status === 503 ? 'Account creation is temporarily unavailable. Please try again later.' : err.response?.data?.message) ||
+        (uncertainResponse ? 'We could not confirm your signup. Before trying again, sign in with the email and password you just entered.' : err.response?.status === 503 ? 'Account creation is temporarily unavailable. Please try again later.' : err.response?.data?.message) ||
         err.message ||
         'Registration failed. Please check your inputs.'
       );
@@ -112,6 +115,7 @@ export default function SignUpPage() {
               className="mb-6 p-4 border border-rose-200 bg-rose-50 text-rose-800 font-bold rounded-xl text-sm"
             >
               ⚠️ {error}
+              {signupUncertain && <Link href="/signin" className="ml-1 underline underline-offset-2">Go to sign in</Link>}
             </div>
           )}
 

@@ -25,6 +25,7 @@ model User {
   joined        DateTime  @default(now())
   isBanned      Boolean   @default(false)
   emailVerified DateTime? @map("email_verified")
+  emailVerificationRequired Boolean @default(false) @map("email_verification_required")
 
   // Relations
   submittedHerbs       SuggestedHerb[]     @relation("SubmittedHerbs")

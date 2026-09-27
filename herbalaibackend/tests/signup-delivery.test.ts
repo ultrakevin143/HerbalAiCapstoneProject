@@ -62,6 +62,7 @@ describe('signup delivery outcomes', () => {
 
   it('reports accepted delivery', async () => {
     expect((await signup(account)).verificationEmailSent).toBe(true);
+    expect(createUser).toHaveBeenCalledWith(expect.objectContaining({ emailVerificationRequired: true }));
   });
 
   it('keeps the existing-email conflict without creating another account', async () => {
@@ -82,13 +83,14 @@ describe('signup delivery outcomes', () => {
     const result = await signup(account);
     expect(result).toMatchObject({ verificationRequired: false, verificationEmailSent: false });
     expect(createUser).toHaveBeenCalledOnce();
+    expect(createUser).toHaveBeenCalledWith(expect.objectContaining({ emailVerificationRequired: false }));
     expect(ensureMailReady).not.toHaveBeenCalled();
     expect(createToken).not.toHaveBeenCalled();
     expect(sendMail).not.toHaveBeenCalled();
   });
 
   it('permits password login without changing the email verification record while the switch is off', async () => {
-    const unverifiedUser = { id: 'user-1', email: account.email, username: account.username, name: account.name, role: 'contributor', password: 'hashed-password', isBanned: false, emailVerified: null };
+    const unverifiedUser = { id: 'user-1', email: account.email, username: account.username, name: account.name, role: 'contributor', password: 'hashed-password', isBanned: false, emailVerified: null, emailVerificationRequired: true };
     findUserByLoginIdentifier.mockResolvedValue(unverifiedUser);
 
     await expect(login({ email: account.email, password: account.password })).rejects.toMatchObject({ status: 403 });
@@ -97,6 +99,16 @@ describe('signup delivery outcomes', () => {
     await expect(login({ email: account.email, password: account.password })).resolves.toMatchObject({ accessToken: 'access-token' });
     expect(unverifiedUser.emailVerified).toBeNull();
     expect(cleanupTokens).toHaveBeenCalledOnce();
+  });
+
+  it('keeps legacy unverified accounts accessible when verification is restored', async () => {
+    findUserByLoginIdentifier.mockResolvedValue({
+      id: 'legacy-user', email: account.email, username: account.username, name: account.name,
+      role: 'contributor', password: 'hashed-password', isBanned: false,
+      emailVerified: null, emailVerificationRequired: false,
+    });
+
+    await expect(login({ email: account.email, password: account.password })).resolves.toMatchObject({ accessToken: 'access-token' });
   });
 
   it('does not attempt a verification resend while verification is disabled', async () => {

@@ -41,7 +41,22 @@ RESEND_FROM_EMAIL=<sender address on a verified domain>
 
 Railway Free, Trial, and Hobby services block outbound SMTP. Use the HTTPS email API above for account verification and password reset. Verify the sender domain with the email provider and enter the API key only in Railway Variables. Local development can still use `EMAIL_DELIVERY_MODE=log`; SMTP remains available through `EMAIL_PROVIDER=smtp` only where the hosting plan permits outbound SMTP. After switching providers, redeploy and use the resend-verification action for accounts created during a previous mail failure. A registration response with `verificationEmailSent: false` means the account exists but needs a new link; do not submit the signup form again.
 
-For a temporary demonstration without working email delivery, set `REQUIRE_EMAIL_VERIFICATION=false` in Railway and deploy matching backend and frontend revisions. Signup then skips verification-mail delivery and allows password login while leaving `emailVerified` unset. This does not prove that users own their email addresses; someone can register using another person's address, and email-based password recovery remains unavailable. Existing unverified accounts can log in with their original password while the switch is off. Before restoring `REQUIRE_EMAIL_VERIFICATION=true`, establish working mail delivery and verify those accounts or they will be unable to log in.
+If you want those two transactional emails to come from an existing Gmail account without buying a sending domain, the backend also supports Gmail API over HTTPS. Use a **separate Google Cloud project** from the site's Google sign-in project, enable Gmail API, and create a Web OAuth client with only the `https://www.googleapis.com/auth/gmail.send` scope. Authorize the sender Gmail account once with offline access and store the resulting refresh token in Railway Variables. Set:
+
+```env
+EMAIL_PROVIDER=gmail
+GMAIL_CLIENT_ID=<mail-only OAuth client ID>
+GMAIL_CLIENT_SECRET=<mail-only OAuth client secret>
+GMAIL_REFRESH_TOKEN=<sender account refresh token>
+GMAIL_SENDER_EMAIL=<same Gmail address that granted access>
+EMAIL_DELIVERY_MODE=live
+```
+
+Do not reuse the Google sign-in client or place the client secret or refresh token in Vercel, frontend code, Git, or chat. An OAuth app left in Google's External **Testing** status receives Gmail-scope refresh tokens that expire after seven days; do not rely on that for a presentation or production. Check the publishing/verification requirements and Gmail sending limits before enabling verification. Keep `REQUIRE_EMAIL_VERIFICATION=false` until mail delivery has been tested with an email/password account. Google-only accounts are not suitable for testing password reset.
+
+For a one-time sender authorization, create a Web OAuth client in the mail-only project and add `https://developers.google.com/oauthplayground` as its authorized redirect URI. In Google's OAuth 2.0 Playground, use your own client credentials, select server-side offline access and only the `https://www.googleapis.com/auth/gmail.send` scope, sign in as the sending Gmail account, then exchange the authorization code for a refresh token. Enter the client ID, client secret, refresh token, and sender address directly into Railway's protected Variables UI; never paste them into a support chat. Authorizing the Gmail scope allows this backend to send mail from that account, so use a dedicated sender mailbox if possible. After a successful real-email test, remove the temporary Playground redirect URI from the OAuth client and keep a recovery plan for revoked or expired refresh tokens.
+
+For a temporary demonstration, set `REQUIRE_EMAIL_VERIFICATION=false` in Railway and deploy matching backend and frontend revisions. Signup then skips verification-mail delivery and allows password login while leaving `emailVerified` unset. This does not prove that users own their email addresses; someone can register using another person's address. Password recovery works only when an email provider is configured and delivering mail. After deploying the `email_verification_required` database migration and matching backend code, existing accounts retain password login when `REQUIRE_EMAIL_VERIFICATION=true`; only accounts created with verification required must verify before login. Deploy the migration and code before changing the Railway variable, and confirm email delivery before enabling it.
 
 Also add the optional Google and Cloudinary variables from `.env.example` when those integrations are enabled.
 

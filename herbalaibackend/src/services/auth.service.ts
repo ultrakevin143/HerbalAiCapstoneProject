@@ -66,6 +66,7 @@ export const signup = async (data: SignupData) => {
     password: hashedPassword,
     name: data.name,
     avatar: data.avatar || null,
+    emailVerificationRequired: ENV.REQUIRE_EMAIL_VERIFICATION,
   });
 
   if (!ENV.REQUIRE_EMAIL_VERIFICATION) {
@@ -77,7 +78,7 @@ export const signup = async (data: SignupData) => {
       role: user.role,
       verificationRequired: false,
       verificationEmailSent: false,
-      message: "Account created. You can sign in now. Email-based password recovery is unavailable until email delivery is restored.",
+      message: "Account created. You can sign in now.",
     };
   }
 
@@ -147,7 +148,7 @@ export const login = async (data: { identifier?: string; email?: string; passwor
     throw { status: 401, message: "Invalid email/username or password." };
   }
 
-  if (ENV.REQUIRE_EMAIL_VERIFICATION && !user.emailVerified) {
+  if (ENV.REQUIRE_EMAIL_VERIFICATION && user.emailVerificationRequired && !user.emailVerified) {
     throw { status: 403, message: "Please verify your email before logging in." };
   }
 
