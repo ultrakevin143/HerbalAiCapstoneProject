@@ -45,6 +45,10 @@ export const ENV = {
   SMTP_USER: process.env['SMTP_USER'] || '',
   SMTP_PASSWORD: process.env['SMTP_PASSWORD'] || '',
   SMTP_FROM: process.env['SMTP_FROM'] || '',
+  EMAIL_PROVIDER: process.env['EMAIL_PROVIDER'] || (process.env['RESEND_API_KEY'] ? 'resend' : 'smtp'),
+  RESEND_API_KEY: process.env['RESEND_API_KEY'] || '',
+  RESEND_FROM_EMAIL: process.env['RESEND_FROM_EMAIL'] || '',
+  REQUIRE_EMAIL_VERIFICATION: process.env['REQUIRE_EMAIL_VERIFICATION']?.trim().toLowerCase() !== 'false',
   EMAIL_DELIVERY_MODE: process.env['EMAIL_DELIVERY_MODE'] || (process.env['NODE_ENV'] === 'production' ? 'live' : 'log'),
   EMAIL_ALLOWED_RECIPIENTS: (process.env['EMAIL_ALLOWED_RECIPIENTS'] || '')
     .split(',')

@@ -40,14 +40,14 @@ export const invalidateCachedUser = (id: string): void => {
 };
 
 export const findUserByEmail = async (email: string) => {
-  return prisma.user.findUnique({
-    where: { email },
+  return prisma.user.findFirst({
+    where: { email: { equals: email, mode: 'insensitive' } },
   });
 };
 
 export const findUserByUsername = async (username: string) => {
-  return prisma.user.findUnique({
-    where: { username },
+  return prisma.user.findFirst({
+    where: { username: { equals: username, mode: 'insensitive' } },
   });
 };
 

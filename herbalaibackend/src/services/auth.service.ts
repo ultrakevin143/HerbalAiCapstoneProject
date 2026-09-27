@@ -5,7 +5,7 @@ import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
 import { OAuth2Client } from "google-auth-library";
 import { ENV } from "../config/env.js";
 import crypto from "crypto";
-import { sendMail } from "../lib/mailer.js";
+import { ensureMailReady, sendMail } from "../lib/mailer.js";
 
 // ---- Security helper: prevent HTML injection in email templates ----
 const escapeHtml = (str: string): string =>
@@ -32,25 +32,54 @@ interface SignupData {
 }
 
 export const signup = async (data: SignupData) => {
-  const existingEmail = await userRepo.findUserByEmail(data.email);
+  const email = data.email.trim().toLowerCase();
+  const username = data.username.trim().toLowerCase();
+  const existingEmail = await userRepo.findUserByEmail(email);
   if (existingEmail) {
-    throw { status: 409, message: "A user with this email already exists." };
+    throw {
+      status: 409,
+      message: ENV.REQUIRE_EMAIL_VERIFICATION
+        ? "A user with this email already exists."
+        : "An account with this email already exists. Try signing in.",
+      verificationRequired: ENV.REQUIRE_EMAIL_VERIFICATION,
+    };
   }
 
-  const existingUsername = await userRepo.findUserByUsername(data.username);
+  const existingUsername = await userRepo.findUserByUsername(username);
   if (existingUsername) {
     throw { status: 409, message: "A user with this username already exists." };
+  }
+
+  if (ENV.REQUIRE_EMAIL_VERIFICATION) {
+    try {
+      ensureMailReady(email);
+    } catch {
+      throw { status: 503, message: "Email delivery is temporarily unavailable." };
+    }
   }
 
   const hashedPassword = await hashPassword(data.password);
 
   const user = await userRepo.createUser({
-    username: data.username,
-    email: data.email,
+    username,
+    email,
     password: hashedPassword,
     name: data.name,
     avatar: data.avatar || null,
   });
+
+  if (!ENV.REQUIRE_EMAIL_VERIFICATION) {
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      verificationRequired: false,
+      verificationEmailSent: false,
+      message: "Account created. You can sign in now. Email-based password recovery is unavailable until email delivery is restored.",
+    };
+  }
 
   const verificationToken = crypto.randomBytes(32).toString("hex");
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
@@ -64,8 +93,9 @@ export const signup = async (data: SignupData) => {
 
   const verificationUrl = `${ENV.FRONTEND_URL}/verify-email?token=${verificationToken}`;
 
+  let verificationEmailSent: boolean;
   try {
-    await sendMail({
+    const delivery = await sendMail({
       to: user.email,
       subject: `${ENV.APP_NAME} - Verify Your Email`,
       html: `
@@ -82,8 +112,10 @@ export const signup = async (data: SignupData) => {
         </div>
       `,
     });
+    verificationEmailSent = delivery?.suppressed !== true;
   } catch (err) {
     console.error("Failed to send verification email:", err);
+    verificationEmailSent = false;
   }
 
   return {
@@ -92,7 +124,11 @@ export const signup = async (data: SignupData) => {
     email: user.email,
     name: user.name,
     role: user.role,
-    message: "Signup successful. Please check your email to verify your account.",
+    verificationRequired: true,
+    verificationEmailSent,
+    message: verificationEmailSent
+      ? "Account created. Please check your email to verify it."
+      : "Account created, but the verification email could not be sent. Request a new verification link.",
   };
 };
 
@@ -111,7 +147,7 @@ export const login = async (data: { identifier?: string; email?: string; passwor
     throw { status: 401, message: "Invalid email/username or password." };
   }
 
-  if (!user.emailVerified) {
+  if (ENV.REQUIRE_EMAIL_VERIFICATION && !user.emailVerified) {
     throw { status: 403, message: "Please verify your email before logging in." };
   }
 
@@ -308,6 +344,10 @@ export const verifyEmail = async (token: string) => {
 };
 
 export const resendEmailVerification = async (email: string) => {
+  if (!ENV.REQUIRE_EMAIL_VERIFICATION) {
+    return { message: "Email verification is temporarily disabled. If you already have an account, sign in." };
+  }
+
   const user = await userRepo.findUserByEmail(email);
 
   // Security: always return neutral response to prevent email enumeration

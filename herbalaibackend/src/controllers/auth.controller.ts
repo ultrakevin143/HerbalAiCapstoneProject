@@ -30,11 +30,13 @@ export class AuthController {
   public signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const result = await authService.signup(req.body);
-      res.status(201).json({
+      res.status(!result.verificationRequired || result.verificationEmailSent ? 201 : 202).json({
         status: "success",
-        code: 201,
+        code: !result.verificationRequired || result.verificationEmailSent ? 201 : 202,
         message: result.message,
         data: {
+          verificationRequired: result.verificationRequired,
+          verificationEmailSent: result.verificationEmailSent,
           user: {
             id: result.id,
             username: result.username,
@@ -45,6 +47,15 @@ export class AuthController {
         }
       });
     } catch (error) {
+      const signupError = error as { status?: number; message?: string; verificationRequired?: boolean };
+      if (signupError.status === 409 && typeof signupError.verificationRequired === "boolean") {
+        res.status(409).json({
+          status: "error",
+          message: signupError.message,
+          verificationRequired: signupError.verificationRequired,
+        });
+        return;
+      }
       next(error);
     }
   };

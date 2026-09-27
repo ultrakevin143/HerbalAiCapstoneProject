@@ -3,8 +3,11 @@ import { randomUUID } from 'node:crypto';
 import request from 'supertest';
 
 // Exercise real API/database flows without delivering mail outside the test process.
-const { sendMail } = vi.hoisted(() => ({ sendMail: vi.fn().mockResolvedValue({ suppressed: true }) }));
-vi.mock('../src/lib/mailer.js', () => ({ sendMail }));
+const { sendMail, ensureMailReady } = vi.hoisted(() => ({
+  sendMail: vi.fn().mockResolvedValue({ messageId: 'intercepted-in-test' }),
+  ensureMailReady: vi.fn(),
+}));
+vi.mock('../src/lib/mailer.js', () => ({ sendMail, ensureMailReady }));
 import app from '../src/app.js';
 import { prisma, closeDatabasePool } from '../src/lib/prisma.js';
 import * as tokenRepo from '../src/repositories/token.repository.js';
@@ -49,6 +52,22 @@ afterAll(async () => {
 });
 
 describe('Registration and account recovery (mail intercepted)', () => {
+  it('keeps an unverified account recoverable when its first email fails', async () => {
+    const email = `${randomUUID()}@loadtest.invalid`;
+    emails.push(email);
+    sendMail.mockRejectedValueOnce(new Error('Mail transport unavailable'));
+    const response = await request(app).post('/api/auth/signup').send({
+      username: `recovery_${randomUUID().replaceAll('-', '').slice(0, 18)}`,
+      email, password, name: 'TEST delivery failure',
+    });
+    expect(response.status).toBe(202);
+    expect(response.body.data.verificationEmailSent).toBe(false);
+    const user = await prisma.user.findUniqueOrThrow({ where: { email } });
+    expect(user.emailVerified).toBeNull();
+    expect((await request(app).post('/api/auth/resend-email-verification').send({ email })).status).toBe(200);
+    expect(sendMail).toHaveBeenCalledWith(expect.objectContaining({ to: email }));
+  });
+
   it('requires verification, replaces a resent link and accepts it only once', async () => {
     const user = await signup();
     expect(user.emailVerified).toBeNull();

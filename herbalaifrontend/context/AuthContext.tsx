@@ -16,13 +16,16 @@ export interface User {
   isBanned?: boolean;
 }
 
+type SignupData = { name: string; username: string; email: string; password: string };
+type SignupResult = { message: string; verificationRequired: boolean; verificationEmailSent: boolean };
+
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
   sessionUnavailable: boolean;
   login: (identifier: string, password: string) => Promise<User | null>;
-  signup: (data: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => Promise<void>;
+  signup: (data: SignupData) => Promise<SignupResult>;
   logout: () => Promise<void>;
   checkSession: (force?: boolean) => Promise<User | null>;
   updateProfile: (data: { name?: string; avatar?: string | null }) => Promise<User>;
@@ -100,14 +103,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signup = async (data: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) => {
+  const signup = async (data: SignupData): Promise<SignupResult> => {
     setLoading(true);
     try {
-      await api.post('/auth/signup', data);
+      const response = await api.post('/auth/signup', data);
+      return {
+        message: response.data?.message || 'Account created. Please check your email to verify it.',
+        verificationRequired: response.data?.data?.verificationRequired !== false,
+        verificationEmailSent: response.data?.data?.verificationEmailSent !== false,
+      };
+    } finally {
       setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      throw error;
     }
   };
 

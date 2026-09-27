@@ -7,6 +7,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import AuthBrandPanel from '../../components/AuthBrandPanel';
 import { ThemeToggle } from '../../components/DisplayPreferences';
+import api from '../../lib/axios';
 
 export default function SignUpPage() {
   const { signup } = useAuth();
@@ -21,6 +22,10 @@ export default function SignUpPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [canResend, setCanResend] = useState(false);
+  const [accountCreated, setAccountCreated] = useState(false);
+  const [resendMessage, setResendMessage] = useState<string | null>(null);
 
   // Dynamic password strength evaluation
   const getPasswordStrength = () => {
@@ -36,6 +41,7 @@ export default function SignUpPage() {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+    setResendMessage(null);
 
     // Validate fields locally
     if (password.length < 8) {
@@ -51,26 +57,42 @@ export default function SignUpPage() {
     setLoading(true);
 
     try {
-      await signup({
+      const result = await signup({
         name: `${firstName} ${lastName}`.trim(),
         username,
         email,
         password,
       });
 
-      setSuccess('Signup successful! Please check your email to verify your account.');
-      setTimeout(() => {
-        router.push('/signin');
-      }, 5000);
+      setSuccess(result.message);
+      setCanResend(result.verificationRequired && !result.verificationEmailSent);
+      setAccountCreated(true);
+      if (!result.verificationRequired || result.verificationEmailSent) {
+        setTimeout(() => router.push('/signin'), 5000);
+      }
 
     } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error(err);
+      setCanResend(err.response?.status === 409 && err.response?.data?.verificationRequired === true);
       setError(
-        err.response?.data?.message ||
+        (err.response?.status === 503 ? 'Account creation is temporarily unavailable. Please try again later.' : err.response?.data?.message) ||
         err.message ||
         'Registration failed. Please check your inputs.'
       );
       setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    setResending(true);
+    setResendMessage(null);
+    try {
+      const response = await api.post('/auth/resend-email-verification', { email: email.trim() });
+      setResendMessage(response.data?.message || 'If this account is unverified, a new link has been sent.');
+    } catch {
+      setResendMessage('The verification email could not be sent right now. Please try again later.');
+    } finally {
+      setResending(false);
     }
   };
 
@@ -102,7 +124,21 @@ export default function SignUpPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-3">
+          {canResend && (
+            <div className="mb-5 space-y-2">
+              <button
+                type="button"
+                onClick={handleResend}
+                disabled={resending}
+                className="w-full rounded-full border border-[#2d6a4f] px-5 py-2.5 text-sm font-semibold text-[#2d6a4f] disabled:opacity-50 dark:border-[#74c69d] dark:text-[#74c69d]"
+              >
+                {resending ? 'Sending verification link...' : 'Send verification link again'}
+              </button>
+              {resendMessage && <p role="status" className="text-sm text-[#1b4332] dark:text-ink">{resendMessage}</p>}
+            </div>
+          )}
+
+          {!accountCreated && <form onSubmit={handleSubmit} className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-sm font-extrabold text-[#1b4332] dark:text-ink mb-1" htmlFor="firstName">
@@ -204,7 +240,7 @@ export default function SignUpPage() {
             >
               {loading ? 'Creating Account...' : 'Create Account'}
             </button>
-          </form>
+          </form>}
 
           <p className="text-center text-sm font-bold text-[#6a7282] dark:text-muted mt-4">
             Already have an account?{' '}

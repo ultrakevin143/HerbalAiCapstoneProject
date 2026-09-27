@@ -34,12 +34,14 @@ GEMINI_API_KEY=<Gemini API key>
 ADMIN_EMAIL=<administrator email>
 ADMIN_PASSWORD=<unique password with at least 12 characters>
 EMAIL_DELIVERY_MODE=live
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=<mail account>
-SMTP_PASSWORD=<mail app password>
-SMTP_FROM=<verified sender address>
+EMAIL_PROVIDER=resend
+RESEND_API_KEY=<email API key>
+RESEND_FROM_EMAIL=<sender address on a verified domain>
 ```
+
+Railway Free, Trial, and Hobby services block outbound SMTP. Use the HTTPS email API above for account verification and password reset. Verify the sender domain with the email provider and enter the API key only in Railway Variables. Local development can still use `EMAIL_DELIVERY_MODE=log`; SMTP remains available through `EMAIL_PROVIDER=smtp` only where the hosting plan permits outbound SMTP. After switching providers, redeploy and use the resend-verification action for accounts created during a previous mail failure. A registration response with `verificationEmailSent: false` means the account exists but needs a new link; do not submit the signup form again.
+
+For a temporary demonstration without working email delivery, set `REQUIRE_EMAIL_VERIFICATION=false` in Railway and deploy matching backend and frontend revisions. Signup then skips verification-mail delivery and allows password login while leaving `emailVerified` unset. This does not prove that users own their email addresses; someone can register using another person's address, and email-based password recovery remains unavailable. Existing unverified accounts can log in with their original password while the switch is off. Before restoring `REQUIRE_EMAIL_VERIFICATION=true`, establish working mail delivery and verify those accounts or they will be unable to log in.
 
 Also add the optional Google and Cloudinary variables from `.env.example` when those integrations are enabled.
 

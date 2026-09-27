@@ -212,6 +212,8 @@ cd herbalaifrontend && npx tsc --noEmit
 Optional tuning values are documented in `.env.example`: `HERB_CACHE_TTL_MS`, `AUTH_USER_CACHE_TTL_MS`, `AUTH_USER_CACHE_MAX_ENTRIES`, `SLOW_REQUEST_THRESHOLD_MS`, `DR_AI_MAX_COSINE_DISTANCE`, and the bounded `DB_POOL_*` connection-pool settings. Slow-request logs include a pool snapshot (`total`, `idle`, and `waiting`) to identify database saturation. The authentication-user cache is intentionally short-lived and is invalidated immediately by application-managed ban, verification, and password changes.
 
 Email safety is controlled by `EMAIL_DELIVERY_MODE`: use `log` for local development, `allowlist` plus `EMAIL_ALLOWED_RECIPIENTS` for controlled mailbox testing, and `live` only for production. Development defaults to `log` when the variable is omitted.
+On Railway Free, Trial, or Hobby, set `EMAIL_PROVIDER=resend`, `RESEND_API_KEY`, and `RESEND_FROM_EMAIL` for HTTPS delivery; SMTP is blocked on those plans. See `Docs/RAILWAY_VERCEL_DEPLOYMENT.md`. Failed verification delivery leaves a recoverable unverified account, so use the resend-verification action rather than signing up again.
+`REQUIRE_EMAIL_VERIFICATION=false` is a temporary, explicit fallback when email delivery is unavailable: it skips verification email during signup and permits password login for unverified accounts without marking their addresses verified. It weakens identity assurance and leaves email-based password recovery unavailable; restore the default `true` only after delivery and account verification are working.
 
 ---
 
