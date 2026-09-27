@@ -48,6 +48,10 @@ export const ENV = {
   EMAIL_PROVIDER: process.env['EMAIL_PROVIDER'] || (process.env['RESEND_API_KEY'] ? 'resend' : 'smtp'),
   RESEND_API_KEY: process.env['RESEND_API_KEY'] || '',
   RESEND_FROM_EMAIL: process.env['RESEND_FROM_EMAIL'] || '',
+  GMAIL_CLIENT_ID: process.env['GMAIL_CLIENT_ID'] || '',
+  GMAIL_CLIENT_SECRET: process.env['GMAIL_CLIENT_SECRET'] || '',
+  GMAIL_REFRESH_TOKEN: process.env['GMAIL_REFRESH_TOKEN'] || '',
+  GMAIL_SENDER_EMAIL: process.env['GMAIL_SENDER_EMAIL'] || '',
   REQUIRE_EMAIL_VERIFICATION: process.env['REQUIRE_EMAIL_VERIFICATION']?.trim().toLowerCase() !== 'false',
   EMAIL_DELIVERY_MODE: process.env['EMAIL_DELIVERY_MODE'] || (process.env['NODE_ENV'] === 'production' ? 'live' : 'log'),
   EMAIL_ALLOWED_RECIPIENTS: (process.env['EMAIL_ALLOWED_RECIPIENTS'] || '')

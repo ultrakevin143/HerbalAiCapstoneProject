@@ -26,6 +26,7 @@ export const ensureMailReady = (recipient?: string) => {
   if (deliveryMode === "log") return;
   if (deliveryMode === "allowlist" && recipient && !ENV.EMAIL_ALLOWED_RECIPIENTS.includes(recipient.trim().toLowerCase())) return;
   if (ENV.EMAIL_PROVIDER === "resend" && ENV.RESEND_API_KEY && ENV.RESEND_FROM_EMAIL) return;
+  if (ENV.EMAIL_PROVIDER === "gmail" && ENV.GMAIL_CLIENT_ID && ENV.GMAIL_CLIENT_SECRET && ENV.GMAIL_REFRESH_TOKEN && ENV.GMAIL_SENDER_EMAIL) return;
   if (ENV.EMAIL_PROVIDER === "smtp" && ENV.SMTP_USER && ENV.SMTP_PASSWORD && ENV.SMTP_FROM) return;
   throw new Error("Email delivery is not configured.");
 };
@@ -69,6 +70,53 @@ export const sendMail = async ({ to, subject, html }: SendMailOptions) => {
     });
     if (!response.ok) {
       throw new Error(`Email provider rejected the request (HTTP ${response.status}).`);
+    }
+    return response.json();
+  }
+
+  if (ENV.EMAIL_PROVIDER === "gmail") {
+    const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        client_id: ENV.GMAIL_CLIENT_ID,
+        client_secret: ENV.GMAIL_CLIENT_SECRET,
+        refresh_token: ENV.GMAIL_REFRESH_TOKEN,
+        grant_type: "refresh_token",
+      }),
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!tokenResponse.ok) {
+      throw new Error(`Gmail authorization failed (HTTP ${tokenResponse.status}).`);
+    }
+
+    const tokenData = await tokenResponse.json() as { access_token?: string };
+    if (!tokenData.access_token) {
+      throw new Error("Gmail authorization returned no access token.");
+    }
+
+    const composer = nodemailer.createTransport({ streamTransport: true, buffer: true });
+    const composed = await composer.sendMail({
+      from: `"${ENV.APP_NAME}" <${ENV.GMAIL_SENDER_EMAIL}>`,
+      to,
+      subject,
+      html,
+    });
+    if (!Buffer.isBuffer(composed.message)) {
+      throw new Error("Gmail message could not be composed.");
+    }
+
+    const response = await fetch("https://gmail.googleapis.com/gmail/v1/users/me/messages/send", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${tokenData.access_token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ raw: composed.message.toString("base64url") }),
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!response.ok) {
+      throw new Error(`Gmail rejected the message (HTTP ${response.status}).`);
     }
     return response.json();
   }
