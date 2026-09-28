@@ -6,7 +6,7 @@ import OptimizedFillImage from './OptimizedFillImage';
 import { Button } from './ui/button';
 
 export default function HomeContributionCta() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading, sessionUnavailable, checkSession } = useAuth();
   return (
     <section className="px-6 py-16">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 md:grid-cols-2">
@@ -16,7 +16,13 @@ export default function HomeContributionCta() {
         <div className="space-y-6">
           <h2 className="font-serif-custom text-4xl font-semibold leading-tight text-ink md:text-5xl">Help us preserve our history</h2>
           <p className="text-base leading-7 text-muted">Join contributors who document local plant names, regional practices, and source publications for administrative review.</p>
-          <Button asChild size="lg" className="px-8"><Link href={isAuthenticated ? '/suggest' : '/signup'}>{isAuthenticated ? 'Suggest a plant' : 'Become a contributor'}</Link></Button>
+          {loading ? (
+            <Button size="lg" className="px-8" disabled>Checking session…</Button>
+          ) : sessionUnavailable && !isAuthenticated ? (
+            <Button size="lg" className="px-8" onClick={() => { void checkSession(true); }}>Retry session</Button>
+          ) : (
+            <Button asChild size="lg" className="px-8"><Link href={isAuthenticated ? '/suggest' : '/signup'}>{isAuthenticated ? 'Suggest a plant' : 'Become a contributor'}</Link></Button>
+          )}
         </div>
       </div>
     </section>

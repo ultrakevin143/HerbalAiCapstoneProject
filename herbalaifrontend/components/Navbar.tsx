@@ -13,12 +13,13 @@ import { PwaInstallButton } from './PwaInstall';
 import { Button } from './ui/button';
 
 export default function Navbar() {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout, isAuthenticated, loading, sessionUnavailable, checkSession } = useAuth();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileDisplayOpen, setIsMobileDisplayOpen] = useState(false);
   const [isProfileEditorOpen, setIsProfileEditorOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [logoutError, setLogoutError] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -48,10 +49,12 @@ export default function Navbar() {
   };
 
   const handleLogout = async () => {
+    setLogoutError(false);
     try {
       await logout();
     } catch (error) {
       console.error('Failed to log out:', error);
+      setLogoutError(true);
     }
   };
 
@@ -107,7 +110,11 @@ export default function Navbar() {
 
           {/* Desktop Authentication / Action buttons */}
           <div className="hidden xl:flex items-center gap-3 shrink-0">
-            {isAuthenticated ? (
+            {loading ? (
+              <span role="status" className="text-sm text-muted">Checking session…</span>
+            ) : sessionUnavailable && !isAuthenticated ? (
+              <Button type="button" variant="outline" size="sm" onClick={() => { void checkSession(true); }}>Retry session</Button>
+            ) : isAuthenticated ? (
               <>
                 <Button asChild size="sm"><Link href="/suggest"><Sprout size={15} aria-hidden="true" />Suggest Herb</Link></Button>
 
@@ -255,7 +262,11 @@ export default function Navbar() {
 
             <div className="mt-3 space-y-2 border-t border-black/10 pt-3 dark:border-line">
               <PwaInstallButton onComplete={() => setIsMobileMenuOpen(false)} />
-              {isAuthenticated ? (
+              {loading ? (
+                <span role="status" className="block text-center text-sm text-muted">Checking session…</span>
+              ) : sessionUnavailable && !isAuthenticated ? (
+                <Button type="button" variant="outline" className="w-full" onClick={() => { void checkSession(true); }}>Retry session</Button>
+              ) : isAuthenticated ? (
                 <>
                   <button
                     type="button"
@@ -315,6 +326,12 @@ export default function Navbar() {
           </div>
         )}
       </nav>
+
+      {logoutError && (
+        <div role="alert" className="border-b border-error-ink/20 bg-error-surface px-4 py-3 text-center text-sm text-error-ink">
+          Could not sign out. Please try again.
+        </div>
+      )}
 
       {/* Profile Editor Modal */}
       <ProfileEditorModal

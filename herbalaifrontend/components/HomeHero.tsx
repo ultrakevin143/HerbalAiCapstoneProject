@@ -10,7 +10,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 
 export default function HomeHero() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, loading, sessionUnavailable, checkSession } = useAuth();
   const router = useRouter();
   const [query, setQuery] = useState('');
   const isStaff = user && (user.role === 'admin' || user.role === 'botanist');
@@ -24,7 +24,9 @@ export default function HomeHero() {
           </h1>
 
           <p className="max-w-[520px] text-base leading-[1.6] text-white/90 lg:text-xl">
-            {isAuthenticated
+            {loading || sessionUnavailable
+              ? 'Explore Philippine medicinal plants and source-linked preparation guidance.'
+              : isAuthenticated
               ? isStaff
                 ? 'Review community submissions from the Admin Panel, or explore the public catalog as a member.'
                 : 'Your personalized hub for validated Philippine herbal medicine and AI-assisted preparation guides.'
@@ -50,10 +52,14 @@ export default function HomeHero() {
             </div>
 
             <p className="mt-3 text-sm leading-6 text-muted">
-              {isAuthenticated ? 'Ask about documented plant uses, preparation, or safety notes.' : 'Sign in to ask about documented plant uses, preparation, or safety notes.'}
+              {loading || sessionUnavailable || isAuthenticated ? 'Ask about documented plant uses, preparation, or safety notes.' : 'Sign in to ask about documented plant uses, preparation, or safety notes.'}
             </p>
 
-            {isAuthenticated ? (
+            {loading ? (
+              <p role="status" className="mt-4 text-sm text-muted">Checking session…</p>
+            ) : sessionUnavailable && !isAuthenticated ? (
+              <Button type="button" variant="secondary" className="mt-4" onClick={() => { void checkSession(true); }}>Retry session</Button>
+            ) : isAuthenticated ? (
               <>
                 <form onSubmit={(event) => { event.preventDefault(); if (query.trim()) router.push(`/chat?q=${encodeURIComponent(query.trim())}`); }} className="mt-4 hidden gap-2 md:flex">
                   <Input value={query} onChange={(event) => setQuery(event.target.value)} type="text" placeholder="e.g. What is lagundi used for?" className="h-12 min-w-0 flex-1 bg-canvas" aria-label="Ask Dr. Ai about a plant" />

@@ -31,7 +31,7 @@ api.interceptors.response.use(
     const originalRequest = error.config;
 
     // Check if error response is 401 (Unauthorized) and request hasn't been retried yet
-    if (!error.response || error.response.status !== 401 || originalRequest._retry) {
+    if (!error.response || error.response.status !== 401 || !originalRequest || originalRequest._retry) {
       return Promise.reject(error);
     }
 
@@ -66,14 +66,16 @@ api.interceptors.response.use(
       return api(originalRequest);
     } catch (refreshError) {
       isRefreshing = false;
-      processQueue(refreshError);
+      const refreshStatus = axios.isAxiosError(refreshError) ? refreshError.response?.status : undefined;
+      const sessionExpired = refreshStatus === 400 || refreshStatus === 401 || refreshStatus === 403;
+      processQueue(sessionExpired ? error : refreshError);
 
-      // Notify the application that session is invalid and logout is needed
-      if (typeof window !== 'undefined') {
+      if (sessionExpired && typeof window !== 'undefined' &&
+          !originalRequest.url?.startsWith('/auth/me')) {
         window.dispatchEvent(new Event('auth-logout'));
       }
-      
-      return Promise.reject(refreshError);
+
+      return Promise.reject(sessionExpired ? error : refreshError);
     }
   }
 );

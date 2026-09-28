@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import api from '../lib/axios';
 import { cachedApiGet, invalidateApiGetCache } from '../lib/request-cache';
@@ -37,53 +37,43 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [sessionUnavailable, setSessionUnavailable] = useState(false);
+  const sessionRevision = useRef(0);
   const router = useRouter();
 
   const checkSession = async (force: boolean = false): Promise<User | null> => {
-    if (!force && typeof window !== 'undefined' && !localStorage.getItem('herbalai_has_session')) {
-      setUser(null);
-      setSessionUnavailable(false);
-      setLoading(false);
-      return null;
-    }
-
+    const revision = ++sessionRevision.current;
+    setLoading(true);
     try {
-      const response = await cachedApiGet('/auth/me', 2_000);
+      const response = await cachedApiGet('/auth/me', 2_000, force);
+      if (revision !== sessionRevision.current) return null;
       if (response.data?.status === 'success' && response.data?.data?.user) {
         const userObj = response.data.data.user;
         setUser(userObj);
         setSessionUnavailable(false);
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('herbalai_has_session', '1');
-        }
         return userObj;
       } else {
         setUser(null);
         setSessionUnavailable(false);
-        if (typeof window !== 'undefined') {
-          localStorage.removeItem('herbalai_has_session');
-        }
         return null;
       }
     } catch (error) {
+      if (revision !== sessionRevision.current) return null;
       const status = (error as { response?: { status?: number } }).response?.status;
       if (status === 401 || status === 403) {
         invalidateApiGetCache();
         setUser(null);
         setSessionUnavailable(false);
-        if (typeof window !== 'undefined') {
-          localStorage.removeItem('herbalai_has_session');
-        }
       } else {
         setSessionUnavailable(true);
       }
       return null;
     } finally {
-      setLoading(false);
+      if (revision === sessionRevision.current) setLoading(false);
     }
   };
 
   const login = async (identifier: string, password: string): Promise<User | null> => {
+    sessionRevision.current += 1;
     setLoading(true);
     try {
       const response = await api.post('/auth/login', { identifier: identifier.trim(), password });
@@ -91,9 +81,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (!loggedInUser) throw new Error('Login succeeded without a user profile.');
       setUser(loggedInUser);
       setSessionUnavailable(false);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('herbalai_has_session', '1');
-      }
       invalidateApiGetCache();
       return loggedInUser;
     } catch (error) {
@@ -118,20 +105,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
+    sessionRevision.current += 1;
     setLoading(true);
     try {
       await api.post('/auth/logout');
-    } catch (error) {
-      console.error('Logout request failed:', error);
-    } finally {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('herbalai_has_session');
-      }
       setUser(null);
       setSessionUnavailable(false);
       invalidateApiGetCache();
-      setLoading(false);
       router.push('/signin');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -148,10 +131,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     checkSession();
 
     const handleAuthLogout = () => {
+      sessionRevision.current += 1;
       invalidateApiGetCache();
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('herbalai_has_session');
-      }
       setUser(null);
       setSessionUnavailable(false);
       router.push('/signin');
