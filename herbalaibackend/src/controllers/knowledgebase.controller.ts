@@ -1,6 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware.js";
-import { createAuditLog } from "../repositories/audit.repository.js";
 import { findKBPage } from "../repositories/knowledgebase.repository.js";
 import {  
   CreateKnowledgeBaseService, 
@@ -11,6 +10,12 @@ import {
 } from "../services/ai/knowledge-base/index.js";
 
 export class KnowledgeBaseController {
+  private adminId = (req: Request): string => {
+    const id = (req as AuthenticatedRequest).user?.userId;
+    if (!id) throw new Error("Authenticated administrator is required");
+    return id;
+  };
+
   public getKnowledgePage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const requestedPage = Number(req.query['page']);
@@ -26,17 +31,7 @@ export class KnowledgeBaseController {
   };
   public importKnowledge = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const result = await ImportKnowledgeBaseService(req.body.facts);
-      const adminId = (req as AuthenticatedRequest).user?.userId;
-      if (result.status === 'success' && adminId && result.data) {
-        await createAuditLog({
-          adminId,
-          action: 'IMPORT_KNOWLEDGE_BASE',
-          targetType: 'KnowledgeBase',
-          targetId: 'bulk-import',
-          details: result.data,
-        });
-      }
+      const result = await ImportKnowledgeBaseService(req.body.facts, this.adminId(req));
       res.status(result.code).json(result);
     } catch (error) {
       next(error);
@@ -46,17 +41,7 @@ export class KnowledgeBaseController {
   // Create Knowledge
   public createKnowledge = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const result = await CreateKnowledgeBaseService(req.body);
-      const adminId = (req as AuthenticatedRequest).user?.userId;
-      if (result.status === "success" && adminId && result.data?.id) {
-        await createAuditLog({
-          adminId,
-          action: "CREATE_KNOWLEDGE_BASE",
-          targetType: "KnowledgeBase",
-          targetId: result.data.id,
-          details: { question: req.body.question },
-        });
-      }
+      const result = await CreateKnowledgeBaseService(req.body, this.adminId(req));
       res.status(result.code).json(result);
     } catch (error) {
       next(error);
@@ -78,17 +63,7 @@ export class KnowledgeBaseController {
     try {
       const id = req.params['id'] as string;
       const data = { ...req.body, id };
-      const result = await UpdateKnowledgeBaseService(data);
-      const adminId = (req as AuthenticatedRequest).user?.userId;
-      if (result.status === "success" && adminId) {
-        await createAuditLog({
-          adminId,
-          action: "UPDATE_KNOWLEDGE_BASE",
-          targetType: "KnowledgeBase",
-          targetId: id,
-          details: { fields: Object.keys(req.body) },
-        });
-      }
+      const result = await UpdateKnowledgeBaseService(data, this.adminId(req));
       res.status(result.code).json(result);
     } catch (error) {
       next(error);
@@ -99,16 +74,7 @@ export class KnowledgeBaseController {
   public deleteKnowledge = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const id = req.params['id'] as string;
-      const result = await DeleteKnowledgeBaseService(id);
-      const adminId = (req as AuthenticatedRequest).user?.userId;
-      if (result.status === "success" && adminId) {
-        await createAuditLog({
-          adminId,
-          action: "DELETE_KNOWLEDGE_BASE",
-          targetType: "KnowledgeBase",
-          targetId: id,
-        });
-      }
+      const result = await DeleteKnowledgeBaseService(id, this.adminId(req));
       res.status(result.code).json(result);
     } catch (error) {
       next(error);

@@ -12,7 +12,7 @@ interface UpdateKnowledgeBaseData {
   isActive?: boolean;
 }
 
-export async function UpdateKnowledgeBaseService(data: UpdateKnowledgeBaseData) {
+export async function UpdateKnowledgeBaseService(data: UpdateKnowledgeBaseData, adminId: string) {
   try {
     const existing = await findKBById(data.id);
     if (!existing) {
@@ -36,7 +36,7 @@ export async function UpdateKnowledgeBaseService(data: UpdateKnowledgeBaseData) 
     if (data.isActive !== undefined) updatePayload.isActive = data.isActive;
     if (vectorStr !== undefined) updatePayload.embedding = vectorStr;
 
-    await updateKB(data.id, updatePayload);
+    await updateKB(data.id, updatePayload, adminId);
 
     return {
       code: 200,

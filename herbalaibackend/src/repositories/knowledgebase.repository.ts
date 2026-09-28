@@ -1,5 +1,6 @@
 import { prisma } from "../lib/prisma.js";
 import { Prisma } from "@prisma/client";
+import { runAuditedMutation } from "./audit.repository.js";
 
 export interface KBData {
   question?: string;
@@ -14,8 +15,12 @@ export interface KBData {
 /**
  * Create knowledge base entry with vector embedding
  */
-export const createKB = async (data: KBData) => {
-  const records = await prisma.$queryRawUnsafe<Array<{ id: string }>>(
+export const createKB = (data: KBData, adminId: string) => runAuditedMutation({
+  adminId,
+  action: "CREATE_KNOWLEDGE_BASE",
+  targetType: "KnowledgeBase",
+}, async (transaction) => {
+  const records = await transaction.$queryRawUnsafe<Array<{ id: string }>>(
     `INSERT INTO "KnowledgeBase" (id, question, answer, category, tags, metadata, embedding, "isActive", "createdAt", "updatedAt") 
      VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6::vector, true, NOW(), NOW())
      RETURNING id`,
@@ -26,15 +31,21 @@ export const createKB = async (data: KBData) => {
     data.metadata || {},
     data.embedding || null
   );
-  return records[0];
-};
+  const created = records[0];
+  if (!created) throw new Error("Knowledge base insert returned no record");
+  return { result: created, targetId: created.id, details: { question: data.question } };
+});
 
-export const upsertKB = async (data: KBData & { question: string }) => {
-  const existing = await prisma.knowledgeBase.findUnique({
+export const upsertKB = (data: KBData & { question: string }, adminId: string) => runAuditedMutation({
+  adminId,
+  action: "IMPORT_KNOWLEDGE_BASE",
+  targetType: "KnowledgeBase",
+}, async (transaction) => {
+  const existing = await transaction.knowledgeBase.findUnique({
     where: { question: data.question },
     select: { id: true },
   });
-  const record = await prisma.knowledgeBase.upsert({
+  const record = await transaction.knowledgeBase.upsert({
     where: { question: data.question },
     create: {
       question: data.question,
@@ -54,21 +65,26 @@ export const upsertKB = async (data: KBData & { question: string }) => {
     select: { id: true },
   });
   if (data.embedding) {
-    await prisma.$executeRawUnsafe(
+    await transaction.$executeRawUnsafe(
       'UPDATE "KnowledgeBase" SET embedding = $1::vector, "updatedAt" = NOW() WHERE id = $2',
       data.embedding,
       record.id,
     );
   }
-  return { ...record, created: !existing };
-};
+  const result = { ...record, created: !existing };
+  return { result, targetId: record.id, details: { question: data.question, created: result.created } };
+});
 
 /**
  * Update knowledge base entry, optionally updating vector embedding
  */
-export const updateKB = async (id: string, data: Partial<KBData>) => {
+export const updateKB = (id: string, data: Partial<KBData>, adminId: string) => runAuditedMutation({
+  adminId,
+  action: "UPDATE_KNOWLEDGE_BASE",
+  targetType: "KnowledgeBase",
+}, async (transaction) => {
   if (data.embedding) {
-    return await prisma.$executeRawUnsafe(
+    const updated = await transaction.$executeRawUnsafe(
       `UPDATE "KnowledgeBase" SET 
         question = COALESCE($1, question), 
         answer = COALESCE($2, answer), 
@@ -88,6 +104,8 @@ export const updateKB = async (id: string, data: Partial<KBData>) => {
       data.isActive ?? null,
       id
     );
+    if (updated !== 1) throw new Error("Knowledge base record was not updated");
+    return { result: undefined, targetId: id, details: { fields: Object.keys(data).filter((field) => field !== "embedding") } };
   } else {
     const updateData: Prisma.KnowledgeBaseUpdateInput = {};
     if (data.question !== undefined) updateData.question = data.question;
@@ -97,21 +115,25 @@ export const updateKB = async (id: string, data: Partial<KBData>) => {
     if (data.metadata !== undefined) updateData.metadata = (data.metadata as Prisma.InputJsonValue) ?? null;
     if (data.isActive !== undefined) updateData.isActive = data.isActive;
 
-    return await prisma.knowledgeBase.update({
+    await transaction.knowledgeBase.update({
       where: { id },
       data: updateData
     });
+    return { result: undefined, targetId: id, details: { fields: Object.keys(data) } };
   }
-};
+});
 
 /**
  * Delete knowledge base entry
  */
-export const deleteKB = async (id: string) => {
-  return await prisma.knowledgeBase.delete({
-    where: { id }
-  });
-};
+export const deleteKB = (id: string, adminId: string) => runAuditedMutation({
+  adminId,
+  action: "DELETE_KNOWLEDGE_BASE",
+  targetType: "KnowledgeBase",
+}, async (transaction) => {
+  const result = await transaction.knowledgeBase.delete({ where: { id } });
+  return { result, targetId: id };
+});
 
 /**
  * Find all entries (excluding embeddings for performance)

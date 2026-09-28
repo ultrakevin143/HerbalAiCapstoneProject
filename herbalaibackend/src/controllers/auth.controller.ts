@@ -3,7 +3,6 @@ import * as authService from "../services/auth.service.js";
 import * as userRepo from "../repositories/user.repository.js";
 import { ENV } from "../config/env.js";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware.js";
-import { createAuditLog } from "../repositories/audit.repository.js";
 import { randomBytes } from "node:crypto";
 
 export class AuthController {
@@ -321,16 +320,6 @@ export class AuthController {
         return;
       }
 
-      const currentUser = await userRepo.findUserById(userId);
-      if (!currentUser || currentUser.role !== 'admin') {
-        res.status(403).json({
-          status: "error",
-          code: 403,
-          message: "Forbidden: Admins only",
-        });
-        return;
-      }
-
       const requestedLimit = Number(req.query["limit"]);
       const requestedPage = Number(req.query["page"]);
       const limit = Number.isInteger(requestedLimit) && requestedLimit > 0 ? Math.min(requestedLimit, 100) : 25;
@@ -363,26 +352,12 @@ export class AuthController {
         return;
       }
 
-      const currentUser = await userRepo.findUserById(adminId);
-      if (!currentUser || currentUser.role !== 'admin') {
-        res.status(403).json({ status: "error", code: 403, message: "Forbidden: Admins only" });
-        return;
-      }
-
       if (adminId === targetUserId) {
         res.status(400).json({ status: "error", code: 400, message: "You cannot ban yourself." });
         return;
       }
 
-      const updatedUser = await userRepo.updateUserBanStatus(targetUserId, true);
-
-      createAuditLog({
-        adminId,
-        action: "BAN_USER",
-        targetType: "User",
-        targetId: targetUserId,
-        details: { targetUsername: updatedUser.username, targetEmail: updatedUser.email },
-      }).catch((e) => console.error("Failed to write audit log:", e));
+      const updatedUser = await userRepo.updateUserBanStatus(targetUserId, true, adminId);
 
       res.status(200).json({
         status: "success",
@@ -406,21 +381,7 @@ export class AuthController {
         return;
       }
 
-      const currentUser = await userRepo.findUserById(adminId);
-      if (!currentUser || currentUser.role !== 'admin') {
-        res.status(403).json({ status: "error", code: 403, message: "Forbidden: Admins only" });
-        return;
-      }
-
-      const updatedUser = await userRepo.updateUserBanStatus(targetUserId, false);
-
-      createAuditLog({
-        adminId,
-        action: "UNBAN_USER",
-        targetType: "User",
-        targetId: targetUserId,
-        details: { targetUsername: updatedUser.username, targetEmail: updatedUser.email },
-      }).catch((e) => console.error("Failed to write audit log:", e));
+      const updatedUser = await userRepo.updateUserBanStatus(targetUserId, false, adminId);
 
       res.status(200).json({
         status: "success",

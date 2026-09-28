@@ -9,7 +9,7 @@ interface CreateKnowledgeBaseData {
   metadata?: Record<string, unknown>;
 }
 
-export async function CreateKnowledgeBaseService(data: CreateKnowledgeBaseData) {
+export async function CreateKnowledgeBaseService(data: CreateKnowledgeBaseData, adminId: string) {
   try {
     // Generate vector embedding based on the question and answer text
     const embedding = await generateEmbedding(`${data.question}\n${data.answer}`);
@@ -18,7 +18,7 @@ export async function CreateKnowledgeBaseService(data: CreateKnowledgeBaseData) 
     const created = await createKB({
       ...data,
       embedding: vectorStr,
-    });
+    }, adminId);
 
     return {
       code: 201,

@@ -9,20 +9,24 @@ export interface CreateAuditLogParams {
   details?: Record<string, unknown>;
 }
 
-/**
- * Creates a new audit log record.
- */
-export const createAuditLog = async (data: CreateAuditLogParams) => {
-  return prisma.auditLog.create({
+export const runAuditedMutation = async <T>(
+  audit: Pick<CreateAuditLogParams, "adminId" | "action" | "targetType">,
+  mutate: (transaction: Prisma.TransactionClient) => Promise<{
+    result: T;
+    targetId: string;
+    details?: Record<string, unknown>;
+  }>,
+): Promise<T> => prisma.$transaction(async (transaction) => {
+  const { result, targetId, details } = await mutate(transaction);
+  await transaction.auditLog.create({
     data: {
-      adminId: data.adminId,
-      action: data.action,
-      targetType: data.targetType,
-      targetId: data.targetId,
-      details: (data.details as Prisma.InputJsonValue) ?? undefined,
+      ...audit,
+      targetId,
+      details: (details as Prisma.InputJsonValue) ?? undefined,
     },
   });
-};
+  return result;
+});
 
 /**
  * Retrieves audit logs with admin details, ordered by most recent.

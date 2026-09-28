@@ -25,7 +25,7 @@ describe('Knowledge base JSON import', () => {
     const result = await ImportKnowledgeBaseService([
       { question: 'How is Lagundi prepared?', answer: 'Use the documented preparation.', tags: ['Lagundi', 'lagundi'], metadata: philippineMetadata },
       { question: 'What evidence is available?', answer: 'The source reports clinical evidence.', metadata: philippineMetadata },
-    ]);
+    ], 'test-admin');
 
     expect(result).toMatchObject({ status: 'success', data: { total: 2, created: 1, updated: 1 } });
     expect(mocks.embed).toHaveBeenCalledTimes(2);
@@ -33,14 +33,14 @@ describe('Knowledge base JSON import', () => {
       question: 'How is Lagundi prepared?',
       tags: ['lagundi'],
       embedding: '[0.1,0.2]',
-    }));
+    }), 'test-admin');
   });
 
   it('rejects duplicate questions before generating embeddings', async () => {
     const result = await ImportKnowledgeBaseService([
       { question: 'Same question?', answer: 'First sufficiently detailed answer.', metadata: philippineMetadata },
       { question: ' same question? ', answer: 'Second sufficiently detailed answer.', metadata: philippineMetadata },
-    ]);
+    ], 'test-admin');
 
     expect(result).toMatchObject({ status: 'error', code: 400 });
     expect(mocks.embed).not.toHaveBeenCalled();
@@ -57,7 +57,7 @@ describe('Knowledge base JSON import', () => {
           sources: [{ title: 'General source', publisher: 'Foreign publisher', url: 'https://example.com/source' }],
         },
       },
-    ]);
+    ], 'test-admin');
 
     expect(result).toMatchObject({
       status: 'error',

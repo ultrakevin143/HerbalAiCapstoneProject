@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import { ENV } from "../config/env.js";
 import { TtlCache } from "../lib/ttl-cache.js";
 import { BatchedLookup } from "../lib/batched-lookup.js";
+import { runAuditedMutation } from "./audit.repository.js";
 
 const userSessionCache = new TtlCache(ENV.AUTH_USER_CACHE_MAX_ENTRIES);
 const userCacheKey = (id: string) => `auth-user:${id}`;
@@ -144,21 +145,32 @@ export const findAllUsers = async (limit = 25, offset = 0) => {
 
 export const countUsers = () => prisma.user.count();
 
-export const updateUserBanStatus = async (id: string, isBanned: boolean) => {
-  const user = await prisma.user.update({
-    where: { id },
-    data: { isBanned },
-    select: {
-      id: true,
-      username: true,
-      email: true,
-      name: true,
-      avatar: true,
-      role: true,
-      joined: true,
-      isBanned: true,
-      emailVerified: true,
-    },
+export const updateUserBanStatus = async (id: string, isBanned: boolean, adminId: string) => {
+  const user = await runAuditedMutation({
+    adminId,
+    action: isBanned ? "BAN_USER" : "UNBAN_USER",
+    targetType: "User",
+  }, async (transaction) => {
+    const updated = await transaction.user.update({
+      where: { id },
+      data: { isBanned },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        name: true,
+        avatar: true,
+        role: true,
+        joined: true,
+        isBanned: true,
+        emailVerified: true,
+      },
+    });
+    return {
+      result: updated,
+      targetId: id,
+      details: { targetUsername: updated.username, targetEmail: updated.email },
+    };
   });
   invalidateCachedUser(id);
   return user;

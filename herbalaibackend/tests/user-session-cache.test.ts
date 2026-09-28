@@ -3,9 +3,13 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const findUnique = vi.fn();
 const findMany = vi.fn();
 const update = vi.fn();
+const auditCreate = vi.fn();
 
 vi.mock('../src/lib/prisma.js', () => ({
-  prisma: { user: { findUnique, findMany, update } },
+  prisma: {
+    user: { findUnique, findMany, update },
+    $transaction: (callback: (transaction: unknown) => unknown) => callback({ user: { update }, auditLog: { create: auditCreate } }),
+  },
 }));
 
 const userRepo = await import('../src/repositories/user.repository.js');
@@ -54,7 +58,7 @@ describe('authenticated user cache', () => {
     update.mockResolvedValue(bannedProfile);
 
     await userRepo.findUserById(profile.id);
-    await userRepo.updateUserBanStatus(profile.id, true);
+    await userRepo.updateUserBanStatus(profile.id, true, 'test-admin');
     await expect(userRepo.findUserById(profile.id)).resolves.toMatchObject({ isBanned: true });
 
     expect(update).toHaveBeenCalledWith(expect.objectContaining({
@@ -90,7 +94,7 @@ describe('authenticated user cache', () => {
     update.mockResolvedValue(bannedProfile);
     const oldLookup = userRepo.findUserById(profile.id);
     await vi.waitFor(() => expect(findMany).toHaveBeenCalledTimes(1));
-    await userRepo.updateUserBanStatus(profile.id, true);
+    await userRepo.updateUserBanStatus(profile.id, true, 'test-admin');
     await expect(userRepo.findUserById(profile.id)).resolves.toMatchObject({ isBanned: true });
     release([profile]);
     await oldLookup;

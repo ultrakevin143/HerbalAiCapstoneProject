@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { createAuditLog } from '../repositories/audit.repository.js';
+import { runAuditedMutation } from '../repositories/audit.repository.js';
 
 import * as herbRepo from '../repositories/herb.repository.js';
 
@@ -265,6 +265,11 @@ export class HerbController {
   public updateHerb = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const id = req.params.id as string;
+      const adminId = (req as AuthenticatedRequest).user?.userId;
+      if (!adminId) {
+        res.status(401).json({ status: 'error', code: 401, message: 'Authentication required' });
+        return;
+      }
       
       const herb = await prisma.herb.findUnique({
         where: { id },
@@ -289,35 +294,34 @@ export class HerbController {
         }
       }
 
-      const updatedHerb = await prisma.herb.update({
-        where: { id },
-        data: {
-          localName: localNameInput || herb.localName,
-          cebuanoName: req.body.cebuanoName !== undefined ? req.body.cebuanoName : herb.cebuanoName,
-          scientificName: scientificNameInput || herb.scientificName,
-          category: req.body.category || herb.category,
-          medicinalUses: req.body.medicinalUses || herb.medicinalUses,
-          preparationMethod: req.body.preparationMethod || herb.preparationMethod,
-          dosage: req.body.dosage || herb.dosage,
-          regionFound: req.body.regionFound !== undefined ? req.body.regionFound : herb.regionFound,
-          warnings: req.body.warnings !== undefined ? req.body.warnings : herb.warnings,
-          imageUrl: req.body.imageUrl !== undefined ? req.body.imageUrl : herb.imageUrl,
-          isDohApproved: req.body.isDohApproved !== undefined ? req.body.isDohApproved : herb.isDohApproved,
-        },
+      const updatedHerb = await runAuditedMutation({
+        adminId,
+        action: 'UPDATE_HERB',
+        targetType: 'Herb',
+      }, async (transaction) => {
+        const updated = await transaction.herb.update({
+          where: { id },
+          data: {
+            localName: localNameInput || herb.localName,
+            cebuanoName: req.body.cebuanoName !== undefined ? req.body.cebuanoName : herb.cebuanoName,
+            scientificName: scientificNameInput || herb.scientificName,
+            category: req.body.category || herb.category,
+            medicinalUses: req.body.medicinalUses || herb.medicinalUses,
+            preparationMethod: req.body.preparationMethod || herb.preparationMethod,
+            dosage: req.body.dosage || herb.dosage,
+            regionFound: req.body.regionFound !== undefined ? req.body.regionFound : herb.regionFound,
+            warnings: req.body.warnings !== undefined ? req.body.warnings : herb.warnings,
+            imageUrl: req.body.imageUrl !== undefined ? req.body.imageUrl : herb.imageUrl,
+            isDohApproved: req.body.isDohApproved !== undefined ? req.body.isDohApproved : herb.isDohApproved,
+          },
+        });
+        return {
+          result: updated,
+          targetId: id,
+          details: { localName: updated.localName, scientificName: updated.scientificName },
+        };
       });
       herbRepo.invalidateHerbCache();
-
-      const authReq = req as AuthenticatedRequest;
-      const adminId = authReq.user?.userId;
-      if (adminId) {
-        createAuditLog({
-          adminId,
-          action: "UPDATE_HERB",
-          targetType: "Herb",
-          targetId: id,
-          details: { localName: updatedHerb.localName, scientificName: updatedHerb.scientificName },
-        }).catch((e) => console.error("Failed to write audit log:", e));
-      }
 
       res.status(200).json({ status: 'success', code: 200, message: 'Herb updated successfully', data: { herb: updatedHerb } });
     } catch (error) {
@@ -331,6 +335,11 @@ export class HerbController {
   public deleteHerb = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const id = req.params.id as string;
+      const adminId = (req as AuthenticatedRequest).user?.userId;
+      if (!adminId) {
+        res.status(401).json({ status: 'error', code: 401, message: 'Authentication required' });
+        return;
+      }
       const herb = await prisma.herb.findUnique({
         where: { id },
       });
@@ -340,22 +349,19 @@ export class HerbController {
         return;
       }
 
-      await prisma.herb.delete({
-        where: { id },
+      await runAuditedMutation({
+        adminId,
+        action: 'DELETE_HERB',
+        targetType: 'Herb',
+      }, async (transaction) => {
+        const deleted = await transaction.herb.delete({ where: { id } });
+        return {
+          result: deleted,
+          targetId: id,
+          details: { localName: deleted.localName, scientificName: deleted.scientificName },
+        };
       });
       herbRepo.invalidateHerbCache();
-
-      const authReq = req as AuthenticatedRequest;
-      const adminId = authReq.user?.userId;
-      if (adminId) {
-        createAuditLog({
-          adminId,
-          action: "DELETE_HERB",
-          targetType: "Herb",
-          targetId: id,
-          details: { localName: herb.localName, scientificName: herb.scientificName },
-        }).catch((e) => console.error("Failed to write audit log:", e));
-      }
 
       res.status(200).json({ status: 'success', code: 200, message: 'Herb deleted successfully' });
     } catch (error) {

@@ -1428,7 +1428,7 @@ export default function AdminPage() {
                     Administrative Audit Logs
                   </h1>
                   <p className="text-xs text-gray-500 font-medium mt-1">
-                    Immutable security log tracking all administrative decisions, database updates, and moderation actions.
+                    Records selected administrator actions in Herbal-Ai. Direct database edits and routine activity are not logged.
                   </p>
                 </div>
 

@@ -3,6 +3,8 @@ import { AuthController } from "../controllers/auth.controller.js";
 import { validateSchema } from "../middlewares/validate.js";
 import { signupSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema, updateProfileSchema } from "../schema/auth.schema.js";
 import { AuthMiddleware } from "../middlewares/auth.middleware.js";
+import { permittedRole } from "../middlewares/role.middleware.js";
+import { Role } from "@prisma/client";
 import rateLimit from "express-rate-limit";
 
 const router = Router();
@@ -60,9 +62,8 @@ router.get("/me", authMiddleware.execute, authController.me);
 router.get("/socket-token", authMiddleware.execute, authController.socketToken);
 router.patch("/me", authMiddleware.execute, validateSchema(updateProfileSchema), authController.updateProfile);
 
-// Get All Users (Admin only check inside controller)
-router.get("/users", authMiddleware.execute, authController.getAllUsers);
-router.post("/users/:id/ban", authMiddleware.execute, authController.banUser);
-router.post("/users/:id/unban", authMiddleware.execute, authController.unbanUser);
+router.get("/users", authMiddleware.execute, permittedRole([Role.admin]), authController.getAllUsers);
+router.post("/users/:id/ban", authMiddleware.execute, permittedRole([Role.admin]), authController.banUser);
+router.post("/users/:id/unban", authMiddleware.execute, permittedRole([Role.admin]), authController.unbanUser);
 
 export default router;

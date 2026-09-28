@@ -25,7 +25,7 @@ const hasPhilippineSourceMetadata = (metadata: Record<string, unknown> | undefin
   });
 };
 
-export async function ImportKnowledgeBaseService(facts: ImportKnowledgeFact[]) {
+export async function ImportKnowledgeBaseService(facts: ImportKnowledgeFact[], adminId: string) {
   try {
     const normalizedQuestions = facts.map((fact) => fact.question.trim().toLowerCase());
     if (new Set(normalizedQuestions).size !== normalizedQuestions.length) {
@@ -57,7 +57,7 @@ export async function ImportKnowledgeBaseService(facts: ImportKnowledgeFact[]) {
     let created = 0;
     let updated = 0;
     for (const fact of prepared) {
-      const result = await upsertKB(fact);
+      const result = await upsertKB(fact, adminId);
       if (result.created) created += 1;
       else updated += 1;
     }
