@@ -87,7 +87,7 @@ export default function SuggestHerbPage() {
     const loadSubmissions = async () => {
       try {
         setSubmissionsError(null);
-        const res = await api.get('/suggest/my-suggestions');
+        const res = await api.get('/suggest');
         if (!cancelled && res.data?.status === 'success') {
           setSubmissions(res.data.data.suggestions || []);
         }
