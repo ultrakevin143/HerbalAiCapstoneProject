@@ -2,6 +2,8 @@ import { afterAll, describe, expect, it, vi } from 'vitest';
 import { randomUUID } from 'node:crypto';
 import request from 'supertest';
 
+vi.mock('express-rate-limit', () => ({ default: () => (_req: unknown, _res: unknown, next: () => void) => next() }));
+
 // Exercise real API/database flows without delivering mail outside the test process.
 const { sendMail, ensureMailReady } = vi.hoisted(() => ({
   sendMail: vi.fn().mockResolvedValue({ messageId: 'intercepted-in-test' }),
@@ -12,6 +14,8 @@ import app from '../src/app.js';
 import { prisma, closeDatabasePool } from '../src/lib/prisma.js';
 import * as tokenRepo from '../src/repositories/token.repository.js';
 import { comparePassword } from '../src/utils/password.js';
+import { onSessionInvalidated } from '../src/lib/session-invalidation.js';
+import { validateAccessSession } from '../src/lib/access-session.js';
 
 const emails: string[] = [];
 const password = 'TEST-only-' + randomUUID();
@@ -94,11 +98,14 @@ describe('Registration and account recovery (mail intercepted)', () => {
     expect((await prisma.user.findUniqueOrThrow({ where: { id: user.id } })).emailVerified).toBeNull();
   });
 
-  it('resets the password once, rejects the old password and revokes refresh sessions', async () => {
+  it('resets the password once, rejects the old password and revokes existing sessions', async () => {
     const user = await signup();
     await prisma.user.update({ where: { id: user.id }, data: { emailVerified: new Date() } });
     const session = await login(user.email);
     expect(session.status).toBe(200);
+    const oldAccessToken = session.body.data.accessToken as string;
+    expect((await request(app).get('/api/auth/me').set('Authorization', `Bearer ${oldAccessToken}`)).status).toBe(200);
+    expect((await validateAccessSession(oldAccessToken)).status).toBe('valid');
     const known = await request(app).post('/api/auth/forgot-password').send({ email: user.email });
     const unknown = await request(app).post('/api/auth/forgot-password').send({ email: `${randomUUID()}@loadtest.invalid` });
     expect(known.status).toBe(200);
@@ -108,11 +115,24 @@ describe('Registration and account recovery (mail intercepted)', () => {
     expect(mail.html).toContain(`/reset-password?token=${reset.token}`);
     expect((await request(app).post('/api/auth/reset-password').send({ token: reset.token, password: 'short' })).status).toBe(400);
     const newPassword = password + '-new';
-    expect((await request(app).post('/api/auth/reset-password').send({ token: reset.token, password: newPassword })).status).toBe(200);
+    const disconnect = vi.fn();
+    const stopListening = onSessionInvalidated(disconnect);
+    try {
+      expect((await request(app).post('/api/auth/reset-password').send({ token: reset.token, password: newPassword })).status).toBe(200);
+      expect(disconnect).toHaveBeenCalledExactlyOnceWith(user.id);
+    } finally {
+      stopListening();
+    }
     expect((await request(app).post('/api/auth/reset-password').send({ token: reset.token, password })).status).toBe(400);
     expect((await login(user.email)).status).toBe(401);
-    expect((await login(user.email, newPassword)).status).toBe(200);
+    expect((await request(app).get('/api/auth/me').set('Authorization', `Bearer ${oldAccessToken}`)).status).toBe(401);
+    expect((await validateAccessSession(oldAccessToken)).status).toBe('invalid');
     expect((await request(app).post('/api/auth/refresh-token').send({ refreshToken: session.body.data.refreshToken })).status).toBe(401);
+    const newSession = await login(user.email, newPassword);
+    expect(newSession.status).toBe(200);
+    expect((await request(app).get('/api/auth/me').set('Authorization', `Bearer ${newSession.body.data.accessToken}`)).status).toBe(200);
+    expect((await validateAccessSession(newSession.body.data.accessToken)).status).toBe('valid');
+    expect((await prisma.user.findUniqueOrThrow({ where: { id: user.id } })).sessionVersion).toBe(user.sessionVersion + 1);
   }, 40000);
 
   it('keeps a reset link during the cooldown, then replaces it after an hour', async () => {

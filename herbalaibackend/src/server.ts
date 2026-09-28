@@ -2,9 +2,10 @@ import app from './app.js';
 import { ENV } from './config/env.js';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { verifyAccessToken } from './utils/jwt.js';
 import { closeDatabasePool, warmDatabasePool } from './lib/prisma.js';
 import { listen } from './lib/listen.js';
+import { onSessionInvalidated } from './lib/session-invalidation.js';
+import { validateAccessSession } from './lib/access-session.js';
 
 const httpServer = createServer(app);
 
@@ -27,28 +28,34 @@ export const io = new Server(httpServer, {
 });
 
 // Socket.io middleware to verify and authenticate connected users
-io.use((socket, next) => {
+io.use(async (socket, next) => {
   const token =
     (socket.handshake.auth && socket.handshake.auth.token) ||
     parseCookies(socket.handshake.headers.cookie)['accessToken'];
 
   if (token) {
-    const payload = verifyAccessToken(token);
-    if (payload) {
-      socket.data.user = payload;
-      socket.data.userId = payload.userId;
+    try {
+      const session = await validateAccessSession(token);
+      if (session.status === 'valid') {
+        socket.data.user = session.payload;
+        socket.data.userId = session.payload.userId;
+      }
+    } catch (error) {
+      next(error as Error);
+      return;
     }
   }
   next();
 });
 
-io.on('connection', (socket) => {
-  console.log(`🔌 Client connected: ${socket.id}`);
+onSessionInvalidated((userId) => {
+  io.in(userId).disconnectSockets(true);
+});
 
+io.on('connection', (socket) => {
   // Automatically join private room if user is authenticated
   if (socket.data.userId) {
     socket.join(socket.data.userId);
-    console.log(`👤 Authenticated user ${socket.data.userId} auto-joined private room`);
   }
 
   socket.on('forum:join', (threadId: unknown) => {
@@ -63,9 +70,6 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('disconnect', () => {
-    console.log(`🔌 Client disconnected: ${socket.id}`);
-  });
 });
 
 

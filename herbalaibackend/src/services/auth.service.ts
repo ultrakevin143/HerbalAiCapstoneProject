@@ -1,11 +1,12 @@
 import * as userRepo from "../repositories/user.repository.js";
 import * as tokenRepo from "../repositories/token.repository.js";
 import { hashPassword, comparePassword } from "../utils/password.js";
-import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "../utils/jwt.js";
 import { OAuth2Client } from "google-auth-library";
 import { ENV } from "../config/env.js";
 import crypto from "crypto";
 import { ensureMailReady, sendMail } from "../lib/mailer.js";
+import { notifySessionInvalidated } from "../lib/session-invalidation.js";
 
 // ---- Security helper: prevent HTML injection in email templates ----
 const escapeHtml = (str: string): string =>
@@ -157,7 +158,7 @@ export const login = async (data: { identifier?: string; email?: string; passwor
   // second remote database round trip. Ban/profile mutations still invalidate it.
   userRepo.primeCachedUser(user);
 
-  const tokenPayload = { userId: user.id, role: user.role };
+  const tokenPayload = { userId: user.id, role: user.role, sessionVersion: user.sessionVersion };
   const accessToken = generateAccessToken(tokenPayload);
   const refreshToken = generateRefreshToken(tokenPayload);
 
@@ -190,7 +191,9 @@ export const login = async (data: { identifier?: string; email?: string; passwor
 
 export const refreshToken = async (token: string) => {
   const tokenRecord = await tokenRepo.findActiveRefreshToken(token);
-  if (!tokenRecord) {
+  const payload = verifyRefreshToken(token);
+  if (!tokenRecord || !payload || payload.userId !== tokenRecord.userId ||
+      (payload.sessionVersion ?? 0) !== tokenRecord.user.sessionVersion) {
     throw { status: 401, message: "Invalid or expired refresh token." };
   }
 
@@ -203,7 +206,7 @@ export const refreshToken = async (token: string) => {
   await tokenRepo.revokeToken(tokenRecord.id);
 
   // Generate new tokens
-  const tokenPayload = { userId: tokenRecord.userId, role: tokenRecord.user.role };
+  const tokenPayload = { userId: tokenRecord.userId, role: tokenRecord.user.role, sessionVersion: tokenRecord.user.sessionVersion };
   const newAccessToken = generateAccessToken(tokenPayload);
   const newRefreshToken = generateRefreshToken(tokenPayload);
 
@@ -299,7 +302,7 @@ export const googleLogin = async (code: string) => {
   userRepo.primeCachedUser(user);
 
   // Issue JWT tokens (same flow as regular login)
-  const tokenPayload = { userId: user.id, role: user.role };
+  const tokenPayload = { userId: user.id, role: user.role, sessionVersion: user.sessionVersion };
   const accessToken = generateAccessToken(tokenPayload);
   const refreshToken = generateRefreshToken(tokenPayload);
 
@@ -480,6 +483,7 @@ export const resetPassword = async (token: string, newPassword: string) => {
   });
   if (!redeemed) throw { status: 400, message: "Invalid or expired password reset token." };
   userRepo.invalidateCachedUser(tokenRecord.userId);
+  notifySessionInvalidated(tokenRecord.userId);
 
   return { message: "Password reset successful. You can now log in with your new password." };
 };

@@ -1,10 +1,22 @@
-import { describe, it, expect } from 'vitest';
+import { afterAll, beforeAll, describe, it, expect } from 'vitest';
+import { randomUUID } from 'node:crypto';
 import request from 'supertest';
 import app from '../src/app.js';
 import { generateAccessToken } from '../src/utils/jwt.js';
+import { prisma } from '../src/lib/prisma.js';
 import { approveSuggestionSchema, requestSuggestionChangesSchema, suggestHerbSchema } from '../src/schema/suggest.schema.js';
 
-const token = generateAccessToken({ userId: 'validation-only-no-database-user', role: 'contributor' });
+const userId = randomUUID();
+const token = generateAccessToken({ userId, role: 'contributor' });
+beforeAll(async () => {
+  await prisma.user.create({ data: {
+    id: userId, username: `validation_test_${userId}`,
+    email: `validation_test_${userId}@example.invalid`, password: 'test-only', name: 'Validation test',
+  } });
+});
+afterAll(async () => {
+  await prisma.user.delete({ where: { id: userId } });
+});
 const body = { localName: 'Test', scientificName: 'Test scientific', category: 'Other', medicinalUses: 'Test only', preparationMethod: 'Do not use', dosage: 'None', informationSource: 'Test reference' };
 describe('Suggestion validation before persistence/upload', () => {
   for (const field of Object.keys(body)) {

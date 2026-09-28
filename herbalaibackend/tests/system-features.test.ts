@@ -17,9 +17,19 @@ import { generateAccessToken } from "../src/utils/jwt.js";
 import { prisma } from "../src/lib/prisma.js";
 
 describe("Herbal AI - Comprehensive System Features & AI Chat Verification", () => {
+  const chatUserId = randomUUID();
+  beforeAll(async () => {
+    await prisma.user.create({ data: {
+      id: chatUserId, username: `system_test_${chatUserId}`,
+      email: `system_test_${chatUserId}@example.invalid`, password: 'test-only', name: 'System test',
+    } });
+  });
+  afterAll(async () => {
+    await prisma.user.delete({ where: { id: chatUserId } });
+  });
   // Generate valid test JWT tokens
   const contributorToken = generateAccessToken({
-    userId: "test-user-id-001",
+    userId: chatUserId,
     role: "contributor",
   });
 

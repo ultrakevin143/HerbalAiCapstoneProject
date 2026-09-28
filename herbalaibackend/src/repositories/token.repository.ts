@@ -21,7 +21,7 @@ export const redeemAccountToken = async (redemption: AccountTokenRedemption): Pr
     if (redemption.type === 'EMAIL_VERIFY') {
       await tx.user.update({ where: { id: redemption.userId }, data: { emailVerified: now } });
     } else {
-      await tx.user.update({ where: { id: redemption.userId }, data: { password: redemption.passwordHash } });
+      await tx.user.update({ where: { id: redemption.userId }, data: { password: redemption.passwordHash, sessionVersion: { increment: 1 } } });
       await tx.token.updateMany({
         where: { userId: redemption.userId, type: 'REFRESH', revokedAt: null },
         data: { revokedAt: now },
@@ -55,6 +55,7 @@ export const findActiveRefreshToken = async (token: string) => {
         select: {
           id: true,
           role: true,
+          sessionVersion: true,
         },
       },
     },

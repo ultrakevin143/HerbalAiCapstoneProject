@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
-import { verifyAccessToken } from "../utils/jwt.js";
 import type { JwtPayload } from "../utils/jwt.js";
+import { validateAccessSession } from "../lib/access-session.js";
 
 export type AuthenticatedRequest = Request & { user?: JwtPayload };
 
@@ -21,14 +21,21 @@ export class AuthMiddleware {
       return;
     }
 
-    const payload = verifyAccessToken(accessToken);
-    if (!payload) {
-      res.status(401).json({ code: 401, status: "error", message: "Invalid or expired token" });
-      return;
+    try {
+      const session = await validateAccessSession(accessToken);
+      if (session.status === 'invalid') {
+        res.status(401).json({ code: 401, status: "error", message: "Session expired. Please sign in again." });
+        return;
+      }
+      if (session.status === 'banned') {
+        res.status(403).json({ code: 403, status: "error", message: "Your account has been banned." });
+        return;
+      }
+      authReq.user = session.payload;
+      next();
+    } catch (error) {
+      next(error);
     }
-
-    authReq.user = payload;
-    next();
   };
 
   private extractBearerToken(header?: string): string | undefined {
