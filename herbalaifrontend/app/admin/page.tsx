@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { useAuth } from '../../context/AuthContext';
 import SessionUnavailable from '../../components/SessionUnavailable';
@@ -9,6 +10,7 @@ import api from '../../lib/axios';
 import { cachedApiGet, invalidateApiGetCache } from '../../lib/request-cache';
 import SuggestionReviewEditor, { type ReviewReference } from '../../components/SuggestionReviewEditor';
 import BrandMark from '../../components/BrandMark';
+import { ThemeToggle } from '../../components/DisplayPreferences';
 import SuggestionStatusBadge, { type SuggestionStatus } from '../../components/SuggestionStatusBadge';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
@@ -32,6 +34,11 @@ import {
   LoaderCircle,
   Upload,
 } from 'lucide-react';
+
+const getErrorMessage = (error: unknown, fallback: string): string =>
+  axios.isAxiosError<{ message?: string }>(error)
+    ? error.response?.data?.message || fallback
+    : fallback;
 
 const AdminDashboardCharts = dynamic(() => import('../../components/AdminDashboardCharts'), {
   loading: () => (
@@ -302,8 +309,8 @@ export default function AdminPage() {
           const auditRes = await api.get('/admin/audit-logs');
           if (auditRes.data?.status === 'success') setAuditLogs(auditRes.data.data.logs || []);
         }
-      } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
-        setError(err.response?.data?.message || (activeTab === 'pending' ? 'Unable to load suggestions. Please try again.' : 'Error connecting to server.'));
+      } catch (error: unknown) {
+        setError(getErrorMessage(error, activeTab === 'pending' ? 'Unable to load suggestions. Please try again.' : 'Error connecting to server.'));
       }
     };
 
@@ -336,8 +343,8 @@ export default function AdminPage() {
         setSuccessMsg(`Herb suggestion approved and added to the library!`);
         await refreshSuggestions();
       }
-    } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
-      setError(err.response?.data?.message || 'Failed to approve suggestion.');
+    } catch (error: unknown) {
+      setError(getErrorMessage(error, 'Failed to approve suggestion.'));
     } finally {
       setActioningId(null);
     }
@@ -360,8 +367,8 @@ export default function AdminPage() {
         setSuccessMsg('Changes requested.');
         await refreshSuggestions();
       }
-    } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
-      setError(err.response?.data?.message || 'Failed to request changes.');
+    } catch (error: unknown) {
+      setError(getErrorMessage(error, 'Failed to request changes.'));
     } finally {
       setActioningId(null);
     }
@@ -379,8 +386,8 @@ export default function AdminPage() {
         setSuccessMsg(`Suggestion has been rejected.`);
         await refreshSuggestions();
       }
-    } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
-      setError(err.response?.data?.message || 'Failed to reject suggestion.');
+    } catch (error: unknown) {
+      setError(getErrorMessage(error, 'Failed to reject suggestion.'));
     } finally {
       setActioningId(null);
     }
@@ -421,8 +428,8 @@ export default function AdminPage() {
         setAllHerbs((prev) => prev.filter((h) => h.id !== id));
         setHerbsTotal((total) => Math.max(0, total - 1));
       }
-    } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
-      setError(err.response?.data?.message || 'Failed to delete herb.');
+    } catch (error: unknown) {
+      setError(getErrorMessage(error, 'Failed to delete herb.'));
     }
   };
 
@@ -461,8 +468,8 @@ export default function AdminPage() {
         setAllHerbs((prev) => prev.map(h => h.id === editingHerb.id ? { ...h, ...herbFormData } : h));
         closeEditHerbModal();
       }
-    } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
-      setError(err.response?.data?.message || 'Failed to update herb.');
+    } catch (error: unknown) {
+      setError(getErrorMessage(error, 'Failed to update herb.'));
     }
   };
 
@@ -504,8 +511,8 @@ export default function AdminPage() {
           closeKbModal();
         }
       }
-    } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
-      setError(err.response?.data?.message || 'Failed to save knowledge base entry.');
+    } catch (error: unknown) {
+      setError(getErrorMessage(error, 'Failed to save knowledge base entry.'));
     }
   };
 
@@ -588,8 +595,8 @@ export default function AdminPage() {
         setKbList((prev) => prev.filter((item) => item.id !== id));
         setKbTotal((total) => Math.max(0, total - 1));
       }
-    } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
-      setError(err.response?.data?.message || 'Failed to delete knowledge base entry.');
+    } catch (error: unknown) {
+      setError(getErrorMessage(error, 'Failed to delete knowledge base entry.'));
     }
   };
 
@@ -604,8 +611,8 @@ export default function AdminPage() {
           prev.map((item) => (item.id === id ? { ...item, isActive: !currentIsActive } : item))
         );
       }
-    } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
-      setError(err.response?.data?.message || 'Failed to update entry status.');
+    } catch (error: unknown) {
+      setError(getErrorMessage(error, 'Failed to update entry status.'));
     }
   };
 
@@ -637,9 +644,9 @@ export default function AdminPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[#f0f7f2]">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#2d6a4f] border-t-transparent"></div>
-        <p className="text-[#2d6a4f] font-extrabold animate-pulse">Loading console...</p>
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-canvas">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-brand border-t-transparent"></div>
+        <p className="font-extrabold text-ink animate-pulse">Loading console...</p>
       </div>
     );
   }
@@ -654,12 +661,12 @@ export default function AdminPage() {
 
   if (user.role !== 'admin') {
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-[#f0f7f2] px-4">
-        <div className="max-w-md w-full rounded-3xl border border-rose-100 bg-white p-8 shadow-xl text-center">
+      <div className="min-h-screen flex flex-col justify-center items-center bg-canvas px-4">
+        <div className="max-w-md w-full rounded-3xl border border-line bg-panel p-8 shadow-xl text-center">
           <span className="text-5xl mb-4 inline-block">🚫</span>
-          <h2 className="text-2xl font-black text-[#1b4332] mb-3">Access Denied</h2>
-          <p className="text-sm font-semibold text-[#6a7282] mb-6">
-            You are currently logged in as <strong className="text-[#1b4332]">{user.name}</strong> ({user.role}), but only Administrators can access this dashboard.
+          <h2 className="text-2xl font-black text-ink mb-3">Access Denied</h2>
+          <p className="text-sm font-semibold text-muted mb-6">
+            You are currently logged in as <strong className="text-ink">{user.name}</strong> ({user.role}), but only Administrators can access this dashboard.
           </p>
           <div className="space-y-3">
             <button
@@ -706,10 +713,10 @@ export default function AdminPage() {
       {/* Sidebar Console */}
       <aside className={`admin-sidebar ${mobileNavOpen ? 'is-open' : ''}`}>
         <div className="admin-brand">
-          <BrandMark className="h-9 w-9 shrink-0 text-white" />
+          <BrandMark className="h-9 w-9 shrink-0 text-brand" />
           <div>
-            <strong className="text-white font-black text-lg">Herbal-Ai</strong>
-            <span className="text-white/80 text-xs block font-bold">Admin Console</span>
+            <strong className="text-ink font-black text-lg">Herbal-Ai</strong>
+            <span className="text-muted text-xs block font-bold">Admin Console</span>
           </div>
           <button type="button" className="admin-menu-toggle" aria-label="Toggle admin navigation" aria-expanded={mobileNavOpen} aria-controls="admin-navigation" onClick={() => setMobileNavOpen(!mobileNavOpen)}>
             {mobileNavOpen ? 'Close' : 'Menu'}
@@ -772,8 +779,9 @@ export default function AdminPage() {
             <ArrowLeft className="h-4 w-4" />
             <span>Public Site</span>
           </button>
-          <div className="admin-user-chip text-white/50 border-t border-white/10 pt-3 mt-2">
-            <span className="block font-bold text-white/80">{user.name}</span>
+          <ThemeToggle className="admin-nav-link subtle flex items-center gap-2" />
+          <div className="admin-user-chip border-t border-line pt-3 mt-2">
+            <span className="block font-bold text-ink">{user.name}</span>
             <span className="text-[10px] uppercase tracking-wider font-extrabold">Administrator</span>
           </div>
         </div>
@@ -781,7 +789,7 @@ export default function AdminPage() {
 
       {/* Main Viewport */}
       <div className="admin-main">
-        <main className={`admin-content p-8 ${activeTab === 'dashboard' || activeTab === 'pending' ? 'bg-canvas' : 'bg-[#f8faf7]'}`}>
+        <main className="admin-content bg-canvas p-8">
           {error && (
             <div className="mb-6 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-rose-800 font-bold shadow-sm flex items-center gap-2">
               <AlertCircle className="h-5 w-5 text-rose-600 shrink-0" />
@@ -790,8 +798,8 @@ export default function AdminPage() {
           )}
 
           {successMsg && (
-            <div className="mb-6 rounded-2xl border border-[#40916c] bg-[#eef5f0] p-4 text-[#1b4332] font-bold shadow-sm flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-[#2d6a4f] shrink-0" />
+            <div className="mb-6 rounded-2xl border border-line-strong bg-soft p-4 text-ink font-bold shadow-sm flex items-center gap-2">
+              <CheckCircle2 className="h-5 w-5 text-accent shrink-0" />
               <span>{successMsg}</span>
             </div>
           )}
@@ -1078,29 +1086,27 @@ export default function AdminPage() {
 
           {/* TAB 3: ALL HERBS (DATABASE) */}
           {activeTab === 'library' && (
-            <div className="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm">
+            <div className="rounded-2xl border border-line bg-panel p-6 shadow-sm">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                <h2 className="font-black italic text-xl text-[#1b4332]">
+                <h2 className="font-black italic text-xl text-ink">
                   Published Herbs ({herbsTotal})
                 </h2>
                 
                 {/* Search Bar */}
                 <div className="relative max-w-xs w-full">
-                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                    🔍
-                  </span>
+                  <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" aria-hidden="true" />
                   <input
                     type="text"
                     placeholder="Search herbs..."
                     value={librarySearch}
                     onChange={(e) => { setLibrarySearch(e.target.value); setHerbsPage(1); }}
-                    className="w-full pl-9 pr-4 py-1.5 text-xs font-semibold rounded-full border border-gray-200 focus:outline-none focus:border-[#2d6a4f] bg-gray-50/50"
+                    className="w-full rounded-lg border border-input bg-panel py-2 pl-9 pr-4 text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   />
                 </div>
               </div>
 
               {filteredHerbs.length === 0 ? (
-                <p className="text-sm font-semibold text-gray-500 text-center py-8">No matching records found.</p>
+                <p className="text-sm font-semibold text-muted text-center py-8">No matching records found.</p>
               ) : (
                 <div className="admin-table-wrap">
                   <table className="admin-table">
@@ -1118,7 +1124,7 @@ export default function AdminPage() {
                       {filteredHerbs.map((herb) => (
                         <tr key={herb.id}>
                           <td>
-                            <div className="h-10 w-10 rounded-lg overflow-hidden border border-gray-100 bg-gray-50">
+                            <div className="h-10 w-10 rounded-lg overflow-hidden border border-line bg-soft">
                               {herb.imageUrl ? (
                                 <img src={herb.imageUrl} alt={herb.localName} className="h-full w-full object-cover" />
                               ) : (
@@ -1126,12 +1132,12 @@ export default function AdminPage() {
                               )}
                             </div>
                           </td>
-                          <td className="font-extrabold text-[#1b4332]">{herb.localName}</td>
-                          <td className="italic text-[#2d6a4f] font-bold">{herb.scientificName}</td>
+                          <td className="font-extrabold text-ink">{herb.localName}</td>
+                          <td className="italic text-accent font-bold">{herb.scientificName}</td>
                           <td>
                             <span className="admin-role-pill">{herb.category}</span>
                           </td>
-                          <td className="max-w-xs truncate text-[#6a7282] font-semibold">{herb.medicinalUses}</td>
+                          <td className="max-w-xs truncate text-muted font-semibold">{herb.medicinalUses}</td>
                           <td>
                             <div className="flex items-center gap-3">
                               <button
@@ -1142,7 +1148,7 @@ export default function AdminPage() {
                               </button>
                               <button
                                 onClick={() => router.push(`/library`)}
-                                className="text-xs text-[#2d6a4f] hover:underline font-black"
+                                className="text-xs text-accent hover:underline font-black"
                               >
                                 View in Library
                               </button>
@@ -1161,7 +1167,7 @@ export default function AdminPage() {
                   </table>
                 </div>
               )}
-              <div className="mt-4 flex items-center justify-between text-sm text-[#1b4332]">
+              <div className="mt-4 flex items-center justify-between text-sm text-ink">
                 <span>Page {herbsPage} of {Math.max(1, Math.ceil(herbsTotal / 25))}</span>
                 <div className="flex gap-2">
                   <button type="button" disabled={herbsPage === 1} onClick={() => setHerbsPage((page) => page - 1)} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Previous</button>
@@ -1173,8 +1179,8 @@ export default function AdminPage() {
 
           {/* TAB 4: USERS MANAGEMENT */}
           {activeTab === 'users' && (
-            <div className="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm">
-              <h2 className="font-black italic text-xl text-[#1b4332] mb-6">
+            <div className="rounded-2xl border border-line bg-panel p-6 shadow-sm">
+              <h2 className="font-black italic text-xl text-ink mb-6">
                 User Management Console
               </h2>
 
@@ -1192,21 +1198,21 @@ export default function AdminPage() {
                   <tbody>
                     {usersList.map((u) => (
                       <tr key={u.id}>
-                        <td className="font-extrabold text-[#1b4332] flex items-center gap-2">
-                          <div className="h-8 w-8 rounded-full bg-[#2d6a4f]/20 text-[#1b4332] flex items-center justify-center font-bold text-xs border border-[#2d6a4f]/10">
+                        <td className="font-extrabold text-ink flex items-center gap-2">
+                          <div className="h-8 w-8 rounded-full bg-soft text-ink flex items-center justify-center font-bold text-xs border border-line">
                             {u.name?.charAt(0).toUpperCase() || 'U'}
                           </div>
                           <div>
-                            <span className="block">{u.name} {u.id === user.id ? <span className="text-xs text-gray-400 font-bold ml-1">(You)</span> : ''}</span>
-                            <span className="text-[10px] text-gray-400 font-semibold block">@{u.username}</span>
+                            <span className="block">{u.name} {u.id === user.id ? <span className="text-xs text-muted font-bold ml-1">(You)</span> : ''}</span>
+                            <span className="text-[10px] text-muted font-semibold block">@{u.username}</span>
                           </div>
                         </td>
-                        <td className="font-semibold text-gray-500">{u.email}</td>
+                        <td className="font-semibold text-muted">{u.email}</td>
                         <td>
                           <span className={`text-[10px] font-black tracking-wider px-2.5 py-0.5 rounded-full uppercase ${
                             u.role === 'admin' ? 'bg-[#1b4332] text-white' :
                             u.role === 'botanist' ? 'bg-[#40916c] text-white' :
-                            'bg-gray-100 text-[#1b4332]'
+                            'bg-soft text-ink'
                           }`}>
                             {u.role}
                           </span>
@@ -1243,7 +1249,7 @@ export default function AdminPage() {
                   </tbody>
                 </table>
               </div>
-              <div className="mt-4 flex items-center justify-between text-sm text-[#1b4332]">
+              <div className="mt-4 flex items-center justify-between text-sm text-ink">
                 <span>Page {usersPage} of {Math.max(1, Math.ceil(usersTotal / 25))} · {usersTotal} users</span>
                 <div className="flex gap-2">
                   <button type="button" disabled={usersPage === 1} onClick={() => setUsersPage((page) => page - 1)} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Previous</button>
@@ -1255,13 +1261,13 @@ export default function AdminPage() {
 
           {/* TAB 5: KNOWLEDGE BASE FAQ MANAGER */}
           {activeTab === 'knowledgebase' && (
-            <div className="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm font-sans">
+            <div className="rounded-2xl border border-line bg-panel p-6 shadow-sm font-sans">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <div>
-                  <h2 className="font-serif-custom font-black italic text-xl text-[#1b4332]">
+                  <h2 className="font-serif-custom font-black italic text-xl text-ink">
                     Dr. AI RAG Facts ({kbTotal})
                   </h2>
-                  <p className="text-xs text-gray-500 mt-1">Manage QA resources used by Dr. AI to generate RAG responses</p>
+                  <p className="text-xs text-muted mt-1">Manage QA resources used by Dr. AI to generate RAG responses</p>
                 </div>
                 
                 <div className="flex items-center gap-3">
@@ -1275,7 +1281,7 @@ export default function AdminPage() {
                       placeholder="Search KB items..."
                       value={kbSearch}
                       onChange={(e) => { setKbSearch(e.target.value); setKbPage(1); }}
-                      className="w-full pl-9 pr-4 py-1.5 text-xs font-semibold rounded-full border border-gray-200 focus:outline-none focus:border-[#2d6a4f] bg-gray-50/50"
+                      className="w-full rounded-lg border border-input bg-panel py-2 pl-9 pr-4 text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     />
                   </div>
 
@@ -1288,14 +1294,14 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-[#8b9d83]/35 bg-[#8b9d83]/10 p-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-line bg-soft p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-3">
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#606c38] text-white">
                     <FileJson className="h-5 w-5" />
                   </span>
                   <div>
-                    <p className="text-sm font-extrabold text-[#1b4332]">Import reviewed RAG facts</p>
-                    <p className="mt-1 max-w-2xl text-xs leading-relaxed text-gray-600">
+                    <p className="text-sm font-extrabold text-ink">Import reviewed RAG facts</p>
+                    <p className="mt-1 max-w-2xl text-xs leading-relaxed text-muted">
                       Upload one fact or an array of up to 50 facts. Dr. AI creates fresh embeddings and updates matching questions.
                     </p>
                   </div>
@@ -1304,21 +1310,21 @@ export default function AdminPage() {
                   <a
                     href="/templates/philippine-herbal-medicine-kb-facts.json"
                     download
-                    className="inline-flex items-center gap-1.5 rounded-full border border-[#606c38]/30 bg-white px-3 py-2 text-xs font-bold text-[#1b4332] transition hover:bg-[#8b9d83]/10"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-line bg-panel px-3 py-2 text-xs font-bold text-ink transition hover:bg-soft"
                   >
                     <Download className="h-3.5 w-3.5" /> Philippine core
                   </a>
                   <a
                     href="/templates/lagundi-kb-facts.json"
                     download
-                    className="inline-flex items-center gap-1.5 rounded-full border border-[#606c38]/30 bg-white px-3 py-2 text-xs font-bold text-[#1b4332] transition hover:bg-[#8b9d83]/10"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-line bg-panel px-3 py-2 text-xs font-bold text-ink transition hover:bg-soft"
                   >
                     <Download className="h-3.5 w-3.5" /> Lagundi pack
                   </a>
                   <a
                     href="/templates/pitahc-nine-herbs-kb-facts.json"
                     download
-                    className="inline-flex items-center gap-1.5 rounded-full border border-[#606c38]/30 bg-white px-3 py-2 text-xs font-bold text-[#1b4332] transition hover:bg-[#8b9d83]/10"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-line bg-panel px-3 py-2 text-xs font-bold text-ink transition hover:bg-soft"
                   >
                     <Download className="h-3.5 w-3.5" /> Nine-herb pack
                   </a>
@@ -1337,7 +1343,7 @@ export default function AdminPage() {
               </div>
 
               {filteredKbList.length === 0 ? (
-                <p className="text-sm font-semibold text-gray-500 text-center py-8">No knowledge base records found.</p>
+                <p className="text-sm font-semibold text-muted text-center py-8">No knowledge base records found.</p>
               ) : (
                 <div className="admin-table-wrap">
                   <table className="admin-table">
@@ -1354,23 +1360,23 @@ export default function AdminPage() {
                     <tbody>
                       {filteredKbList.map((item) => (
                         <tr key={item.id}>
-                          <td className="font-extrabold text-[#1b4332] align-top text-xs leading-normal">{item.question}</td>
-                          <td className="text-gray-500 font-semibold align-top text-xs leading-relaxed max-w-sm whitespace-pre-line">{item.answer}</td>
+                          <td className="font-extrabold text-ink align-top text-xs leading-normal">{item.question}</td>
+                          <td className="text-muted font-semibold align-top text-xs leading-relaxed max-w-sm whitespace-pre-line">{item.answer}</td>
                           <td className="align-top">
                             {item.category ? (
                               <span className="admin-role-pill">{item.category}</span>
                             ) : (
-                              <span className="text-gray-300 text-xs italic">-</span>
+                              <span className="text-muted text-xs italic">-</span>
                             )}
                           </td>
                           <td className="align-top">
                             <div className="flex flex-wrap gap-1">
                               {item.tags.map((tag, tIdx) => (
-                                <span key={tIdx} className="text-[9px] bg-gray-100 text-[#2d6a4f] px-1.5 py-0.5 rounded font-bold">
+                                <span key={tIdx} className="text-[9px] bg-soft text-ink px-1.5 py-0.5 rounded font-bold">
                                   {tag}
                                 </span>
                               ))}
-                              {item.tags.length === 0 && <span className="text-gray-300 text-xs italic">-</span>}
+                              {item.tags.length === 0 && <span className="text-muted text-xs italic">-</span>}
                             </div>
                           </td>
                           <td className="align-top">
@@ -1379,7 +1385,7 @@ export default function AdminPage() {
                               className={`text-[10px] font-black px-2 py-0.5 rounded-full border cursor-pointer ${
                                 item.isActive 
                                   ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
-                                  : 'bg-gray-100 text-gray-400 border-gray-200'
+                                  : 'bg-soft text-muted border-line'
                               }`}
                             >
                               {item.isActive ? 'Active' : 'Inactive'}
@@ -1389,7 +1395,7 @@ export default function AdminPage() {
                             <div className="flex items-center gap-3">
                               <button
                                 onClick={() => openKbModal(item)}
-                                className="text-xs text-[#2d6a4f] hover:text-[#1b4332] font-black inline-flex items-center gap-1 cursor-pointer"
+                                className="text-xs text-accent hover:text-ink font-black inline-flex items-center gap-1 cursor-pointer"
                                 title="Edit Entry"
                               >
                                 <Edit2 className="h-3 w-3" /> Edit
@@ -1409,7 +1415,7 @@ export default function AdminPage() {
                   </table>
                 </div>
               )}
-              <div className="mt-4 flex items-center justify-between text-sm text-[#1b4332]">
+              <div className="mt-4 flex items-center justify-between text-sm text-ink">
                 <span>Page {kbPage} of {Math.max(1, Math.ceil(kbTotal / 25))}</span>
                 <div className="flex gap-2">
                   <button type="button" disabled={kbPage === 1} onClick={() => setKbPage((page) => page - 1)} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Previous</button>
@@ -1424,36 +1430,36 @@ export default function AdminPage() {
             <div>
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                 <div>
-                  <h1 className="text-2xl font-black text-[#1b4332] italic">
+                  <h1 className="text-2xl font-black text-ink italic">
                     Administrative Audit Logs
                   </h1>
-                  <p className="text-xs text-gray-500 font-medium mt-1">
+                  <p className="text-xs text-muted font-medium mt-1">
                     Records selected administrator actions in Herbal-Ai. Direct database edits and routine activity are not logged.
                   </p>
                 </div>
 
                 <div className="relative w-full md:w-72">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
                   <input
                     type="text"
                     placeholder="Filter audit logs..."
                     value={auditSearch}
                     onChange={(e) => setAuditSearch(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-gray-200 bg-white font-semibold text-[#1b4332] focus:outline-none focus:border-[#2d6a4f]"
+                    className="w-full rounded-xl border border-input bg-panel py-2 pl-9 pr-4 text-sm font-semibold text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   />
                 </div>
               </div>
 
               {auditLogs.length === 0 ? (
-                <div className="bg-white p-12 text-center rounded-2xl border border-gray-100 shadow-sm flex flex-col items-center gap-3">
-                  <ClipboardList className="h-10 w-10 text-gray-300 stroke-[1.5]" />
-                  <p className="text-sm font-bold text-gray-500">No audit logs recorded yet</p>
+                <div className="bg-panel p-12 text-center rounded-2xl border border-line shadow-sm flex flex-col items-center gap-3">
+                  <ClipboardList className="h-10 w-10 text-muted stroke-[1.5]" />
+                  <p className="text-sm font-bold text-muted">No audit logs recorded yet</p>
                 </div>
               ) : (
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-x-auto">
+                <div className="bg-panel rounded-2xl border border-line shadow-sm overflow-x-auto">
                   <table className="admin-table w-full text-left">
                     <thead>
-                      <tr className="border-b border-gray-100 text-[11px] font-extrabold uppercase tracking-wider text-gray-400 bg-gray-50/50">
+                      <tr className="border-b border-line bg-soft text-[11px] font-extrabold uppercase tracking-wider text-muted">
                         <th className="py-3 px-4">Timestamp</th>
                         <th className="py-3 px-4">Admin Actor</th>
                         <th className="py-3 px-4">Action</th>
@@ -1461,7 +1467,7 @@ export default function AdminPage() {
                         <th className="py-3 px-4">Details</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-50 text-xs font-semibold text-gray-700">
+                    <tbody className="divide-y divide-line text-xs font-semibold text-ink">
                       {auditLogs
                         .filter((log) => {
                           const query = auditSearch.toLowerCase();
@@ -1484,8 +1490,8 @@ export default function AdminPage() {
                           };
 
                           return (
-                            <tr key={log.id} className="hover:bg-gray-50/50 transition">
-                              <td className="py-3 px-4 text-gray-500 font-mono text-[11px] whitespace-nowrap">
+                            <tr key={log.id} className="transition hover:bg-soft">
+                              <td className="py-3 px-4 text-muted font-mono text-[11px] whitespace-nowrap">
                                 {new Date(log.createdAt).toLocaleString(undefined, {
                                   month: 'short',
                                   day: 'numeric',
@@ -1504,8 +1510,8 @@ export default function AdminPage() {
                                     </span>
                                   )}
                                   <div>
-                                    <div className="font-bold text-[#1b4332] text-xs leading-none">{log.admin.name}</div>
-                                    <div className="text-[10px] text-gray-400">{log.admin.email || log.admin.username}</div>
+                                    <div className="font-bold text-ink text-xs leading-none">{log.admin.name}</div>
+                                    <div className="text-[10px] text-muted">{log.admin.email || log.admin.username}</div>
                                   </div>
                                 </div>
                               </td>
@@ -1515,21 +1521,21 @@ export default function AdminPage() {
                                 </span>
                               </td>
                               <td className="py-3 px-4">
-                                <span className="font-bold text-gray-900">{log.targetType}</span>
+                                <span className="font-bold text-ink">{log.targetType}</span>
                                 {log.targetId && (
-                                  <span className="text-gray-400 text-[11px] block font-mono">ID: {log.targetId}</span>
+                                  <span className="text-muted text-[11px] block font-mono">ID: {log.targetId}</span>
                                 )}
                               </td>
-                              <td className="py-3 px-4 max-w-md text-sm text-gray-600">
+                              <td className="py-3 px-4 max-w-md text-sm text-muted">
                                 {log.details ? (
                                   <details>
                                     <summary className="cursor-pointer font-semibold">View change details</summary>
-                                    <pre className="mt-2 max-h-80 overflow-auto whitespace-pre-wrap break-words rounded border border-gray-100 bg-gray-50 p-3 text-xs">
+                                    <pre className="mt-2 max-h-80 overflow-auto whitespace-pre-wrap break-words rounded border border-line bg-soft p-3 text-xs">
                                       {typeof log.details === 'object' ? JSON.stringify(log.details, null, 2) : String(log.details)}
                                     </pre>
                                   </details>
                                 ) : (
-                                  <span className="text-gray-300">-</span>
+                                  <span className="text-muted">-</span>
                                 )}
                               </td>
                             </tr>
@@ -1547,9 +1553,9 @@ export default function AdminPage() {
       {/* Edit Herb Modal */}
       {isHerbModalOpen && editingHerb && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1b4332]/40 backdrop-blur-sm px-4 py-4">
-          <div role="dialog" aria-modal="true" aria-labelledby="edit-herb-title" className="flex max-h-full w-full max-w-2xl flex-col rounded-3xl bg-white shadow-2xl overflow-hidden border border-[#2d6a4f]/20">
-            <div className="bg-[#f0f7f2] p-5 border-b border-[#2d6a4f]/10 flex justify-between items-center">
-              <h3 id="edit-herb-title" className="text-lg font-black text-[#1b4332] flex items-center gap-2">
+          <div role="dialog" aria-modal="true" aria-labelledby="edit-herb-title" className="admin-editor flex max-h-full w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-line bg-panel shadow-2xl">
+            <div className="bg-soft p-5 border-b border-line flex justify-between items-center">
+              <h3 id="edit-herb-title" className="text-lg font-black text-ink flex items-center gap-2">
                 <Edit2 className="h-5 w-5" /> Edit Herb
               </h3>
               <button onClick={closeEditHerbModal} aria-label="Close herb editor" className="text-gray-400 hover:text-rose-600 text-xl font-bold px-2">&times;</button>
@@ -1706,10 +1712,10 @@ export default function AdminPage() {
       {/* KNOWLEDGE BASE MODAL (CREATE / EDIT) */}
       {isKbModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 font-sans">
-          <div role="dialog" aria-modal="true" aria-labelledby="knowledge-editor-title" className="flex max-h-full w-full max-w-xl flex-col overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-2xl animate-in fade-in duration-200">
+          <div role="dialog" aria-modal="true" aria-labelledby="knowledge-editor-title" className="admin-editor flex max-h-full w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-line bg-panel shadow-2xl animate-in fade-in duration-200">
             
-            <header className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <h3 id="knowledge-editor-title" className="font-extrabold text-lg text-[#1b4332]">
+            <header className="px-6 py-4 border-b border-line flex items-center justify-between">
+              <h3 id="knowledge-editor-title" className="font-extrabold text-lg text-ink">
                 {editingKbItem ? 'Edit Knowledge Base Entry' : 'Create Knowledge Base Entry'}
               </h3>
               <button

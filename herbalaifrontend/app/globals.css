@@ -596,7 +596,7 @@ button:disabled { cursor: not-allowed; }
 
 /* ===== ADMIN PANEL (separate app shell) ===== */
 body.admin-app {
-  background: #f0f7f2;
+  background: var(--ui-canvas);
   overflow-x: hidden;
 }
 
@@ -604,11 +604,13 @@ body.admin-app {
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr);
   min-height: 100vh;
+  color: var(--ui-ink);
 }
 
 .admin-sidebar {
-  background: #1b4332;
-  color: rgba(255, 255, 255, 0.9);
+  background: var(--ui-panel);
+  color: var(--ui-ink);
+  border-right: 1px solid var(--ui-line);
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -622,7 +624,7 @@ body.admin-app {
   align-items: center;
   gap: 12px;
   padding: 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid var(--ui-line);
 }
 
 .admin-brand strong {
@@ -651,7 +653,7 @@ body.admin-app {
   gap: 12px;
   padding: 12px 16px;
   border-radius: 8px;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--ui-muted);
   font-weight: 600;
   font-size: 0.92rem;
   border: none;
@@ -664,8 +666,8 @@ body.admin-app {
 
 .admin-nav-link:hover,
 .admin-nav-link.active {
-  background: rgba(255, 255, 255, 0.12);
-  color: white;
+  background: var(--ui-soft);
+  color: var(--ui-ink);
 }
 
 .admin-nav-link.subtle {
@@ -680,8 +682,8 @@ body.admin-app {
 
 .admin-nav-badge {
   margin-left: auto;
-  background: #74c69d;
-  color: #1b4332;
+  background: var(--ui-brand);
+  color: #fff;
   font-size: 0.7rem;
   font-weight: 800;
   padding: 2px 8px;
@@ -690,7 +692,7 @@ body.admin-app {
 
 .admin-sidebar-footer {
   padding: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid var(--ui-line);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -698,9 +700,9 @@ body.admin-app {
 
 .admin-user-chip {
   font-size: 0.78rem;
-  opacity: 0.7;
   margin-top: 8px;
   padding: 0 8px;
+  color: var(--ui-muted);
 }
 
 .admin-main {
@@ -712,8 +714,8 @@ body.admin-app {
 
 .admin-topbar {
   height: 72px;
-  background: white;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  background: var(--ui-panel);
+  border-bottom: 1px solid var(--ui-line);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -725,7 +727,7 @@ body.admin-app {
   font-family: 'Playfair Display', Georgia, serif;
   font-style: italic;
   font-size: 1.75rem;
-  color: #1b4332;
+  color: var(--ui-ink);
   font-weight: 500;
 }
 
@@ -754,11 +756,11 @@ body.admin-app {
 }
 
 .admin-panel-card {
-  background: white;
+  background: var(--ui-panel);
   border-radius: 24px;
   padding: 28px;
   box-shadow: 0 2px 8px rgba(27, 67, 50, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--ui-line);
   margin-bottom: 24px;
 }
 
@@ -766,7 +768,7 @@ body.admin-app {
   font-family: 'Playfair Display', Georgia, serif;
   font-style: italic;
   font-size: 1.35rem;
-  color: #1b4332;
+  color: var(--ui-ink);
   margin-bottom: 20px;
 }
 
@@ -786,29 +788,29 @@ body.admin-app {
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #6a7282;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  color: var(--ui-muted);
+  border-bottom: 1px solid var(--ui-line);
 }
 
 .admin-table td {
   padding: 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--ui-line);
   vertical-align: middle;
 }
 
 .admin-table tr:hover td {
-  background: rgba(163, 239, 149, 0.08);
+  background: var(--ui-soft);
 }
 
 .admin-role-pill {
   display: inline-block;
   padding: 6px 12px;
   border-radius: 999px;
-  background: #eef5f0;
+  background: var(--ui-soft);
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: capitalize;
-  color: #2d6a4f;
+  color: var(--ui-ink);
 }
 
 .admin-status {
@@ -839,8 +841,8 @@ body.admin-app {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  background: white;
+  border: 1px solid var(--ui-line);
+  background: var(--ui-panel);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -848,15 +850,30 @@ body.admin-app {
 }
 
 .admin-icon-btn:hover {
-  background: #eef5f0;
+  background: var(--ui-soft);
 }
 
 .admin-pending-card {
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: var(--ui-panel);
+  border: 1px solid var(--ui-line);
   border-radius: 24px;
   padding: 24px;
   margin-bottom: 20px;
+}
+
+.admin-editor :is(input, textarea) {
+  background: var(--ui-panel);
+  border-color: var(--ui-line);
+  color: var(--ui-ink);
+}
+
+.admin-editor :is(label, h3) {
+  color: var(--ui-ink);
+}
+
+.admin-editor :is(input, textarea)::placeholder {
+  color: var(--ui-muted);
+  opacity: 0.8;
 }
 
 .admin-form-grid {
@@ -881,7 +898,7 @@ body.admin-app {
   .admin-brand { padding: 12px 16px; }
   .admin-menu-toggle {
     display: block; margin-left: auto; min-height: 44px; padding: 8px 16px;
-    border: 1px solid #74c69d; border-radius: 12px; font-weight: 700;
+    border: 1px solid var(--ui-line-strong); border-radius: 12px; font-weight: 700;
   }
   .admin-sidebar:not(.is-open) .admin-nav,
   .admin-sidebar:not(.is-open) .admin-sidebar-footer { display: none; }
