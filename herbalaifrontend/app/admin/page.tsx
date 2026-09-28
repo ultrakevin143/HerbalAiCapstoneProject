@@ -814,8 +814,8 @@ export default function AdminPage() {
               <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5 lg:gap-4">
                 {[
                   { label: 'Total Herbs', value: dashboardStats?.totalHerbs, icon: Leaf },
-                  { label: 'Pending Review', value: dashboardStats?.suggestionsByStatus.find((entry) => entry.name === 'Pending')?.value, icon: Clock },
-                  { label: 'Approved Suggestions', value: dashboardStats?.suggestionsByStatus.find((entry) => entry.name === 'Approved')?.value, icon: ShieldCheck },
+                  { label: 'Pending Review', value: dashboardStats ? (dashboardStats.suggestionsByStatus.find((entry) => entry.name === 'Pending')?.value ?? 0) : undefined, icon: Clock },
+                  { label: 'Approved Suggestions', value: dashboardStats ? (dashboardStats.suggestionsByStatus.find((entry) => entry.name === 'Approved')?.value ?? 0) : undefined, icon: ShieldCheck },
                   { label: 'Total Users', value: dashboardStats?.totalUsers, icon: Users },
                   { label: 'FAQ Facts', value: dashboardStats?.totalKnowledgeFacts, icon: BookOpen },
                 ].map(({ label, value, icon: Icon }) => (
