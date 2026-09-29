@@ -14,7 +14,7 @@ describe('Google OAuth callback page', () => {
 
   it('sets a short-lived state cookie for the Google authorization request', () => {
     getGoogleAuthUrl.mockReturnValue('https://accounts.google.com/test');
-    const response = { cookie: vi.fn(), setHeader: vi.fn(), redirect: vi.fn() };
+    const response = { cookie: vi.fn(), clearCookie: vi.fn(), setHeader: vi.fn(), redirect: vi.fn() };
 
     new AuthController().googleAuth({} as Request, response as unknown as Response);
 
@@ -23,6 +23,7 @@ describe('Google OAuth callback page', () => {
     expect(response.cookie).toHaveBeenCalledWith('googleOAuthState', state, expect.objectContaining({
       httpOnly: true, sameSite: 'lax', path: '/api/auth/google', maxAge: 600000,
     }));
+    expect(response.clearCookie).toHaveBeenCalledWith('googleOAuthDestination', expect.objectContaining({ path: '/api/auth/google' }));
     expect(response.redirect).toHaveBeenCalledWith('https://accounts.google.com/test');
   });
 

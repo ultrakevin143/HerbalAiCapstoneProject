@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { safeAuthCallback } from '../../../../../lib/auth-redirect';
 
 export async function POST(request: NextRequest) {
   const backendApi = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
@@ -28,7 +29,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: 'Google sign-in returned an incomplete session.' }, { status: 502 });
   }
 
-  const response = NextResponse.redirect(new URL('/auth/google/success', request.url), 303);
+  const destination = new URL('/auth/google/success', request.url);
+  const callbackUrl = safeAuthCallback(form.get('callbackUrl'));
+  if (callbackUrl) destination.searchParams.set('callbackUrl', callbackUrl);
+  const response = NextResponse.redirect(destination, 303);
   const cookieOptions = { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' as const, path: '/' };
   response.cookies.set('accessToken', tokens.accessToken, { ...cookieOptions, maxAge: 15 * 60 });
   response.cookies.set('refreshToken', tokens.refreshToken, { ...cookieOptions, maxAge: 7 * 24 * 60 * 60 });

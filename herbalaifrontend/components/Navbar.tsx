@@ -89,7 +89,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden xl:flex items-center gap-1 shrink-0">
+          <div className="hidden lg:flex items-center gap-1 shrink-0">
             {allLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -109,7 +109,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Authentication / Action buttons */}
-          <div className="hidden xl:flex items-center gap-3 shrink-0">
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
             {loading ? (
               <span role="status" className="text-sm text-muted">Checking session…</span>
             ) : sessionUnavailable && !isAuthenticated ? (
@@ -217,7 +217,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile hamburger button */}
-          <div className="flex items-center gap-2 xl:hidden">
+          <div className="flex items-center gap-2 lg:hidden">
             {isAuthenticated && <NotificationBell />}
             <button
               onClick={toggleMobileMenu}
@@ -232,7 +232,7 @@ export default function Navbar() {
 
         {/* Mobile Navigation Dropdown */}
         {isMobileMenuOpen && (
-          <div className="xl:hidden mt-3 max-h-[calc(100dvh-5.5rem)] overflow-y-auto border-t border-black/10 pt-3 pb-2 dark:border-line animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="lg:hidden mt-3 max-h-[calc(100dvh-5.5rem)] overflow-y-auto border-t border-black/10 pt-3 pb-2 dark:border-line animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="mb-3 flex items-center justify-between rounded-xl border border-line bg-panel px-3 py-2">
               <span className="text-sm font-bold text-ink">Display preferences</span>
               <DisplayPreferences

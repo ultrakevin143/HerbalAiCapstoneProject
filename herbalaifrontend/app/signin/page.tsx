@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
 import AuthBrandPanel from '../../components/AuthBrandPanel';
 import { ThemeToggle } from '../../components/DisplayPreferences';
+import { safeAuthCallback } from '../../lib/auth-redirect';
 
 export default function SignInPage() {
   const { login } = useAuth();
@@ -25,9 +26,7 @@ export default function SignInPage() {
     try {
       const loggedInUser = await login(identifier, password);
       const callbackUrl = new URLSearchParams(window.location.search).get('callbackUrl');
-      const safeCallback = callbackUrl?.startsWith('/') && !callbackUrl.startsWith('//') && !callbackUrl.includes('\\')
-        ? callbackUrl
-        : null;
+      const safeCallback = safeAuthCallback(callbackUrl);
       router.push(safeCallback || (loggedInUser?.role === 'admin' ? '/admin' : '/'));
     } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error(err);
@@ -120,6 +119,10 @@ export default function SignInPage() {
 
             <a
               href={googleAuthUrl}
+              onClick={(event) => {
+                const callback = safeAuthCallback(new URLSearchParams(window.location.search).get('callbackUrl'));
+                if (callback) event.currentTarget.href = `${googleAuthUrl}?${new URLSearchParams({ callbackUrl: callback })}`;
+              }}
               className="mt-2 w-full flex items-center justify-center gap-3 border-2 border-black/10 dark:border-line bg-white/80 dark:bg-soft rounded-full px-5 py-3 text-sm font-bold text-gray-700 dark:text-ink hover:bg-gray-50 dark:hover:bg-panel transition-all shadow-xs"
             >
               <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24">

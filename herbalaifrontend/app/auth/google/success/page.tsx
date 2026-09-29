@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../../context/AuthContext';
 import DrAiAvatar from '../../../../components/DrAiAvatar';
+import { safeAuthCallback } from '../../../../lib/auth-redirect';
 
 export default function GoogleSuccessPage() {
   const { checkSession } = useAuth();
@@ -22,7 +23,8 @@ export default function GoogleSuccessPage() {
           setError('Failed to retrieve your session. Please try signing in again.');
           return;
         }
-        router.replace(verifiedUser.role === 'admin' ? '/admin' : '/');
+        const callbackUrl = safeAuthCallback(new URLSearchParams(window.location.search).get('callbackUrl'));
+        router.replace(callbackUrl || (verifiedUser.role === 'admin' ? '/admin' : '/'));
       } catch (err) {
         console.error('Session check failed during Google login success verification:', err);
         setError('Failed to verify session. Please try signing in again.');

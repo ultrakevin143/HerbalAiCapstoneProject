@@ -166,6 +166,7 @@ export default function AdminPage() {
   const router = useRouter();
   
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [pendingCount, setPendingCount] = useState(0);
   const [suggestionsPage, setSuggestionsPage] = useState(1);
   const [suggestionFilter, setSuggestionFilter] = useState<SuggestionFilter>('Pending');
   const [suggestionsLoading, setSuggestionsLoading] = useState(false);
@@ -267,7 +268,9 @@ export default function AdminPage() {
     try {
       const response = await api.get('/suggest');
       if (response.data?.status !== 'success') throw new Error('Unable to load suggestions.');
-      setSuggestions(response.data.data.suggestions || []);
+      const latestSuggestions: Suggestion[] = response.data.data.suggestions || [];
+      setSuggestions(latestSuggestions);
+      setPendingCount(latestSuggestions.filter((suggestion) => suggestion.status === 'Pending').length);
     } finally {
       setSuggestionsLoading(false);
       setSuggestionsLoaded(true);
@@ -289,6 +292,7 @@ export default function AdminPage() {
             throw new Error('Unable to load dashboard data. Please try again.');
           }
           setDashboardStats(statsRes.data.data);
+          setPendingCount(statsRes.data.data.suggestionsByStatus.find((entry: { name: string; value: number }) => entry.name === 'Pending')?.value ?? 0);
         }
         if (activeTab === 'library') {
           const params = new URLSearchParams({ page: String(herbsPage), limit: '25' });
@@ -722,10 +726,6 @@ export default function AdminPage() {
     );
   }
 
-  const pendingSuggestions = suggestions.filter((suggestion) => suggestion.status === 'Pending');
-  const pendingCount = activeTab === 'pending'
-    ? pendingSuggestions.length
-    : dashboardStats?.suggestionsByStatus.find((entry) => entry.name === 'Pending')?.value ?? 0;
   const filteredSuggestions = suggestionFilter === 'All'
     ? suggestions
     : suggestions.filter((suggestion) => suggestion.status === suggestionFilter);

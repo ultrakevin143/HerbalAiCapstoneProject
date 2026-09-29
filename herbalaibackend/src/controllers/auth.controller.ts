@@ -4,8 +4,10 @@ import * as userRepo from "../repositories/user.repository.js";
 import { ENV } from "../config/env.js";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware.js";
 import { randomBytes, timingSafeEqual } from "node:crypto";
+import { safeAuthCallback } from '../utils/auth-redirect.js';
 
 const googleStateCookie = 'googleOAuthState';
+const googleDestinationCookie = 'googleOAuthDestination';
 const googleStateCookieOptions = {
   httpOnly: true,
   secure: ENV.NODE_ENV === 'production',
@@ -227,9 +229,15 @@ export class AuthController {
 
   // --- Google SSO ---
 
-  public googleAuth = (_req: Request, res: Response): void => {
+  public googleAuth = (req: Request, res: Response): void => {
     const state = randomBytes(32).toString('hex');
     res.cookie(googleStateCookie, state, { ...googleStateCookieOptions, maxAge: 10 * 60 * 1000 });
+    const callbackUrl = safeAuthCallback(req.query?.['callbackUrl']);
+    if (callbackUrl) {
+      res.cookie(googleDestinationCookie, callbackUrl, { ...googleStateCookieOptions, maxAge: 10 * 60 * 1000 });
+    } else {
+      res.clearCookie(googleDestinationCookie, googleStateCookieOptions);
+    }
     res.setHeader('Cache-Control', 'no-store');
     const url = authService.getGoogleAuthUrl(state);
     res.redirect(url);
@@ -239,7 +247,9 @@ export class AuthController {
     try {
       const state = req.query['state'];
       const expectedState = req.cookies?.[googleStateCookie];
+      const callbackUrl = safeAuthCallback(req.cookies?.[googleDestinationCookie]);
       res.clearCookie(googleStateCookie, googleStateCookieOptions);
+      res.clearCookie(googleDestinationCookie, googleStateCookieOptions);
       if (typeof state !== 'string' || typeof expectedState !== 'string' ||
           !/^[a-f0-9]{64}$/.test(state) || !/^[a-f0-9]{64}$/.test(expectedState) ||
           !timingSafeEqual(Buffer.from(state, 'hex'), Buffer.from(expectedState, 'hex'))) {
@@ -297,6 +307,7 @@ export class AuthController {
     <p id="status" role="status">Taking you back to Herbal Ai.</p>
     <form method="post" action="${ENV.FRONTEND_URL}/api/auth/google/complete">
       <input type="hidden" name="refreshToken" value="${result.refreshToken}">
+      <input type="hidden" name="callbackUrl" value="${(callbackUrl || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}">
       <button id="manual-continue" type="submit" hidden>Continue to Herbal Ai</button>
       <noscript><button type="submit">Continue to Herbal Ai</button></noscript>
     </form>
