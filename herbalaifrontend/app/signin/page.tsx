@@ -15,7 +15,7 @@ export default function SignInPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const googleAuthUrl = '/api/auth/google';
+  const googleAuthUrl = `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '')}/auth/google`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
