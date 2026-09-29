@@ -20,7 +20,23 @@ function getStandaloneSnapshot() {
 
 export function PwaRegistration() {
   useEffect(() => {
-    if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+    if (!('serviceWorker' in navigator)) return;
+
+    if (process.env.NODE_ENV !== 'production') {
+      navigator.serviceWorker.getRegistrations().then(async (registrations) => {
+        const localRegistrations = registrations.filter((registration) => registration.scope.startsWith(`${window.location.origin}/`));
+        if (localRegistrations.length === 0) return;
+        await Promise.all(localRegistrations.map((registration) => registration.unregister()));
+        if ('caches' in window) {
+          const names = await caches.keys();
+          await Promise.all(names.filter((name) => name.startsWith('herbal-ai-static-')).map((name) => caches.delete(name)));
+        }
+        if (navigator.serviceWorker.controller) window.location.reload();
+      }).catch(() => {});
+      return;
+    }
+
+    if (!['localhost', '127.0.0.1'].includes(window.location.hostname)) {
       navigator.serviceWorker.register('/sw.js').catch((error) => {
         console.error('Service worker registration failed:', error);
       });

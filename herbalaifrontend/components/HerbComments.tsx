@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../lib/axios';
 import io, { Socket } from 'socket.io-client';
@@ -30,7 +30,7 @@ interface HerbComment {
   isDeleted: boolean;
   author: Author;
   userLikes: CommentLike[];
-  replies?: HerbComment[]; // We will populate this locally
+  replies?: HerbComment[];
 }
 
 interface HerbCommentsProps {
@@ -62,13 +62,20 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
   };
   
   const socketRef = useRef<Socket | null>(null);
+  const appendComment = useCallback((comment: HerbComment) => {
+    setComments((current) => current.some((item) => item.id === comment.id) ? current : [...current, comment]);
+  }, []);
 
   const fetchCommentsCallback = useCallback(async () => {
     try {
       setLoading(true);
       const res = await api.get(`/herbs/${herbId}/comments`);
       if (res.data?.status === 'success') {
-        setComments(res.data.data.comments || []);
+        setComments((current) => {
+          const fetched: HerbComment[] = res.data.data.comments || [];
+          const fetchedIds = new Set(fetched.map((comment) => comment.id));
+          return [...fetched, ...current.filter((comment) => !fetchedIds.has(comment.id))];
+        });
       }
     } catch (err) {
       console.error('Failed to fetch comments', err);
@@ -87,14 +94,9 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
       withCredentials: true,
     });
 
-    socketRef.current.on('connect', () => {
-      console.log('Connected to real-time comments server');
-    });
-
     socketRef.current.on('new_comment', (comment: HerbComment) => {
-      // Only process if it belongs to the current herb
       if (comment.herbId === herbId) {
-        setComments((prev) => [...prev, comment]);
+        appendComment(comment);
       }
     });
 
@@ -117,7 +119,7 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
         socketRef.current.disconnect();
       }
     };
-  }, [herbId, fetchCommentsCallback]);
+  }, [herbId, fetchCommentsCallback, appendComment]);
 
 
   const handleSubmitComment = async (e: React.FormEvent, parentId: number | null = null) => {
@@ -128,12 +130,12 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
 
     setIsSubmitting(true);
     try {
-      await api.post(`/herbs/${herbId}/comments`, {
+      const response = await api.post<{ data: { comment: HerbComment } }>(`/herbs/${herbId}/comments`, {
         content,
         parentCommentId: parentId,
       });
-      
-      // Clear inputs (the new comment will come via Socket.io!)
+      appendComment(response.data.data.comment);
+
       if (parentId) {
         setReplyingTo(null);
         setReplyContent('');
@@ -190,13 +192,20 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
     }
   };
 
-  // Build a comment tree
-  const topLevelComments = comments.filter((c) => !c.parentCommentId);
-  const replies = comments.filter((c) => c.parentCommentId);
+  const topLevelComments = useMemo(() => {
+    const repliesByParent = new Map<number, HerbComment[]>();
+    for (const comment of comments) {
+      if (comment.parentCommentId !== null) {
+        const replies = repliesByParent.get(comment.parentCommentId) ?? [];
+        replies.push(comment);
+        repliesByParent.set(comment.parentCommentId, replies);
+      }
+    }
 
-  topLevelComments.forEach((tc) => {
-    tc.replies = replies.filter((r) => r.parentCommentId === tc.id);
-  });
+    return comments
+      .filter((comment) => comment.parentCommentId === null)
+      .map((comment) => ({ ...comment, replies: repliesByParent.get(comment.id) ?? [] }));
+  }, [comments]);
 
   return (
     <div className="mt-8 border-t-2 border-line pt-6 pb-4">

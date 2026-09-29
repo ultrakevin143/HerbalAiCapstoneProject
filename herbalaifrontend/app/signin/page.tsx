@@ -29,7 +29,6 @@ export default function SignInPage() {
       const safeCallback = safeAuthCallback(callbackUrl);
       router.push(safeCallback || (loggedInUser?.role === 'admin' ? '/admin' : '/'));
     } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-      console.error(err);
       setError(
         err.response?.data?.message || 
         err.message || 

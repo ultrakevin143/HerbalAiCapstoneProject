@@ -425,7 +425,7 @@ function LibraryContent() {
               )}
 
               <HerbReferences sources={selectedHerb.sources} />
-              <HerbComments herbId={selectedHerb.id} />
+              <HerbComments key={selectedHerb.id} herbId={selectedHerb.id} />
             </div>
           </AccessibleDialog>
         )}
