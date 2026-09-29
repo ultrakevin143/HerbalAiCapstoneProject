@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
@@ -58,7 +58,7 @@ export default function Navbar() {
     }
   };
 
-  const isStaff = user && (user.role === 'admin' || user.role === 'botanist');
+  const isAdmin = user?.role === 'admin';
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -161,7 +161,7 @@ export default function Navbar() {
 
                       {/* Dropdown Options */}
                       <div className="space-y-1">
-                        {isStaff && (
+                        {isAdmin && (
                           <Link
                             href="/admin"
                             onClick={() => setIsUserMenuOpen(false)}
@@ -284,7 +284,7 @@ export default function Navbar() {
                   </button>
 
                   <div className="grid grid-cols-2 gap-2">
-                    {isStaff && (
+                    {isAdmin && (
                       <Link
                         href="/admin"
                         onClick={() => setIsMobileMenuOpen(false)}

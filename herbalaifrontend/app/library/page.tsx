@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '../../components/Navbar';
@@ -174,7 +174,7 @@ function LibraryContent() {
             Herbal Library
           </h1>
           <p className="mt-2 text-sm text-muted font-medium max-w-2xl mx-auto">
-            Explore validated Philippine medicinal plants, their traditional uses, DOH guidelines, and preparations.
+            Explore published Philippine medicinal plants, their documented uses, sources, safety notes, and preparations.
           </p>
         </div>
 

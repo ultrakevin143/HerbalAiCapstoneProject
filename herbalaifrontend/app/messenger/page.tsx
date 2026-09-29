@@ -62,8 +62,7 @@ function formatDate(iso: string) {
 }
 
 function getRoleLabel(role: string) {
-  if (role === 'admin') return 'Admin Specialist';
-  if (role === 'botanist') return 'Botanical Researcher';
+  if (role === 'admin') return 'Administrator';
   return 'Contributor';
 }
 

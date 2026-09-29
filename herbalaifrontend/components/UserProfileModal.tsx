@@ -1,9 +1,8 @@
 'use client';
 
-import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
-import { X, MessageSquare, ShieldCheck, Leaf, User } from 'lucide-react';
+import { X, MessageSquare, ShieldCheck, User } from 'lucide-react';
 
 interface UserProfile {
   id: string;
@@ -38,15 +37,7 @@ export default function UserProfileModal({ userProfile, isOpen, onClose }: UserP
       return (
         <span className="inline-flex items-center gap-1 text-xs font-bold text-ink bg-soft border border-line px-2.5 py-0.5 rounded-full">
           <ShieldCheck className="h-3.5 w-3.5 text-[var(--botanical-forest)]" />
-          Admin Specialist
-        </span>
-      );
-    }
-    if (role === 'botanist') {
-      return (
-        <span className="inline-flex items-center gap-1 text-xs font-bold text-ink bg-soft border border-line px-2.5 py-0.5 rounded-full">
-          <Leaf className="h-3.5 w-3.5 text-[var(--accent-moss)]" />
-          Botanical Researcher
+          Administrator
         </span>
       );
     }

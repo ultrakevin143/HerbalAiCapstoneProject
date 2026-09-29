@@ -23,7 +23,7 @@ export default function Loading() {
           <div className="route-loading-line" />
           <div className="route-loading-line medium" />
           <h1 id="route-loading-title" className="sr-only">Loading Herbal-Ai content</h1>
-          <p>Preparing verified plant information…</p>
+          <p>Preparing plant information…</p>
         </div>
         <div className="route-loading-panel" aria-hidden="true">
           <div className="route-loading-leaf" />

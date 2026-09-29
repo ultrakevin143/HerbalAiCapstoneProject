@@ -14,7 +14,7 @@ export default function NotFound() {
         <DrAiAvatar animated className="not-found-avatar" />
         <p className="not-found-kicker">Page not found</p>
         <h1>This path has no plant record.</h1>
-        <p>The page may have moved, or the address may be incomplete. Dr. Ai can guide you back to the verified library.</p>
+        <p>The page may have moved, or the address may be incomplete. Explore the published herb library instead.</p>
         <div className="not-found-actions">
           <Link href="/">Return home</Link>
           <Link href="/library" className="secondary">Open herbal library</Link>

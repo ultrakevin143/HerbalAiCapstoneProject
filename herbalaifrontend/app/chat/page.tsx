@@ -49,7 +49,7 @@ function ChatContent() {
     {
       id: 'welcome',
       role: 'model',
-      text: "Hello! I am Dr. AI, your Philippine traditional herbal medicine assistant. I can guide you on the medicinal uses, preparation methods, dosages, and warnings for local plants based on our verified database. How can I help you today?\n\n*Example queries:*\n- *How do I prepare lagundi for cough?*\n- *What are the uses of sambong?*\n- *Are there any warnings for bayabas leaves?*",
+      text: "Hello! I am Dr. Ai, your Philippine medicinal-plant assistant. I can help you find documented uses, preparation methods, and safety notes from the herbal library. My answers are educational, not medical advice.\n\n*Example queries:*\n- *How do I prepare lagundi for cough?*\n- *What are the uses of sambong?*\n- *Are there any warnings for bayabas leaves?*",
     },
   ]);
   const [history, setHistory] = useState<ChatTurn[]>([]);
@@ -362,7 +362,7 @@ function ChatContent() {
                   {
                     id: 'welcome',
                     role: 'model',
-                    text: "Hello! I am Dr. AI, your Philippine traditional herbal medicine assistant. I can guide you on the medicinal uses, preparation methods, dosages, and warnings for local plants based on our verified database. How can I help you today?",
+                    text: "Hello! I am Dr. Ai, your Philippine medicinal-plant assistant. I can help you find documented uses, preparation methods, and safety notes from the herbal library. My answers are educational, not medical advice.",
                   }
                 ]);
                 setHistory([]);

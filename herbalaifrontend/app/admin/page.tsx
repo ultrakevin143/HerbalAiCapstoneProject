@@ -108,6 +108,7 @@ interface KBItem {
   answer: string;
   category: string | null;
   tags: string[];
+  metadata: Record<string, unknown> | null;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -204,6 +205,9 @@ export default function AdminPage() {
   const [kbAnswer, setKbAnswer] = useState('');
   const [kbCategory, setKbCategory] = useState('');
   const [kbTags, setKbTags] = useState('');
+  const [kbSourceTitle, setKbSourceTitle] = useState('');
+  const [kbSourcePublisher, setKbSourcePublisher] = useState('');
+  const [kbSourceUrl, setKbSourceUrl] = useState('');
   const [isImportingKb, setIsImportingKb] = useState(false);
 
   // Herb Edit Modals and forms
@@ -279,8 +283,12 @@ export default function AdminPage() {
           await refreshSuggestions();
         }
         if (activeTab === 'dashboard') {
+          setDashboardStats(null);
           const statsRes = await api.get('/stats/dashboard');
-          if (statsRes.data?.status === 'success') setDashboardStats(statsRes.data.data);
+          if (statsRes.data?.status !== 'success' || !statsRes.data.data) {
+            throw new Error('Unable to load dashboard data. Please try again.');
+          }
+          setDashboardStats(statsRes.data.data);
         }
         if (activeTab === 'library') {
           const params = new URLSearchParams({ page: String(herbsPage), limit: '25' });
@@ -479,8 +487,13 @@ export default function AdminPage() {
   // Knowledge Base CRUD operations
   const handleSaveKbItem = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!kbQuestion.trim() || !kbAnswer.trim()) {
-      setError('Question and Answer fields are required.');
+    if (kbQuestion.trim().length < 5 || kbAnswer.trim().length < 10) {
+      setError('Use at least 5 characters for the question and 10 for the answer.');
+      return;
+    }
+    if (!kbSourceTitle.trim() || !kbSourcePublisher.trim() || !URL.canParse(kbSourceUrl.trim())
+      || !['http:', 'https:'].includes(new URL(kbSourceUrl.trim()).protocol)) {
+      setError('Add a source title, publisher, and valid HTTP(S) URL.');
       return;
     }
 
@@ -488,11 +501,20 @@ export default function AdminPage() {
       setError(null);
       setSuccessMsg(null);
 
+      const previousSources = editingKbItem?.metadata?.['sources'];
+      const previousSource = Array.isArray(previousSources) && previousSources[0]
+        && typeof previousSources[0] === 'object' ? previousSources[0] as Record<string, unknown> : {};
       const payload = {
         question: kbQuestion.trim(),
         answer: kbAnswer.trim(),
         category: kbCategory.trim() || undefined,
         tags: kbTags.split(',').map(t => t.trim()).filter(Boolean),
+        metadata: {
+          ...(editingKbItem?.metadata ?? {}),
+          jurisdiction: 'Philippines',
+          sources: [{ ...previousSource, title: kbSourceTitle.trim(), publisher: kbSourcePublisher.trim(), url: kbSourceUrl.trim() },
+            ...(Array.isArray(previousSources) ? previousSources.slice(1) : [])],
+        },
       };
 
       if (editingKbItem) {
@@ -624,12 +646,21 @@ export default function AdminPage() {
       setKbAnswer(item.answer);
       setKbCategory(item.category || '');
       setKbTags(item.tags.join(', '));
+      const sources = item.metadata?.['sources'];
+      const source = Array.isArray(sources) && sources[0] && typeof sources[0] === 'object'
+        ? sources[0] as Record<string, unknown> : null;
+      setKbSourceTitle(typeof source?.['title'] === 'string' ? source['title'] : '');
+      setKbSourcePublisher(typeof source?.['publisher'] === 'string' ? source['publisher'] : '');
+      setKbSourceUrl(typeof source?.['url'] === 'string' ? source['url'] : '');
     } else {
       setEditingKbItem(null);
       setKbQuestion('');
       setKbAnswer('');
       setKbCategory('');
       setKbTags('');
+      setKbSourceTitle('');
+      setKbSourcePublisher('');
+      setKbSourceUrl('');
     }
     setIsKbModalOpen(true);
   };
@@ -641,6 +672,9 @@ export default function AdminPage() {
     setKbAnswer('');
     setKbCategory('');
     setKbTags('');
+    setKbSourceTitle('');
+    setKbSourcePublisher('');
+    setKbSourceUrl('');
   };
 
   if (loading) {
@@ -835,14 +869,13 @@ export default function AdminPage() {
               {dashboardStats && <AdminDashboardCharts data={dashboardStats} />}
 
 
-              {/* Recent Activities */}
-              <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                {/* Recent Suggestions */}
-                <Card>
+              <Card>
                   <CardHeader><CardTitle className="text-base text-ink">Recent Contribution Requests</CardTitle></CardHeader>
                   <CardContent className="pt-4">
-                  {!dashboardStats?.recentSuggestions.length ? (
-                    <p className="py-8 text-center text-sm text-muted">No activity registered yet.</p>
+                  {!dashboardStats ? (
+                    <p role="status" className="py-8 text-center text-sm text-muted">{error ? 'Dashboard data is unavailable.' : 'Loading dashboard data…'}</p>
+                  ) : dashboardStats.recentSuggestions.length === 0 ? (
+                    <p className="py-8 text-center text-sm text-muted">No recent suggestions.</p>
                   ) : (
                     <div className="space-y-4">
                       {dashboardStats.recentSuggestions.map((s) => (
@@ -851,34 +884,13 @@ export default function AdminPage() {
                             <h4 className="text-sm font-semibold text-ink">{s.localName}</h4>
                             <p className="text-xs italic text-muted">{s.scientificName}</p>
                           </div>
-                          <span className={`text-[10px] px-2.5 py-1 rounded-full font-black uppercase tracking-wider border ${
-                            s.status === 'Pending' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                            s.status === 'Approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
-                            'bg-rose-50 text-rose-700 border-rose-200'
-                          }`}>
-                            {s.status}
-                          </span>
+                          <SuggestionStatusBadge status={s.status} />
                         </div>
                       ))}
                     </div>
                   )}
                   </CardContent>
-                </Card>
-
-                {/* System Activity */}
-                <Card>
-                  <CardHeader><CardTitle className="text-base text-ink">Console Logs & Health</CardTitle></CardHeader>
-                  <CardContent className="pt-4">
-                  <div tabIndex={0} role="region" aria-label="Console logs and health" className="max-h-[220px] space-y-4 overflow-y-auto rounded-lg bg-secondary p-4 font-mono text-xs text-ink">
-                    <div>[INFO] {new Date().toISOString()} - Connection to database established successfully.</div>
-                    <div>[INFO] {dashboardStats?.totalHerbs ?? '—'} published botanical records.</div>
-                    <div>[INFO] {dashboardStats?.totalKnowledgeFacts ?? '—'} RAG FAQ references.</div>
-                    <div>[SUCCESS] Session verified for admin client user.</div>
-                    <div>[HEALTH] Core API, authentication, database, and admin console checks completed.</div>
-                  </div>
-                  </CardContent>
-                </Card>
-              </div>
+              </Card>
             </div>
           )}
 
@@ -1211,9 +1223,7 @@ export default function AdminPage() {
                         <td className="font-semibold text-muted">{u.email}</td>
                         <td>
                           <span className={`text-[10px] font-black tracking-wider px-2.5 py-0.5 rounded-full uppercase ${
-                            u.role === 'admin' ? 'bg-[#1b4332] text-white' :
-                            u.role === 'botanist' ? 'bg-[#40916c] text-white' :
-                            'bg-soft text-ink'
+                            u.role === 'admin' ? 'bg-[#1b4332] text-white' : 'bg-soft text-ink'
                           }`}>
                             {u.role}
                           </span>
@@ -1737,6 +1747,7 @@ export default function AdminPage() {
                   aria-label="Knowledge question"
                   type="text"
                   required
+                  minLength={5}
                   placeholder="e.g. What is the traditional use of Yerba Buena?"
                   value={kbQuestion}
                   onChange={(e) => setKbQuestion(e.target.value)}
@@ -1751,13 +1762,33 @@ export default function AdminPage() {
                 <textarea
                   aria-label="Knowledge answer"
                   required
+                  minLength={10}
                   rows={4}
-                  placeholder="Provide a verified answer. This text will be parsed by Dr. AI for search match context."
+                  placeholder="Write an answer supported by the source below. Dr. Ai may use it as context."
                   value={kbAnswer}
                   onChange={(e) => setKbAnswer(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm text-[#1b4332] placeholder-emerald-800/20 focus:outline-none focus:border-[#2d6a4f] resize-none"
                 />
               </div>
+
+              <fieldset className="space-y-3 border-t border-line pt-4">
+                <legend className="text-xs font-extrabold uppercase tracking-wider text-muted">Philippine-relevant source *</legend>
+                <p className="text-xs text-muted">Use a source that supports this answer. Dr. Ai may retrieve published entries.</p>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="kb-source-title" className="mb-1 block text-xs font-bold text-ink">Source title</label>
+                    <input id="kb-source-title" required value={kbSourceTitle} onChange={(event) => setKbSourceTitle(event.target.value)} className="w-full rounded-xl border border-line bg-canvas px-4 py-2 text-sm text-ink" />
+                  </div>
+                  <div>
+                    <label htmlFor="kb-source-publisher" className="mb-1 block text-xs font-bold text-ink">Publisher</label>
+                    <input id="kb-source-publisher" required value={kbSourcePublisher} onChange={(event) => setKbSourcePublisher(event.target.value)} className="w-full rounded-xl border border-line bg-canvas px-4 py-2 text-sm text-ink" />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="kb-source-url" className="mb-1 block text-xs font-bold text-ink">Source URL</label>
+                  <input id="kb-source-url" type="url" required value={kbSourceUrl} onChange={(event) => setKbSourceUrl(event.target.value)} placeholder="https://" className="w-full rounded-xl border border-line bg-canvas px-4 py-2 text-sm text-ink" />
+                </div>
+              </fieldset>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-1">

@@ -286,7 +286,7 @@ export default function SuggestHerbPage() {
             {editingSubmission ? 'Revise Herb Suggestion' : user?.role === 'admin' ? 'Add a New Herb' : 'Suggest a New Herb'}
           </h1>
           <p className="text-[#2d6a4f] dark:text-muted font-bold mt-2 max-w-2xl">
-            Help expand our collective library of Philippine traditional herbal medicines. Submitted suggestions will be reviewed by botanists and traditional health specialists before publication.
+            Help expand our library of Philippine medicinal plants. An administrator reviews each suggestion before it can appear in the public library.
           </p>
         </div>
 

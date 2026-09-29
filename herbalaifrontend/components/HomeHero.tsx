@@ -13,7 +13,7 @@ export default function HomeHero() {
   const { user, isAuthenticated, loading, sessionUnavailable, checkSession } = useAuth();
   const router = useRouter();
   const [query, setQuery] = useState('');
-  const isStaff = user && (user.role === 'admin' || user.role === 'botanist');
+  const isAdmin = user?.role === 'admin';
 
   return (
     <section className="home-hero relative flex min-h-0 flex-col justify-between pb-8 pt-8 sm:pb-12 sm:pt-12 md:min-h-[calc(100svh-64px)] lg:pb-16 lg:pt-16">
@@ -27,9 +27,9 @@ export default function HomeHero() {
             {loading || sessionUnavailable
               ? 'Explore Philippine medicinal plants and source-linked preparation guidance.'
               : isAuthenticated
-              ? isStaff
+              ? isAdmin
                 ? 'Review community submissions from the Admin Panel, or explore the public catalog as a member.'
-                : 'Your personalized hub for validated Philippine herbal medicine and AI-assisted preparation guides.'
+                : 'Explore published Philippine medicinal plants and source-linked preparation notes with Dr. Ai.'
               : 'Find Philippine medicinal plants, review source-linked preparation guidance, and ask safer questions with Dr. Ai.'}
           </p>
 
@@ -38,7 +38,7 @@ export default function HomeHero() {
             {isAuthenticated ? (
               <>
                 <Button asChild variant="outline" size="lg" className="w-full border-white/55 bg-[#17251d]/35 text-white hover:bg-[#17251d]/65 lg:w-auto lg:px-8"><Link href="/suggest">Suggest Herb</Link></Button>
-                {isStaff && <Button asChild variant="outline" size="lg" className="w-full border-white/55 bg-[#17251d]/35 text-white hover:bg-[#17251d]/65 min-[360px]:col-span-2 sm:col-span-1 md:col-span-2 lg:w-auto lg:px-8"><Link href="/admin">Admin Panel</Link></Button>}
+                {isAdmin && <Button asChild variant="outline" size="lg" className="w-full border-white/55 bg-[#17251d]/35 text-white hover:bg-[#17251d]/65 min-[360px]:col-span-2 sm:col-span-1 md:col-span-2 lg:w-auto lg:px-8"><Link href="/admin">Admin Panel</Link></Button>}
               </>
             ) : null}
           </div>
