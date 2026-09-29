@@ -62,30 +62,50 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
   };
   
   const socketRef = useRef<Socket | null>(null);
-  const appendComment = useCallback((comment: HerbComment) => {
-    setComments((current) => current.some((item) => item.id === comment.id) ? current : [...current, comment]);
+  const mutationVersion = useRef(0);
+  const commentVersions = useRef(new Map<number, number>());
+  const deletedCommentIds = useRef(new Set<number>());
+  const fetchSequence = useRef(0);
+  const markCommentChanged = useCallback((commentId: number) => {
+    commentVersions.current.set(commentId, ++mutationVersion.current);
   }, []);
+  const markCommentDeleted = useCallback((commentId: number) => {
+    deletedCommentIds.current.add(commentId);
+    markCommentChanged(commentId);
+  }, [markCommentChanged]);
+  const appendComment = useCallback((comment: HerbComment) => {
+    if (deletedCommentIds.current.has(comment.id)) return;
+    markCommentChanged(comment.id);
+    setComments((current) => current.some((item) => item.id === comment.id) ? current : [...current, comment]);
+  }, [markCommentChanged]);
 
   const fetchCommentsCallback = useCallback(async () => {
+    const requestVersion = mutationVersion.current;
+    const requestSequence = ++fetchSequence.current;
     try {
-      setLoading(true);
       const res = await api.get(`/herbs/${herbId}/comments`);
-      if (res.data?.status === 'success') {
+      if (requestSequence === fetchSequence.current && res.data?.status === 'success') {
+        const fetched: HerbComment[] = res.data.data.comments || [];
+        const changedIds = new Set<number>();
+        for (const [commentId, version] of commentVersions.current) {
+          if (version > requestVersion) changedIds.add(commentId);
+        }
+        const deletedIds = new Set(deletedCommentIds.current);
         setComments((current) => {
-          const fetched: HerbComment[] = res.data.data.comments || [];
-          const fetchedIds = new Set(fetched.map((comment) => comment.id));
-          return [...fetched, ...current.filter((comment) => !fetchedIds.has(comment.id))];
+          return [
+            ...fetched.filter((comment) => !deletedIds.has(comment.id) && !changedIds.has(comment.id)),
+            ...current.filter((comment) => changedIds.has(comment.id)),
+          ];
         });
       }
     } catch (err) {
       console.error('Failed to fetch comments', err);
     } finally {
-      setLoading(false);
+      if (requestSequence === fetchSequence.current) setLoading(false);
     }
   }, [herbId]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchCommentsCallback();
 
     // Initialize Socket.io connection
@@ -101,10 +121,12 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
     });
 
     socketRef.current.on('comment_deleted', (commentId: number) => {
+      markCommentDeleted(commentId);
       setComments((prev) => prev.filter((c) => c.id !== commentId));
     });
 
     socketRef.current.on('comment_liked', ({ commentId, likes, userLikes }) => {
+      markCommentChanged(commentId);
       setComments((prev) => 
         prev.map((c) => 
           c.id === commentId 
@@ -119,7 +141,7 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
         socketRef.current.disconnect();
       }
     };
-  }, [herbId, fetchCommentsCallback, appendComment]);
+  }, [herbId, fetchCommentsCallback, appendComment, markCommentChanged, markCommentDeleted]);
 
 
   const handleSubmitComment = async (e: React.FormEvent, parentId: number | null = null) => {
@@ -154,7 +176,7 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
     if (!window.confirm('Are you sure you want to delete this comment?')) return;
     try {
       await api.delete(`/herbs/comments/${commentId}`);
-      // Optimistic delete
+      markCommentDeleted(commentId);
       setComments((prev) => prev.filter((c) => c.id !== commentId));
     } catch (err) {
       console.error('Failed to delete comment', err);
@@ -168,7 +190,7 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
       return;
     }
     
-    // Optimistic UI Update
+    markCommentChanged(commentId);
     setComments((prev) => prev.map((c) => {
       if (c.id === commentId) {
         const hasLiked = c.userLikes.some((ul) => ul.userId === user?.id);
