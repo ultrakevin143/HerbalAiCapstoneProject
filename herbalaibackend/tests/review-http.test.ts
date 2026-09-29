@@ -104,6 +104,13 @@ describe('Review HTTP results and side effects', () => {
     expect(mocks.approve).toHaveBeenCalledTimes(1);
   });
 
+  it('passes rejection notes to the repository', async () => {
+    mocks.reject.mockResolvedValue({ id: 7, status: 'Rejected' });
+    const response = await request(app).post('/7/reject').send({ revision: 2, reviewNotes: '  QA reason  ' });
+    expect(response.status).toBe(200);
+    expect(mocks.reject).toHaveBeenCalledWith(7, 'qa-admin', 2, 'QA reason');
+  });
+
   it('does not repeat or report failed publication when email delivery fails', async () => {
     mocks.approve.mockResolvedValue({ id: 'qa-herb' });
     mocks.mail.mockRejectedValue(new Error('Test mail failure'));

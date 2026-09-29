@@ -488,7 +488,7 @@ export class SuggestController {
         return;
       }
 
-      const updated = await suggestRepo.rejectSuggestion(id, reviewerId, req.body.revision);
+      const updated = await suggestRepo.rejectSuggestion(id, reviewerId, req.body.revision, req.body.reviewNotes?.trim());
       if (!updated) {
         res.status(409).json({ status: 'error', message: 'This submission changed or is no longer pending. Refresh and review the latest version.' });
         return;

@@ -41,4 +41,12 @@ describe('Atomic review decisions', () => {
     mocks.audit.mockRejectedValue(new Error('Audit unavailable'));
     await expect(rejectSuggestion(7, 'admin', 3)).rejects.toThrow('Audit unavailable');
   });
+
+  it('persists rejection notes alongside the audit action', async () => {
+    mocks.updateMany.mockResolvedValue({ count: 1 });
+    mocks.findUniqueOrThrow.mockResolvedValue({ id: 7, localName: 'QA', scientificName: 'QA', reviewNotes: 'Not a real herb', revision: 4 });
+    await rejectSuggestion(7, 'admin', 3, 'Not a real herb');
+    expect(mocks.updateMany.mock.calls[0][0].data.reviewNotes).toBe('Not a real herb');
+    expect(mocks.audit.mock.calls[0][0].data.details.reviewNotes).toBe('Not a real herb');
+  });
 });

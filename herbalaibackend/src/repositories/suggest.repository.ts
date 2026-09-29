@@ -232,8 +232,8 @@ export const requestChanges = (id: number, reviewerId: string, reviewNotes: stri
 /**
  * Rejects a suggestion by updating its status.
  */
-export const rejectSuggestion = (id: number, reviewerId: string, expectedRevision?: number) =>
-  decideSuggestion(id, reviewerId, 'Rejected', expectedRevision);
+export const rejectSuggestion = (id: number, reviewerId: string, expectedRevision?: number, reviewNotes?: string) =>
+  decideSuggestion(id, reviewerId, 'Rejected', expectedRevision, reviewNotes);
 
 /**
  * Retrieves suggestions submitted by a specific user.

@@ -381,6 +381,7 @@ export default function AdminPage() {
       setSuccessMsg(null);
       const res = await api.post(`/suggest/${id}/reject`, {
         revision: suggestions.find((suggestion) => suggestion.id === id)?.revision,
+        reviewNotes: reviewNotesById[id]?.trim() || undefined,
       });
       if (res.data?.status === 'success') {
         setSuccessMsg(`Suggestion has been rejected.`);

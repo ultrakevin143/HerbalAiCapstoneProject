@@ -59,5 +59,8 @@ export const requestSuggestionChangesSchema = z.object({
 });
 
 export const rejectSuggestionSchema = z.object({
-  body: z.object({ revision: z.number().int().nonnegative() }),
+  body: z.object({
+    revision: z.number().int().nonnegative(),
+    reviewNotes: z.string().trim().min(1).max(2000).optional(),
+  }),
 });
