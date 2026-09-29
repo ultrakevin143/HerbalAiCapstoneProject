@@ -15,16 +15,37 @@ vi.mock("../src/services/ai/core/gemini-service.js", () => ({
 import app from "../src/app.js";
 import { generateAccessToken } from "../src/utils/jwt.js";
 import { prisma } from "../src/lib/prisma.js";
+import { invalidateHerbCache } from "../src/repositories/herb.repository.js";
 
 describe("Herbal AI - Comprehensive System Features & AI Chat Verification", () => {
   const chatUserId = randomUUID();
+  const fixtureHerbId = `system-test-herb-${chatUserId}`;
   beforeAll(async () => {
     await prisma.user.create({ data: {
       id: chatUserId, username: `system_test_${chatUserId}`,
       email: `system_test_${chatUserId}@example.invalid`, password: 'test-only', name: 'System test',
     } });
+    const builtInLagundi = await prisma.herb.findFirst({
+      where: { localName: 'Lagundi', provenance: 'BUILT_IN', isVerified: true, publicationStatus: 'PUBLISHED' },
+    });
+    if (!builtInLagundi) {
+      await prisma.herb.create({ data: {
+        id: fixtureHerbId,
+        localName: 'Lagundi',
+        scientificName: 'Vitex negundo',
+        category: 'Test fixture',
+        medicinalUses: 'Test fixture only',
+        preparationMethod: 'Test fixture only',
+        dosage: 'Not applicable',
+        isVerified: true,
+        publicationStatus: 'PUBLISHED',
+      } });
+    }
+    invalidateHerbCache();
   });
   afterAll(async () => {
+    await prisma.herb.deleteMany({ where: { id: fixtureHerbId } });
+    invalidateHerbCache();
     await prisma.user.delete({ where: { id: chatUserId } });
   });
   // Generate valid test JWT tokens

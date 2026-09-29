@@ -44,6 +44,7 @@ export const streamDrAiResponse = async (
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let buffer = '';
+  let completed = false;
 
   const consumeBlock = (block: string) => {
     const event = block.split('\n').find((line) => line.startsWith('event:'))?.slice(6).trim();
@@ -54,6 +55,7 @@ export const streamDrAiResponse = async (
     if (!event || !dataText) return;
     const data = JSON.parse(dataText);
     if (event === 'error') throw new Error(data.message || 'Dr. Ai streaming failed.');
+    if (event === 'done') completed = true;
     if (event === 'sources' || event === 'chunk' || event === 'done') {
       onEvent({ event, data } as StreamEvent);
     }
@@ -71,4 +73,5 @@ export const streamDrAiResponse = async (
     if (done) break;
   }
   if (buffer.trim()) consumeBlock(buffer.trim());
+  if (!completed) throw new Error('Dr. Ai response ended before completion.');
 };

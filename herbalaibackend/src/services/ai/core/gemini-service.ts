@@ -213,26 +213,24 @@ export async function* generateChatResponseStream(
 
   const candidates = getModelCandidates();
   for (const [index, modelName] of candidates.entries()) {
-    let emittedText = false;
     try {
+      let answer = "";
       const result = await createChat(modelName, history).sendMessageStream(fullPrompt, CHAT_REQUEST_OPTIONS);
       // The SDK aggregates the response concurrently with iteration. Observe its
       // rejection immediately; an interrupted stream otherwise risks an unhandled rejection.
       void result.response.catch(() => undefined);
       for await (const chunk of result.stream) {
         const text = chunk.text();
-        if (text) {
-          emittedText = true;
-          yield text;
-        }
+        if (text) answer += text;
       }
 
       const response = await result.response;
       if (response.usageMetadata) {
         console.log(`📊 AI Token Usage [${modelName}] | Prompt: ${response.usageMetadata.promptTokenCount} | Response: ${response.usageMetadata.candidatesTokenCount} | Total: ${response.usageMetadata.totalTokenCount}`);
       }
-      if (!emittedText) throw new Error("Empty response from model");
+      if (!answer) throw new Error("Empty response from model");
       recordModelSuccess(modelName, index + 1);
+      yield answer;
       return;
     } catch (error) {
       const err = error as GeminiRequestError;
@@ -240,7 +238,6 @@ export async function* generateChatResponseStream(
       lastError = err;
       if (!isRetryableModelError(err)) throw err;
       putModelOnCooldown(modelName);
-      if (emittedText) throw err;
     }
   }
 

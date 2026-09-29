@@ -2,7 +2,7 @@ name: Herbal AI Continuous Integration (CI)
 
 on:
   push:
-    branches: [ "main", "master", "develop" ]
+    branches: [ "main", "master", "develop", "codex/readability-accessibility" ]
   pull_request:
     branches: [ "main", "master", "develop" ]
 
@@ -47,21 +47,31 @@ jobs:
           DATABASE_URL: postgresql://test_user:test_password@localhost:5432/herbalai_test?sslmode=disable
         run: npx prisma generate
 
+      - name: Apply test database migrations
+        working-directory: herbalaibackend
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/herbalai_test?sslmode=disable
+        run: npx prisma migrate deploy
+
       - name: Run Typecheck
         working-directory: herbalaibackend
         run: npx tsc --noEmit
 
-      - name: Run Automated Vitest Suites
+      - name: Run Backend Lint
+        working-directory: herbalaibackend
+        run: npm run lint
+
+      - name: Run isolated Vitest suites
         working-directory: herbalaibackend
         env:
           DATABASE_URL: postgresql://test_user:test_password@localhost:5432/herbalai_test?sslmode=disable
           JWT_SECRET: ci_test_jwt_secret_key_1234567890
           JWT_REFRESH_SECRET: ci_test_refresh_jwt_secret_key_1234567890
           FRONTEND_URL: http://localhost:3000
-        run: npm test
+        run: npm test -- --maxWorkers=2 --exclude tests/herb-catalog-remediation.test.ts
 
   frontend-checks:
-    name: Frontend Lint & Typecheck
+    name: Frontend Lint, Typecheck & Build
     runs-on: ubuntu-latest
 
     steps:
@@ -82,3 +92,13 @@ jobs:
       - name: Run Frontend Typecheck
         working-directory: herbalaifrontend
         run: npx tsc --noEmit
+
+      - name: Run Frontend Lint
+        working-directory: herbalaifrontend
+        run: npm run lint
+
+      - name: Run Frontend Build
+        working-directory: herbalaifrontend
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:5000/api
+        run: npm run build

@@ -3,7 +3,15 @@ import * as authService from "../services/auth.service.js";
 import * as userRepo from "../repositories/user.repository.js";
 import { ENV } from "../config/env.js";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware.js";
-import { randomBytes } from "node:crypto";
+import { randomBytes, timingSafeEqual } from "node:crypto";
+
+const googleStateCookie = 'googleOAuthState';
+const googleStateCookieOptions = {
+  httpOnly: true,
+  secure: ENV.NODE_ENV === 'production',
+  sameSite: 'lax' as const,
+  path: '/api/auth/google',
+};
 
 export class AuthController {
   private setAuthCookies(res: Response, tokens: { accessToken: string; refreshToken: string }) {
@@ -220,12 +228,24 @@ export class AuthController {
   // --- Google SSO ---
 
   public googleAuth = (_req: Request, res: Response): void => {
-    const url = authService.getGoogleAuthUrl();
+    const state = randomBytes(32).toString('hex');
+    res.cookie(googleStateCookie, state, { ...googleStateCookieOptions, maxAge: 10 * 60 * 1000 });
+    res.setHeader('Cache-Control', 'no-store');
+    const url = authService.getGoogleAuthUrl(state);
     res.redirect(url);
   };
 
   public googleCallback = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
+      const state = req.query['state'];
+      const expectedState = req.cookies?.[googleStateCookie];
+      res.clearCookie(googleStateCookie, googleStateCookieOptions);
+      if (typeof state !== 'string' || typeof expectedState !== 'string' ||
+          !/^[a-f0-9]{64}$/.test(state) || !/^[a-f0-9]{64}$/.test(expectedState) ||
+          !timingSafeEqual(Buffer.from(state, 'hex'), Buffer.from(expectedState, 'hex'))) {
+        res.status(400).json({ status: 'error', message: 'Google sign-in session expired. Please try again.' });
+        return;
+      }
       const code = req.query['code'] as string;
       if (!code) {
         res.status(400).json({ status: "error", message: "Authorization code missing." });

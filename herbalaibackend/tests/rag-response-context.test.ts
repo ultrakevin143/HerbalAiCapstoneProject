@@ -46,9 +46,10 @@ describe('RAG response context', () => {
   });
 
   it('does not carry the old herb into an unrelated new question', async () => {
-    await AskAIService('What is the community forum?', [{ role: 'user', parts: [{ text: 'Tell me about Lagundi' }] }]);
+    const result = await AskAIService('What is the community forum?', [{ role: 'user', parts: [{ text: 'Tell me about Lagundi' }] }]);
     expect(mocks.embed).toHaveBeenCalled();
-    expect(mocks.answer.mock.calls[0]?.[1]).not.toContain('Vitex negundo');
+    expect(mocks.answer).not.toHaveBeenCalled();
+    expect(result.data?.answer).not.toContain('Vitex negundo');
   });
 
   it('enriches semantic herb matches with the same evidence and references', async () => {
@@ -81,10 +82,9 @@ describe('RAG response context', () => {
 
     const result = await AskAIService('What dosage should I take for moonflower xyz?');
 
-    expect(mocks.answer.mock.calls[0]?.[1]).toBe(
-      'No specific knowledge base or verified herb documents found matching this query in the database.'
-    );
+    expect(mocks.answer).not.toHaveBeenCalled();
     expect(result.data?.sources).toEqual([]);
+    expect(result.data?.answer).toContain('could not find a verified Herbal-Ai source');
   });
 
   it('does not stream unrelated citations for an unknown herb', async () => {
@@ -104,9 +104,7 @@ describe('RAG response context', () => {
     for await (const chunk of result.chunks) void chunk;
 
     expect(result.sources).toEqual([]);
-    expect(mocks.stream.mock.calls[0]?.[1]).toBe(
-      'No specific knowledge base or verified herb documents found matching this query in the database.'
-    );
+    expect(mocks.stream).not.toHaveBeenCalled();
   });
 
   it('streams only generated content and retains the retrieved sources', async () => {
@@ -117,5 +115,58 @@ describe('RAG response context', () => {
     expect(result.getResult().reply).toBe(chunks.join(''));
     expect(result.sources).toEqual([{ type: 'herb', title: 'Lagundi', distance: 0 }]);
     expect(mocks.stream.mock.calls[0]?.[1]).toContain('[Herb 1]');
+  });
+
+  it('returns cited repository fields rather than a provider error when generation fails', async () => {
+    mocks.answer.mockRejectedValue(new Error('provider unavailable'));
+
+    const result = await AskAIService('Unsa ang gamit sa Lagundi?');
+
+    expect(result.status).toBe('success');
+    expect(result.data?.sources).toEqual([{ type: 'herb', title: 'Lagundi', distance: 0 }]);
+    expect(result.data?.answer).toContain('Traditional use described in the record.');
+    expect(result.data?.answer).toContain('Not documented; this does not establish safety.');
+    expect(result.data?.answer).not.toContain('provider unavailable');
+  });
+
+  it('provides a source-only streamed fallback for a known herb', async () => {
+    mocks.stream.mockImplementation(async function* () { throw new Error('stream interrupted'); });
+
+    const result = await createDrAiStream('How is Lagundi prepared?');
+    const chunks: string[] = [];
+    for await (const chunk of result.chunks) chunks.push(chunk);
+
+    expect(chunks.join('')).toContain('Preparation not documented.');
+    expect(chunks.join('')).not.toContain('stream interrupted');
+    expect(result.getResult().reply).toBe(chunks.join(''));
+    expect(result.sources[0]?.title).toBe('Lagundi');
+  });
+
+  it('refuses an unknown-herb cure claim when generation fails', async () => {
+    mocks.stream.mockImplementation(async function* () { throw new Error('model unavailable'); });
+
+    const result = await createDrAiStream('Can Testus nonexistentus cure cancer?');
+    const chunks: string[] = [];
+    for await (const chunk of result.chunks) chunks.push(chunk);
+
+    expect(result.sources).toEqual([]);
+    expect(chunks.join('')).toContain('could not find a verified Herbal-Ai source');
+    expect(chunks.join('')).toContain('cannot confirm treatment or cure claims');
+    expect(mocks.stream).not.toHaveBeenCalled();
+  });
+
+  it('makes no cure claim when retrieval and generation are unavailable', async () => {
+    mocks.embed.mockRejectedValue(new Error('embedding unavailable'));
+    mocks.stream.mockImplementation(async function* () { throw new Error('model unavailable'); });
+
+    const result = await createDrAiStream('Can Testus nonexistentus cure cancer?');
+    const chunks: string[] = [];
+    for await (const chunk of result.chunks) chunks.push(chunk);
+
+    expect(result.sources).toEqual([]);
+    expect(chunks.join('')).toContain('could not check the Herbal-Ai sources');
+    expect(chunks.join('')).toContain('cannot verify this claim');
+    expect(chunks.join('')).not.toContain('model unavailable');
+    expect(mocks.stream).not.toHaveBeenCalled();
   });
 });

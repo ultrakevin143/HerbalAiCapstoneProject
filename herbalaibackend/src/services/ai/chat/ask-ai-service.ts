@@ -56,6 +56,7 @@ export interface DrAiSource {
 
 interface PreparedDrAiContext {
   context: string;
+  fallbackReply: string;
   sources: DrAiSource[];
   embeddingMs: number;
   retrievalMs: number;
@@ -65,6 +66,33 @@ interface PreparedDrAiContext {
 }
 
 type CatalogHerb = Awaited<ReturnType<typeof findAllHerbs>>['herbs'][number];
+
+const NO_MATCH_CONTEXT = "No specific knowledge base or verified herb documents found matching this query in the database.";
+const NO_MATCH_REPLY = "I could not find a verified Herbal-Ai source for this question. I cannot confirm treatment or cure claims without a documented record. Please consult a licensed health professional for medical decisions.";
+const RETRIEVAL_UNAVAILABLE_CONTEXT = "Herbal-Ai could not complete repository retrieval for this question.";
+const RETRIEVAL_UNAVAILABLE_REPLY = "I could not check the Herbal-Ai sources right now, so I cannot verify this claim or recommend a treatment. Please try again later or browse the library directly. Consult a licensed health professional for medical decisions.";
+
+const buildSourceFallback = (herbs: Array<CatalogHerb | HerbQueryResult>, entries: RetrievedKB[]) => {
+  if (herbs.length === 0 && entries.length === 0) return NO_MATCH_REPLY;
+
+  const herbRecords = herbs.slice(0, 2).map((herb) => [
+    `${herb.localName} (${herb.scientificName})`,
+    `Documented uses: ${herb.medicinalUses || 'Not documented in this record.'}`,
+    `Preparation: ${herb.preparationMethod || 'Not documented in this record.'}`,
+    `Recorded dosage: ${herb.dosage || 'Not documented in this record.'}`,
+    `Warnings: ${herb.warnings || 'Not documented; this does not establish safety.'}`,
+  ].join('\n'));
+  const faqRecords = entries.slice(0, 2).map((entry) =>
+    `${entry.question || 'Library FAQ'}: ${entry.answer}`
+  );
+
+  return [
+    'Dr. Ai could not complete a generated answer. The fields below retain the library wording; translation and synthesis are unavailable right now.',
+    ...herbRecords,
+    ...faqRecords,
+    'Educational information only. This is not a diagnosis or prescription; consult a licensed health professional for medical decisions.',
+  ].join('\n\n');
+};
 
 const formatHerbContext = (herb: HerbQueryResult | CatalogHerb, index: number) =>
   `[Herb ${index + 1}] Repository record (reviewed content; not a claim of clinical proof):\n${JSON.stringify({
@@ -131,6 +159,7 @@ async function prepareDrAiContext(question: string, history: Content[] = []): Pr
     ].filter(Boolean).join('\n\n');
     return {
       context,
+      fallbackReply: buildSourceFallback(namedHerbs, namedKnowledge),
       sources: [
         ...namedHerbs.map((herb) => ({ type: "herb" as const, title: herb.localName, distance: 0 })),
         ...namedKnowledge.map((entry) => ({ type: "kb" as const, title: entry.question, distance: 0 })),
@@ -144,7 +173,22 @@ async function prepareDrAiContext(question: string, history: Content[] = []): Pr
   }
 
   const embeddingStartedAt = performance.now();
-  const embedding = await generateEmbedding(question);
+  let embedding: number[];
+  try {
+    embedding = await generateEmbedding(question);
+  } catch {
+    console.warn('Dr. Ai embedding unavailable; repository retrieval could not finish.');
+    return {
+      context: RETRIEVAL_UNAVAILABLE_CONTEXT,
+      fallbackReply: RETRIEVAL_UNAVAILABLE_REPLY,
+      sources: [],
+      embeddingMs: performance.now() - embeddingStartedAt,
+      retrievalMs: 0,
+      herbSourceCount: 0,
+      knowledgeBaseSourceCount: 0,
+      bestDistance: 1,
+    };
+  }
   const embeddingMs = performance.now() - embeddingStartedAt;
   const vectorStr = `[${embedding.join(",")}]`;
 
@@ -187,16 +231,17 @@ async function prepareDrAiContext(question: string, history: Content[] = []): Pr
       ? []
       : semanticallyCloseHerbs;
 
+  const contextualHerbs = relevantHerbs.map((herb) => catalog.find((entry) => entry.id === herb.id) ?? herb);
   let context = "";
   if (relevantHerbs.length > 0) {
-    context += relevantHerbs.map((herb, index) =>
-      formatHerbContext(catalog.find((entry) => entry.id === herb.id) ?? herb, index)
+    context += contextualHerbs.map((herb, index) =>
+      formatHerbContext(herb, index)
     ).join("\n\n") + "\n\n";
   }
   if (relevantKB.length > 0) {
     context += `General Knowledge Base / FAQs:\n${formatKBContext(relevantKB)}\n\n`;
   }
-  if (!context) context = "No specific knowledge base or verified herb documents found matching this query in the database.";
+  if (!context) context = NO_MATCH_CONTEXT;
 
   const sources: DrAiSource[] = [
     ...relevantHerbs.map((h: HerbQueryResult) => ({ type: "herb" as const, title: h.localName, distance: h.distance })),
@@ -205,6 +250,7 @@ async function prepareDrAiContext(question: string, history: Content[] = []): Pr
 
   return {
     context,
+    fallbackReply: buildSourceFallback(contextualHerbs, relevantKB),
     sources,
     embeddingMs,
     retrievalMs,
@@ -230,7 +276,14 @@ export async function AskAIService(question: string, history: Content[] = []) {
   try {
     const prepared = await prepareDrAiContext(question, history);
     const generationStartedAt = performance.now();
-    const answer = await generateChatResponse(question, prepared.context, history);
+    let answer = prepared.fallbackReply;
+    if (prepared.sources.length > 0) {
+      try {
+        answer = await generateChatResponse(question, prepared.context, history);
+      } catch {
+        console.warn('Dr. Ai generation unavailable; using retrieved records.');
+      }
+    }
     const generationMs = performance.now() - generationStartedAt;
     const metrics: DrAiTimingMetrics = {
       embeddingMs: Number(prepared.embeddingMs.toFixed(1)),
@@ -263,10 +316,23 @@ export async function createDrAiStream(question: string, history: Content[] = []
   let reply = "";
 
   const chunks = async function* () {
-    for await (const text of generateChatResponseStream(question, prepared.context, history)) {
+    if (prepared.sources.length === 0) {
+      firstChunkMs = performance.now() - generationStartedAt;
+      reply = prepared.fallbackReply;
+      yield reply;
+      return;
+    }
+    try {
+      for await (const text of generateChatResponseStream(question, prepared.context, history)) {
+        firstChunkMs ??= performance.now() - generationStartedAt;
+        reply += text;
+        yield text;
+      }
+    } catch {
+      console.warn('Dr. Ai streaming unavailable; using retrieved records.');
       firstChunkMs ??= performance.now() - generationStartedAt;
-      reply += text;
-      yield text;
+      reply = prepared.fallbackReply;
+      yield reply;
     }
   };
 

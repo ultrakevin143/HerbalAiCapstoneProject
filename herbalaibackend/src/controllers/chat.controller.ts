@@ -3,6 +3,8 @@ import { askDrAi, streamDrAi } from "../services/chat.service.js";
 import type { ChatTurn } from "../services/chat.service.js";
 import { MAX_CHAT_HISTORY_TURNS } from "../schema/chat.schema.js";
 
+const CHAT_UNAVAILABLE_MESSAGE = "Dr. Ai is temporarily unavailable. Please try again later.";
+
 const appendToHistory = (history: ChatTurn[], message: string, reply: string): ChatTurn[] => {
   const newTurns: ChatTurn[] = [
     { role: "user", parts: [{ text: message }] },
@@ -71,10 +73,9 @@ export const sendMessage = async (req: Request, res: Response) => {
   } catch (error) {
     const err = error as { message?: string; status?: number };
     console.error("Chat Controller Error:", err?.message || error);
-    const statusCode = err?.status || 500;
-    return res.status(statusCode).json({
+    return res.status(503).json({
       status: "error",
-      message: err?.message || "Dr. Ai assistant is currently unavailable. Please try again later.",
+      message: CHAT_UNAVAILABLE_MESSAGE,
     });
   }
 };
@@ -119,12 +120,12 @@ export const streamMessage = async (req: Request, res: Response) => {
     const err = error as { message?: string; status?: number };
     console.error("Streaming Chat Controller Error:", err?.message || error);
     if (!res.headersSent) {
-      return res.status(err?.status || 500).json({
+      return res.status(503).json({
         status: "error",
-        message: err?.message || "Dr. Ai assistant is currently unavailable. Please try again later.",
+        message: CHAT_UNAVAILABLE_MESSAGE,
       });
     }
-    writeSse(res, "error", { message: err?.message || "Dr. Ai assistant is currently unavailable. Please try again later." });
+    writeSse(res, "error", { message: CHAT_UNAVAILABLE_MESSAGE });
     return res.end();
   }
 };

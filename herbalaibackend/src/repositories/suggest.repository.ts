@@ -202,7 +202,7 @@ export const approveSuggestion = async (
       where: { id: herbId },
       include: { sources: true },
     });
-  });
+  }, { timeout: 15_000 });
 };
 
 const decideSuggestion = async (id: number, reviewerId: string, status: 'ChangesRequested' | 'Rejected', expectedRevision?: number, reviewNotes?: string) => {

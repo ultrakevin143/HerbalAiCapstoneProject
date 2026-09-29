@@ -28,7 +28,7 @@ export const redeemAccountToken = async (redemption: AccountTokenRedemption): Pr
       });
     }
     return true;
-  });
+  }, { timeout: 15_000 });
 };
 
 export const createToken = async (data: {

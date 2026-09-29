@@ -70,20 +70,18 @@ describe('Gemini transport fallback (no live provider calls)', () => {
     expect(chunks.join('')).toBe('Stream answer');
     expect(fetchMock).toHaveBeenCalledTimes(2);
   });
-  it('aborts a stalled partial stream without appending another model answer', async () => {
-    const fetchMock = vi.fn().mockImplementation((_url: unknown, init: RequestInit) => Promise.resolve(new Response(new ReadableStream({
+  it('discards a stalled partial stream before falling back', async () => {
+    const fetchMock = vi.fn().mockImplementationOnce((_url: unknown, init: RequestInit) => Promise.resolve(new Response(new ReadableStream({
       start(controller) {
         controller.enqueue(new TextEncoder().encode(`data: ${JSON.stringify(content('Partial answer'))}\n\n`));
         init.signal?.addEventListener('abort', () => controller.error(new DOMException('Aborted', 'AbortError')), { once: true });
       },
-    }), { headers: { 'Content-Type': 'text/event-stream' } })));
+    }), { headers: { 'Content-Type': 'text/event-stream' } })))
+      .mockResolvedValueOnce(new Response(`data: ${JSON.stringify(content('Complete fallback answer'))}\n\n`, { headers: { 'Content-Type': 'text/event-stream' } }));
     vi.stubGlobal('fetch', fetchMock);
     const chunks: string[] = [];
-    const consume = async () => {
-      for await (const chunk of generateChatResponseStream('Question', 'Context')) chunks.push(chunk);
-    };
-    await expect(consume()).rejects.toThrow();
-    expect(chunks).toEqual(['Partial answer']);
-    expect(fetchMock).toHaveBeenCalledTimes(1);
+    for await (const chunk of generateChatResponseStream('Question', 'Context')) chunks.push(chunk);
+    expect(chunks).toEqual(['Complete fallback answer']);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 });

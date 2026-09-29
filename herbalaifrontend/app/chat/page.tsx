@@ -112,9 +112,9 @@ function ChatContent() {
     setChatError(null);
 
     const cleanHistory = [...history];
+    const modelMessageId = `${userMsgId}-model`;
 
     try {
-      const modelMessageId = `${userMsgId}-model`;
       let reply = '';
       let sources: Source[] = [];
       let modelMessageAdded = false;
@@ -144,8 +144,9 @@ function ChatContent() {
           ));
         }
       });
-    } catch (err: unknown) {
-      setChatError(err instanceof Error ? err.message : 'Connection lost. Please try again.');
+    } catch {
+      setMessages((prev) => prev.filter((message) => message.id !== modelMessageId));
+      setChatError('Dr. Ai could not complete the answer. Please try again later.');
     } finally {
       setIsSending(false);
     }

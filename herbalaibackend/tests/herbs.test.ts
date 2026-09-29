@@ -1,8 +1,41 @@
-import { describe, it, expect } from "vitest";
+import { afterAll, beforeAll, describe, it, expect } from "vitest";
+import { randomUUID } from "node:crypto";
 import request from "supertest";
 import app from "../src/app.js";
+import { prisma } from "../src/lib/prisma.js";
+import { invalidateHerbCache } from "../src/repositories/herb.repository.js";
 
 describe("Herb Library API Endpoints", () => {
+  const fixtureId = `herb-api-test-${randomUUID()}`;
+
+  beforeAll(async () => {
+    const builtInLagundi = await prisma.herb.findFirst({
+      where: { localName: "Lagundi", provenance: "BUILT_IN", isVerified: true, publicationStatus: "PUBLISHED" },
+    });
+    if (!builtInLagundi) {
+      await prisma.herb.create({
+        data: {
+          id: fixtureId,
+          localName: "Lagundi",
+          scientificName: "Vitex negundo",
+          category: "Test fixture",
+          medicinalUses: "Test fixture only",
+          preparationMethod: "Test fixture only",
+          dosage: "Not applicable",
+          isDohApproved: true,
+          isVerified: true,
+          publicationStatus: "PUBLISHED",
+        },
+      });
+    }
+    invalidateHerbCache();
+  });
+
+  afterAll(async () => {
+    await prisma.herb.deleteMany({ where: { id: fixtureId } });
+    invalidateHerbCache();
+  });
+
   it("GET /api/herbs - should return list of verified herbs with pagination metadata", async () => {
     const response = await request(app).get("/api/herbs");
 

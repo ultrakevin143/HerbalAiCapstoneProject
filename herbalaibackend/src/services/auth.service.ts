@@ -235,28 +235,31 @@ export const logout = async (token: string) => {
 
 // --- Google SSO ---
 
-export const getGoogleAuthUrl = (): string => {
+export const getGoogleAuthUrl = (state: string): string => {
   return googleClient.generateAuthUrl({
     access_type: "offline",
     scope: ["openid", "email", "profile"],
     prompt: "select_account",
+    state,
   });
 };
 
 export const googleLogin = async (code: string) => {
   // Exchange the authorization code for tokens
   const { tokens } = await googleClient.getToken(code);
-  googleClient.setCredentials(tokens);
+  if (!tokens.id_token) {
+    throw { status: 400, message: "Google did not provide a sign-in token." };
+  }
 
   // Verify the ID token and extract user info
   const ticket = await googleClient.verifyIdToken({
-    idToken: tokens.id_token!,
+    idToken: tokens.id_token,
     audience: ENV.GOOGLE_CLIENT_ID,
   });
 
   const payload = ticket.getPayload();
-  if (!payload || !payload.email) {
-    throw { status: 400, message: "Failed to retrieve user info from Google." };
+  if (!payload?.email || payload.email_verified !== true) {
+    throw { status: 400, message: "Google did not provide a verified email address." };
   }
 
   const { email, name, picture } = payload;

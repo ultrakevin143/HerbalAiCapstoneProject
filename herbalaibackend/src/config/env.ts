@@ -27,11 +27,11 @@ export const ENV = {
   FRONTEND_URL: process.env['FRONTEND_URL'] || 'http://localhost:3000',
   BACKEND_URL: process.env['BACKEND_URL'] || 'http://localhost:5000',
   GEMINI_API_KEY: process.env['GEMINI_API_KEY'],
-  DR_AI_CHAT_MODELS: (process.env['DR_AI_CHAT_MODELS'] || 'gemini-3.5-flash-lite,gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.7-flash,gemini-3.6-flash,gemini-2.5-flash-lite')
+  DR_AI_CHAT_MODELS: (process.env['DR_AI_CHAT_MODELS'] || 'gemini-3.1-flash-lite,gemini-3.5-flash-lite,gemini-3.8-flash,gemini-3.7-flash,gemini-3.6-flash')
     .split(',')
     .map((model) => model.trim())
     .filter((model, index, models) => Boolean(model) && models.indexOf(model) === index),
-  DR_AI_MODEL_TIMEOUT_MS: boundedInteger('DR_AI_MODEL_TIMEOUT_MS', 7_000, 1_000, 20_000),
+  DR_AI_MODEL_TIMEOUT_MS: boundedInteger('DR_AI_MODEL_TIMEOUT_MS', 15_000, 1_000, 30_000),
   DR_AI_MAX_MODEL_ATTEMPTS: boundedInteger('DR_AI_MAX_MODEL_ATTEMPTS', 4, 1, 6),
   DR_AI_MODEL_COOLDOWN_MS: boundedInteger('DR_AI_MODEL_COOLDOWN_MS', 60_000, 0, 300_000),
   GOOGLE_CLIENT_ID: process.env['GOOGLE_CLIENT_ID'] || '',
