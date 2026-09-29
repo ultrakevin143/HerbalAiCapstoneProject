@@ -202,22 +202,20 @@ export const refreshToken = async (token: string) => {
     throw { status: 403, message: "Account banned or does not exist." };
   }
 
-  // Revoke the old refresh token (Token Rotation)
-  await tokenRepo.revokeToken(tokenRecord.id);
-
   // Generate new tokens
   const tokenPayload = { userId: tokenRecord.userId, role: tokenRecord.user.role, sessionVersion: tokenRecord.user.sessionVersion };
   const newAccessToken = generateAccessToken(tokenPayload);
   const newRefreshToken = generateRefreshToken(tokenPayload);
 
-  // Store the new refresh token
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  await tokenRepo.createToken({
+  const rotated = await tokenRepo.rotateRefreshToken(tokenRecord.id, {
     userId: tokenRecord.userId,
-    type: "REFRESH",
     token: newRefreshToken,
     expiresAt,
   });
+  if (!rotated) {
+    throw { status: 401, message: "Invalid or expired refresh token." };
+  }
 
   return {
     accessToken: newAccessToken,

@@ -1,6 +1,14 @@
 import { v2 as cloudinary } from 'cloudinary';
 import { ENV } from '../config/env.js';
 
+export class MediaUploadError extends Error {
+  readonly code = 'MEDIA_UPLOAD_UNAVAILABLE';
+
+  constructor() {
+    super('Image upload is temporarily unavailable. Please try again later.');
+  }
+}
+
 // Configure Cloudinary with environment variables
 cloudinary.config({
   cloud_name: ENV.CLOUDINARY_CLOUD_NAME,
@@ -20,23 +28,27 @@ export async function uploadToCloudinary(
   folder: string = 'herbal_ai_suggestions'
 ): Promise<string> {
   return new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
-      {
-        folder: folder,
-      },
-      (error, result) => {
-        if (error) {
-          console.error('Cloudinary upload error:', error);
-          return reject(error);
-        }
-        if (!result) {
-          return reject(new Error('Cloudinary upload returned no result.'));
-        }
-        resolve(result.secure_url);
-      }
-    );
+    const rejectUpload = () => {
+      console.error('Cloudinary upload failed');
+      reject(new MediaUploadError());
+    };
 
-    // Write buffer to stream and end
-    uploadStream.end(fileBuffer);
+    try {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { folder },
+        (error, result) => {
+          if (error || !result?.secure_url) {
+            rejectUpload();
+            return;
+          }
+          resolve(result.secure_url);
+        }
+      );
+
+      uploadStream.on('error', rejectUpload);
+      uploadStream.end(fileBuffer);
+    } catch {
+      rejectUpload();
+    }
   });
 }

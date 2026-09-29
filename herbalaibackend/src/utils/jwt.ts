@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { randomUUID } from 'node:crypto';
 import { ENV } from '../config/env.js';
 
 export interface JwtPayload {
@@ -18,7 +19,7 @@ export const generateAccessToken = (payload: JwtPayload): string => {
  * Signs a long-lived refresh token (7 days).
  */
 export const generateRefreshToken = (payload: JwtPayload): string => {
-  return jwt.sign(payload, ENV.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+  return jwt.sign(payload, ENV.JWT_REFRESH_SECRET, { expiresIn: '7d', jwtid: randomUUID() });
 };
 
 /**

@@ -1,6 +1,7 @@
 import { updateKB, findKBById } from "../../../repositories/knowledgebase.repository.js";
 import { generateEmbedding } from "../core/gemini-service.js";
 import type { KBData } from "../../../repositories/knowledgebase.repository.js";
+import { hasPhilippineSourceMetadata } from './source-metadata.js';
 
 interface UpdateKnowledgeBaseData {
   id: string;
@@ -17,6 +18,12 @@ export async function UpdateKnowledgeBaseService(data: UpdateKnowledgeBaseData, 
     const existing = await findKBById(data.id);
     if (!existing) {
       return { code: 404, status: "error", message: "Knowledge base entry not found" };
+    }
+
+    const changesContent = data.question !== undefined || data.answer !== undefined
+      || data.category !== undefined || data.tags !== undefined || data.metadata !== undefined;
+    if (changesContent && !hasPhilippineSourceMetadata(data.metadata ?? existing.metadata)) {
+      return { code: 400, status: 'error', message: 'Add a Philippine source with a title, publisher, and HTTP(S) URL before saving.' };
     }
 
     let vectorStr = undefined;

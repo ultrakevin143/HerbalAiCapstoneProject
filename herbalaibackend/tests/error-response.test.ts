@@ -15,6 +15,17 @@ describe('production error responses', () => {
     const error = new Error('Development detail');
     expect(errorResponse(error, false).body).toMatchObject({ message: error.message, stack: error.stack });
   });
+  it.each([true, false])('returns a safe retryable media error in production=%s', production => {
+    const error = Object.assign(new Error('Cloudinary Invalid Signature: sensitive provider detail'), { code: 'MEDIA_UPLOAD_UNAVAILABLE' });
+    expect(errorResponse(error, production)).toEqual({
+      status: 503,
+      body: {
+        status: 'error',
+        code: 'MEDIA_UPLOAD_UNAVAILABLE',
+        message: 'Image upload is temporarily unavailable. Please try again later.',
+      },
+    });
+  });
   it.each([true, false])('redacts database failures in production=%s', (production) => {
     for (const code of ['P2028', 'P2024', 'P1001', 'ECONNRESET']) {
       const error = Object.assign(new Error('Transaction API error: secret postgres://user:password@host'), { code });

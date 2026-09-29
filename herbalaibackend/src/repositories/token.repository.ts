@@ -71,6 +71,29 @@ export const revokeToken = async (id: string) => {
   });
 };
 
+export const rotateRefreshToken = async (previousTokenId: string, data: {
+  userId: string;
+  token: string;
+  expiresAt: Date;
+}): Promise<boolean> => {
+  return prisma.$transaction(async (tx) => {
+    const claimed = await tx.token.updateMany({
+      where: {
+        id: previousTokenId,
+        userId: data.userId,
+        type: 'REFRESH',
+        revokedAt: null,
+        expiresAt: { gt: new Date() },
+      },
+      data: { revokedAt: new Date() },
+    });
+    if (claimed.count !== 1) return false;
+
+    await tx.token.create({ data: { ...data, type: 'REFRESH' } });
+    return true;
+  });
+};
+
 // Revoke all active tokens of a given type for a user (e.g. EMAIL_VERIFY, PASSWORD_RESET)
 // This prevents token accumulation when users repeatedly request new links
 export const revokeAllUserTokensByType = async (userId: string, type: string) => {

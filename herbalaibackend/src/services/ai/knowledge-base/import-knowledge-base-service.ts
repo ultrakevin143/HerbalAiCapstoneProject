@@ -1,5 +1,6 @@
 import { upsertKB } from '../../../repositories/knowledgebase.repository.js';
 import { generateEmbedding } from '../core/gemini-service.js';
+import { hasPhilippineSourceMetadata } from './source-metadata.js';
 
 interface ImportKnowledgeFact {
   question: string;
@@ -8,22 +9,6 @@ interface ImportKnowledgeFact {
   tags?: string[];
   metadata?: Record<string, unknown>;
 }
-
-const hasPhilippineSourceMetadata = (metadata: Record<string, unknown> | undefined) => {
-  if (!metadata || typeof metadata['jurisdiction'] !== 'string') return false;
-  if (metadata['jurisdiction'].trim().toLowerCase() !== 'philippines') return false;
-  const sources = metadata['sources'];
-  return Array.isArray(sources) && sources.length > 0 && sources.every((source) => {
-    if (!source || typeof source !== 'object' || Array.isArray(source)) return false;
-    const record = source as Record<string, unknown>;
-    return typeof record['title'] === 'string'
-      && record['title'].trim().length > 0
-      && typeof record['publisher'] === 'string'
-      && record['publisher'].trim().length > 0
-      && typeof record['url'] === 'string'
-      && URL.canParse(record['url']);
-  });
-};
 
 export async function ImportKnowledgeBaseService(facts: ImportKnowledgeFact[], adminId: string) {
   try {

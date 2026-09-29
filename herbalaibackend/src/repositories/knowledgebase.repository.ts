@@ -166,7 +166,7 @@ export const findKBPage = async (page: number, limit: number, search: string) =>
   const [items, total] = await Promise.all([
     prisma.knowledgeBase.findMany({
       where,
-      select: { id: true, question: true, answer: true, category: true, tags: true, isActive: true, createdAt: true, updatedAt: true },
+      select: { id: true, question: true, answer: true, category: true, tags: true, metadata: true, isActive: true, createdAt: true, updatedAt: true },
       orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
       take: limit,
       skip: (page - 1) * limit,

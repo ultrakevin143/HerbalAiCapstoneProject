@@ -1,5 +1,6 @@
 import { createKB } from "../../../repositories/knowledgebase.repository.js";
 import { generateEmbedding } from "../core/gemini-service.js";
+import { hasPhilippineSourceMetadata } from './source-metadata.js';
 
 interface CreateKnowledgeBaseData {
   question: string;
@@ -10,6 +11,9 @@ interface CreateKnowledgeBaseData {
 }
 
 export async function CreateKnowledgeBaseService(data: CreateKnowledgeBaseData, adminId: string) {
+  if (!hasPhilippineSourceMetadata(data.metadata)) {
+    return { code: 400, status: 'error', message: 'Add a Philippine source with a title, publisher, and HTTP(S) URL before publishing.' };
+  }
   try {
     // Generate vector embedding based on the question and answer text
     const embedding = await generateEmbedding(`${data.question}\n${data.answer}`);

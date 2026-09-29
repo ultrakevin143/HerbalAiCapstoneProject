@@ -4,6 +4,16 @@ export function databaseErrorCode(err: Error & { code?: unknown }) {
 }
 
 export function errorResponse(err: Error & { status?: number; code?: unknown }, production: boolean) {
+  if (err.code === 'MEDIA_UPLOAD_UNAVAILABLE') {
+    return {
+      status: 503,
+      body: {
+        status: 'error',
+        code: 'MEDIA_UPLOAD_UNAVAILABLE',
+        message: 'Image upload is temporarily unavailable. Please try again later.',
+      },
+    };
+  }
   const databaseCode = databaseErrorCode(err);
   if (databaseCode) {
     const unavailable = ['P1001', 'P1002', 'P1008', 'P1017', 'P2024', 'P2028', 'ECONNRESET', 'ECONNREFUSED', 'ETIMEDOUT', '57P01', '53300', '08006'].includes(databaseCode);
