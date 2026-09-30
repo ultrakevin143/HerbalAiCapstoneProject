@@ -69,21 +69,38 @@ type CatalogHerb = Awaited<ReturnType<typeof findAllHerbs>>['herbs'][number];
 
 const NO_MATCH_CONTEXT = "No specific knowledge base or verified herb documents found matching this query in the database.";
 const NO_MATCH_REPLY = "I could not find a verified Herbal-Ai source for this question. I cannot confirm treatment or cure claims without a documented record. Please consult a licensed health professional for medical decisions.";
+const isPediatricQuestion = (question: string) => /\b(child|children|kid|kids|baby|infant|newborn|toddler|pediatric|paediatric|anak|bata|sanggol)\b|\b(?:\d{1,2}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)[- ](?:year|month)[- ]old\b|\b(?:age(?:d)?\s*)?\d{1,2}\s*(?:yo|y\/o|mo|months? old|taong gulang)\b/i.test(question);
+const isPediatricRequest = (question: string, history: Content[]) => {
+  if (isPediatricQuestion(question)) return true;
+  if (/\b(adult|grown-up)\b/i.test(question) || !/\b(it|its|this|that|them|give|dose|dosage|how much|how often)\b/i.test(question)) return false;
+  const previousQuestion = [...history].reverse().find((turn) => turn.role === 'user');
+  return isPediatricQuestion(previousQuestion?.parts.map((part) => part.text ?? '').join(' ') ?? '');
+};
+export const withoutPediatricQuantities = (value: string) => value.split(/(?<=[.!?])\s+(?=[A-Z])|\r?\n/u)
+  .map((sentence) => /\b(?:age-based|ages?\s+\d|children?\s+\d|\d+\s*(?:[-–]\s*\d+\s*)?(?:years?|yrs?)\b)/i.test(sentence)
+    && /\d/.test(sentence)
+    ? 'Age-specific ingredient quantities are recorded in the source but are not repeated here; consult a licensed clinician for pediatric use.'
+    : sentence)
+  .join(' ');
 const RETRIEVAL_UNAVAILABLE_CONTEXT = "Herbal-Ai could not complete repository retrieval for this question.";
 const RETRIEVAL_UNAVAILABLE_REPLY = "I could not check the Herbal-Ai sources right now, so I cannot verify this claim or recommend a treatment. Please try again later or browse the library directly. Consult a licensed health professional for medical decisions.";
 
-const buildSourceFallback = (herbs: Array<CatalogHerb | HerbQueryResult>, entries: RetrievedKB[]) => {
+const buildSourceFallback = (herbs: Array<CatalogHerb | HerbQueryResult>, entries: RetrievedKB[], pediatricRequest: boolean) => {
   if (herbs.length === 0 && entries.length === 0) return NO_MATCH_REPLY;
+  if (pediatricRequest) {
+    const names = herbs.slice(0, 2).map((herb) => herb.localName).join(', ');
+    return `Herbal-Ai has ${names ? `a record for ${names}` : 'a related repository record'}, but Dr. Ai cannot provide child-specific preparation or dosing guidance. Consult a licensed clinician before giving an herbal preparation to a child. This is educational information, not medical advice.`;
+  }
 
   const herbRecords = herbs.slice(0, 2).map((herb) => [
     `${herb.localName} (${herb.scientificName})`,
     `Documented uses: ${herb.medicinalUses || 'Not documented in this record.'}`,
-    `Preparation: ${herb.preparationMethod || 'Not documented in this record.'}`,
-    `Recorded dosage: ${herb.dosage || 'Not documented in this record.'}`,
+    `Preparation: ${withoutPediatricQuantities(herb.preparationMethod || 'Not documented in this record.')}`,
+    'Recorded dosage: Consult the library record; Dr. Ai cannot synthesize a dose while generation is unavailable.',
     `Warnings: ${herb.warnings || 'Not documented; this does not establish safety.'}`,
   ].join('\n'));
   const faqRecords = entries.slice(0, 2).map((entry) =>
-    `${entry.question || 'Library FAQ'}: ${entry.answer}`
+    `${entry.question || 'Library FAQ'}: ${withoutPediatricQuantities(entry.answer)}`
   );
 
   return [
@@ -94,13 +111,15 @@ const buildSourceFallback = (herbs: Array<CatalogHerb | HerbQueryResult>, entrie
   ].join('\n\n');
 };
 
-const formatHerbContext = (herb: HerbQueryResult | CatalogHerb, index: number) =>
+const formatHerbContext = (herb: HerbQueryResult | CatalogHerb, index: number, question: string, pediatricRequest: boolean) =>
   `[Herb ${index + 1}] Repository record (reviewed content; not a claim of clinical proof):\n${JSON.stringify({
     localName: herb.localName,
     scientificName: herb.scientificName,
     medicinalUses: herb.medicinalUses,
-    preparation: herb.preparationMethod || 'Not documented in this record.',
-    dosageField: herb.dosage || 'Not documented in this record.',
+    preparation: pediatricRequest ? 'Pediatric preparation instructions withheld; consult a licensed clinician.' : withoutPediatricQuantities(herb.preparationMethod || 'Not documented in this record.'),
+    ...(/\b(dose|dosage|amount|how much|frequency|how often)\b/i.test(question) && !pediatricRequest
+      ? { dosageField: withoutPediatricQuantities(herb.dosage || 'Not documented in this record.') }
+      : {}),
     warnings: herb.warnings || 'Not documented; this does not establish safety.',
     ...('evidenceClass' in herb ? { evidenceClass: herb.evidenceClass } : {}),
     ...('sources' in herb ? { references: herb.sources } : {}),
@@ -119,14 +138,14 @@ interface RetrievedKB {
 const formatKBContext = (entries: RetrievedKB[]) => entries.map((entry, index) =>
   `[FAQ ${index + 1}] ${JSON.stringify({
     question: entry.question || 'Untitled Question',
-    answer: entry.answer,
+    answer: withoutPediatricQuantities(entry.answer),
     category: entry.category,
     tags: entry.tags,
     sourceMetadata: entry.metadata,
   })}`
 ).join('\n\n');
 
-async function prepareDrAiContext(question: string, history: Content[] = []): Promise<PreparedDrAiContext> {
+async function prepareDrAiContext(question: string, history: Content[], pediatricRequest: boolean): Promise<PreparedDrAiContext> {
   const catalogStartedAt = performance.now();
   const { herbs: catalog } = await findAllHerbs();
   const normalizedQuestion = normalize(question);
@@ -154,12 +173,12 @@ async function prepareDrAiContext(question: string, history: Content[] = []): Pr
     ]);
     const namedKnowledge = await findActiveKBByTerms(exactTerms, 3);
     const context = [
-      namedHerbs.map(formatHerbContext).join("\n\n"),
-      namedKnowledge.length > 0 ? `General Knowledge Base / FAQs:\n${formatKBContext(namedKnowledge)}` : '',
+      namedHerbs.map((herb, index) => formatHerbContext(herb, index, question, pediatricRequest)).join("\n\n"),
+      namedKnowledge.length > 0 && !pediatricRequest ? `General Knowledge Base / FAQs:\n${formatKBContext(namedKnowledge)}` : '',
     ].filter(Boolean).join('\n\n');
     return {
       context,
-      fallbackReply: buildSourceFallback(namedHerbs, namedKnowledge),
+      fallbackReply: buildSourceFallback(namedHerbs, namedKnowledge, pediatricRequest),
       sources: [
         ...namedHerbs.map((herb) => ({ type: "herb" as const, title: herb.localName, distance: 0 })),
         ...namedKnowledge.map((entry) => ({ type: "kb" as const, title: entry.question, distance: 0 })),
@@ -235,10 +254,10 @@ async function prepareDrAiContext(question: string, history: Content[] = []): Pr
   let context = "";
   if (relevantHerbs.length > 0) {
     context += contextualHerbs.map((herb, index) =>
-      formatHerbContext(herb, index)
+      formatHerbContext(herb, index, question, pediatricRequest)
     ).join("\n\n") + "\n\n";
   }
-  if (relevantKB.length > 0) {
+  if (relevantKB.length > 0 && !pediatricRequest) {
     context += `General Knowledge Base / FAQs:\n${formatKBContext(relevantKB)}\n\n`;
   }
   if (!context) context = NO_MATCH_CONTEXT;
@@ -250,7 +269,7 @@ async function prepareDrAiContext(question: string, history: Content[] = []): Pr
 
   return {
     context,
-    fallbackReply: buildSourceFallback(contextualHerbs, relevantKB),
+    fallbackReply: buildSourceFallback(contextualHerbs, relevantKB, pediatricRequest),
     sources,
     embeddingMs,
     retrievalMs,
@@ -274,10 +293,11 @@ const logMetrics = (question: string, prepared: PreparedDrAiContext, metrics: Dr
 export async function AskAIService(question: string, history: Content[] = []) {
   const totalStartedAt = performance.now();
   try {
-    const prepared = await prepareDrAiContext(question, history);
+    const pediatricRequest = isPediatricRequest(question, history);
+    const prepared = await prepareDrAiContext(question, history, pediatricRequest);
     const generationStartedAt = performance.now();
     let answer = prepared.fallbackReply;
-    if (prepared.sources.length > 0) {
+    if (prepared.sources.length > 0 && !pediatricRequest) {
       try {
         answer = await generateChatResponse(question, prepared.context, history);
       } catch {
@@ -310,13 +330,14 @@ export async function AskAIService(question: string, history: Content[] = []) {
 
 export async function createDrAiStream(question: string, history: Content[] = []) {
   const totalStartedAt = performance.now();
-  const prepared = await prepareDrAiContext(question, history);
+  const pediatricRequest = isPediatricRequest(question, history);
+  const prepared = await prepareDrAiContext(question, history, pediatricRequest);
   const generationStartedAt = performance.now();
   let firstChunkMs: number | undefined;
   let reply = "";
 
   const chunks = async function* () {
-    if (prepared.sources.length === 0) {
+    if (prepared.sources.length === 0 || pediatricRequest) {
       firstChunkMs = performance.now() - generationStartedAt;
       reply = prepared.fallbackReply;
       yield reply;

@@ -1,6 +1,14 @@
 import type { Request, Response, NextFunction } from 'express';
 import type { AuthenticatedRequest } from '../middlewares/auth.middleware.js';
 import * as forumRepo from '../repositories/forum.repository.js';
+import { publicPagination } from '../utils/public-pagination.js';
+
+const parsePositiveId = (value: unknown): number | null => {
+  if (typeof value === 'number') return Number.isSafeInteger(value) && value > 0 ? value : null;
+  if (typeof value !== 'string' || !/^[1-9]\d*$/.test(value)) return null;
+  const parsed = Number(value);
+  return Number.isSafeInteger(parsed) ? parsed : null;
+};
 
 export class ForumController {
   /**
@@ -19,9 +27,9 @@ export class ForumController {
         });
       }
 
-      const { title, category, content } = req.body;
+      const { title, category, content } = req.body ?? {};
 
-      if (!title || !title.trim()) {
+      if (typeof title !== 'string' || !title.trim()) {
         return res.status(400).json({
           status: 'error',
           code: 400,
@@ -29,7 +37,7 @@ export class ForumController {
         });
       }
 
-      if (!category || !['growing', 'safety', 'recipes'].includes(category)) {
+      if (typeof category !== 'string' || !['growing', 'safety', 'recipes'].includes(category)) {
         return res.status(400).json({
           status: 'error',
           code: 400,
@@ -37,7 +45,7 @@ export class ForumController {
         });
       }
 
-      if (!content || !content.trim()) {
+      if (typeof content !== 'string' || !content.trim()) {
         return res.status(400).json({
           status: 'error',
           code: 400,
@@ -68,10 +76,13 @@ export class ForumController {
    */
   public getThreads = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
     try {
+      if ((req.query.category !== undefined && typeof req.query.category !== 'string') ||
+          (req.query.search !== undefined && typeof req.query.search !== 'string')) {
+        return res.status(400).json({ status: 'error', code: 400, message: 'Invalid discussion filters.' });
+      }
       const category = req.query.category as string | undefined;
       const search = req.query.search as string | undefined;
-      const page = req.query.page ? parseInt(req.query.page as string, 10) : undefined;
-      const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : undefined;
+      const { page, limit } = publicPagination(req.query);
 
       const { threads, total } = await forumRepo.findAllThreads({
         category,
@@ -80,7 +91,7 @@ export class ForumController {
         limit,
       });
 
-      const totalPages = limit && limit > 0 ? Math.ceil(total / limit) : 1;
+      const totalPages = Math.ceil(total / limit);
 
       return res.status(200).json({
         status: 'success',
@@ -88,8 +99,8 @@ export class ForumController {
         data: {
           threads,
           total,
-          page: page || 1,
-          limit: limit || total,
+          page,
+          limit,
           totalPages,
         },
       });
@@ -103,8 +114,8 @@ export class ForumController {
    */
   public getThreadDetail = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
     try {
-      const id = parseInt(req.params.id as string, 10);
-      if (isNaN(id)) {
+      const id = parsePositiveId(req.params.id);
+      if (id === null) {
         return res.status(400).json({
           status: 'error',
           code: 400,
@@ -112,8 +123,14 @@ export class ForumController {
         });
       }
 
-      // Increment views
-      await forumRepo.incrementThreadViews(id);
+      const updated = await forumRepo.incrementThreadViews(id);
+      if (updated.count === 0) {
+        return res.status(404).json({
+          status: 'error',
+          code: 404,
+          message: 'Discussion thread not found.',
+        });
+      }
 
       const thread = await forumRepo.findThreadById(id);
       if (!thread) {
@@ -149,8 +166,8 @@ export class ForumController {
       if (!userId) {
         return res.status(401).json({ status: 'error', code: 401, message: 'Authentication required.' });
       }
-      const id = parseInt(req.params.id as string, 10);
-      if (isNaN(id)) {
+      const id = parsePositiveId(req.params.id);
+      if (id === null) {
         return res.status(400).json({
           status: 'error',
           code: 400,
@@ -159,6 +176,9 @@ export class ForumController {
       }
 
       const updated = await forumRepo.toggleThreadLike(id, userId);
+      if (!updated) {
+        return res.status(404).json({ status: 'error', code: 404, message: 'Discussion thread not found.' });
+      }
 
       return res.status(200).json({
         status: 'success',
@@ -175,11 +195,11 @@ export class ForumController {
     try {
       const authReq = req as AuthenticatedRequest;
       const userId = authReq.user?.userId;
-      const id = parseInt(req.params.id as string, 10);
+      const id = parsePositiveId(req.params.id);
       if (!userId) {
         return res.status(401).json({ status: 'error', code: 401, message: 'Authentication required.' });
       }
-      if (isNaN(id)) {
+      if (id === null) {
         return res.status(400).json({ status: 'error', code: 400, message: 'Invalid thread ID.' });
       }
 
@@ -194,11 +214,11 @@ export class ForumController {
     try {
       const authReq = req as AuthenticatedRequest;
       const userId = authReq.user?.userId;
-      const threadId = parseInt(req.params.id as string, 10);
+      const threadId = parsePositiveId(req.params.id);
       if (!userId) {
         return res.status(401).json({ status: 'error', code: 401, message: 'Authentication required.' });
       }
-      if (isNaN(threadId)) {
+      if (threadId === null) {
         return res.status(400).json({ status: 'error', code: 400, message: 'Invalid thread ID.' });
       }
 
@@ -226,8 +246,8 @@ export class ForumController {
         });
       }
 
-      const id = parseInt(req.params.id as string, 10);
-      if (isNaN(id)) {
+      const id = parsePositiveId(req.params.id);
+      if (id === null) {
         return res.status(400).json({
           status: 'error',
           code: 400,
@@ -281,8 +301,8 @@ export class ForumController {
         });
       }
 
-      const threadId = parseInt(req.params.id as string, 10);
-      if (isNaN(threadId)) {
+      const threadId = parsePositiveId(req.params.id);
+      if (threadId === null) {
         return res.status(400).json({
           status: 'error',
           code: 400,
@@ -290,9 +310,9 @@ export class ForumController {
         });
       }
 
-      const { content, parentCommentId } = req.body;
+      const { content, parentCommentId } = req.body ?? {};
 
-      if (!content || !content.trim()) {
+      if (typeof content !== 'string' || !content.trim()) {
         return res.status(400).json({
           status: 'error',
           code: 400,
@@ -320,9 +340,9 @@ export class ForumController {
         content: content.trim(),
       };
 
-      if (parentCommentId) {
-        const parsedParentCommentId = parseInt(parentCommentId, 10);
-        if (isNaN(parsedParentCommentId)) {
+      if (parentCommentId !== undefined && parentCommentId !== null) {
+        const parsedParentCommentId = parsePositiveId(parentCommentId);
+        if (parsedParentCommentId === null) {
           return res.status(400).json({
             status: 'error',
             code: 400,
@@ -374,8 +394,8 @@ export class ForumController {
       if (!userId) {
         return res.status(401).json({ status: 'error', code: 401, message: 'Authentication required.' });
       }
-      const id = parseInt(req.params.id as string, 10);
-      if (isNaN(id)) {
+      const id = parsePositiveId(req.params.id);
+      if (id === null) {
         return res.status(400).json({
           status: 'error',
           code: 400,
@@ -384,6 +404,9 @@ export class ForumController {
       }
 
       const updated = await forumRepo.toggleCommentLike(id, userId);
+      if (!updated) {
+        return res.status(404).json({ status: 'error', code: 404, message: 'Comment not found.' });
+      }
 
       return res.status(200).json({
         status: 'success',
@@ -413,8 +436,8 @@ export class ForumController {
         });
       }
 
-      const id = parseInt(req.params.id as string, 10);
-      if (isNaN(id)) {
+      const id = parsePositiveId(req.params.id);
+      if (id === null) {
         return res.status(400).json({
           status: 'error',
           code: 400,

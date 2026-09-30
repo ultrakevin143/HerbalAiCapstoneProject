@@ -69,6 +69,16 @@ describe("Herb Library API Endpoints", () => {
     expect(response.body.data.totalPages).toBeGreaterThanOrEqual(1);
   });
 
+  it('normalizes invalid pages and caps excessive page sizes', async () => {
+    const response = await request(app).get('/api/herbs?page=-1&limit=1000');
+
+    expect(response.status).toBe(200);
+    expect(response.body.data.page).toBe(1);
+    expect(response.body.data.limit).toBe(100);
+    expect(response.body.data.herbs.length).toBeLessThanOrEqual(100);
+    expect(response.body.data.totalPages).toBe(Math.ceil(response.body.data.total / 100));
+  });
+
   it("GET /api/herbs/categories - lists categories across the full published catalog", async () => {
     const [categoriesResponse, herbsResponse] = await Promise.all([
       request(app).get("/api/herbs/categories"),

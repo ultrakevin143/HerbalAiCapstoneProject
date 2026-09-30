@@ -46,6 +46,8 @@ export default function CommunityPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<'all' | 'growing' | 'safety' | 'recipes'>('all');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   // Profile popup state
   const [selectedProfile, setSelectedProfile] = useState<{ id: string; name: string; avatar?: string | null; role: string } | null>(null);
@@ -74,13 +76,13 @@ export default function CommunityPage() {
     return () => window.clearTimeout(timer);
   }, [searchTerm]);
 
-  const fetchThreads = React.useCallback(async () => {
+  const fetchThreads = React.useCallback(async (signal: AbortSignal) => {
     try {
       setLoading(true);
       setError(null);
       
       let url = '/forum/threads';
-      const params = new URLSearchParams();
+      const params = new URLSearchParams({ page: String(page), limit: '25' });
       if (activeCategory !== 'all') {
         params.append('category', activeCategory);
       }
@@ -93,21 +95,32 @@ export default function CommunityPage() {
         url += `?${queryStr}`;
       }
 
-      const res = await api.get(url);
+      const res = await api.get(url, { signal });
+      if (signal.aborted) return;
       if (res.data?.status === 'success') {
+        const lastPage = Math.max(1, res.data.data.totalPages || 1);
+        if (page > lastPage) {
+          setPage(lastPage);
+          return;
+        }
         setThreads(res.data.data.threads || []);
+        setTotalPages(lastPage);
       }
     } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+      if (signal.aborted) return;
       console.error('Failed to fetch threads:', err);
       setError(err.response?.data?.message || 'Failed to load discussions. Please try again.');
     } finally {
-      setLoading(false);
+      if (!signal.aborted) setLoading(false);
     }
-  }, [activeCategory, debouncedSearch]);
+  }, [activeCategory, debouncedSearch, page]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchThreads();
+    const controller = new AbortController();
+    queueMicrotask(() => {
+      if (!controller.signal.aborted) void fetchThreads(controller.signal);
+    });
+    return () => controller.abort();
   }, [fetchThreads]);
 
   const getCategoryLabel = (catId: string) => {
@@ -180,7 +193,7 @@ export default function CommunityPage() {
                   return (
                     <button
                       key={cat.id}
-                      onClick={() => setActiveCategory(cat.id as any)} // eslint-disable-line @typescript-eslint/no-explicit-any
+                      onClick={() => { setActiveCategory(cat.id as any); setPage(1); }} // eslint-disable-line @typescript-eslint/no-explicit-any
                       className={`flex shrink-0 items-center gap-2 rounded-xl border px-3 py-2.5 text-left text-sm font-bold transition-colors lg:w-full lg:px-4 lg:py-3 ${
                         isActive
                           ? 'bg-[#eef5f0] dark:bg-soft text-[#1b4332] dark:text-ink border-[#2d6a4f]'
@@ -226,12 +239,12 @@ export default function CommunityPage() {
                 placeholder="Search discussion titles or content..."
                 aria-label="Search discussion titles or content"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
                 className="w-full bg-transparent focus:outline-none text-[#1b4332] dark:text-ink font-semibold text-sm placeholder-gray-400"
               />
               {searchTerm && (
                 <button
-                  onClick={() => setSearchTerm('')}
+                  onClick={() => { setSearchTerm(''); setPage(1); }}
                   className="text-xs text-gray-500 hover:text-[#1b4332] font-bold px-2 cursor-pointer"
                 >
                   Clear
@@ -348,6 +361,13 @@ export default function CommunityPage() {
                     </div>
                   </Link>
                 ))}
+                {totalPages > 1 && (
+                  <nav aria-label="Discussion pages" className="flex flex-wrap items-center justify-center gap-3 pt-4 text-sm text-ink">
+                    <button type="button" disabled={page <= 1} onClick={() => setPage((current) => current - 1)} className="btn btn-outline rounded-xl px-4 py-2 disabled:opacity-50">Previous</button>
+                    <span>Page {page} of {totalPages}</span>
+                    <button type="button" disabled={page >= totalPages} onClick={() => setPage((current) => current + 1)} className="btn btn-outline rounded-xl px-4 py-2 disabled:opacity-50">Next</button>
+                  </nav>
+                )}
               </div>
             )}
           </section>

@@ -27,6 +27,8 @@ describe('Gemini transport fallback (no live provider calls)', () => {
     expect(String(fetchMock.mock.calls[0]?.[0])).toContain('first-model');
     expect(String(fetchMock.mock.calls[1]?.[0])).toContain('second-model');
     expect(fetchMock.mock.calls[1]?.[1].body).toContain('Database text');
+    expect(fetchMock.mock.calls[1]?.[1].body).toContain('Answer an English question in English');
+    expect(fetchMock.mock.calls[1]?.[1].body).toContain('Do not include child-age table quantities in a general answer');
   });
   it('aborts an unresponsive request before falling back', async () => {
     let aborted = false;

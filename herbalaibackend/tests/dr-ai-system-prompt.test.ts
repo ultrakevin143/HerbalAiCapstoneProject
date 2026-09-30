@@ -16,6 +16,12 @@ describe('Dr. Ai language behavior', () => {
     expect(DR_AI_SYSTEM_PROMPT).toContain('ask one short clarifying question rather than guessing');
   });
 
+  it('keeps English questions in English and withholds pediatric quantities', () => {
+    expect(DR_AI_SYSTEM_PROMPT).toContain('If the latest question is in English, answer in English');
+    expect(DR_AI_SYSTEM_PROMPT).toContain('Do not provide child-specific preparation quantities or doses');
+    expect(DR_AI_SYSTEM_PROMPT).toContain('Do not include child-age table quantities in a general answer');
+  });
+
   it('expands sparse records only with source-grounded clarification', () => {
     expect(DR_AI_SYSTEM_PROMPT).toContain('brief **In plain language** explanation');
     expect(DR_AI_SYSTEM_PROMPT).toContain('do not merely repeat the source or invent extra medical facts');

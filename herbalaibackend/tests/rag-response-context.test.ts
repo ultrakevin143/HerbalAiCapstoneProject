@@ -5,7 +5,7 @@ vi.mock('../src/repositories/herb.repository.js', () => ({ findAllHerbs: mocks.c
 vi.mock('../src/repositories/knowledgebase.repository.js', () => ({ searchSimilarKB: mocks.kb, findActiveKBByTerms: mocks.exactKb }));
 vi.mock('../src/services/ai/core/gemini-service.js', () => ({ generateEmbedding: mocks.embed, generateChatResponse: mocks.answer, generateChatResponseStream: mocks.stream }));
 
-import { AskAIService, createDrAiStream } from '../src/services/ai/chat/ask-ai-service.js';
+import { AskAIService, createDrAiStream, withoutPediatricQuantities } from '../src/services/ai/chat/ask-ai-service.js';
 
 const herb = {
   id: 'lagundi', localName: 'Lagundi', scientificName: 'Vitex negundo', isVerified: true,
@@ -37,6 +37,104 @@ describe('RAG response context', () => {
     expect(context).toContain('[FAQ 1]');
     expect(context).toContain('PITAHC');
     expect(mocks.embed).not.toHaveBeenCalled();
+  });
+
+  it('does not include child-age dosage tables for a general evidence question', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [{ ...herb, dosage: 'Ages 2–4: 3 leaves; adults: 7 leaves.' }] });
+    mocks.exactKb.mockResolvedValue([{
+      id: 'lagundi-preparation',
+      question: 'How is Lagundi prepared?',
+      answer: 'Use crushed fresh leaves. The amount is age-based: 1½ tablespoons for ages 2–6, 3 tablespoons for ages 7–12, and 6 tablespoons for ages 13 and above. The finished-liquid dose is not stated.',
+      category: 'herb-preparation',
+      tags: ['lagundi'],
+      metadata: { sources: [{ title: 'PITAHC Lagundi record' }] },
+    }]);
+
+    await AskAIService('What does the Lagundi record say about evidence, preparation, and safety?');
+
+    expect(mocks.answer.mock.calls[0]?.[1]).not.toContain('Ages 2–4');
+    expect(mocks.answer.mock.calls[0]?.[1]).not.toContain('1½ tablespoons');
+    expect(mocks.answer.mock.calls[0]?.[1]).toContain('finished-liquid dose is not stated');
+    expect(mocks.answer.mock.calls[0]?.[1]).toContain('PITAHC Lagundi record');
+  });
+
+  it('does not expose a pediatric table when generated answers are unavailable', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [{ ...herb, dosage: 'Ages 2–4: 3 leaves; adults: 7 leaves.' }] });
+    mocks.exactKb.mockResolvedValue([{
+      id: 'lagundi-preparation',
+      question: 'How is Lagundi prepared?',
+      answer: 'Use crushed fresh leaves. The amount is age-based: 1½ tablespoons for ages 2–6, and 3 tablespoons for ages 7–12. The finished-liquid dose is not stated.',
+      category: 'herb-preparation', tags: ['lagundi'], metadata: {},
+    }]);
+    mocks.answer.mockRejectedValue(new Error('provider unavailable'));
+
+    const result = await AskAIService('What does the Lagundi record say about preparation?');
+
+    expect(result.data?.answer).not.toContain('1½ tablespoons');
+    expect(result.data?.answer).toContain('finished-liquid dose is not stated');
+  });
+
+  it('omits age-based quantities from the bundled verified FAQ records', async () => {
+    const { readFile } = await import('node:fs/promises');
+    for (const file of ['lagundi.json', 'pitahc-nine-herbs.json']) {
+      const records = JSON.parse(await readFile(new URL(`../content/knowledge-base/${file}`, import.meta.url), 'utf8')) as Array<{ answer: string }>;
+      for (const record of records) {
+        const cleaned = withoutPediatricQuantities(record.answer);
+        if (/for ages? \d/i.test(record.answer)) {
+          expect(cleaned).not.toMatch(/for ages? \d/i);
+        }
+      }
+    }
+  });
+
+  it('withholds a pediatric age table on separate lines without sentence punctuation', () => {
+    const cleaned = withoutPediatricQuantities('Adult preparation: boil fresh leaves.\nChildren 2–4 years: 3 leaves\nKeep away from infants.');
+    expect(cleaned).toContain('Adult preparation: boil fresh leaves.');
+    expect(cleaned).not.toContain('3 leaves');
+    expect(cleaned).toContain('Keep away from infants.');
+  });
+
+  it('answers a pediatric question without generating or exposing quantities', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [{ ...herb, dosage: 'Ages 2–4: 3 leaves; adults: 7 leaves.' }] });
+
+    const result = await AskAIService('How should I prepare Lagundi for a three-year-old?');
+
+    expect(mocks.answer).not.toHaveBeenCalled();
+    expect(result.data?.answer).toContain('licensed clinician');
+    expect(result.data?.answer).not.toContain('3 leaves');
+  });
+
+  it('withholds pediatric quantities in the streaming response too', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [{ ...herb, dosage: 'Ages 2–4: 3 leaves; adults: 7 leaves.' }] });
+
+    const result = await createDrAiStream('Can my child take Lagundi?');
+    const chunks: string[] = [];
+    for await (const chunk of result.chunks) chunks.push(chunk);
+
+    expect(mocks.stream).not.toHaveBeenCalled();
+    expect(chunks.join('')).toContain('licensed clinician');
+    expect(chunks.join('')).not.toContain('3 leaves');
+  });
+
+  it('recognizes abbreviated child ages and pediatric follow-up questions', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [{ ...herb, dosage: 'Ages 2–4: 3 leaves.' }] });
+
+    const abbreviated = await AskAIService('How much Lagundi for a 3yo?');
+    const followUp = await AskAIService('How much should I give it?', [
+      { role: 'user', parts: [{ text: 'Can my child use Lagundi?' }] },
+    ]);
+
+    expect(mocks.answer).not.toHaveBeenCalled();
+    expect(abbreviated.data?.answer).not.toContain('3 leaves');
+    expect(followUp.data?.answer).toContain('licensed clinician');
+    expect(followUp.data?.answer).not.toContain('3 leaves');
+  });
+
+  it('routes a month-old infant question away from generated preparation guidance', async () => {
+    const result = await AskAIService('Can I prepare Lagundi for my 6-month-old?');
+
+    expect(mocks.answer).not.toHaveBeenCalled();
+    expect(result.data?.answer).toContain('licensed clinician');
   });
 
   it('retrieves the previously named herb for a pronoun follow-up', async () => {

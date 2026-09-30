@@ -193,6 +193,16 @@ describe("Herbal AI - Comprehensive System Features & AI Chat Verification", () 
       expect(res.body.status).toBe("success");
       expect(Array.isArray(res.body.data.threads)).toBe(true);
     });
+
+    it('normalizes invalid forum pages and caps excessive page sizes', async () => {
+      const res = await request(app).get('/api/forum/threads?page=-1&limit=1000');
+
+      expect(res.status).toBe(200);
+      expect(res.body.data.page).toBe(1);
+      expect(res.body.data.limit).toBe(100);
+      expect(res.body.data.threads.length).toBeLessThanOrEqual(100);
+      expect(res.body.data.totalPages).toBe(Math.ceil(res.body.data.total / 100));
+    });
   });
 
   describe("4. Direct Messaging Features", () => {

@@ -103,8 +103,8 @@ export const findThreadById = async (id: number) => {
 };
 
 export const incrementThreadViews = async (id: number) => {
-  return prisma.thread.update({
-    where: { id },
+  return prisma.thread.updateMany({
+    where: { id, isDeleted: false },
     data: {
       views: { increment: 1 },
     },
@@ -113,6 +113,8 @@ export const incrementThreadViews = async (id: number) => {
 
 export const toggleThreadLike = async (threadId: number, userId: string) => {
   return prisma.$transaction(async (tx) => {
+    const thread = await tx.thread.findFirst({ where: { id: threadId, isDeleted: false }, select: { id: true } });
+    if (!thread) return null;
     const key = { threadId_userId: { threadId, userId } };
     const existing = await tx.threadLike.findUnique({ where: key });
 
@@ -247,6 +249,11 @@ export const findCommentById = async (id: number) => {
 
 export const toggleCommentLike = async (commentId: number, userId: string) => {
   return prisma.$transaction(async (tx) => {
+    const comment = await tx.threadComment.findFirst({
+      where: { id: commentId, isDeleted: false, thread: { isDeleted: false } },
+      select: { id: true },
+    });
+    if (!comment) return null;
     const key = { commentId_userId: { commentId, userId } };
     const existing = await tx.threadCommentLike.findUnique({ where: key });
 

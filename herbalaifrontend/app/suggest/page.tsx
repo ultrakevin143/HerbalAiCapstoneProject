@@ -59,6 +59,7 @@ export default function SuggestHerbPage() {
   const [submittedHerb, setSubmittedHerb] = useState<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [submissionsError, setSubmissionsError] = useState<string | null>(null);
+  const [submissionsRefresh, setSubmissionsRefresh] = useState(0);
   const [editingSubmission, setEditingSubmission] = useState<Submission | null>(null);
 
   // Categories list based on backend expectations and capstone structure
@@ -83,26 +84,37 @@ export default function SuggestHerbPage() {
   useEffect(() => {
     if (!isAuthenticated) return;
     let cancelled = false;
+    let latestRequest = 0;
 
     const loadSubmissions = async () => {
+      const requestId = ++latestRequest;
       try {
         setSubmissionsError(null);
         const res = await api.get('/suggest');
-        if (!cancelled && res.data?.status === 'success') {
+        if (!cancelled && requestId === latestRequest && res.data?.status === 'success') {
           setSubmissions(res.data.data.suggestions || []);
         }
       } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-        if (!cancelled) {
+        if (!cancelled && requestId === latestRequest) {
           setSubmissionsError(err.response?.data?.message || 'Failed to load your previous suggestions.');
         }
       }
     };
 
-    loadSubmissions();
+    const handleFocus = () => { void loadSubmissions(); };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') void loadSubmissions();
+    };
+
+    void loadSubmissions();
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => {
       cancelled = true;
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [isAuthenticated]);
+  }, [isAuthenticated, submissionsRefresh]);
 
   // Cleanup object URL to prevent memory leaks
   useEffect(() => {
@@ -291,15 +303,19 @@ export default function SuggestHerbPage() {
         </div>
 
         {/* My Submissions Section */}
-        {submissions.length > 0 && (
+        {isAuthenticated && (
           <section className="mb-10 rounded-3xl border border-black/10 dark:border-line bg-white/45 dark:bg-panel/75 backdrop-blur-md p-6 shadow-sm" aria-label="My suggestions">
-            <div className="flex items-center justify-between border-b border-[#1b4332]/10 dark:border-line pb-3 mb-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#1b4332]/10 dark:border-line pb-3 mb-4">
               <h2 className="font-serif-custom italic text-2xl font-bold text-[#1b4332] dark:text-ink">My Submissions</h2>
-              <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#eef5f0] dark:bg-soft border border-[#2d6a4f]/20 text-[#2d6a4f] dark:text-[#74c69d]">
-                {submissions.length} {submissions.length === 1 ? 'record' : 'records'}
-              </span>
+              <div className="flex items-center gap-2">
+                <button type="button" onClick={() => setSubmissionsRefresh((current) => current + 1)} className="text-xs font-semibold text-[#2d6a4f] dark:text-[#74c69d] underline-offset-2 hover:underline">Refresh status</button>
+                <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#eef5f0] dark:bg-soft border border-[#2d6a4f]/20 text-[#2d6a4f] dark:text-[#74c69d]">
+                  {submissions.length} {submissions.length === 1 ? 'record' : 'records'}
+                </span>
+              </div>
             </div>
             {submissionsError && <p role="alert" className="mt-3 text-rose-600 font-semibold text-sm">{submissionsError}</p>}
+            {!submissionsError && submissions.length === 0 && <p className="text-sm text-gray-600 dark:text-muted">You have no herb suggestions yet.</p>}
             <div className="mt-4 grid gap-4">
               {submissions.map((submission) => (
                 <article key={submission.id} className="rounded-2xl border border-black/10 dark:border-line bg-white/70 dark:bg-panel p-4 text-[#1b4332] dark:text-ink">

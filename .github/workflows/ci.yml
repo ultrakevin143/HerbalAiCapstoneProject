@@ -2,7 +2,7 @@ name: Herbal AI Continuous Integration (CI)
 
 on:
   push:
-    branches: [ "main", "master", "develop", "codex/readability-accessibility" ]
+    branches: [ "main", "master", "develop", "codex/readability-accessibility", "codex/mvp-acceptance-ci" ]
   pull_request:
     branches: [ "main", "master", "develop" ]
 

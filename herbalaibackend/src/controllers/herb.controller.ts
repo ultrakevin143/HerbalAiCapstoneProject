@@ -3,6 +3,7 @@ import { prisma } from '../lib/prisma.js';
 import { runAuditedMutation } from '../repositories/audit.repository.js';
 
 import * as herbRepo from '../repositories/herb.repository.js';
+import { publicPagination } from '../utils/public-pagination.js';
 
 interface AuthenticatedRequest extends Request {
   user?: {
@@ -33,11 +34,16 @@ export class HerbController {
    */
   public getAllHerbs = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
+      if ((req.query["search"] !== undefined && typeof req.query["search"] !== 'string') ||
+          (req.query["category"] !== undefined && typeof req.query["category"] !== 'string') ||
+          (req.query["isDohApproved"] !== undefined && req.query["isDohApproved"] !== 'true' && req.query["isDohApproved"] !== 'false')) {
+        res.status(400).json({ status: 'error', code: 400, message: 'Invalid herb filters.' });
+        return;
+      }
       const search = req.query["search"] as string | undefined;
       const category = req.query["category"] as string | undefined;
       const isDoh = req.query["isDohApproved"] !== undefined ? req.query["isDohApproved"] === "true" : undefined;
-      const page = req.query["page"] ? parseInt(req.query["page"] as string, 10) : undefined;
-      const limit = req.query["limit"] ? parseInt(req.query["limit"] as string, 10) : undefined;
+      const { page, limit } = publicPagination(req.query);
 
       const { herbs, total } = await herbRepo.findAllHerbs({
         search,
@@ -47,7 +53,7 @@ export class HerbController {
         limit,
       });
 
-      const totalPages = limit && limit > 0 ? Math.ceil(total / limit) : 1;
+      const totalPages = Math.ceil(total / limit);
 
       res.status(200).json({
         status: 'success',
@@ -55,8 +61,8 @@ export class HerbController {
         data: {
           herbs,
           total,
-          page: page || 1,
-          limit: limit || total,
+          page,
+          limit,
           totalPages,
         },
       });
