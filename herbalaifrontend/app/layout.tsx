@@ -1,30 +1,33 @@
 import type { Metadata, Viewport } from "next";
-import { Newsreader, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import "./auth-layout.css";
 import { AuthProvider } from "../context/AuthContext";
 import { DisplayPreferenceSync } from "../components/DisplayPreferences";
 import { PwaRegistration } from "../components/PwaInstall";
 
-const newsreader = Newsreader({
-  subsets: ["latin"],
+const newsreader = localFont({
+  src: [
+    { path: "../node_modules/@fontsource-variable/newsreader/files/newsreader-latin-standard-normal.woff2", weight: "200 800", style: "normal" },
+    { path: "../node_modules/@fontsource-variable/newsreader/files/newsreader-latin-standard-italic.woff2", weight: "200 800", style: "italic" },
+  ],
   variable: "--font-editorial",
   display: "swap",
-  style: ["normal", "italic"],
+  adjustFontFallback: "Times New Roman",
 });
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
+const plusJakartaSans = localFont({
+  src: "../node_modules/@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2",
   variable: "--font-sans",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: "400 800",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
+const jetbrainsMono = localFont({
+  src: "../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2",
   variable: "--font-mono",
   display: "swap",
-  weight: ["400", "500", "600"],
+  weight: "400 600",
 });
 
 export const metadata: Metadata = {
