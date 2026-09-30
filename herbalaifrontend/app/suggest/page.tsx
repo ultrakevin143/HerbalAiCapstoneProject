@@ -31,6 +31,25 @@ interface Submission {
   updatedAt: string;
 }
 
+const submissionStatusCopy: Record<SuggestionStatus, { title: string; detail: string }> = {
+  Pending: {
+    title: 'Submission Received',
+    detail: 'has been logged and is awaiting administrator review. It will only appear in the public library if approved.',
+  },
+  Approved: {
+    title: 'Suggestion Approved',
+    detail: 'has been approved by an administrator.',
+  },
+  Rejected: {
+    title: 'Suggestion Not Approved',
+    detail: 'was not approved. Review the notes in My Submissions for details.',
+  },
+  ChangesRequested: {
+    title: 'Changes Requested',
+    detail: 'needs changes. Read the notes in My Submissions, then choose Edit and resubmit.',
+  },
+};
+
 export default function SuggestHerbPage() {
   const { user, isAuthenticated, loading: authLoading } = useAuth();
   const router = useRouter();
@@ -56,7 +75,7 @@ export default function SuggestHerbPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const [submittedHerb, setSubmittedHerb] = useState<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
+  const [submittedHerb, setSubmittedHerb] = useState<Submission | null>(null);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [submissionsError, setSubmissionsError] = useState<string | null>(null);
   const [submissionsRefresh, setSubmissionsRefresh] = useState(0);
@@ -265,6 +284,11 @@ export default function SuggestHerbPage() {
     setInformationSource(submission.informationSource || '');
   };
 
+  const currentSubmission = submittedHerb
+    ? submissions.find((submission) => submission.id === submittedHerb.id) ?? submittedHerb
+    : null;
+  const currentStatus = currentSubmission?.status ?? 'Pending';
+
   if (authLoading) {
     return (
       <div className="min-h-screen flex flex-col bg-[#f0f7f2] dark:bg-canvas">
@@ -383,19 +407,14 @@ export default function SuggestHerbPage() {
           /* SUCCESS SCREEN */
           <div className="glass-card bg-white/60 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-8 shadow-xl mb-12">
             <div className="flex flex-col items-center text-center max-w-xl mx-auto space-y-6">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#2d6a4f] text-3xl shadow-sm text-white">
-                ✅
-              </div>
+              <SuggestionStatusBadge status={currentStatus} />
               
               <div>
-                <h2 className="text-3xl font-black text-[#1b4332] dark:text-ink">Thank You!</h2>
-                <p className="text-lg font-bold text-[#40916c] mt-1">
-                  Suggestion Submitted Successfully
-                </p>
+                <h2 className="text-3xl font-black text-[#1b4332] dark:text-ink">{submissionStatusCopy[currentStatus].title}</h2>
               </div>
 
               <p className="text-sm font-bold text-[#6a7282] dark:text-muted leading-relaxed">
-                Your suggestion for <span className="text-[#1b4332] dark:text-ink font-black underline">{submittedHerb?.localName || localName}</span> has been logged and queued for review. It will appear in the public library only after an administrator approves it.
+                Your suggestion for <span className="text-[#1b4332] dark:text-ink font-black underline">{currentSubmission?.localName || localName}</span> {submissionStatusCopy[currentStatus].detail}
               </p>
 
               {/* Submitted Summary Card */}
