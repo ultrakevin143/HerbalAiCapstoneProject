@@ -41,6 +41,14 @@
     "socket.io": "^4.8.3",
     "zod": "^4.4.3"
   },
+  "overrides": {
+    "@prisma/config": {
+      "deepmerge-ts": "8.0.0"
+    },
+    "prisma": {
+      "mysql2": "3.24.5"
+    }
+  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/bcryptjs": "^2.4.6",

@@ -45,3 +45,7 @@ The compatible update passed **25 assertions across seven local suites**, includ
 - Five read-only live API checks passed: `/api/health` 200; paginated public forum listing 200; anonymous administrator audit access 401; invalid thread ID `0` 400; absent in-range thread ID `2147483647` 404. These checks use the public frontend API proxy, not private credentials.
 - Browser discovery found only the in-app browser and MCP Apps, with no connected Chrome profiles. New authenticated live moderation/audit-write and refresh checks are therefore not counted as passes. A reconnect handoff was offered; no password was requested or entered, no user role was changed live, and no live record was deleted.
 - The four Prisma-chain audit findings above remain open. The earlier live previous-password and actual last-page browser-deletion evidence gaps also remain distinct. The isolated suite provides additional coverage, not fabricated live or participant results.
+
+## Subsequent dependency repair
+
+The separate `PRISMA_DEPENDENCY_REMEDIATION_2026-10-01.md` records a reviewed, parent-scoped override repair for the four previously open audit entries. Clean installation, five Prisma compatibility regressions, schema validation/client generation, backend lint/build, and both full/production-filtered audits passed locally; both audits now report zero findings. This supersedes the historical open dependency count above, not the authenticated live/browser evidence gaps. Full isolated CI and release outcomes are recorded in that follow-up report after execution.
