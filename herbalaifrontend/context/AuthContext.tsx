@@ -83,8 +83,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setSessionUnavailable(false);
       invalidateApiGetCache();
       return loggedInUser;
-    } catch (error) {
-      throw error;
     } finally {
       setLoading(false);
     }
@@ -94,10 +92,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(true);
     try {
       const response = await api.post('/auth/signup', data);
+      const result = response.data?.data;
+      if (typeof result?.verificationRequired !== 'boolean' || typeof result?.verificationEmailSent !== 'boolean') {
+        throw new Error('Signup response is missing verification status. Check whether your account was created before trying again.');
+      }
       return {
-        message: response.data?.message || 'Account created. Please check your email to verify it.',
-        verificationRequired: response.data?.data?.verificationRequired !== false,
-        verificationEmailSent: response.data?.data?.verificationEmailSent !== false,
+        message: response.data?.message || (result.verificationRequired ? 'Account created. Please check your email to verify it.' : 'Account created. You can sign in now.'),
+        verificationRequired: result.verificationRequired,
+        verificationEmailSent: result.verificationEmailSent,
       };
     } finally {
       setLoading(false);

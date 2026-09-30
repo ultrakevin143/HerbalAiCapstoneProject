@@ -12,6 +12,8 @@ export interface KBData {
   isActive?: boolean;
 }
 
+export const MAX_UNPAGED_KB_RECORDS = 500;
+
 /**
  * Create knowledge base entry with vector embedding
  */
@@ -140,6 +142,7 @@ export const deleteKB = (id: string, adminId: string) => runAuditedMutation({
  */
 export const findAllKB = async () => {
   return await prisma.knowledgeBase.findMany({
+    take: MAX_UNPAGED_KB_RECORDS + 1,
     select: {
       id: true,
       question: true,
