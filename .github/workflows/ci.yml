@@ -68,7 +68,7 @@ jobs:
           JWT_SECRET: ci_test_jwt_secret_key_1234567890
           JWT_REFRESH_SECRET: ci_test_refresh_jwt_secret_key_1234567890
           FRONTEND_URL: http://localhost:3000
-        run: npm test -- --maxWorkers=2 --exclude tests/herb-catalog-remediation.test.ts
+        run: npm test -- --maxWorkers=2
 
   frontend-checks:
     name: Frontend Lint, Typecheck & Build
