@@ -21,3 +21,13 @@ The real isolated-database recovery suite covers old-password rejection, access-
 ## Acceptance boundary
 
 Five-participant UAT is unrecorded. The prior physical-phone check was user-reported. Neither is replaced by CI, a browser fixture, or approval to continue development. No production migration or credential change is included in this batch.
+
+## Executed results
+
+- Local TypeScript checking, targeted catalog-test ESLint, and whitespace validation passed. There was no local database execution; the worktree has no PostgreSQL/Docker runtime.
+- Commit `d8fab98dd0d3ab4ecf01b32da7f49a750277a325` passed CI run `36742292316` on the temporary branch. Its isolated Vitest step ran without the catalog exclusion and passed, including the four fixture-backed catalog cases and the existing real-database account-recovery/session-revocation checks. Frontend lint/typecheck/build also passed. This closes the previously excluded automated catalog gate, not a new audit of the live catalog's data.
+- After ancestry checks, that commit was pushed to `main` and `codex/readability-accessibility`. Their CI runs `36742957765` and `36742957569` passed; Vercel and Railway both reported successful deployment. The commit changes only CI, tests, and documentation, not production application logic, migrations, or environment variables.
+- Local Community browser recovery passed with controlled loopback responses. The initial page-1 response reported two pages. Clicking Next requested page 2; that response reported one page with no records. The client automatically requested page 1 again, rendered the remaining labeled fixture discussion, and removed obsolete pagination controls. The fixture request log confirmed the sequence 1 → 2 → 1. This covers last-page response recovery without deleting a live post; the actual live last-page deletion scenario remains unrun.
+- Mercado Chrome restored the existing Herbal QA contributor session on live Suggestions. One fresh reset request for that existing disposable account returned the neutral response. The exact new email arrived in Gmail Inbox at 12:15 AM Philippine time on 1 October, and its form opened successfully. The earlier signed-in Suggestions tab was preserved. The tester must privately submit the new password before live revocation and old/new-password sign-in can be checked. No password or reset token is recorded here; email delivery does not prove the reset has been redeemed.
+
+The temporary pagination server and Next dev process are stopped after testing. The credential handoff is the only pending action in this batch; do not mark the live password/session gate complete until its outcome is observed.
