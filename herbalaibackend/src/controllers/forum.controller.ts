@@ -273,7 +273,7 @@ export class ForumController {
         });
       }
 
-      await forumRepo.deleteThread(id);
+      await forumRepo.deleteThread(id, userRole === 'admin' ? userId : undefined);
 
       return res.status(200).json({
         status: 'success',
@@ -446,7 +446,7 @@ export class ForumController {
       }
 
       const comment = await forumRepo.findCommentById(id);
-      if (!comment) {
+      if (!comment || comment.isDeleted) {
         return res.status(404).json({
           status: 'error',
           code: 404,
@@ -463,7 +463,7 @@ export class ForumController {
         });
       }
 
-      await forumRepo.deleteComment(id);
+      await forumRepo.deleteComment(id, userRole === 'admin' ? userId : undefined);
 
       return res.status(200).json({
         status: 'success',

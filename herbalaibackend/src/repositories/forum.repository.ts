@@ -1,5 +1,6 @@
 import { prisma } from "../lib/prisma.js";
 import type { Prisma } from "@prisma/client";
+import { runAuditedMutation } from "./audit.repository.js";
 
 export const createThread = async (data: {
   authorId: string;
@@ -280,16 +281,34 @@ export const findUserLikedCommentIds = async (threadId: number, userId: string) 
   return likes.map(({ commentId }) => commentId);
 };
 
-export const deleteThread = async (id: number) => {
+export const deleteThread = async (id: number, adminId?: string) => {
+  if (adminId) {
+    return runAuditedMutation({ adminId, action: 'DELETE_THREAD', targetType: 'Thread' }, async (transaction) => {
+      const result = await transaction.thread.update({
+        where: { id, isDeleted: false },
+        data: { isDeleted: true },
+      });
+      return { result, targetId: String(id) };
+    });
+  }
   return prisma.thread.update({
-    where: { id },
+    where: { id, isDeleted: false },
     data: { isDeleted: true },
   });
 };
 
-export const deleteComment = async (id: number) => {
+export const deleteComment = async (id: number, adminId?: string) => {
+  if (adminId) {
+    return runAuditedMutation({ adminId, action: 'DELETE_THREAD_COMMENT', targetType: 'ThreadComment' }, async (transaction) => {
+      const result = await transaction.threadComment.update({
+        where: { id, isDeleted: false },
+        data: { isDeleted: true },
+      });
+      return { result, targetId: String(id), details: { threadId: result.threadId } };
+    });
+  }
   return prisma.threadComment.update({
-    where: { id },
+    where: { id, isDeleted: false },
     data: { isDeleted: true },
   });
 };

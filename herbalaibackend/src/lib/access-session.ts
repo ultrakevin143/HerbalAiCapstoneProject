@@ -13,9 +13,9 @@ export const validateAccessSession = async (token: string): Promise<AccessSessio
 
   const account = await prisma.user.findUnique({
     where: { id: payload.userId },
-    select: { sessionVersion: true, isBanned: true },
+    select: { sessionVersion: true, isBanned: true, role: true },
   });
   if (!account || (payload.sessionVersion ?? 0) !== account.sessionVersion) return { status: 'invalid' };
   if (account.isBanned) return { status: 'banned' };
-  return { status: 'valid', payload };
+  return { status: 'valid', payload: { ...payload, role: account.role } };
 };
