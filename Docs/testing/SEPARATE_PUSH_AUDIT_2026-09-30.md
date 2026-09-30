@@ -1,6 +1,6 @@
 # Separate-push audit — 30 September 2026
 
-Current release branch: `codex/readability-accessibility` at `4f69650`. This note records historical checkpoints; statements such as “not pushed” describe the state at that checkpoint, not the final release state. Local screenshots and private workspace files are not included.
+Latest code change documented here: `4f69650` on `codex/readability-accessibility`. This note records historical checkpoints; statements such as “not pushed” describe the state at that checkpoint, not the final release state. Local screenshots and private workspace files are not included.
 
 ## Release already made
 
