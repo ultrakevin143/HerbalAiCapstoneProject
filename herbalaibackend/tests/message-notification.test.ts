@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const mocks = vi.hoisted(() => ({ message: vi.fn(), notification: vi.fn(), save: vi.fn(), emit: vi.fn(), to: vi.fn() }));
+const mocks = vi.hoisted(() => ({ message: vi.fn(), notification: vi.fn(), save: vi.fn(), recipient: vi.fn(), emit: vi.fn(), to: vi.fn() }));
 vi.mock('../src/lib/prisma.js', () => ({ prisma: {
   $transaction: (callback: (transaction: unknown) => unknown) => callback({
     chatMessage: { create: mocks.message }, notification: { create: mocks.notification },
@@ -8,7 +8,7 @@ vi.mock('../src/lib/prisma.js', () => ({ prisma: {
 } }));
 vi.mock('../src/repositories/message.repository.js', async (importOriginal) => {
   const original = await importOriginal<typeof import('../src/repositories/message.repository.js')>();
-  return { ...original, saveMessageWithNotification: mocks.save };
+  return { ...original, saveMessageWithNotification: mocks.save, getMessageableUserById: mocks.recipient };
 });
 vi.mock('../src/services/cloudinary.service.js', () => ({ uploadToCloudinary: vi.fn() }));
 vi.mock('../src/server.js', () => ({ io: { to: mocks.to } }));
@@ -19,6 +19,7 @@ describe('Direct message notifications', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     mocks.to.mockReturnValue({ emit: mocks.emit });
+    mocks.recipient.mockResolvedValue({ id: 'receiver' });
   });
 
   it('persists the message and recipient notification in one transaction', async () => {

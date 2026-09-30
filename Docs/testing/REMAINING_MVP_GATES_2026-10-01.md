@@ -71,3 +71,7 @@ Authenticated live moderation checks are pending because Chrome profiles were no
 ## Prisma dependency follow-up
 
 `PRISMA_DEPENDENCY_REMEDIATION_2026-10-01.md` supersedes that historical four-entry dependency count: parent-scoped patched versions now pass a clean install, actual Prisma configuration/generation checks, focused regressions, and both backend audits with zero findings. Prisma remains on stable version 7.10.0; frontend files and database connection settings are unchanged. Isolated CI, deployment, and live outcomes must be read from that report rather than inferred from the local audit. Previously unobserved old-password rejection and live browser moderation remain separate gates.
+
+## Messenger validation follow-up
+
+`MESSENGER_VALIDATION_REGRESSION_2026-10-01.md` records four reproduced backend validation groups: permissive message-ID parsing, missing edit-length enforcement, malformed send bodies/multipart text returning 500, and missing recipient eligibility checks before media upload. Sixteen focused local cases passed after repair; four new real-database cases require isolated CI. Consult that report for final CI/release results and the separately recorded message-race/timestamp-pagination/forum-ID candidates. Frontend source and live credentials remain unchanged.

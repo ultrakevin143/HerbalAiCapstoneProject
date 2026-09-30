@@ -6,6 +6,14 @@ interface AuthenticatedRequest extends Request {
   user?: { userId: string; role: string };
 }
 
+const MAX_MESSAGE_LENGTH = 2000;
+
+const parseMessageId = (value: unknown): number | null => {
+  if (typeof value !== "string" || !/^[1-9]\d*$/.test(value)) return null;
+  const parsed = Number(value);
+  return Number.isSafeInteger(parsed) && parsed <= 2147483647 ? parsed : null;
+};
+
 /**
  * GET /api/messages/users
  * Returns all messageable users (non-banned, excluding self).
@@ -128,31 +136,43 @@ export const sendMessage = async (
   try {
     const authReq = req as AuthenticatedRequest;
     const senderId = authReq.user?.userId;
-    const { receiverId, content } = req.body;
+    const { receiverId: requestedReceiverId, content } = req.body ?? {};
+    const receiverId = typeof requestedReceiverId === "string" ? requestedReceiverId.trim() : "";
 
     if (!senderId) {
       res.status(401).json({ status: "error", message: "Authentication required." });
       return;
     }
 
-    if (!receiverId || typeof receiverId !== "string") {
+    if (!receiverId) {
       res.status(400).json({ status: "error", message: "A valid receiverId is required." });
       return;
     }
 
-    // Message must have either content or an uploaded image attachment
-    if ((!content || typeof content !== "string" || !content.trim()) && !req.file) {
+    if (content !== undefined && typeof content !== "string") {
+      res.status(400).json({ status: "error", message: "Message content must be text." });
+      return;
+    }
+
+    const messageContent = typeof content === "string" ? content.trim() : "";
+    if (!messageContent && !req.file) {
       res.status(400).json({ status: "error", message: "Message content or an image attachment is required." });
       return;
     }
 
-    if (content && content.trim().length > 2000) {
+    if (messageContent.length > MAX_MESSAGE_LENGTH) {
       res.status(400).json({ status: "error", message: "Message is too long (max 2000 characters)." });
       return;
     }
 
     if (senderId === receiverId) {
       res.status(400).json({ status: "error", message: "You cannot send a message to yourself." });
+      return;
+    }
+
+    const recipient = await messageRepo.getMessageableUserById(senderId, receiverId);
+    if (!recipient) {
+      res.status(404).json({ status: "error", message: "Recipient is not available." });
       return;
     }
 
@@ -165,7 +185,7 @@ export const sendMessage = async (
     const { message: newMessage, notification } = await messageRepo.saveMessageWithNotification(
       senderId,
       receiverId,
-      content ? content.trim() : "",
+      messageContent,
       imageUrl
     );
 
@@ -194,21 +214,27 @@ export const editMessage = async (
   try {
     const authReq = req as AuthenticatedRequest;
     const senderId = authReq.user?.userId;
-    const messageId = parseInt(req.params["messageId"] as string, 10);
-    const { content } = req.body;
+    const messageId = parseMessageId(req.params["messageId"]);
+    const { content } = req.body ?? {};
 
     if (!senderId) {
       res.status(401).json({ status: "error", message: "Authentication required." });
       return;
     }
 
-    if (isNaN(messageId)) {
+    if (messageId === null) {
       res.status(400).json({ status: "error", message: "Invalid message ID." });
       return;
     }
 
     if (!content || typeof content !== "string" || !content.trim()) {
       res.status(400).json({ status: "error", message: "Message content cannot be empty." });
+      return;
+    }
+
+    const messageContent = content.trim();
+    if (messageContent.length > MAX_MESSAGE_LENGTH) {
+      res.status(400).json({ status: "error", message: "Message is too long (max 2000 characters)." });
       return;
     }
 
@@ -228,7 +254,7 @@ export const editMessage = async (
       return;
     }
 
-    const updatedMessage = await messageRepo.editMessage(messageId, content.trim());
+    const updatedMessage = await messageRepo.editMessage(messageId, messageContent);
 
     // Broadcast update via Socket.io
     const { io } = await import("../server.js");
@@ -254,14 +280,14 @@ export const deleteMessage = async (
   try {
     const authReq = req as AuthenticatedRequest;
     const senderId = authReq.user?.userId;
-    const messageId = parseInt(req.params["messageId"] as string, 10);
+    const messageId = parseMessageId(req.params["messageId"]);
 
     if (!senderId) {
       res.status(401).json({ status: "error", message: "Authentication required." });
       return;
     }
 
-    if (isNaN(messageId)) {
+    if (messageId === null) {
       res.status(400).json({ status: "error", message: "Invalid message ID." });
       return;
     }
