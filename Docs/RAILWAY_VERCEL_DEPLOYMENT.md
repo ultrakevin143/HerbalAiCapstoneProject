@@ -21,6 +21,8 @@ Configure these deployment settings in Railway:
 - Healthcheck path: `/api/health`
 - Healthcheck timeout: `300`
 
+When the active database is Neon, keep `DATABASE_URL` as the pooled connection for application traffic and set `DIRECT_URL` in Railway to the **same Neon database's direct, non-pooler connection**. Prisma CLI commands, including the pre-deploy `prisma migrate deploy`, use `DIRECT_URL` when present; they fall back to `DATABASE_URL` for local or single-URL deployments. Verify both URLs identify the same database and role before redeploying. Store the direct credential only in Railway's protected variables, never in Git or Vercel. Do not replace the runtime `DATABASE_URL` with the direct URL.
+
 For a new Railway-hosted database, add a PostgreSQL service from the pgvector template, confirm the `vector` extension is available, and keep its TCP proxy disabled when the backend runs in the same Railway project. The Railway project has a service named `pgvector`, but the 27 September 2026 pre-deploy log showed this backend connecting to a Neon-hosted database named `neondb`; do not assume the Railway database is the active one or replace the current `DATABASE_URL` during a routine release. If intentionally using Railway's pgvector service, configure the backend with its private URL reference:
 
 ```env
