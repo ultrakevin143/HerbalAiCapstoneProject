@@ -61,3 +61,9 @@ Dependency audit then identified two additional findings: Next.js 16.3.4 was in 
 - Reloading the recovered Mercado contributor's live Suggestions tab initially showed session checking, then restored Herbal QA, the protected form, and My Submissions with zero records. Computed heading/body families matched the new local font definitions. The evidence screenshot was refreshed outside Git; no new public suggestion was created for this font/dependency-only repair.
 - The local production preview server was stopped. The unrelated primary checkout, production credentials, verification setting, and database were not modified in this batch.
 - Remaining boundaries: previous-password rejection has still not been observed live; the actual live community last-page deletion scenario is still unrun; five-participant UAT remains unrecorded. Existing automated coverage, successful recovery, and the user's earlier phone inspection do not close those distinct gates.
+
+## Community moderation follow-up
+
+`COMMUNITY_MODERATION_REGRESSION_2026-10-01.md` records the next released backend batch: current database roles replace stale token roles for author-or-administrator checks; administrator forum deletions transact their audit records; deleted comments cannot be moderated repeatedly; compatible Engine.IO, brace-expansion, and ip-address patches are tested. Four new real-database workflow cases and three loopback Socket.IO cases passed full CI, and public live API smoke checks passed after deployment.
+
+Authenticated live moderation checks are pending because Chrome profiles were not connected. The latest backend audit still reports four high-severity entries in the Prisma tooling chain; a forced Prisma downgrade was not applied. See the follow-up report for reproduced failures, exact commits/runs, remaining dependency scope, and live-versus-isolated evidence boundaries.
