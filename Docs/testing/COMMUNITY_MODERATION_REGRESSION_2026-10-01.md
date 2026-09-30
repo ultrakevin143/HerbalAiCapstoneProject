@@ -23,3 +23,17 @@ Five of the six new HTTP assertions failed before repair. One of those failures 
 - There is no local PostgreSQL/Docker runtime. The database-backed cases must pass isolated GitHub CI before any production release. They are not counted as local passes.
 - Even a successful isolated last-page deletion does not close the separate actual live browser moderator-deletion gate. Live role changes, moderation writes, or permanent test-record cleanup are not inferred from permission to continue development.
 - Previous-password rejection remains unobserved live; formal five-participant UAT remains unrecorded. No claim of complete or error-free acceptance is made here.
+
+## Isolated database CI result
+
+Commit `bfff93428d234e185cf0bd9fe4d18f6133dd6d36` passed CI `36788693083`, with both backend and frontend jobs successful. The four real-database community workflow cases ran as part of the complete backend suite. This adds genuine isolated deletion/pagination, authenticated nested-comment/reaction, current-role, persisted-audit, and rollback evidence. It does not claim that those writes were performed on the live database.
+
+## Dependency findings discovered during the batch
+
+The backend audit initially reported seven package entries: six high and one moderate. Three compatible lockfile updates resolve Engine.IO to 6.6.11, brace-expansion to 5.0.12, and ip-address to 10.7.2. The [Engine.IO advisory](https://github.com/advisories/GHSA-2gc4-cqfq-p2gv) affects mismatched protocol revisions during transport upgrades; patched versions start at 6.6.10. A loopback-only Socket.IO regression checks ordinary protocol-4 polling, rejects a protocol-3 or missing-revision upgrade for that protocol-4 session, and checks the HTTP server remains available. No crash or adversarial protocol test is sent to production.
+
+Four high-severity audit entries remain in the installed Prisma tooling chain: prisma, @prisma/config, deepmerge-ts, and mysql2. These represent upstream dependency findings, not four demonstrated application exploits. They also appear in this installation's `npm audit --omit=dev` tree; do not call the production dependency audit clean. Prisma 7.10.0 pins mysql2 3.15.3 and @prisma/config pins deepmerge-ts 7.1.5. The application's database runtime uses PostgreSQL through the Prisma PG adapter; the source review did not find public-route imports of mysql2 or deepmerge-ts. That is a scope observation, not proof they can never be reached.
+
+The automated fix proposes downgrading Prisma to 6.19.3, a breaking change. It was not applied, and no forced major override was introduced. A separate reviewed Prisma/tooling compatibility change remains necessary before claiming zero backend audit findings. Final local regression and CI results for the compatible lockfile update must be recorded after execution.
+
+The compatible update passed **25 assertions across seven local suites**, including all three actual Socket.IO protocol-boundary cases, moderation authorization, deletion masking, current-role enforcement, IP rate limits, and notification regressions. Backend and targeted test-file ESLint and the TypeScript production build passed again. The local protocol server closes during test cleanup. No frontend file changed. Complete database-backed CI remains required for this final lockfile revision before release.
