@@ -17,10 +17,18 @@ The regression resolves dependencies relative to Prisma and its config module, r
 
 ## Validation boundaries
 
-`npm ci` succeeded from the edited lockfile. All 14 assertions across the dependency, Socket.IO protocol-boundary, and moderation-authorization suites passed. The five new compatibility cases all passed after reproducing the two baseline failures. Prisma schema validation and client generation, source/test-file lint, TypeScript production build, and Git whitespace validation passed. Validation/generation used explicit dummy loopback database URLs; no live database connection was attempted.
+`npm ci` succeeded from the edited lockfile. All 14 test cases across the dependency, Socket.IO protocol-boundary, and moderation-authorization suites passed. The five new compatibility cases all passed after reproducing the two baseline failures. Prisma schema validation and client generation, source/test-file lint, TypeScript production build, and Git whitespace validation passed. Validation/generation used explicit dummy loopback database URLs; no live database connection was attempted.
 
 Both `npm audit` and `npm audit --omit=dev` reported zero vulnerabilities. `npm ls` confirmed Prisma, its client, adapter, and config remain at 7.10.0, with the two exact overrides resolved beneath their intended parents. The lockfile removes three now-unused MySQL driver transitive dependencies and introduces its replacement SQL escaping dependency; unrelated dependency versions were not broadly updated.
 
 Full database tests must run against GitHub Actions' isolated PostgreSQL/pgvector service, not a live or demo database; no local PostgreSQL runtime is available here. A clean audit is a registry result, not a guarantee that the system contains no vulnerabilities.
 
 Any release requires successful full CI before promotion to the public deployment branch. Post-release public API checks cannot substitute for authenticated administrator/contributor write checks. Chrome profile reconnection and the previously unobserved old-password rejection remain separate acceptance gates.
+
+## Published repair and observed results
+
+- Code/lockfile commit `133c7bddaec770100c59839bbf18f532d092bf39` passed temporary-branch CI `36790955832`. The backend log confirms successful migration application to the isolated pgvector database and **368 tests across 57 files passed**, including the five new dependency cases and existing authenticated/database-backed flows. Frontend lint/typecheck/build also passed; no frontend file changed.
+- After fetching and verifying remote ancestry, the same commit was pushed to `main` and `codex/readability-accessibility`. CI runs `36791141027` and `36791140761` passed. Vercel and Railway's `herbal-ai-staging - HerbalAiCapstoneProject` status contexts both reported success for the exact commit before live smoke testing.
+- Five read-only public API checks passed through `https://herbalaiph.vercel.app`: `/api/health` 200 with `status: success`; `/api/forum/threads?page=1&limit=1` 200; anonymous `/api/admin/audit-logs` 401; invalid `/api/forum/threads/0` 400; absent `/api/forum/threads/2147483647` 404. No authenticated cookie, new live record, role change, mail send, or destructive request was involved.
+- Browser inventory again contained only the in-app browser and MCP Apps, with no connected Chrome profile. Fresh authenticated live moderator/contributor checks were not performed or counted as passed. The previous-password-rejection and live last-page deletion evidence gaps remain open; participant acceptance results were not invented.
+- The previously reported four backend dependency-audit entries are resolved in the reviewed dependency tree. This bounded repair does not establish that every future advisory, external-provider failure, or application issue is absent. The dirty primary checkout, frontend source, live/demo database URLs, and credentials were untouched.
