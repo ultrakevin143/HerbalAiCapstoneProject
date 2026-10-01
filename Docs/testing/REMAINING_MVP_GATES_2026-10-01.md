@@ -83,3 +83,7 @@ Authenticated live moderation checks are pending because Chrome profiles were no
 ## Forum ID range follow-up
 
 `FORUM_ID_BOUNDARIES_2026-10-01.md` records the forum's missing PostgreSQL Int upper bound, the two-line shared-parser repair, and regression coverage for thread/comment endpoints and parent IDs. Consult its executed results before counting isolated-database or live checks as passed. The Messenger reconnect/history issue remains separate and requires frontend behavior work.
+
+## Messenger client recovery follow-up
+
+`MESSENGER_RECOVERY_2026-10-01.md` records the focused frontend behavior repair, twelve recovery regressions, actual loopback Socket.IO reconnection, and production-built desktop/narrow browser scenarios. Existing layout/styling and backend configuration are unchanged. Read its release results before treating CI, publication, or live checks as passed; controlled fixtures do not close the separate native-confirm deletion or real-tab-resume evidence gaps.

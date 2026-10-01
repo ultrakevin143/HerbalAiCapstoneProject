@@ -97,6 +97,10 @@ jobs:
         working-directory: herbalaifrontend
         run: npm run lint
 
+      - name: Run Messenger recovery regressions
+        working-directory: herbalaifrontend
+        run: node --test ../scripts/messenger-sync.test.mjs
+
       - name: Run Frontend Build
         working-directory: herbalaifrontend
         env:

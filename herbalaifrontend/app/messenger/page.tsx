@@ -8,6 +8,7 @@ import SessionUnavailable from '../../components/SessionUnavailable';
 import EmptyState from '../../components/EmptyState';
 import api from '../../lib/axios';
 import io, { Socket } from 'socket.io-client';
+import { createHistoryRequests, isConversationMessage, mergeConversationMessages, startMessengerConnection } from '../../lib/messenger-sync';
 import { 
   Send, 
   MessageSquare, 
@@ -42,6 +43,7 @@ interface ChatMessage {
   isDeleted: boolean;
   time: string;
   sender: UserProfile;
+  receiver?: UserProfile;
 }
 
 interface Conversation {
@@ -128,6 +130,35 @@ function MessengerContent() {
   const menuRef = useRef<HTMLDivElement>(null);
   const prependingMessagesRef = useRef(false);
   const conversationQueryRef = useRef(0);
+  const activeContactRef = useRef<UserProfile | null>(null);
+  const [historyRequests] = useState(() => createHistoryRequests<ChatMessage>());
+  const synchronizeRef = useRef<() => Promise<void>>(async () => {});
+
+  const applyMessage = useCallback((message: ChatMessage, allowInsert = true) => {
+    if (!user || !message || !Number.isInteger(message.id) || typeof message.senderId !== 'string' ||
+        typeof message.receiverId !== 'string' || typeof message.time !== 'string' ||
+        !Number.isFinite(Date.parse(message.time)) || typeof message.content !== 'string' ||
+        (message.senderId !== user?.id && message.receiverId !== user?.id)) return;
+    const userId = user.id;
+    historyRequests.record(message);
+    const contactId = activeContactRef.current?.id;
+    if (contactId && isConversationMessage(message, userId, contactId)) {
+      setMessages(current => mergeConversationMessages(current, [message], userId, contactId, allowInsert));
+    }
+    setConversations(current => {
+      const peerId = message.senderId === userId ? message.receiverId : message.senderId;
+      const existing = current.find(conversation => conversation.contact.id === peerId);
+      const contact = existing?.contact ?? (message.senderId === userId ? message.receiver : message.sender);
+      if (!contact || typeof contact.name !== 'string') return current;
+      if (existing?.lastTime && Date.parse(message.time) < Date.parse(existing.lastTime)) return current;
+      const updated = {
+        contact: { ...contact, id: peerId },
+        lastMessage: message.isDeleted ? 'This message was deleted' : message.imageUrl ? '📷 Sent an image' : message.content,
+        lastTime: message.time,
+      };
+      return [updated, ...current.filter(conversation => conversation.contact.id !== peerId)];
+    });
+  }, [user, historyRequests]);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -158,100 +189,64 @@ function MessengerContent() {
       autoConnect: false,
       transports: ['websocket', 'polling'],
     });
-    let active = true;
-    api.get('/auth/socket-token').then((response) => {
-      if (!active || !socketRef.current) return;
-      socketRef.current.auth = { token: response.data.data.token };
-      socketRef.current.connect();
-    }).catch((error) => console.error('Failed to authenticate messenger connection:', error));
-
-    socketRef.current.on('connect', () => {
-      console.log('Connected to real-time messaging server');
+    const socket = socketRef.current;
+    const updateMessage = (message: ChatMessage) => applyMessage(message, false);
+    socket.on('private_message', applyMessage);
+    socket.on('message_edited', updateMessage);
+    socket.on('message_deleted', updateMessage);
+    const connection = startMessengerConnection(socket, {
+      getToken: async () => (await api.get('/auth/socket-token', { timeout: 10000 })).data?.data?.token,
+      onConnected: () => { void synchronizeRef.current(); },
+      onAuthorizationFailure: () => { void checkSession(); },
+      onError: error => console.error('Messenger connection unavailable:', error),
     });
-
-    socketRef.current.on('private_message', (msg: ChatMessage) => {
-      // Only apply if the message belongs to current user or active contact
-      setMessages((prev) => {
-        const alreadyExists = prev.some((m) => m.id === msg.id);
-        if (alreadyExists) return prev;
-        return [...prev, msg];
-      });
-
-      // Update sidebar conversation preview
-      setConversations((prev) => {
-        const contactId = msg.senderId === user.id ? msg.receiverId : msg.senderId;
-        const existingContact = prev.find((c) => c.contact.id === contactId)?.contact;
-        // For outgoing messages, msg.sender is the current user. Preserve the
-        // recipient already inserted by openConversation instead of displaying self.
-        const contact = existingContact || msg.sender;
-        
-        let lastMsgText = msg.content;
-        if (msg.isDeleted) {
-          lastMsgText = 'This message was deleted';
-        } else if (msg.imageUrl) {
-          lastMsgText = '📷 Sent an image';
-        }
-
-        const updated: Conversation = {
-          contact: { ...contact, id: contactId },
-          lastMessage: lastMsgText,
-          lastTime: msg.time,
-        };
-        const filtered = prev.filter((c) => c.contact.id !== contactId);
-        return [updated, ...filtered];
-      });
-    });
-
-    socketRef.current.on('message_edited', (msg: ChatMessage) => {
-      setMessages((prev) => prev.map((m) => (m.id === msg.id ? msg : m)));
-      
-      // Update sidebar conversation preview if it's the last message
-      setConversations((prev) => prev.map((c) => {
-        const contactId = msg.senderId === user.id ? msg.receiverId : msg.senderId;
-        if (c.contact.id === contactId) {
-          return { ...c, lastMessage: msg.content };
-        }
-        return c;
-      }));
-    });
-
-    socketRef.current.on('message_deleted', (msg: ChatMessage) => {
-      setMessages((prev) => prev.map((m) => (m.id === msg.id ? msg : m)));
-
-      // Update sidebar conversation preview if it's the last message
-      setConversations((prev) => prev.map((c) => {
-        const contactId = msg.senderId === user.id ? msg.receiverId : msg.senderId;
-        if (c.contact.id === contactId) {
-          return { ...c, lastMessage: 'This message was deleted' };
-        }
-        return c;
-      }));
-    });
+    let lastResume = 0;
+    const resume = () => {
+      if (document.visibilityState !== 'visible' || Date.now() - lastResume < 1000) return;
+      lastResume = Date.now();
+      if (socket.connected) void synchronizeRef.current();
+      else connection.recover();
+    };
+    window.addEventListener('focus', resume);
+    window.addEventListener('online', resume);
+    document.addEventListener('visibilitychange', resume);
 
     return () => {
-      active = false;
-      socketRef.current?.disconnect();
+      window.removeEventListener('focus', resume);
+      window.removeEventListener('online', resume);
+      document.removeEventListener('visibilitychange', resume);
+      socket.off('private_message', applyMessage);
+      socket.off('message_edited', updateMessage);
+      socket.off('message_deleted', updateMessage);
+      connection.stop();
+      historyRequests.cancel();
+      conversationQueryRef.current += 1;
     };
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, user, applyMessage, checkSession, historyRequests]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedConversationSearch(searchTerm.trim()), 250);
     return () => window.clearTimeout(timer);
   }, [searchTerm]);
 
-  useEffect(() => {
+  const refreshConversations = useCallback(async () => {
     if (!isAuthenticated) return;
-    let cancelled = false;
-    conversationQueryRef.current += 1;
-    api.get('/messages/conversations', { params: { limit: 25, offset: 0, search: debouncedConversationSearch } }).then((response) => {
-      if (cancelled || response.data?.status !== 'success') return;
+    const version = ++conversationQueryRef.current;
+    try {
+      const response = await api.get('/messages/conversations', { params: { limit: 25, offset: 0, search: debouncedConversationSearch }, timeout: 10000 });
+      if (version !== conversationQueryRef.current || response.data?.status !== 'success') return;
       const page: Conversation[] = response.data.data.conversations || [];
       setConversations(page);
       setConversationOffset(page.length);
       setHasMoreConversations(Boolean(response.data.data.hasMore));
-    }).catch((error) => { if (!cancelled) console.error('Failed to fetch conversations', error); });
-    return () => { cancelled = true; };
+    } catch (error) { if (version === conversationQueryRef.current) console.error('Failed to fetch conversations', error); }
   }, [isAuthenticated, debouncedConversationSearch]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void Promise.resolve().then(() => { if (!cancelled) void refreshConversations(); });
+    return () => { cancelled = true; conversationQueryRef.current += 1; };
+  }, [refreshConversations]);
 
   const loadMoreConversations = async () => {
     if (!hasMoreConversations || loadingMoreConversations) return;
@@ -300,7 +295,34 @@ function MessengerContent() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const refreshHistory = useCallback(async (contact: UserProfile) => {
+    if (!user?.id) return;
+    const request = historyRequests.begin(user.id, contact.id);
+    setLoadingOlderMessages(false);
+    try {
+      const response = await api.get(`/messages/history/${encodeURIComponent(contact.id)}?limit=50`, { timeout: 10000 });
+      if (response.data?.status !== 'success' || !Array.isArray(response.data?.data?.messages)) throw new Error('Message history is unavailable.');
+      const page = historyRequests.finish(request, response.data.data.messages);
+      if (!page) return;
+      setMessages(page);
+      setHasOlderMessages(Boolean(response.data.data.hasMore));
+      setNextBefore(response.data.data.nextBefore || null);
+    } catch (error) {
+      if (historyRequests.isCurrent(request)) console.error('Failed to load message history', error);
+    } finally {
+      if (historyRequests.isCurrent(request)) setLoadingMessages(false);
+    }
+  }, [user, historyRequests]);
+
+  useEffect(() => {
+    synchronizeRef.current = async () => {
+      const contact = activeContactRef.current;
+      await Promise.all([refreshConversations(), ...(contact ? [refreshHistory(contact)] : [])]);
+    };
+  }, [refreshConversations, refreshHistory]);
+
   const openConversation = useCallback(async (contact: UserProfile) => {
+    activeContactRef.current = contact;
     setActiveContact(contact);
     setLoadingMessages(true);
     setMessages([]);
@@ -312,18 +334,8 @@ function MessengerContent() {
     setInput('');
     inputRef.current?.focus();
 
-    try {
-      const res = await api.get(`/messages/history/${contact.id}?limit=50`);
-      if (res.data?.status === 'success') {
-        setMessages(res.data.data.messages || []);
-        setHasOlderMessages(Boolean(res.data.data.hasMore));
-        setNextBefore(res.data.data.nextBefore || null);
-      }
-    } catch (err) {
-      console.error('Failed to load message history', err);
-    } finally {
-      setLoadingMessages(false);
-    }
+    await refreshHistory(contact);
+    if (activeContactRef.current?.id !== contact.id) return;
 
     // Ensure conversation appears in sidebar
     setConversations((prev) => {
@@ -331,25 +343,29 @@ function MessengerContent() {
       if (exists) return prev;
       return [{ contact, lastMessage: '', lastTime: '' }, ...prev];
     });
-  }, []);
+  }, [refreshHistory]);
 
   const loadOlderMessages = async () => {
-    if (!activeContact || !nextBefore || loadingOlderMessages) return;
+    if (!activeContact || !user || !nextBefore || loadingOlderMessages) return;
+    const contactId = activeContact.id;
+    const request = historyRequests.begin(user.id, contactId);
     setLoadingOlderMessages(true);
     try {
       const res = await api.get(
-        `/messages/history/${activeContact.id}?limit=50&before=${encodeURIComponent(nextBefore)}`
+        `/messages/history/${encodeURIComponent(contactId)}?limit=50&before=${encodeURIComponent(nextBefore)}`, { timeout: 10000 }
       );
       if (res.data?.status === 'success') {
+        const page = historyRequests.finish(request, Array.isArray(res.data?.data?.messages) ? res.data.data.messages : []);
+        if (!page) return;
         prependingMessagesRef.current = true;
-        setMessages((current) => [...(res.data.data.messages || []), ...current]);
+        setMessages(current => mergeConversationMessages(current, page, user.id, contactId));
         setHasOlderMessages(Boolean(res.data.data.hasMore));
         setNextBefore(res.data.data.nextBefore || null);
       }
     } catch (err) {
       console.error('Failed to load older messages', err);
     } finally {
-      setLoadingOlderMessages(false);
+      if (historyRequests.isCurrent(request)) setLoadingOlderMessages(false);
     }
   };
 
@@ -416,15 +432,15 @@ function MessengerContent() {
       formData.append('image', selectedFile);
     }
 
-    setInput('');
-    removeSelectedFile();
-
     try {
-      await api.post('/messages', formData, {
+      const response = await api.post('/messages', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+      applyMessage(response.data?.data?.message);
+      setInput('');
+      removeSelectedFile();
     } catch (err) {
       console.error('Failed to send message', err);
       alert('Failed to send message. Please try again.');
@@ -441,6 +457,7 @@ function MessengerContent() {
     try {
       const res = await api.put(`/messages/${msgId}`, { content: editInput.trim() });
       if (res.data?.status === 'success') {
+        applyMessage(res.data?.data?.message, false);
         setEditingMessageId(null);
         setEditInput('');
       }
@@ -455,7 +472,8 @@ function MessengerContent() {
     if (!window.confirm('Are you sure you want to delete this message?')) return;
 
     try {
-      await api.delete(`/messages/${msgId}`);
+      const response = await api.delete(`/messages/${msgId}`);
+      applyMessage(response.data?.data?.message, false);
       setActiveMenuMessageId(null);
     } catch (err) {
       console.error('Failed to delete message', err);
@@ -605,7 +623,7 @@ function MessengerContent() {
               <>
                 {/* Chat header */}
                 <header className="flex items-center gap-2 px-3 py-3 border-b border-line bg-panel shrink-0">
-                  <button type="button" aria-label="Back to conversations" onClick={() => { setActiveContact(null); router.replace('/messenger'); }} className="md:hidden flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink hover:bg-soft">
+                  <button type="button" aria-label="Back to conversations" onClick={() => { activeContactRef.current = null; historyRequests.cancel(); setLoadingMessages(false); setLoadingOlderMessages(false); setActiveContact(null); router.replace('/messenger'); }} className="md:hidden flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink hover:bg-soft">
                     <ArrowLeft className="h-5 w-5" />
                   </button>
                   {avatarDisplay(activeContact.avatar, activeContact.name)}
