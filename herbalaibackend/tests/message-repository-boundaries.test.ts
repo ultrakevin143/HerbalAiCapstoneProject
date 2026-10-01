@@ -1,10 +1,10 @@
 import { Prisma } from '@prisma/client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const mocks = vi.hoisted(() => ({ update: vi.fn(), history: vi.fn(), query: vi.fn() }));
-vi.mock('../src/lib/prisma.js', () => ({ prisma: { chatMessage: { update: mocks.update, findMany: mocks.history }, $queryRaw: mocks.query } }));
+const mocks = vi.hoisted(() => ({ update: vi.fn(), history: vi.fn(), query: vi.fn(), users: vi.fn() }));
+vi.mock('../src/lib/prisma.js', () => ({ prisma: { chatMessage: { update: mocks.update, findMany: mocks.history }, $queryRaw: mocks.query, user: { findMany: mocks.users } } }));
 
-import { deleteMessage, editMessage, getChatHistory, getActiveConversations } from '../src/repositories/message.repository.js';
+import { deleteMessage, editMessage, getChatHistory, getActiveConversations, getMessageableUsers } from '../src/repositories/message.repository.js';
 
 describe('Messenger repository mutation and pagination boundaries', () => {
   beforeEach(() => {
@@ -12,6 +12,7 @@ describe('Messenger repository mutation and pagination boundaries', () => {
     mocks.update.mockResolvedValue({ id: 7 });
     mocks.history.mockResolvedValue([]);
     mocks.query.mockResolvedValue([]);
+    mocks.users.mockResolvedValue([]);
   });
 
   it('edits only an existing non-deleted message belonging to the authenticated sender', async () => {
@@ -37,6 +38,18 @@ describe('Messenger repository mutation and pagination boundaries', () => {
     expect(values).toContain(pattern);
     expect(values.slice(-2)).toEqual([3, 3]);
     if (search.length > 1) expect(fragments.join('')).not.toContain(search);
+  });
+
+  it.each([['%', '\\%'], ['_', '\\_'], ['\\', '\\\\'], ['%_\\', '\\%\\_\\\\'], ["O'Brien", "O'Brien"]])('keeps New Chat name and username search %j literal and preserves visibility/pagination', async (search, escaped) => {
+    await getMessageableUsers('sender', search, 20, 20);
+    expect(mocks.users).toHaveBeenCalledWith({
+      where: { id: { not: 'sender' }, isBanned: false, OR: [
+        { name: { contains: escaped, mode: 'insensitive' } },
+        { username: { contains: escaped, mode: 'insensitive' } },
+      ] },
+      select: { id: true, name: true, avatar: true, role: true },
+      orderBy: [{ name: 'asc' }, { id: 'asc' }], take: 21, skip: 20,
+    });
   });
 
   it('deletes only once and clears both text and media in the conditional write', async () => {

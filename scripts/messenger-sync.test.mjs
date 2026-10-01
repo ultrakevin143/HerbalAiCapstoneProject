@@ -54,12 +54,150 @@ const pageSource = await readFile(new URL('../herbalaifrontend/app/messenger/pag
 const pageSyntax = ts.createSourceFile('messenger.tsx', pageSource, ts.ScriptTarget.ES2022, true, ts.ScriptKind.TSX);
 const callbacks = new Map();
 const findCallbacks = node => {
-  if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && ['applyMessage', 'refreshConversations'].includes(node.name.text)) {
+  if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && ['applyMessage', 'refreshConversations', 'loadUsers'].includes(node.name.text)) {
     callbacks.set(node.name.text, node.initializer.arguments[0].getText(pageSyntax));
   }
   ts.forEachChild(node, findCallbacks);
 };
 findCallbacks(pageSyntax);
+const pickerActions = new Map();
+const findPickerActions = node => {
+  if (ts.isCallExpression(node) && node.expression.getText(pageSyntax) === 'window.setTimeout' &&
+      node.arguments[0]?.getText(pageSyntax).includes("api.get('/messages/users'")) {
+    pickerActions.set('legacyLoad', node.arguments[0].getText(pageSyntax));
+  }
+  if (ts.isJsxElement(node) && node.openingElement.tagName.getText(pageSyntax) === 'button' &&
+      node.children.some(child => child.getText(pageSyntax).includes('Load more users'))) {
+    const attribute = node.openingElement.attributes.properties.find(item => item.name?.getText(pageSyntax) === 'onClick');
+    pickerActions.set('more', attribute.initializer.expression.getText(pageSyntax));
+  }
+  ts.forEachChild(node, findPickerActions);
+};
+findPickerActions(pageSyntax);
+const pickerHarness = () => {
+  let users = [];
+  let offset = 0;
+  let loading = false;
+  let hasMore = false;
+  let error = '';
+  let lastRequest;
+  let search = '';
+  const pending = [];
+  const queryRef = { current: 0 };
+  const loadingRef = { current: false };
+  const invoke = (source, ...args) => {
+    const context = {
+      userOffset: offset, userPickerSearch: search, normalizedUserPickerSearch: search.trim().slice(0, 100),
+      cancelled: false, userQueryRef: queryRef, loadingUsersRef: loadingRef,
+      setAllUsers: next => { users = typeof next === 'function' ? next(users) : next; },
+      setUserOffset: next => { offset = typeof next === 'function' ? next(offset) : next; },
+      setLoadingUsers: next => { loading = next; }, setHasMoreUsers: next => { hasMore = next; },
+      setUserLoadError: next => { error = next; },
+      api: { get: (path, options) => new Promise((resolve, reject) => pending.push({ path, options, resolve, reject })) },
+      console: { error: () => {} },
+      loadUsers: (...parameters) => { lastRequest = invoke(callbacks.get('loadUsers'), ...parameters); return lastRequest; },
+    };
+    const compiled = ts.transpileModule(`const callback = ${source}; return callback;`, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText;
+    return new Function(...Object.keys(context), compiled)(...Object.values(context))(...args);
+  };
+  return {
+    pending, queryRef, loadingRef,
+    first: () => invoke(callbacks.get('loadUsers') ?? pickerActions.get('legacyLoad'), 0),
+    more: () => {
+      invoke(pickerActions.get('more'));
+      return callbacks.has('loadUsers') ? lastRequest : invoke(pickerActions.get('legacyLoad'));
+    },
+    newSearch: next => { search = next; queryRef.current += 1; loadingRef.current = false; },
+    state: () => ({ users, offset, loading, hasMore, error }),
+  };
+};
+const pickerResponse = (users, hasMore = false) => ({ data: { status: 'success', data: { users, hasMore } } });
+
+test('New Chat retries a failed next page at the same offset rather than skipping users', async () => {
+  const fixture = pickerHarness();
+  const initial = fixture.first();
+  fixture.pending[0].resolve(pickerResponse(Array.from({ length: 20 }, (_, index) => contact(`user${index}`)), true));
+  await initial;
+  const next = fixture.more();
+  assert.equal(fixture.pending[1].options.params.offset, 20);
+  fixture.pending[1].reject(new Error('TEST ONLY offline'));
+  await next;
+  const retry = fixture.more();
+  assert.equal(fixture.pending[2].options.params.offset, 20);
+  fixture.pending[2].resolve(pickerResponse([contact('user20')]));
+  await retry;
+  assert.equal(fixture.state().users.length, 21);
+  assert.equal(fixture.state().offset, 21);
+});
+
+test('New Chat deduplicates overlapping pages but advances by the server row count', async () => {
+  const fixture = pickerHarness();
+  const initial = fixture.first();
+  fixture.pending[0].resolve(pickerResponse([contact('alpha')], true));
+  await initial;
+  const next = fixture.more();
+  fixture.pending[1].resolve(pickerResponse([contact('alpha'), contact('beta')]));
+  await next;
+  assert.deepEqual(fixture.state().users.map(user => user.id), ['alpha', 'beta']);
+  assert.equal(fixture.state().offset, 3);
+});
+
+test('New Chat displays a recoverable error on first-page failure instead of an empty-search result', async () => {
+  const fixture = pickerHarness();
+  const request = fixture.first();
+  fixture.pending[0].reject(new Error('TEST ONLY unavailable'));
+  await request;
+  assert.equal(fixture.state().error, 'Unable to load users. Please try again.');
+  assert.equal(fixture.state().loading, false);
+  assert.equal(fixture.state().offset, 0);
+});
+
+test('New Chat bounds requests and normalizes the name or username search', async () => {
+  const fixture = pickerHarness();
+  fixture.newSearch('  ALPHA  ');
+  const request = fixture.first();
+  assert.equal(fixture.pending[0].options.timeout, 10000);
+  assert.equal(fixture.pending[0].options.params.search, 'ALPHA');
+  fixture.pending[0].resolve(pickerResponse([]));
+  await request;
+});
+
+test('New Chat rejects malformed pages without losing the last successful offset', async () => {
+  const fixture = pickerHarness();
+  const request = fixture.first();
+  fixture.pending[0].resolve(pickerResponse('not an array', true));
+  await request;
+  assert.equal(fixture.state().error, 'Unable to load users. Please try again.');
+  assert.deepEqual(fixture.state().users, []);
+  assert.equal(fixture.state().offset, 0);
+});
+
+test('New Chat ignores an old search response and does not clear the newer request loading state', async () => {
+  const fixture = pickerHarness();
+  const oldRequest = fixture.first();
+  fixture.newSearch('beta');
+  const currentRequest = fixture.first();
+  fixture.pending[0].resolve(pickerResponse([contact('alpha')], true));
+  await oldRequest;
+  assert.deepEqual(fixture.state().users, []);
+  assert.equal(fixture.state().loading, true);
+  fixture.pending[1].resolve(pickerResponse([contact('beta')]));
+  await currentRequest;
+  assert.deepEqual(fixture.state().users.map(user => user.id), ['beta']);
+  assert.equal(fixture.state().loading, false);
+});
+
+test('New Chat prevents simultaneous duplicate requests and stops pagination at an empty final page', async () => {
+  const fixture = pickerHarness();
+  const first = fixture.first();
+  await fixture.first();
+  assert.equal(fixture.pending.length, 1);
+  fixture.pending[0].resolve(pickerResponse([], true));
+  await first;
+  assert.equal(fixture.state().hasMore, false);
+  assert.equal(fixture.state().offset, 0);
+});
+
 const searchExpressions = new Map();
 const findSearchExpressions = node => {
   if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) &&

@@ -111,6 +111,7 @@ function MessengerContent() {
   const [hasMoreUsers, setHasMoreUsers] = useState(false);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [userOffset, setUserOffset] = useState(0);
+  const [userLoadError, setUserLoadError] = useState('');
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [loadingOlderMessages, setLoadingOlderMessages] = useState(false);
   const [hasOlderMessages, setHasOlderMessages] = useState(false);
@@ -131,10 +132,13 @@ function MessengerContent() {
   const prependingMessagesRef = useRef(false);
   const conversationQueryRef = useRef(0);
   const conversationEventsRef = useRef<Map<number, ChatMessage> | null>(null);
+  const userQueryRef = useRef(0);
+  const loadingUsersRef = useRef(false);
   const activeContactRef = useRef<UserProfile | null>(null);
   const [historyRequests] = useState(() => createHistoryRequests<ChatMessage>());
   const synchronizeRef = useRef<() => Promise<void>>(async () => {});
   const normalizedConversationSearch = searchTerm.trim().slice(0, 100);
+  const normalizedUserPickerSearch = userPickerSearch.trim().slice(0, 100);
 
   const applyMessage = useCallback((message: ChatMessage, allowInsert = true) => {
     if (!user || !message || !Number.isInteger(message.id) || typeof message.senderId !== 'string' ||
@@ -262,25 +266,41 @@ function MessengerContent() {
     }
   };
 
+  const loadUsers = useCallback(async (offset = 0, version = userQueryRef.current) => {
+    if (version !== userQueryRef.current || loadingUsersRef.current) return;
+    loadingUsersRef.current = true;
+    setLoadingUsers(true);
+    setUserLoadError('');
+    try {
+      const response = await api.get('/messages/users', { params: { search: normalizedUserPickerSearch, limit: 20, offset }, timeout: 10000 });
+      if (version !== userQueryRef.current) return;
+      const nextUsers: UserProfile[] = response.data?.data?.users;
+      if (response.data?.status !== 'success' || !Array.isArray(nextUsers) ||
+          nextUsers.some(contact => !contact || typeof contact.id !== 'string' || typeof contact.name !== 'string')) {
+        throw new Error('Users are unavailable.');
+      }
+      setAllUsers(current => [...new Map((offset === 0 ? nextUsers : [...current, ...nextUsers]).map(contact => [contact.id, contact])).values()]);
+      setUserOffset(offset + nextUsers.length);
+      setHasMoreUsers(nextUsers.length > 0 && Boolean(response.data.data.hasMore));
+    } catch (error) {
+      if (version === userQueryRef.current) {
+        console.error('Failed to fetch users', error);
+        setUserLoadError('Unable to load users. Please try again.');
+      }
+    } finally {
+      if (version === userQueryRef.current) {
+        loadingUsersRef.current = false;
+        setLoadingUsers(false);
+      }
+    }
+  }, [normalizedUserPickerSearch]);
+
   useEffect(() => {
     if (!showUserPicker || !isAuthenticated) return;
-    let cancelled = false;
-    const timer = window.setTimeout(async () => {
-      setLoadingUsers(true);
-      try {
-        const response = await api.get('/messages/users', { params: { search: userPickerSearch, limit: 20, offset: userOffset } });
-        if (cancelled) return;
-        const nextUsers: UserProfile[] = response.data.data.users || [];
-        setAllUsers((current) => userOffset === 0 ? nextUsers : [...current, ...nextUsers]);
-        setHasMoreUsers(Boolean(response.data.data.hasMore));
-      } catch (error) {
-        if (!cancelled) console.error('Failed to fetch users', error);
-      } finally {
-        if (!cancelled) setLoadingUsers(false);
-      }
-    }, userOffset === 0 ? 250 : 0);
-    return () => { cancelled = true; window.clearTimeout(timer); };
-  }, [showUserPicker, isAuthenticated, userPickerSearch, userOffset]);
+    const version = ++userQueryRef.current;
+    const timer = window.setTimeout(() => { void loadUsers(0, version); }, 250);
+    return () => { userQueryRef.current += 1; loadingUsersRef.current = false; window.clearTimeout(timer); };
+  }, [showUserPicker, isAuthenticated, user?.id, userPickerSearch, loadUsers]);
 
   // Auto scroll to bottom when messages update
   useEffect(() => {
@@ -483,6 +503,15 @@ function MessengerContent() {
     openConversation(contact);
   };
 
+  const handleOpenUserPicker = () => {
+    setAllUsers([]);
+    setUserOffset(0);
+    setHasMoreUsers(false);
+    setUserLoadError('');
+    setLoadingUsers(true);
+    setShowUserPicker(true);
+  };
+
   const filteredConversations = conversations.filter((c) =>
     c.contact.name.toLowerCase().includes(normalizedConversationSearch.toLowerCase())
   );
@@ -528,7 +557,7 @@ function MessengerContent() {
                 <MessageSquare className="h-4 w-4 text-ink" />
                 <span className="text-sm font-extrabold text-ink">Messages</span>
                 <button
-                  onClick={() => setShowUserPicker(true)}
+                  onClick={handleOpenUserPicker}
                   className="ml-auto flex h-11 w-11 items-center justify-center rounded-full bg-[#eef5f0] text-[#1b4332] transition-colors hover:bg-[#dcecdf] dark:bg-soft dark:text-ink dark:hover:bg-panel"
                   title="New message"
                 >
@@ -557,7 +586,7 @@ function MessengerContent() {
                   title={normalizedConversationSearch ? 'No conversations found' : 'No conversations yet'}
                   description={normalizedConversationSearch ? 'Try another name or clear the search.' : 'Start a private conversation with a community member.'}
                   action={(
-                    <button type="button" onClick={() => setShowUserPicker(true)} className="empty-state-text-action">
+                    <button type="button" onClick={handleOpenUserPicker} className="empty-state-text-action">
                       Start a new chat
                       <ChevronRight aria-hidden="true" size={16} />
                     </button>
@@ -608,7 +637,7 @@ function MessengerContent() {
                   </p>
                 </div>
                 <button
-                  onClick={() => setShowUserPicker(true)}
+                  onClick={handleOpenUserPicker}
                   className="mt-2 inline-flex items-center gap-2 rounded-xl bg-[#2d6a4f] px-5 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-[#1b4332]"
                 >
                   <UserPlus className="h-3.5 w-3.5" />
@@ -868,11 +897,12 @@ function MessengerContent() {
 
       {/* ===== USER PICKER MODAL ===== */}
       {showUserPicker && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30  px-4">
+        <div role="dialog" aria-modal="true" aria-labelledby="new-message-title" className="fixed inset-0 z-50 flex items-center justify-center bg-black/30  px-4">
           <div className="w-full max-w-sm bg-panel rounded-3xl shadow-2xl overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-line">
-              <h3 className="text-sm font-extrabold text-ink">New Message</h3>
+              <h3 id="new-message-title" className="text-sm font-extrabold text-ink">New Message</h3>
               <button
+                aria-label="Close new message"
                 onClick={() => { setShowUserPicker(false); setUserPickerSearch(''); }}
                 className="h-7 w-7 rounded-full bg-panel hover:bg-panel flex items-center justify-center transition-colors"
               >
@@ -886,8 +916,18 @@ function MessengerContent() {
                 <input
                   type="text"
                   placeholder="Search users..."
+                  aria-label="Search users"
                   value={userPickerSearch}
-                  onChange={(e) => { setUserPickerSearch(e.target.value); setUserOffset(0); setAllUsers([]); }}
+                  onChange={(e) => {
+                    userQueryRef.current += 1;
+                    loadingUsersRef.current = false;
+                    setUserPickerSearch(e.target.value);
+                    setUserOffset(0);
+                    setAllUsers([]);
+                    setHasMoreUsers(false);
+                    setUserLoadError('');
+                    setLoadingUsers(true);
+                  }}
                   autoFocus
                   className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-line bg-panel focus:outline-none focus:border-line transition-colors"
                 />
@@ -896,7 +936,7 @@ function MessengerContent() {
 
             <div className="max-h-72 overflow-y-auto px-2 pb-4">
               {filteredAllUsers.length === 0 ? (
-                <p className="text-center text-sm text-muted py-8">{loadingUsers ? 'Loading users...' : 'No users found.'}</p>
+                !userLoadError && <p className="text-center text-sm text-muted py-8">{loadingUsers ? 'Loading users...' : 'No users found.'}</p>
               ) : (
                 filteredAllUsers.map((u) => (
                   <button
@@ -913,7 +953,11 @@ function MessengerContent() {
                   </button>
                 ))
               )}
-              {hasMoreUsers && <button type="button" disabled={loadingUsers} onClick={() => setUserOffset((offset) => offset + 20)} className="w-full py-3 text-sm font-semibold text-ink disabled:opacity-50">Load more users</button>}
+              {userLoadError && <div role="alert" className="px-3 text-center text-sm text-muted">
+                <p>{userLoadError}</p>
+                <button type="button" disabled={loadingUsers} onClick={() => { void loadUsers(userOffset); }} className="w-full py-3 text-sm font-semibold text-ink disabled:opacity-50">Retry loading users</button>
+              </div>}
+              {hasMoreUsers && !userLoadError && <button type="button" disabled={loadingUsers} onClick={() => { void loadUsers(userOffset); }} className="w-full py-3 text-sm font-semibold text-ink disabled:opacity-50">{loadingUsers ? 'Loading users...' : 'Load more users'}</button>}
             </div>
           </div>
         </div>

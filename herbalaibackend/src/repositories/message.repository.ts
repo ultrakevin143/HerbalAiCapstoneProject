@@ -219,11 +219,12 @@ export const getActiveConversations = async (userId: string, search = "", limit 
  * Get all users except the current user (for the "New Chat" user picker).
  */
 export const getMessageableUsers = async (currentUserId: string, search = "", limit = 20, offset = 0) => {
+  const literalSearch = search.replace(/[\\%_]/g, "\\$&");
   return prisma.user.findMany({
     where: {
       id: { not: currentUserId },
       isBanned: false,
-      ...(search ? { OR: [{ name: { contains: search, mode: "insensitive" } }, { username: { contains: search, mode: "insensitive" } }] } : {}),
+      ...(search ? { OR: [{ name: { contains: literalSearch, mode: "insensitive" } }, { username: { contains: literalSearch, mode: "insensitive" } }] } : {}),
     },
     select: {
       id: true,

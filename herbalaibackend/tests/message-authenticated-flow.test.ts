@@ -120,6 +120,41 @@ describe('isolated authenticated Messenger workflow', () => {
     expect(await prisma.chatMessage.findUniqueOrThrow({ where: { id: messageId } })).toMatchObject({ content: 'TEST ONLY unchanged text', isEdited: false, isDeleted: false });
   });
 
+  it('paginates New Chat deterministically with literal name/username search and excludes self and banned users', async () => {
+    const prefix = `Picker${suffix.replaceAll('-', '')}`;
+    const ids = Array.from({ length: 23 }, (_, index) => `${prefix}-${String(index).padStart(2, '0')}`);
+    const previous = await prisma.user.findUniqueOrThrow({ where: { id: senderId }, select: { name: true, password: true } });
+    try {
+      await prisma.user.update({ where: { id: senderId }, data: { name: `${prefix} Contact` } });
+      await prisma.user.createMany({ data: ids.map((id, index) => ({
+        id, username: index === 1 ? `${prefix}_username` : `${prefix}plain${index}`,
+        email: `${id}@example.invalid`, password: previous.password,
+        name: index === 0 ? `${prefix}%_\\ Contact` : `${prefix} Contact`,
+        role: 'contributor', isBanned: index === 22, emailVerified: new Date(),
+      })) });
+      const first = await sender.get('/api/messages/users').query({ search: prefix.toLowerCase(), limit: 20, offset: 0 });
+      const second = await sender.get('/api/messages/users').query({ search: prefix, limit: 20, offset: 20 });
+      const repeat = await sender.get('/api/messages/users').query({ search: prefix, limit: 20, offset: 0 });
+      for (const response of [first, second, repeat]) expect(response.status).toBe(200);
+      expect(first.body.data.users).toHaveLength(20);
+      expect(first.body.data.hasMore).toBe(true);
+      expect(second.body.data.users).toHaveLength(2);
+      expect(second.body.data.hasMore).toBe(false);
+      expect(repeat.body.data.users).toEqual(first.body.data.users);
+      const observed = [...first.body.data.users, ...second.body.data.users].map((user: { id: string }) => user.id);
+      expect(observed.sort()).toEqual(ids.slice(0, 22).sort());
+      for (const [search, expected] of [[`${prefix}%`, ids[0]], [`${prefix}_`, ids[1]], [`${prefix}%_\\`, ids[0]]] as const) {
+        expect((await messageRepo.getMessageableUsers(senderId, search)).map(user => user.id)).toEqual([expected]);
+      }
+      const final = await sender.get('/api/messages/users').query({ search: prefix, limit: 20, offset: 40 });
+      expect(final.status).toBe(200);
+      expect(final.body.data).toEqual({ users: [], hasMore: false });
+    } finally {
+      await prisma.user.update({ where: { id: senderId }, data: { name: previous.name } });
+      await prisma.user.deleteMany({ where: { id: { in: ids } } });
+    }
+  });
+
   it('rejects missing/banned recipients before media upload and leaves no message/notification', async () => {
     const beforeMessages = await prisma.chatMessage.count({ where: { senderId } });
     const beforeNotifications = await prisma.notification.count({ where: { userId: { in: userIds } } });
