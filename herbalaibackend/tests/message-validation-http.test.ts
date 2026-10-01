@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
   account: vi.fn(), recipient: vi.fn(), save: vi.fn(), find: vi.fn(),
-  edit: vi.fn(), remove: vi.fn(), upload: vi.fn(), emit: vi.fn(), to: vi.fn(),
+  edit: vi.fn(), remove: vi.fn(), history: vi.fn(), upload: vi.fn(), emit: vi.fn(), to: vi.fn(),
 }));
 
 vi.mock('../src/lib/prisma.js', () => ({ prisma: { user: { findUnique: mocks.account } } }));
@@ -14,6 +14,7 @@ vi.mock('../src/repositories/message.repository.js', () => ({
   findMessageById: mocks.find,
   editMessage: mocks.edit,
   deleteMessage: mocks.remove,
+  getChatHistory: mocks.history,
 }));
 vi.mock('../src/services/cloudinary.service.js', () => ({ uploadToCloudinary: mocks.upload }));
 vi.mock('../src/server.js', () => ({ io: { to: mocks.to } }));
@@ -43,6 +44,7 @@ describe('Messenger HTTP input boundaries', () => {
     mocks.remove.mockResolvedValue({ ...message, content: '', isDeleted: true });
     mocks.upload.mockResolvedValue('https://example.invalid/test-only.png');
     mocks.to.mockReturnValue({ emit: mocks.emit });
+    mocks.history.mockResolvedValue({ messages: [], hasMore: false, nextBefore: null });
   });
 
   it.each(['7abc', '7.5', '-1', '0', '2147483648', '9007199254740992'])('rejects invalid message ID %s before any lookup/write', async id => {
@@ -108,5 +110,54 @@ describe('Messenger HTTP input boundaries', () => {
     expect((await request(app).put('/api/messages/7').set(headers).send({ content: 'Changed' })).status).toBe(400);
     expect(mocks.edit).not.toHaveBeenCalled();
     expect(mocks.remove).not.toHaveBeenCalled();
+  });
+
+  it('does not delete or rebroadcast an already-deleted message', async () => {
+    mocks.find.mockResolvedValue({ ...message, isDeleted: true });
+    expect((await request(app).delete('/api/messages/7').set(headers)).status).toBe(404);
+    expect(mocks.remove).not.toHaveBeenCalled();
+    expect(mocks.emit).not.toHaveBeenCalled();
+  });
+
+  it.each(['edit', 'delete'])('returns a conflict without broadcasting when %s loses a deletion race', async operation => {
+    mocks.edit.mockResolvedValue(null);
+    mocks.remove.mockResolvedValue(null);
+    const response = operation === 'edit'
+      ? await request(app).put('/api/messages/7').set(headers).send({ content: 'Changed' })
+      : await request(app).delete('/api/messages/7').set(headers);
+    expect(response.status).toBe(409);
+    expect(mocks.emit).not.toHaveBeenCalled();
+  });
+
+  it('passes the authenticated owner into both conditional writes', async () => {
+    expect((await request(app).put('/api/messages/7').set(headers).send({ content: ' Changed ' })).status).toBe(200);
+    expect(mocks.edit).toHaveBeenCalledWith(7, 'Changed', 'sender');
+    expect((await request(app).delete('/api/messages/7').set(headers)).status).toBe(200);
+    expect(mocks.remove).toHaveBeenCalledWith(7, 'sender');
+  });
+
+  it('keeps unexpected database errors as failures without broadcasting', async () => {
+    mocks.edit.mockRejectedValue(new Error('TEST ONLY database unavailable'));
+    expect((await request(app).put('/api/messages/7').set(headers).send({ content: 'Changed' })).status).toBe(500);
+    expect(mocks.emit).not.toHaveBeenCalled();
+  });
+
+  it('accepts timestamp-plus-ID and legacy ISO history cursors', async () => {
+    const timestamp = '2026-10-01T00:00:00.000Z';
+    expect((await request(app).get('/api/messages/history/receiver').set(headers).query({ before: `${timestamp}|7` })).status).toBe(200);
+    expect(mocks.history).toHaveBeenLastCalledWith('sender', 'receiver', 50, { time: new Date(timestamp), id: 7 });
+    expect((await request(app).get('/api/messages/history/receiver').set(headers).query({ before: timestamp })).status).toBe(200);
+    expect(mocks.history).toHaveBeenLastCalledWith('sender', 'receiver', 50, { time: new Date(timestamp) });
+  });
+
+  it.each(['bad', '2026-02-30T00:00:00.000Z|7', '2026-10-01T00:00:00.000Z|0', '2026-10-01T00:00:00.000Z|2147483648', '2026-10-01T00:00:00.000Z|7|8', ''])('rejects malformed cursor %s before history queries', async before => {
+    expect((await request(app).get('/api/messages/history/receiver').set(headers).query({ before })).status).toBe(400);
+    expect(mocks.history).not.toHaveBeenCalled();
+  });
+
+  it('rejects repeated history cursor parameters', async () => {
+    const timestamp = '2026-10-01T00:00:00.000Z';
+    expect((await request(app).get('/api/messages/history/receiver').set(headers).query({ before: [timestamp, timestamp] })).status).toBe(400);
+    expect(mocks.history).not.toHaveBeenCalled();
   });
 });

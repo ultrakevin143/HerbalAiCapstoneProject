@@ -10,6 +10,7 @@ import app from '../src/app.js';
 import { ENV } from '../src/config/env.js';
 import { prisma, closeDatabasePool } from '../src/lib/prisma.js';
 import { hashPassword } from '../src/utils/password.js';
+import * as messageRepo from '../src/repositories/message.repository.js';
 
 const suffix = randomUUID();
 const senderId = `message-sender-${suffix}`;
@@ -75,6 +76,9 @@ describe('isolated authenticated Messenger workflow', () => {
     expect(edited.status).toBe(200);
     expect(edited.body.data.message).toMatchObject({ content: 'x'.repeat(2000), isEdited: true });
     expect((await sender.delete(path)).status).toBe(200);
+    mocks.emit.mockClear();
+    expect((await sender.delete(path)).status).toBe(404);
+    expect(mocks.emit).not.toHaveBeenCalled();
     expect(await prisma.chatMessage.findUniqueOrThrow({ where: { id: messageId } })).toMatchObject({ isDeleted: true, content: '', imageUrl: null });
     expect((await sender.put(path).send({ content: 'Cannot restore deleted text' })).status).toBe(400);
     const deletedHistory = await receiver.get(`/api/messages/history/${senderId}`);
@@ -129,5 +133,74 @@ describe('isolated authenticated Messenger workflow', () => {
     expect((await sender.post('/api/messages')).status).toBe(400);
     expect((await sender.post('/api/messages').send({ receiverId, content: 'x'.repeat(2001) })).status).toBe(400);
     expect((await sender.post('/api/messages').send({ receiverId: senderId, content: 'Self send' })).status).toBe(400);
+  });
+
+  it('enforces ownership and deleted-state predicates in the database even after an earlier read', async () => {
+    const messageId = await sendText();
+    expect(await messageRepo.editMessage(messageId, 'Wrong owner', otherId)).toBeNull();
+    expect(await messageRepo.deleteMessage(messageId, otherId)).toBeNull();
+    expect(await messageRepo.findMessageById(messageId)).toMatchObject({ isDeleted: false });
+    expect(await messageRepo.deleteMessage(messageId, senderId)).toMatchObject({ isDeleted: true });
+    expect(await messageRepo.editMessage(messageId, 'Race must not restore text', senderId)).toBeNull();
+    expect(await messageRepo.deleteMessage(messageId, senderId)).toBeNull();
+    expect(await messageRepo.findMessageById(messageId)).toMatchObject({ isDeleted: true, content: '', imageUrl: null });
+  });
+
+  it('allows exactly one concurrent soft delete', async () => {
+    const messageId = await sendText();
+    const results = await Promise.all([
+      messageRepo.deleteMessage(messageId, senderId),
+      messageRepo.deleteMessage(messageId, senderId),
+    ]);
+    expect(results.filter(result => result !== null)).toHaveLength(1);
+    expect(await messageRepo.findMessageById(messageId)).toMatchObject({ isDeleted: true, content: '', imageUrl: null });
+  });
+
+  it('never restores content when editing and deleting run concurrently', async () => {
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      const messageId = await sendText();
+      const [, removed] = await Promise.all([
+        messageRepo.editMessage(messageId, 'TEST ONLY concurrent edit', senderId),
+        messageRepo.deleteMessage(messageId, senderId),
+      ]);
+      expect(removed).toMatchObject({ isDeleted: true });
+      expect(await messageRepo.findMessageById(messageId)).toMatchObject({ isDeleted: true, content: '', imageUrl: null });
+    }
+  });
+
+  it('loads every equal-timestamp message exactly once without leaking a different conversation', async () => {
+    const time = new Date('2030-01-01T00:00:00.000Z');
+    const times = [new Date(time.getTime() - 1000), ...Array<Date>(6).fill(time), new Date(time.getTime() + 1000)];
+    await prisma.chatMessage.createMany({ data: times.map((timestamp, index) => ({
+      senderId: index % 2 === 0 ? receiverId : otherId,
+      receiverId: index % 2 === 0 ? otherId : receiverId,
+      content: `TEST ONLY equal-timestamp fixture ${index}`, time: timestamp,
+    })) });
+    await prisma.chatMessage.create({ data: { senderId, receiverId: otherId, content: 'TEST ONLY unrelated conversation', time } });
+    const expected = await prisma.chatMessage.findMany({
+      where: { OR: [{ senderId: receiverId, receiverId: otherId }, { senderId: otherId, receiverId }] },
+      orderBy: [{ time: 'desc' }, { id: 'desc' }],
+    });
+    const observed: number[] = [];
+    let before: string | null = null;
+    for (let pageIndex = 0; pageIndex < 5; pageIndex += 1) {
+      const response = await receiver.get(`/api/messages/history/${otherId}`).query({ limit: 2, ...(before ? { before } : {}) });
+      expect(response.status).toBe(200);
+      const page = response.body.data;
+      const ids = page.messages.map((message: { id: number }) => message.id);
+      expect(ids).toEqual(expected.slice(pageIndex * 2, pageIndex * 2 + 2).reverse().map(message => message.id));
+      observed.push(...ids);
+      before = page.nextBefore;
+      if (!page.hasMore) {
+        expect(before).toBeNull();
+        break;
+      }
+      expect(before).toMatch(/Z\|[1-9]\d*$/);
+    }
+    expect(observed).toHaveLength(8);
+    expect(new Set(observed).size).toBe(8);
+    const legacy = await receiver.get(`/api/messages/history/${otherId}`).query({ before: time.toISOString() });
+    expect(legacy.status).toBe(200);
+    expect(legacy.body.data.messages.map((message: { id: number }) => message.id)).toEqual([expected[7]?.id]);
   });
 });

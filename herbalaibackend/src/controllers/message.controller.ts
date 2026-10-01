@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import * as messageRepo from "../repositories/message.repository.js";
 import { uploadToCloudinary } from "../services/cloudinary.service.js";
+import { parseMessageCursor } from "../utils/message-cursor.js";
 
 interface AuthenticatedRequest extends Request {
   user?: { userId: string; role: string };
@@ -109,13 +110,14 @@ export const getHistory = async (
 
     const parsedLimit = req.query["limit"] ? parseInt(req.query["limit"] as string, 10) : 50;
     const limit = Number.isFinite(parsedLimit) ? Math.min(100, Math.max(1, parsedLimit)) : 50;
-    const beforeTime = req.query["before"] ? new Date(req.query["before"] as string) : undefined;
-    if (beforeTime && Number.isNaN(beforeTime.getTime())) {
+    const rawBefore = req.query["before"];
+    const before = rawBefore === undefined ? undefined : parseMessageCursor(rawBefore);
+    if (before === null) {
       res.status(400).json({ status: "error", message: "Invalid before cursor." });
       return;
     }
 
-    const page = await messageRepo.getChatHistory(currentUserId, targetUserId, limit, beforeTime);
+    const page = await messageRepo.getChatHistory(currentUserId, targetUserId, limit, before);
     res.status(200).json({ status: "success", data: page });
   } catch (error) {
     next(error);
@@ -254,7 +256,11 @@ export const editMessage = async (
       return;
     }
 
-    const updatedMessage = await messageRepo.editMessage(messageId, messageContent);
+    const updatedMessage = await messageRepo.editMessage(messageId, messageContent, senderId);
+    if (!updatedMessage) {
+      res.status(409).json({ status: "error", message: "Message changed or was deleted. Refresh the conversation." });
+      return;
+    }
 
     // Broadcast update via Socket.io
     const { io } = await import("../server.js");
@@ -303,7 +309,16 @@ export const deleteMessage = async (
       return;
     }
 
-    const deletedMessage = await messageRepo.deleteMessage(messageId);
+    if (existingMessage.isDeleted) {
+      res.status(404).json({ status: "error", message: "Message not found." });
+      return;
+    }
+
+    const deletedMessage = await messageRepo.deleteMessage(messageId, senderId);
+    if (!deletedMessage) {
+      res.status(409).json({ status: "error", message: "Message changed or was deleted. Refresh the conversation." });
+      return;
+    }
 
     // Broadcast update via Socket.io
     const { io } = await import("../server.js");

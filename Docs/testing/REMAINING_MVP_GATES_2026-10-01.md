@@ -75,3 +75,7 @@ Authenticated live moderation checks are pending because Chrome profiles were no
 ## Messenger validation follow-up
 
 `MESSENGER_VALIDATION_REGRESSION_2026-10-01.md` records four reproduced backend validation groups: permissive message-ID parsing, missing edit-length enforcement, malformed send bodies/multipart text returning 500, and missing recipient eligibility checks before media upload. Sixteen focused local cases passed after repair; four new real-database cases require isolated CI. Consult that report for final CI/release results and the separately recorded message-race/timestamp-pagination/forum-ID candidates. Frontend source and live credentials remain unchanged.
+
+## Messenger atomicity and pagination follow-up
+
+`MESSENGER_ATOMICITY_PAGINATION_2026-10-01.md` records the next backend-only batch: conditional owner/non-deleted mutations, suppression of duplicate deletion broadcasts, and time-plus-ID history pagination. Read its executed results for the distinction between local mocks, isolated PostgreSQL concurrency fixtures, and live checks. No frontend or production credential change is included.

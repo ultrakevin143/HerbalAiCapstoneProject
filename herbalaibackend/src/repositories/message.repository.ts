@@ -1,4 +1,11 @@
 import { prisma } from "../lib/prisma.js";
+import { Prisma } from "@prisma/client";
+import type { MessageCursor } from "../utils/message-cursor.js";
+
+const missingMessageToNull = (error: unknown): null => {
+  if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") return null;
+  throw error;
+};
 
 /**
  * Save a new chat message to the database.
@@ -61,9 +68,9 @@ export const findMessageById = async (id: number) => {
 /**
  * Update message text content and set isEdited = true.
  */
-export const editMessage = async (id: number, content: string) => {
+export const editMessage = async (id: number, content: string, senderId: string) => {
   return prisma.chatMessage.update({
-    where: { id },
+    where: { id, senderId, isDeleted: false },
     data: { content, isEdited: true },
     include: {
       sender: {
@@ -73,15 +80,15 @@ export const editMessage = async (id: number, content: string) => {
         select: { id: true, name: true, avatar: true, role: true },
       },
     },
-  });
+  }).catch(missingMessageToNull);
 };
 
 /**
  * Soft delete a message by clearing content/imageUrl and setting isDeleted = true.
  */
-export const deleteMessage = async (id: number) => {
+export const deleteMessage = async (id: number, senderId: string) => {
   return prisma.chatMessage.update({
-    where: { id },
+    where: { id, senderId, isDeleted: false },
     data: { content: "", imageUrl: null, isDeleted: true },
     include: {
       sender: {
@@ -91,7 +98,7 @@ export const deleteMessage = async (id: number) => {
         select: { id: true, name: true, avatar: true, role: true },
       },
     },
-  });
+  }).catch(missingMessageToNull);
 };
 
 /**
@@ -101,20 +108,22 @@ export const getChatHistory = async (
   userAId: string,
   userBId: string,
   limit: number = 50,
-  beforeTime?: Date
+  before?: MessageCursor
 ) => {
-  const where: {
-    OR: Array<{ senderId: string; receiverId: string }>;
-    time?: { lt: Date };
-  } = {
+  const where: Prisma.ChatMessageWhereInput = {
     OR: [
       { senderId: userAId, receiverId: userBId },
       { senderId: userBId, receiverId: userAId },
     ],
   };
 
-  if (beforeTime) {
-    where.time = { lt: beforeTime };
+  if (before) {
+    where.AND = {
+      OR: [
+        { time: { lt: before.time } },
+        ...(before.id === undefined ? [] : [{ time: before.time, id: { lt: before.id } }]),
+      ],
+    };
   }
 
   const boundedLimit = Math.min(100, Math.max(1, limit));
@@ -125,16 +134,17 @@ export const getChatHistory = async (
         select: { id: true, name: true, avatar: true, role: true },
       },
     },
-    orderBy: { time: "desc" },
+    orderBy: [{ time: "desc" }, { id: "desc" }],
     take: boundedLimit + 1,
   });
 
   const hasMore = rows.length > boundedLimit;
   const messages = rows.slice(0, boundedLimit).reverse();
+  const oldest = messages[0];
   return {
     messages,
     hasMore,
-    nextBefore: hasMore ? messages[0]?.time.toISOString() ?? null : null,
+    nextBefore: hasMore && oldest ? `${oldest.time.toISOString()}|${oldest.id}` : null,
   };
 };
 
