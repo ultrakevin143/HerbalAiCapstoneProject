@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { Eye, EyeOff, KeyRound, Mail } from 'lucide-react';
 import api from '../lib/axios';
@@ -18,13 +18,25 @@ export default function PasswordSettings({ email, onChanged }: { email: string; 
   const [busy, setBusy] = useState<'change' | 'link' | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [linkError, setLinkError] = useState<string | null>(null);
   const requestPending = useRef(false);
+  const changeFeedbackRef = useRef<HTMLParagraphElement>(null);
+  const linkFeedbackRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (error) changeFeedbackRef.current?.scrollIntoView({ block: 'nearest' });
+  }, [error]);
+
+  useEffect(() => {
+    if (message || linkError) linkFeedbackRef.current?.scrollIntoView({ block: 'nearest' });
+  }, [message, linkError]);
 
   const handleChangePassword = async (event: FormEvent) => {
     event.preventDefault();
     if (requestPending.current) return;
     setError(null);
     setMessage(null);
+    setLinkError(null);
     if (!currentPassword) { setError('Enter your current password.'); return; }
     if (newPassword.length < 8) { setError('Use at least 8 characters for your new password.'); return; }
     if (new TextEncoder().encode(newPassword).length > 72) { setError('Use a password of at most 72 UTF-8 bytes.'); return; }
@@ -53,11 +65,15 @@ export default function PasswordSettings({ email, onChanged }: { email: string; 
     setBusy('link');
     setError(null);
     setMessage(null);
+    setLinkError(null);
     try {
       const response = await api.post('/auth/password-setup', {});
-      setMessage(response.data.message || 'Password link requested. Check your email and Spam folder. Requests are limited to once an hour.');
+      const responseMessage = response?.data?.message;
+      setMessage(typeof responseMessage === 'string' && responseMessage.trim()
+        ? responseMessage
+        : 'Check your email and Spam folder. Requests are limited to once an hour.');
     } catch (caught: unknown) {
-      setError(requestError(caught, 'Could not request a password link. Check your connection and try again.'));
+      setLinkError(requestError(caught, 'Could not request a password link. Check your connection and try again.'));
     } finally {
       requestPending.current = false;
       setBusy(null);
@@ -76,7 +92,7 @@ export default function PasswordSettings({ email, onChanged }: { email: string; 
         <KeyRound className="h-5 w-5" aria-hidden="true" /> Herbal-Ai password
       </h3>
       <p id="password-change-help" className="mt-2 text-sm text-muted">Use at least 8 characters. Changing your password signs you out on all devices.</p>
-      <form onSubmit={handleChangePassword} aria-describedby="password-change-help" className="mt-4 space-y-4">
+      <form onSubmit={handleChangePassword} aria-describedby={error ? 'password-change-help password-change-error' : 'password-change-help'} className="mt-4 space-y-4">
         {fields.map(field => (
           <label key={field.label} className="block text-sm font-bold text-ink">
             {field.label}
@@ -96,6 +112,7 @@ export default function PasswordSettings({ email, onChanged }: { email: string; 
           {visible ? <EyeOff className="h-4 w-4" aria-hidden="true" /> : <Eye className="h-4 w-4" aria-hidden="true" />}
           {visible ? 'Hide passwords' : 'Show passwords'}
         </button>
+        {error && <p id="password-change-error" ref={changeFeedbackRef} role="alert" className="rounded-xl border border-line bg-soft p-3 text-sm font-bold text-error-ink break-words">{error}</p>}
         <button type="submit" disabled={busy !== null} className="flat-button flat-button-primary w-full disabled:cursor-not-allowed disabled:opacity-50">
           {busy === 'change' ? 'Changing password…' : 'Change password'}
         </button>
@@ -104,13 +121,16 @@ export default function PasswordSettings({ email, onChanged }: { email: string; 
         <h4 className="font-bold text-ink">Create or reset your Herbal-Ai password</h4>
         <p className="mt-2 break-words text-sm text-muted">Signed in with Google and haven&apos;t created a Herbal-Ai password? Request a link at {email} to create one. You can also use this link if you forgot an existing Herbal-Ai password.</p>
         <p className="mt-2 text-sm text-muted">After saving it, you can sign in with this email and your Herbal-Ai password. Google sign-in still works for linked accounts. This does not change your Google password.</p>
-        <button type="button" onClick={handlePasswordLink} disabled={busy !== null} className="flat-button mt-3 flex w-full items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-50">
+        {(message || linkError) && (
+          <p id="password-link-feedback" ref={linkFeedbackRef} role={linkError ? 'alert' : 'status'} aria-atomic="true" className={`mt-3 rounded-xl border border-line bg-soft p-3 text-sm break-words ${linkError ? 'font-bold text-error-ink' : 'text-success-ink'}`}>
+            {linkError || <><strong>Password link requested.</strong> {message}</>}
+          </p>
+        )}
+        <button type="button" onClick={handlePasswordLink} disabled={busy !== null} aria-busy={busy === 'link'} aria-describedby={message || linkError ? 'password-link-feedback' : undefined} className="flat-button mt-3 flex w-full items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-50">
           <Mail className="h-4 w-4" aria-hidden="true" /> {busy === 'link' ? 'Requesting link…' : 'Email a password link'}
         </button>
         <p className="mt-2 text-sm text-muted">Check your inbox and Spam folder. One email request per hour; links expire after an hour and work only once.</p>
       </div>
-      {error && <p role="alert" className="mt-4 text-sm font-bold text-error-ink">{error}</p>}
-      {message && <p role="status" className="mt-4 text-sm text-success-ink">{message}</p>}
     </section>
   );
 }

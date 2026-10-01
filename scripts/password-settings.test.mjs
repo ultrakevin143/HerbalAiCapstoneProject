@@ -50,19 +50,24 @@ const deferred = () => {
   return { promise, resolve, reject };
 };
 const fixture = (values = {}, post = async () => ({ data: { message: 'TEST neutral response' } })) => {
-  const state = [values.current ?? 'TEST-original-password', values.next ?? 'TEST-new-password', values.confirm ?? values.next ?? 'TEST-new-password', false, null, null, null];
+  const state = [values.current ?? 'TEST-original-password', values.next ?? 'TEST-new-password', values.confirm ?? values.next ?? 'TEST-new-password', false, null, null, null, null];
   const lock = { current: false };
+  const refs = [lock, { current: null }, { current: null }];
   let cursor = 0;
+  let refCursor = 0;
+  let effects = [];
   const events = [];
   const requests = [];
   let closed = 0;
-  const hooks = { ...React, useRef: () => lock, useState: () => {
+  const hooks = { ...React, useRef: () => refs[refCursor++], useEffect: effect => { effects.push(effect); }, useState: () => {
     const index = cursor++;
     return [state[index], value => { state[index] = value; }];
   } };
   const component = load(compiled, hooks, { post: async (...args) => { requests.push(args); return post(...args); } });
   const render = () => {
     cursor = 0;
+    refCursor = 0;
+    effects = [];
     return component({ email: user.email, onChanged: () => { closed++; } });
   };
   const invoke = async handler => {
@@ -71,9 +76,10 @@ const fixture = (values = {}, post = async () => ({ data: { message: 'TEST neutr
     try { return await handler(); } finally { globalThis.window = previous; }
   };
   return {
-    state, lock, requests, events, render, closed: () => closed,
+    state, lock, refs, requests, events, render, closed: () => closed,
+    flushEffects: () => { for (const effect of effects) effect(); },
     change: () => invoke(() => find(render(), element => element.type === 'form').props.onSubmit({ preventDefault() {} })),
-    link: () => invoke(() => find(render(), element => element.type === 'button' && children(element).some(child => typeof child === 'string' && child.includes('Email a password link'))).props.onClick()),
+    link: () => invoke(() => find(render(), element => element.type === 'button' && 'aria-busy' in element.props).props.onClick()),
   };
 };
 
@@ -243,15 +249,125 @@ test('setup sends no user-selected target and retains the existing session', asy
 test('setup fallback requests checking inbox without claiming mail delivery was proven', async () => {
   const instance = fixture({}, async () => ({ data: {} }));
   await instance.link();
-  assert.match(instance.state[6], /requested.*Spam.*once an hour/);
+  assert.match(instance.state[6], /Spam.*once an hour/);
+  assert.match(renderToStaticMarkup(instance.render()), /Password link requested/);
 });
 
 test('link failure unlocks the form and presents an error, not success', async () => {
   const instance = fixture({}, async () => { throw new Error('TEST mail request failure'); });
   await instance.link();
-  assert.match(instance.state[5], /Could not request/);
+  assert.match(instance.state[7], /Could not request/);
+  assert.equal(instance.state[5], null);
   assert.equal(instance.state[6], null);
   assert.equal(instance.lock.current, false);
+});
+
+test('incorrect password feedback is immediately above Change password and inside its form', async () => {
+  const instance = fixture({}, async () => { throw { response: { data: { message: 'Current password is incorrect.' } } }; });
+  await instance.change();
+  const form = find(instance.render(), element => element.type === 'form');
+  const controls = children(form);
+  const submitIndex = controls.findIndex(element => element.props.type === 'submit');
+  assert.equal(controls[submitIndex - 1].props.role, 'alert');
+  assert.equal(controls[submitIndex - 1].props.id, 'password-change-error');
+  assert.equal(controls[submitIndex - 1].props.children, 'Current password is incorrect.');
+  assert.match(form.props['aria-describedby'], /password-change-error/);
+  assert.equal(instance.state[7], null);
+});
+
+test('link success appears immediately above its action with an announced request confirmation', async () => {
+  const instance = fixture();
+  await instance.link();
+  const tree = instance.render();
+  const block = find(tree, element => children(element).some(child => child.props?.id === 'password-link-feedback'));
+  const controls = children(block);
+  const feedbackIndex = controls.findIndex(element => element.props.id === 'password-link-feedback');
+  assert.equal(controls[feedbackIndex].props.role, 'status');
+  assert.equal(controls[feedbackIndex].props['aria-atomic'], 'true');
+  assert.equal(controls[feedbackIndex + 1].props.type, 'button');
+  assert.equal(controls[feedbackIndex + 1].props['aria-describedby'], 'password-link-feedback');
+  assert.match(renderToStaticMarkup(tree), /Password link requested.*TEST neutral response/);
+  assert.equal(instance.state[5], null);
+});
+
+test('link rate-limit errors stay by the email action, not above Change password', async () => {
+  const instance = fixture({}, async () => { throw { response: { data: { message: 'Too many password requests. Try again later.' } } }; });
+  await instance.link();
+  const tree = instance.render();
+  const feedback = find(tree, element => element.props.id === 'password-link-feedback');
+  assert.equal(feedback.props.role, 'alert');
+  assert.match(feedback.props.children, /Too many password requests/);
+  assert.equal(find(tree, element => element.props.id === 'password-change-error'), undefined);
+  assert.equal(instance.state[6], null);
+});
+
+test('a cooldown response is displayed without claiming a second email was sent', async () => {
+  const instance = fixture({}, async () => ({ data: { message: 'If you requested one recently, wait an hour before trying again.' } }));
+  await instance.link();
+  const markup = renderToStaticMarkup(instance.render());
+  assert.match(markup, /Password link requested/);
+  assert.match(markup, /wait an hour before trying again/);
+  assert.doesNotMatch(markup, /Email sent|has been sent/);
+});
+
+test('starting another action clears unrelated stale feedback', async () => {
+  const instance = fixture({}, async () => ({ data: {} }));
+  instance.state[5] = 'TEST previous password error';
+  await instance.link();
+  assert.equal(instance.state[5], null);
+  assert.ok(instance.state[6]);
+  instance.state[7] = 'TEST previous link error';
+  await instance.change();
+  assert.equal(instance.state[6], null);
+  assert.equal(instance.state[7], null);
+});
+
+test('request feedback scrolls into the modal viewport without moving keyboard focus', async () => {
+  const instance = fixture({}, async () => { throw { response: { data: { message: 'Current password is incorrect.' } } }; });
+  const scrolls = [];
+  instance.refs[1].current = { scrollIntoView: options => scrolls.push(['change', options]) };
+  instance.refs[2].current = { scrollIntoView: options => scrolls.push(['link', options]) };
+  await instance.change();
+  instance.render();
+  instance.flushEffects();
+  assert.deepEqual(scrolls, [['change', { block: 'nearest' }]]);
+  instance.state[5] = null;
+  instance.state[6] = 'TEST completed link request';
+  instance.render();
+  instance.flushEffects();
+  assert.deepEqual(scrolls[1], ['link', { block: 'nearest' }]);
+  instance.state[6] = null;
+  instance.state[7] = 'TEST failed link request';
+  instance.render();
+  instance.flushEffects();
+  assert.deepEqual(scrolls[2], ['link', { block: 'nearest' }]);
+});
+
+for (const response of [{}, { data: null }, { data: { message: 42 } }, { data: { message: '   ' } }]) {
+  test('missing or malformed link response still produces safe visible feedback: ' + JSON.stringify(response), async () => {
+    const instance = fixture({}, async () => response);
+    await instance.link();
+    assert.match(instance.state[6], /Spam.*once an hour/);
+    assert.equal(instance.state[7], null);
+    assert.match(renderToStaticMarkup(instance.render()), /Password link requested/);
+  });
+}
+
+test('pending link request is busy, guarded against duplicates and then unlocked', async () => {
+  const gate = deferred();
+  const instance = fixture({}, () => gate.promise);
+  const pending = instance.link();
+  const button = find(instance.render(), element => element.type === 'button' && element.props['aria-busy']);
+  assert.equal(button.props.disabled, true);
+  assert.match(renderToStaticMarkup(button), /Requesting link/);
+  await instance.link();
+  await instance.change();
+  assert.equal(instance.requests.length, 1);
+  gate.resolve({ data: {} });
+  await pending;
+  assert.equal(instance.state[4], null);
+  assert.equal(instance.lock.current, false);
+  assert.equal(instance.closed(), 0);
 });
 
 test('password visibility uses a labelled toggle without changing field values', () => {
