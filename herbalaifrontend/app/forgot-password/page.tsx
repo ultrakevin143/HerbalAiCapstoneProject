@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
 
     try {
       const response = await api.post('/auth/forgot-password', { email });
-      setSuccess(response.data?.message || 'Password reset link has been sent to your email.');
+      setSuccess(response.data?.message || 'If an account with that email exists, a password link has been requested. Check your inbox and Spam folder; if you requested one recently, wait an hour before trying again.');
     } catch (err: unknown) {
       console.error(err);
       const axiosErr = err as { response?: { data?: { message?: string } }; message?: string };
@@ -48,9 +48,12 @@ export default function ForgotPasswordPage() {
       {/* Right side - form */}
       <div className="flex flex-col justify-center items-center lg:w-1/2 p-6 lg:p-12">
         <div className="w-full max-w-md glass-card bg-white/60 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-6 lg:p-8 shadow-xl">
-          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] dark:text-ink mb-2">Forgot Your Password?</h2>
+          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] dark:text-ink mb-2">Forgot Your Herbal-Ai Password?</h2>
           <p className="text-sm font-semibold text-[#6a7282] dark:text-muted mb-6">
-            Enter your email address and we&apos;ll send you a link to reset your password.
+            Enter your account email to request a link to create or reset your Herbal-Ai password.
+          </p>
+          <p className="text-sm font-semibold text-[#6a7282] dark:text-muted mb-6">
+            Signed in with Google? You can keep using Google sign-in, or create a separate Herbal-Ai password with this link. Your Google password will not change.
           </p>
 
           {error && (
@@ -92,7 +95,7 @@ export default function ForgotPasswordPage() {
               disabled={loading}
               className="btn border-[#2d6a4f] bg-[#2d6a4f] text-white font-semibold text-base px-8 py-3.5 rounded-full shadow-sm hover:bg-[#1b4332] transition-colors w-full cursor-pointer mt-2 disabled:opacity-50"
             >
-              {loading ? 'Sending Link...' : 'Send Reset Link'}
+              {loading ? 'Requesting Link...' : 'Email a Password Link'}
             </button>
           </form>
 

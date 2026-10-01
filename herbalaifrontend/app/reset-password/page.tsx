@@ -87,14 +87,20 @@ function ResetPasswordForm() {
         </div>
         <h1 className="text-4xl lg:text-6xl font-serif-custom italic font-normal tracking-tight mb-4">Herbal-Ai</h1>
         <p className="text-lg lg:text-xl font-bold opacity-90 max-w-md">
-          Create a new secure password to access your contributor panel.
+          Create or reset your Herbal-Ai password to sign in to your account.
         </p>
       </div>
 
       {/* Right side - form */}
       <div className="flex flex-col justify-center items-center lg:w-1/2 p-6 lg:p-12">
         <div className="w-full max-w-md glass-card bg-white/60 dark:bg-panel/80 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-6 lg:p-8 shadow-xl">
-          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] dark:text-ink mb-6">Reset Password</h2>
+          <h2 className="text-2xl lg:text-3xl font-extrabold text-[#1b4332] dark:text-ink mb-2">Set Your Herbal-Ai Password</h2>
+          <p className="text-sm font-semibold text-[#6a7282] dark:text-muted mb-2">
+            Use at least 8 characters. Saving your password signs you out on all devices.
+          </p>
+          <p className="text-sm font-semibold text-[#6a7282] dark:text-muted mb-6">
+            This password is only for Herbal-Ai. It does not change your Google password. If Google is linked to your account, you can still sign in with Google.
+          </p>
 
           {error && (
             <div 
@@ -157,7 +163,7 @@ function ResetPasswordForm() {
                 disabled={!token || loading}
                 className="btn border-[#2d6a4f] bg-[#2d6a4f] text-white font-semibold text-base px-8 py-3.5 rounded-full shadow-sm hover:bg-[#1b4332] transition-colors w-full cursor-pointer mt-2 disabled:opacity-50"
               >
-                {loading ? 'Resetting Password...' : 'Reset Password'}
+                {loading ? 'Saving Password...' : 'Save Herbal-Ai Password'}
               </button>
             </form>
           )}
@@ -185,7 +191,7 @@ export default function ResetPasswordPage() {
       fallback={
         <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-canvas">
           <div className="h-12 w-12 animate-spin rounded-full border-4 border-line border-t-transparent"></div>
-          <p className="text-ink font-extrabold animate-pulse font-sans">Loading verification terminal...</p>
+          <p className="text-ink font-extrabold animate-pulse font-sans">Loading password form...</p>
         </div>
       }
     >

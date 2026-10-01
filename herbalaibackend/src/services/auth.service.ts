@@ -436,15 +436,16 @@ export const forgotPassword = async (email: string) => {
       subject: `${ENV.APP_NAME} - Reset Your Password`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-          <h2 style="color: #1b4332; text-align: center;">Password Reset Request</h2>
+          <h2 style="color: #1b4332; text-align: center;">Set Your ${escapeHtml(ENV.APP_NAME)} Password</h2>
           <p>Hi <strong>${escapeHtml(user.name)}</strong>,</p>
-          <p>We received a request to reset your password. Click the button below to choose a new password:</p>
+          <p>We received a request to create or reset your ${escapeHtml(ENV.APP_NAME)} password. Click the button below to choose a password for this account:</p>
+          <p>This does not change your Google password. If Google is linked to your account, you can still sign in with Google.</p>
           <div style="text-align: center; margin: 30px 0;">
-            <a href="${resetUrl}" style="background-color: #40916c; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Reset Password</a>
+            <a href="${resetUrl}" style="background-color: #40916c; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Set ${escapeHtml(ENV.APP_NAME)} Password</a>
           </div>
           <p>Or copy and paste this link into your browser:</p>
           <p style="word-break: break-all; color: #40916c;">${resetUrl}</p>
-          <p style="color: #666; font-size: 12px; margin-top: 30px;">This link will expire in 1 hour. If you did not request this, you can safely ignore this email.</p>
+          <p style="color: #666; font-size: 12px; margin-top: 30px;">This link expires in 1 hour and can be used only once. Saving your password signs you out on all devices. If you did not request this, you can safely ignore this email.</p>
         </div>
       `,
     });

@@ -13,16 +13,19 @@ const compile = async path => ts.transpileModule(await readFile(new URL(path, im
 const compiled = await compile('../herbalaifrontend/components/PasswordSettings.tsx');
 const profileCompiled = await compile('../herbalaifrontend/components/ProfileEditorModal.tsx');
 const dialogCompiled = await compile('../herbalaifrontend/lib/dialog-focus.ts');
+const forgotCompiled = await compile('../herbalaifrontend/app/forgot-password/page.tsx');
+const resetCompiled = await compile('../herbalaifrontend/app/reset-password/page.tsx');
 const dialogExports = {};
 new Function('exports', dialogCompiled)(dialogExports);
 const icons = new Proxy({}, { get: () => props => React.createElement('svg', props) });
 const user = { id: 'TEST-settings-user', name: 'TEST settings', email: 'test@example.invalid', username: 'settings_test', avatar: null };
-const load = (source, react, api, passwordComponent) => {
+const load = (source, react, api, passwordComponent, overrides = {}) => {
   const exports = {};
   const dependency = name => {
+    if (Object.hasOwn(overrides, name)) return overrides[name];
     if (name === 'react') return react;
     if (name === 'lucide-react') return icons;
-    if (name === '../lib/axios') return { __esModule: true, default: api };
+    if (name === '../lib/axios' || name === '../../lib/axios') return { __esModule: true, default: api };
     if (name === '../context/AuthContext') return { useAuth: () => ({ user, updateProfile: async () => {} }) };
     if (name === './PasswordSettings') return { __esModule: true, default: passwordComponent };
     if (name === '../lib/dialog-focus') return dialogExports;
@@ -89,6 +92,77 @@ test('settings render separately from profile editing with labelled password fie
   assert.match(markup, /work only once/);
   const forms = [...markup.matchAll(/<form\b|<\/form>/g)].map(match => match[0]);
   assert.deepEqual(forms, ['<form', '</form>', '<form', '</form>']);
+});
+
+test('settings explain optional app-password creation without claiming to know the login provider', () => {
+  const component = load(compiled, React, {});
+  const markup = renderToStaticMarkup(React.createElement(component, { email: user.email, onChanged() {} }));
+  assert.match(markup, /Create or reset your Herbal-Ai password/);
+  assert.match(markup, /haven&#x27;t created a Herbal-Ai password/);
+  assert.match(markup, /forgot an existing Herbal-Ai password/);
+  assert.match(markup, /does not change your Google password/);
+  assert.match(markup, /Google sign-in still works for linked accounts/);
+  assert.match(markup, /test@example.invalid/);
+});
+
+const pageOverrides = token => ({
+  'next/link': { __esModule: true, default: ({ href, children }) => React.createElement('a', { href }, children) },
+  'next/navigation': { useRouter: () => ({ replace() {} }), useSearchParams: () => new URLSearchParams(token ? { token } : {}) },
+});
+
+test('public recovery explains separate Herbal-Ai credentials and the continuing Google option', () => {
+  const component = load(forgotCompiled, React, {}, undefined, pageOverrides());
+  const markup = renderToStaticMarkup(React.createElement(component));
+  assert.match(markup, /Forgot Your Herbal-Ai Password/);
+  assert.match(markup, /create or reset your Herbal-Ai password/);
+  assert.match(markup, /keep using Google sign-in/);
+  assert.match(markup, /Google password will not change/);
+  assert.match(markup, /Email a Password Link/);
+  assert.match(markup, /type="email"/);
+  assert.match(markup, /href="\/signin"/);
+});
+
+test('public recovery fallback stays neutral when no delivery message is returned', async () => {
+  const state = [user.email, null, null, false];
+  const requests = [];
+  let cursor = 0;
+  const hooks = { ...React, useState: () => {
+    const index = cursor++;
+    return [state[index], value => { state[index] = value; }];
+  } };
+  const component = load(forgotCompiled, hooks, { post: async (...args) => {
+    requests.push(args);
+    return { data: {} };
+  } }, undefined, pageOverrides());
+  const form = find(component(), element => element.type === 'form');
+  await form.props.onSubmit({ preventDefault() {} });
+  assert.deepEqual(requests, [['/auth/forgot-password', { email: user.email }]]);
+  assert.match(state[2], /If an account with that email exists/);
+  assert.match(state[2], /requested.*Spam.*wait an hour/);
+  assert.doesNotMatch(state[2], /has been sent/);
+  assert.equal(state[1], null);
+  assert.equal(state[3], false);
+});
+
+test('password link form covers setup and recovery while preserving new-password fields', () => {
+  const component = load(resetCompiled, React, {}, undefined, pageOverrides('TEST-only-reset-token'));
+  const markup = renderToStaticMarkup(React.createElement(component));
+  assert.match(markup, /Set Your Herbal-Ai Password/);
+  assert.match(markup, /Save Herbal-Ai Password/);
+  assert.match(markup, /does not change your Google password/);
+  assert.match(markup, /still sign in with Google/);
+  assert.match(markup, /signs you out on all devices/);
+  assert.equal((markup.match(/type="password"/g) || []).length, 2);
+  assert.equal((markup.match(/autoComplete="new-password"/gi) || []).length, 2);
+  assert.doesNotMatch(markup, /contributor panel|verification terminal/);
+});
+
+test('copy clarification does not enable a password form with a missing token', () => {
+  const component = load(resetCompiled, React, {}, undefined, pageOverrides());
+  const markup = renderToStaticMarkup(React.createElement(component));
+  assert.match(markup, /Invalid reset link. Token is missing/);
+  assert.equal((markup.match(/disabled=""/g) || []).length, 3);
+  assert.match(markup, /href="\/signin"/);
 });
 
 for (const [name, values, expected] of [

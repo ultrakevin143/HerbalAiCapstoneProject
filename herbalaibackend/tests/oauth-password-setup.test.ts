@@ -82,6 +82,12 @@ describe('Google-to-password lifecycle (memory persistence, intercepted provider
     expect(response.message).toContain('Spam');
     expect(fixture.sendMail).toHaveBeenCalledOnce();
     expect(fixture.sendMail).toHaveBeenCalledWith(expect.objectContaining({ to: initial.user.email }));
+    const mailHtml = fixture.sendMail.mock.calls[0][0].html;
+    expect(mailHtml).toContain('create or reset your');
+    expect(mailHtml).toContain('does not change your Google password');
+    expect(mailHtml).toContain('still sign in with Google');
+    expect(mailHtml).toContain('can be used only once');
+    expect(mailHtml).toContain('signs you out on all devices');
     await requestPasswordSetup(initial.user.id);
     expect(fixture.sendMail).toHaveBeenCalledOnce();
     const reset = fixture.tokens.find(record => record.type === 'PASSWORD_RESET')!;

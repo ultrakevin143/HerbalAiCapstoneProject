@@ -73,7 +73,7 @@ export default function PasswordSettings({ email, onChanged }: { email: string; 
   return (
     <section aria-labelledby="password-settings-title" className="mt-8 border-t border-line pt-6">
       <h3 id="password-settings-title" className="flex items-center gap-2 text-lg font-bold text-ink">
-        <KeyRound className="h-5 w-5" aria-hidden="true" /> Password
+        <KeyRound className="h-5 w-5" aria-hidden="true" /> Herbal-Ai password
       </h3>
       <p id="password-change-help" className="mt-2 text-sm text-muted">Use at least 8 characters. Changing your password signs you out on all devices.</p>
       <form onSubmit={handleChangePassword} aria-describedby="password-change-help" className="mt-4 space-y-4">
@@ -101,8 +101,9 @@ export default function PasswordSettings({ email, onChanged }: { email: string; 
         </button>
       </form>
       <div className="mt-6">
-        <h4 className="font-bold text-ink">Signed in with Google, or forgot your password?</h4>
-        <p className="mt-2 break-words text-sm text-muted">Request a link at {email} to create or recover your password. After saving it, you can sign in with this email and password. Google sign-in still works.</p>
+        <h4 className="font-bold text-ink">Create or reset your Herbal-Ai password</h4>
+        <p className="mt-2 break-words text-sm text-muted">Signed in with Google and haven&apos;t created a Herbal-Ai password? Request a link at {email} to create one. You can also use this link if you forgot an existing Herbal-Ai password.</p>
+        <p className="mt-2 text-sm text-muted">After saving it, you can sign in with this email and your Herbal-Ai password. Google sign-in still works for linked accounts. This does not change your Google password.</p>
         <button type="button" onClick={handlePasswordLink} disabled={busy !== null} className="flat-button mt-3 flex w-full items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-50">
           <Mail className="h-4 w-4" aria-hidden="true" /> {busy === 'link' ? 'Requesting link…' : 'Email a password link'}
         </button>
