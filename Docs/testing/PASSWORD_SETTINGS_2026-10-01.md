@@ -2,7 +2,7 @@
 
 ## Scope and release state
 
-The user requested password changes for email/password accounts, password creation for Google accounts, and email/password login after creation. Implementation is local in the selective-release-check worktree on top of `f3ec55af291f72f929e556cd9b82ef3598d09b50`. No commit, push, deployment, production environment change, or live password change was performed in this batch. Three existing session-recovery evidence edits were preserved, and the primary checkout was untouched.
+The user requested password changes for email/password accounts, password creation for Google accounts, and email/password login after creation. Initial local implementation used the selective-release-check worktree on top of `f3ec55af291f72f929e556cd9b82ef3598d09b50`. Following explicit publication authorization, the feature and a focused keyboard repair were released as recorded below. Three existing session-recovery evidence edits were preserved, and the primary checkout was untouched. No live password has been changed by the agent in this batch.
 
 ## Implemented flow
 
@@ -65,3 +65,41 @@ The settings Email a password link action completed with the neutral recovery re
 A live keyboard defect was reproduced: pressing Tab while the final Email a password link control was focused moved focus to the herbal-library search input behind the still-open modal. DOM inspection confirmed dialogContainsFocus was false. This pre-existing profile-dialog behavior became visible during password-settings acceptance and was not counted as a pass.
 
 A focused frontend follow-up adds initial dialog focus, Tab/Shift+Tab containment, Escape closing, background-scroll locking and cleanup/focus restoration. It preserves the existing styling and adds eight regression cases for the actual focus helper. Local combined frontend regressions now pass 112/112; frontend typecheck, lint and production build also passed. This follow-up still requires reviewed publication and live confirmation at the time of this entry.
+
+## Follow-up release and live recheck
+
+The focus repair was committed as `db531de904de8ec2ba94d6ccc39e4bbf15080ad3`. Isolated branch CI [36868292965](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/36868292965) passed before atomic promotion to main and codex/readability-accessibility. The resulting main and deployment-branch CI runs also passed. Vercel and Railway both reported successful deployments for this exact SHA.
+
+| Live check | Observed result | Boundary |
+| --- | --- | --- |
+| Initial modal focus and background scroll | Focus was on role=dialog; body overflow was hidden | Actual live contributor browser |
+| Tab from final email-link button | Wrapped to Close account settings; focus remained inside dialog | Previously reproduced escape no longer occurs |
+| Shift+Tab from close button | Wrapped to Email a password link inside dialog | Actual keyboard events |
+| Escape and cleanup | Dialog closed; focus returned to User account menu; body overflow restored | No account mutation |
+| Empty Change password form | Native required-field prompt focused Current password; no success response | No credentials entered or password change attempted |
+| Show/hide passwords | All three empty password fields changed to type=text, then the Hide passwords control returned to Show passwords | No stored or entered password read |
+| Phone-size layout | At 390 by 844 CSS pixels, page width was 390; modal bounds were x=16..374 and y=24..820; inner width and scroll width both 341 | Browser emulation, not a physical-phone result |
+| Modal scrolling | Profile, password, confirmation, change action and email-link action were reachable in the internally scrolling modal | Temporary viewport override restored afterward |
+| Contributor refresh | Herbal QA session and 37-herb library restored after live reload | No password change has occurred yet |
+| Administrator refresh | Admin Admin dashboard restored after loading, with no Forbidden response | No administrator password or record changed |
+| Public API authentication | Health returned 200; anonymous change-password, password-setup and auth/me returned 401 | Requests carried no cookies or credentials |
+
+Live visual evidence is saved outside Git as password-settings-live-mobile-20261001.png in the task visualization directory. The initial actual Gmail email remains evidence of delivery, not evidence that its reset link was consumed. A native AX snapshot represented the pressed password toggle as a checkbox; the DOM snapshot correctly identified a button. The test selector was corrected accordingly; this was not a product defect.
+
+Remaining authenticated acceptance: the user must enter and submit a current-to-new password change, then verify the exact old password is rejected, the new password signs in, and the previous session is revoked. Actual Google-to-password setup and subsequent email/password plus Google sign-in also require an explicitly selected test account and user-entered password. These live credential cases remain pending; automated PostgreSQL and service lifecycle coverage is not substituted for them. Physical-device checks of these new settings and participant acceptance also remain outside the observed results.
+
+## Scheduled continuation — 11:34 PM Philippine time
+
+The scheduled run rechecked remote main and codex/readability-accessibility; both still resolve to db531de904de8ec2ba94d6ccc39e4bbf15080ad3. GitHub reports success for the main, deployment-branch and isolated-branch CI runs, plus Vercel and Railway deployments for that SHA. No commit, push or production environment change was performed during this continuation.
+
+The previously retained form tab was no longer available. A new live library tab restored Herbal QA, and Account settings displayed username mvpqa_unmid8j with empty current/new/confirmation fields. A separate live Suggestions tab loaded the protected form and My Submissions with zero records before any password change. Both agent-created tabs are retained for user entry and the subsequent revocation check. No user draft was altered.
+
+Credential entry and submission are awaiting the user; no current-to-new password change, old-password rejection, post-change login or Google password setup is counted as passed. The previously delivered 9:17 PM email is outside its documented one-hour lifetime at this scheduled run and must not be presented as a fresh recovery link. If recovery is necessary, request a new link through the normal flow without overriding the cooldown. The connected browser inventory currently has Mercado Chrome but no Gina administrator session; administrator credentials are not required or modified for this test.
+
+## Subsequent administrator check — user-performed credential change
+
+The user clarified that they changed the administrator password in Chrome, not the prepared disposable-account form in Codex. They reported automatic logout following the change, rejection of the exact previous password, successful new-password login opening Admin Panel, and continued login after refresh. These are recorded as user-performed live acceptance results for the administrator account, not agent-entered credentials or completed disposable-account tests.
+
+The agent independently observed Admin Admin authenticated on the public homepage, then created a separate Mercado Chrome administrator tab to avoid disturbing the user's ongoing sign-in. That separate tab loaded Dashboard Overview and its statistics, and returned to the same authenticated administrator dashboard after a reload. No Forbidden response remained. The agent did not read, enter, reset or submit any administrator password. An earlier refresh of the user-owned tab coincided with active sign-in/navigation and is not counted as a clean independent persistence check; the separate-tab recheck is the observed result.
+
+The administrator-password login and refresh checks are now covered by the above user results and independent dashboard observation. Cross-device revocation beyond the reported automatic logout, the unchanged disposable test account, and the Google-to-password lifecycle still require their own evidence.

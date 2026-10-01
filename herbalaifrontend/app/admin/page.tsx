@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { useAuth } from '../../context/AuthContext';
@@ -33,6 +33,7 @@ import {
   FileJson,
   LoaderCircle,
   Upload,
+  LogOut,
 } from 'lucide-react';
 
 const getErrorMessage = (error: unknown, fallback: string): string =>
@@ -185,6 +186,8 @@ export default function AdminPage() {
   
   const [activeTab, setActiveTab] = useState<'dashboard' | 'pending' | 'library' | 'users' | 'knowledgebase' | 'audit'>('dashboard');
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [logoutPending, setLogoutPending] = useState(false);
+  const logoutInFlight = useRef(false);
   const [error, setError] = useState<string | null>(null);
   const [actioningId, setActioningId] = useState<number | null>(null);
   const [banActioningUserId, setBanActioningUserId] = useState<string | null>(null);
@@ -681,6 +684,22 @@ export default function AdminPage() {
     setKbSourceUrl('');
   };
 
+  const handleLogout = async () => {
+    if (logoutInFlight.current) return;
+    logoutInFlight.current = true;
+    setLogoutPending(true);
+    setError(null);
+    try {
+      await logout();
+      setMobileNavOpen(false);
+    } catch (logoutError) {
+      setError(getErrorMessage(logoutError, 'Unable to log out. Please try again.'));
+    } finally {
+      logoutInFlight.current = false;
+      setLogoutPending(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-canvas">
@@ -707,6 +726,7 @@ export default function AdminPage() {
           <p className="text-sm font-semibold text-muted mb-6">
             You are currently logged in as <strong className="text-ink">{user.name}</strong> ({user.role}), but only Administrators can access this dashboard.
           </p>
+          {error && <p role="alert" className="mb-4 text-sm font-semibold text-ink">{error}</p>}
           <div className="space-y-3">
             <button
               onClick={() => router.push('/')}
@@ -715,7 +735,8 @@ export default function AdminPage() {
               Back to Home
             </button>
             <button
-              onClick={() => logout()}
+              onClick={handleLogout}
+              disabled={logoutPending}
               className="flat-button flat-button-secondary w-full text-center !border-rose-700 !text-rose-700 hover:!bg-rose-50"
             >
               Sign Out & Switch Account
@@ -815,6 +836,16 @@ export default function AdminPage() {
             <span>Public Site</span>
           </button>
           <ThemeToggle className="admin-nav-link subtle flex items-center gap-2" />
+          <button
+            type="button"
+            onClick={handleLogout}
+            disabled={logoutPending}
+            aria-busy={logoutPending}
+            className="admin-nav-link subtle flex items-center gap-2 disabled:cursor-wait disabled:opacity-60"
+          >
+            <LogOut className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <span>{logoutPending ? 'Logging out…' : 'Log out'}</span>
+          </button>
           <div className="admin-user-chip border-t border-line pt-3 mt-2">
             <span className="block font-bold text-ink">{user.name}</span>
             <span className="text-[10px] uppercase tracking-wider font-extrabold">Administrator</span>
@@ -826,7 +857,7 @@ export default function AdminPage() {
       <div className="admin-main">
         <main className="admin-content bg-canvas p-8">
           {error && (
-            <div className="mb-6 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-rose-800 font-bold shadow-sm flex items-center gap-2">
+            <div role="alert" className="mb-6 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-rose-800 font-bold shadow-sm flex items-center gap-2">
               <AlertCircle className="h-5 w-5 text-rose-600 shrink-0" />
               <span>{error}</span>
             </div>
