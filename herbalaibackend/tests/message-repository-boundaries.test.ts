@@ -1,16 +1,17 @@
 import { Prisma } from '@prisma/client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const mocks = vi.hoisted(() => ({ update: vi.fn(), history: vi.fn() }));
-vi.mock('../src/lib/prisma.js', () => ({ prisma: { chatMessage: { update: mocks.update, findMany: mocks.history } } }));
+const mocks = vi.hoisted(() => ({ update: vi.fn(), history: vi.fn(), query: vi.fn() }));
+vi.mock('../src/lib/prisma.js', () => ({ prisma: { chatMessage: { update: mocks.update, findMany: mocks.history }, $queryRaw: mocks.query } }));
 
-import { deleteMessage, editMessage, getChatHistory } from '../src/repositories/message.repository.js';
+import { deleteMessage, editMessage, getChatHistory, getActiveConversations } from '../src/repositories/message.repository.js';
 
 describe('Messenger repository mutation and pagination boundaries', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     mocks.update.mockResolvedValue({ id: 7 });
     mocks.history.mockResolvedValue([]);
+    mocks.query.mockResolvedValue([]);
   });
 
   it('edits only an existing non-deleted message belonging to the authenticated sender', async () => {
@@ -19,6 +20,23 @@ describe('Messenger repository mutation and pagination boundaries', () => {
       where: { id: 7, senderId: 'sender', isDeleted: false },
       data: { content: 'Changed', isEdited: true },
     }));
+  });
+
+  it.each([
+    ['%', '%!%%'],
+    ['_', '%!_%'],
+    ['!', '%!!%'],
+    ['\\', '%\\%'],
+    ['100%_!\\', '%100!%!_!!\\%'],
+    ["O'Brien", "%O'Brien%"],
+    ['', '%%'],
+  ])('uses literal name matching for search %j without interpolating SQL', async (search, pattern) => {
+    expect(await getActiveConversations('sender', search, 2, 3)).toEqual({ conversations: [], hasMore: false });
+    const [fragments, ...values] = mocks.query.mock.calls[0];
+    expect(fragments.join('')).toContain("ESCAPE '!'");
+    expect(values).toContain(pattern);
+    expect(values.slice(-2)).toEqual([3, 3]);
+    if (search.length > 1) expect(fragments.join('')).not.toContain(search);
   });
 
   it('deletes only once and clears both text and media in the conditional write', async () => {

@@ -87,6 +87,27 @@ describe('isolated authenticated Messenger workflow', () => {
     ]));
   });
 
+  it('matches literal punctuation in conversation names without leaking wildcard matches into pagination', async () => {
+    const previous = await prisma.user.findUniqueOrThrow({ where: { id: receiverId }, select: { name: true } });
+    try {
+      await prisma.user.update({ where: { id: receiverId }, data: { name: 'TEST ONLY 100%_!\\ literal contact' } });
+      await prisma.chatMessage.createMany({ data: [
+        { senderId, receiverId, content: 'TEST ONLY literal name search', time: new Date('2026-10-01T00:00:00.000Z') },
+        { senderId, receiverId: otherId, content: 'TEST ONLY nonmatching contact', time: new Date('2026-10-01T00:00:01.000Z') },
+      ] });
+      for (const search of ['%', '_', '!', '\\', '100%_!\\']) {
+        const page = await messageRepo.getActiveConversations(senderId, search, 1, 0);
+        expect(page.conversations.map(conversation => conversation.contact.id)).toEqual([receiverId]);
+        expect(page.hasMore).toBe(false);
+        expect(await messageRepo.getActiveConversations(senderId, search, 1, 1)).toEqual({ conversations: [], hasMore: false });
+      }
+      expect((await messageRepo.getActiveConversations(senderId, 'LITERAL CONTACT')).conversations.map(conversation => conversation.contact.id)).toEqual([receiverId]);
+      expect((await messageRepo.getActiveConversations(senderId, '')).conversations).toHaveLength(2);
+    } finally {
+      await prisma.user.update({ where: { id: receiverId }, data: { name: previous.name } });
+    }
+  });
+
   it('rejects malformed IDs and oversized edits without mutating an existing message', async () => {
     const messageId = await sendText('TEST ONLY unchanged text');
     for (const id of [`${messageId}abc`, `${messageId}.5`, '-1', '0', '2147483648']) {

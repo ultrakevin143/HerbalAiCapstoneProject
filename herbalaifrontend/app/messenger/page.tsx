@@ -134,6 +134,7 @@ function MessengerContent() {
   const activeContactRef = useRef<UserProfile | null>(null);
   const [historyRequests] = useState(() => createHistoryRequests<ChatMessage>());
   const synchronizeRef = useRef<() => Promise<void>>(async () => {});
+  const normalizedConversationSearch = searchTerm.trim().slice(0, 100);
 
   const applyMessage = useCallback((message: ChatMessage, allowInsert = true) => {
     if (!user || !message || !Number.isInteger(message.id) || typeof message.senderId !== 'string' ||
@@ -216,9 +217,9 @@ function MessengerContent() {
   }, [isAuthenticated, user, applyMessage, checkSession, historyRequests]);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setDebouncedConversationSearch(searchTerm.trim()), 250);
+    const timer = window.setTimeout(() => setDebouncedConversationSearch(normalizedConversationSearch), 250);
     return () => window.clearTimeout(timer);
-  }, [searchTerm]);
+  }, [normalizedConversationSearch]);
 
   const refreshConversations = useCallback(async () => {
     if (!isAuthenticated || !user) return;
@@ -483,7 +484,7 @@ function MessengerContent() {
   };
 
   const filteredConversations = conversations.filter((c) =>
-    c.contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+    c.contact.name.toLowerCase().includes(normalizedConversationSearch.toLowerCase())
   );
 
   const filteredAllUsers = allUsers;
@@ -553,8 +554,8 @@ function MessengerContent() {
                 <EmptyState
                   compact
                   icon={<MessageSquare />}
-                  title={searchTerm ? 'No conversations found' : 'No conversations yet'}
-                  description={searchTerm ? 'Try another name or clear the search.' : 'Start a private conversation with a community member.'}
+                  title={normalizedConversationSearch ? 'No conversations found' : 'No conversations yet'}
+                  description={normalizedConversationSearch ? 'Try another name or clear the search.' : 'Start a private conversation with a community member.'}
                   action={(
                     <button type="button" onClick={() => setShowUserPicker(true)} className="empty-state-text-action">
                       Start a new chat

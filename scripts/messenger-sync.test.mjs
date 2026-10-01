@@ -60,6 +60,42 @@ const findCallbacks = node => {
   ts.forEachChild(node, findCallbacks);
 };
 findCallbacks(pageSyntax);
+const searchExpressions = new Map();
+const findSearchExpressions = node => {
+  if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) &&
+      ['normalizedConversationSearch', 'filteredConversations'].includes(node.name.text)) {
+    searchExpressions.set(node.name.text, node.initializer.getText(pageSyntax));
+  }
+  ts.forEachChild(node, findSearchExpressions);
+};
+findSearchExpressions(pageSyntax);
+const visibleConversations = (conversations, searchTerm) => {
+  const normalization = searchExpressions.get('normalizedConversationSearch') ?? 'searchTerm';
+  const filtering = searchExpressions.get('filteredConversations');
+  return new Function('conversations', 'searchTerm', `const normalizedConversationSearch = ${normalization}; return ${filtering};`)(conversations, searchTerm);
+};
+
+test('conversation name search ignores surrounding whitespace and remains case insensitive', () => {
+  const rows = [preview('alpha', ''), preview('beta', '')];
+  assert.deepEqual(visibleConversations(rows, '  ALPHA  ').map(row => row.contact.id), ['alpha']);
+});
+
+test('whitespace-only conversation search shows all loaded conversations', () => {
+  const rows = [preview('alpha', ''), preview('beta', '')];
+  assert.deepEqual(visibleConversations(rows, '   \t').map(row => row.contact.id), ['alpha', 'beta']);
+});
+
+test('conversation search uses the same 100-character boundary as the API', () => {
+  const name = 'a'.repeat(100);
+  const rows = [{ contact: { id: 'long', name }, lastMessage: '', lastTime: '' }];
+  assert.deepEqual(visibleConversations(rows, `${name}ignored`).map(row => row.contact.id), ['long']);
+});
+
+test('conversation name search still hides nonmatching realtime contacts', () => {
+  const rows = updateConversationPreview([preview('alpha', '')], previewMessage(2, 'beta', '2026-10-01T00:00:01.000Z'), 'self');
+  assert.deepEqual(visibleConversations(rows, 'alpha').map(row => row.contact.id), ['alpha']);
+});
+
 const sidebarHarness = () => {
   let conversations = [preview('beta', '2026-10-01T00:00:01.000Z'), preview('alpha', '2026-10-01T00:00:00.000Z')];
   let offset = 0;

@@ -154,6 +154,7 @@ export const getChatHistory = async (
  * Optimized via PostgreSQL DISTINCT ON for direct database execution.
  */
 export const getActiveConversations = async (userId: string, search = "", limit = 25, offset = 0) => {
+  const searchPattern = `%${search.replace(/[!%_]/g, "!$&")}%`;
   type ConversationRow = {
     id: number;
     senderId: string;
@@ -187,7 +188,7 @@ export const getActiveConversations = async (userId: string, search = "", limit 
     WHERE m."senderId" = ${userId} OR m."receiverId" = ${userId}
     ORDER BY contact_id, m.time DESC, m.id DESC
     ) recent
-    WHERE recent.contact_name ILIKE ${`%${search}%`}
+    WHERE recent.contact_name ILIKE ${searchPattern} ESCAPE '!'
     ORDER BY recent.time DESC, recent.contact_id ASC
     LIMIT ${limit + 1} OFFSET ${offset}
   `;
