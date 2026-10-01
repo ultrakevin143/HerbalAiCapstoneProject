@@ -16,14 +16,15 @@ let failedQueue: Array<{
 }> = [];
 
 const processQueue = (error: unknown, token: string | null = null) => {
-  failedQueue.forEach((prom) => {
+  const queue = failedQueue;
+  failedQueue = [];
+  queue.forEach((prom) => {
     if (error) {
       prom.reject(error);
     } else {
       prom.resolve(token);
     }
   });
-  failedQueue = [];
 };
 
 api.interceptors.response.use(
@@ -46,39 +47,54 @@ api.interceptors.response.use(
 
     originalRequest._retry = true;
 
-    if (isRefreshing) {
-      return new Promise((resolve, reject) => {
-        failedQueue.push({ resolve, reject });
-      })
-        .then(() => {
-          return api(originalRequest);
-        })
-        .catch((err) => {
-          return Promise.reject(err);
-        });
+    if (originalRequest.signal?.aborted) {
+      throw new axios.CanceledError('Request canceled', originalRequest);
     }
 
-    isRefreshing = true;
+    const waitingForRefresh = new Promise((resolve, reject) => {
+      const signal = originalRequest.signal;
+      const cleanup = () => signal?.removeEventListener?.('abort', handleAbort);
+      const queuedRequest = {
+        resolve: (value?: unknown) => {
+          cleanup();
+          resolve(value);
+        },
+        reject: (reason?: unknown) => {
+          cleanup();
+          reject(reason);
+        },
+      };
+      const handleAbort = () => {
+        failedQueue = failedQueue.filter((request) => request !== queuedRequest);
+        queuedRequest.reject(new axios.CanceledError('Request canceled', originalRequest));
+      };
+      failedQueue.push(queuedRequest);
+      signal?.addEventListener?.('abort', handleAbort);
+      if (signal?.aborted) handleAbort();
+    });
 
-    try {
-      // Call refresh-token endpoint on the backend
-      await api.post('/auth/refresh-token', undefined, { timeout: 10_000 });
-      isRefreshing = false;
-      processQueue(null);
-      return api(originalRequest);
-    } catch (refreshError) {
-      isRefreshing = false;
-      const refreshStatus = axios.isAxiosError(refreshError) ? refreshError.response?.status : undefined;
-      const sessionExpired = refreshStatus === 400 || refreshStatus === 401 || refreshStatus === 403;
-      processQueue(sessionExpired ? error : refreshError);
+    if (!isRefreshing) {
+      isRefreshing = true;
+      void (async () => {
+        try {
+          await api.post('/auth/refresh-token', undefined, { timeout: 10_000 });
+          isRefreshing = false;
+          processQueue(null);
+        } catch (refreshError) {
+          isRefreshing = false;
+          const refreshStatus = axios.isAxiosError(refreshError) ? refreshError.response?.status : undefined;
+          const sessionExpired = refreshStatus === 400 || refreshStatus === 401 || refreshStatus === 403;
+          processQueue(sessionExpired ? error : refreshError);
 
-      if (sessionExpired && typeof window !== 'undefined' &&
-          !originalRequest.url?.startsWith('/auth/me')) {
-        window.dispatchEvent(new Event('auth-logout'));
-      }
-
-      return Promise.reject(sessionExpired ? error : refreshError);
+          if (sessionExpired && typeof window !== 'undefined' &&
+              !originalRequest.url?.startsWith('/auth/me')) {
+            window.dispatchEvent(new Event('auth-logout'));
+          }
+        }
+      })();
     }
+
+    return waitingForRefresh.then(() => api(originalRequest));
   }
 );
 

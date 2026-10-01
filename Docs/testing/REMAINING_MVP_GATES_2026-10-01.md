@@ -129,3 +129,17 @@ Remaining distinct candidates include backend provider disconnect/embedding-requ
 `DR_AI_BACKEND_LIFETIME_2026-10-01.md` records the subsequent local backend repair for absent disconnect propagation and unbounded embedding/aggregate request waits. Actual loopback HTTP disconnection and a stalled native SDK embedding response-body close were observed, alongside controller/provider/RAG/lifetime regressions. Frontend source and production configuration remain unchanged. This closes the local repair work, not its isolated-database CI, publication, or patched-live gate. Read the report for final executed counts and the distinction between stopping an application wait, aborting transport, and stopping already submitted database/provider work.
 
 The same batch also reproduced the gap between potentially 60 seconds of buffered model fallback and the client's 30-second idle timeout. Streaming comment heartbeats now bridge legitimate work without extending either total request budget. Backend heartbeat ownership and actual-client parsing/idle-total separation regressions passed. This is a local repair and compatibility result, not a manufactured provider outage or patched-live acceptance result.
+
+## Backend lifetime release gates closed
+
+The preceding pending-release status is superseded by `b95122a3a1bf486bd0f86e903f1a01c02808d788`: temporary-branch CI passed 481 isolated backend tests and 68 frontend regressions before release; main/deployment CI and Vercel/Railway statuses passed afterward. Live checks observed cited AI answer completion, matching browser stream cancellation on navigation, contributor protected-form restoration after reload, and administrator refresh/statistics without Forbidden. Read `DR_AI_BACKEND_LIFETIME_2026-10-01.md` for exact runs, test-tab cleanup, screenshot evidence, and limits.
+
+The next focused gate is controlled browser session-outage/retry recovery, previously blocked by local-preview startup. No production outage will be induced. Provider-side billing/computation termination, cancellation of already submitted SQL, actual hosting-proxy disconnect propagation, historical forgotten-old-password rejection, genuine human tab resume, and participant/physical-device acceptance retain their distinct evidence boundaries. Healthy live completion and successful isolated tests do not close those unrelated gates.
+
+## Queued cancellation repair prepared
+
+`QUEUED_REQUEST_CANCELLATION_2026-10-01.md` records a failing baseline test and focused local repair for canceled requests waiting behind token refresh. Prompt rejection, neighboring caller recovery, and cancellation-listener cleanup pass; the combined frontend suite now passes 73 cases. This repair has not been committed or published. Starting the rebuilt loopback preview was policy-blocked, so no new browser-outage recovery pass is claimed. The refresh-owning caller's early-cancellation behavior remains a separate audit candidate.
+
+## Refresh-owner cancellation repaired locally
+
+The preceding owner-path candidate is superseded by `REFRESH_OWNER_CANCELLATION_2026-10-01.md`: delayed owner cancellation was reproduced and repaired while preserving refresh for remaining callers. The combined frontend suite passes 85 cases, including native HTTP owner cancellation and remaining-caller recovery. Both cancellation repairs remain uncommitted and unpushed. Review, isolated CI, authorized release, and the blocked browser outage/retry check remain the next gates; no new live acceptance result is inferred from local regressions.

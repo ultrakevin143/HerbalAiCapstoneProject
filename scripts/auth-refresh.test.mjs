@@ -173,6 +173,274 @@ test('an aborted queued request is not replayed after successful refresh', async
   assert.equal(fixture.requests.filter(config => config.url === '/second').length, 1);
 });
 
+test('canceling a queued request rejects before the shared refresh completes', async () => {
+  const gate = deferred();
+  const controller = new AbortController();
+  let recovered = false;
+  const fixture = client(async config => {
+    if (config.url === '/auth/refresh-token') {
+      await gate.promise;
+      recovered = true;
+      return response(config);
+    }
+    if (!recovered) throw httpError(config, 401);
+    return response(config);
+  });
+  const primary = fixture.api.get('/first');
+  const queued = fixture.api.get('/second', { signal: controller.signal });
+  let canceled = false;
+  const queuedResult = queued.then(
+    () => { throw new Error('Canceled request unexpectedly succeeded'); },
+    error => { assert.equal(error.code, 'ERR_CANCELED'); canceled = true; },
+  );
+  try {
+    await flush();
+    controller.abort();
+    await flush();
+    assert.equal(canceled, true, 'canceled request is still waiting for the stalled shared refresh');
+  } finally {
+    gate.resolve();
+    await primary;
+    await queuedResult;
+  }
+  assert.equal(fixture.requests.filter(config => config.url === '/second').length, 1);
+  assert.equal(fixture.requests.filter(config => config.url === '/auth/refresh-token').length, 1);
+  assert.deepEqual(fixture.events, []);
+});
+
+test('canceling a middle queued caller preserves all remaining shared-refresh callers', async () => {
+  const gate = deferred();
+  const controller = new AbortController();
+  let recovered = false;
+  const fixture = client(async config => {
+    if (config.url === '/auth/refresh-token') {
+      await gate.promise;
+      recovered = true;
+      return response(config);
+    }
+    if (!recovered) throw httpError(config, 401);
+    return response(config);
+  });
+  const pending = Promise.allSettled([
+    fixture.api.get('/primary'),
+    fixture.api.get('/before'),
+    fixture.api.get('/canceled', { signal: controller.signal }),
+    fixture.api.get('/after'),
+  ]);
+  await flush();
+  controller.abort();
+  gate.resolve();
+  const results = await pending;
+  assert.deepEqual(results.map(result => result.status), ['fulfilled', 'fulfilled', 'rejected', 'fulfilled']);
+  assert.equal(results[2].reason.code, 'ERR_CANCELED');
+  assert.equal(fixture.requests.filter(config => config.url === '/canceled').length, 1);
+  assert.equal(fixture.requests.filter(config => config.url === '/auth/refresh-token').length, 1);
+  assert.deepEqual(fixture.events, []);
+});
+
+test('canceling the refresh-owning request settles promptly without abandoning another caller', async () => {
+  const gate = deferred();
+  const controller = new AbortController();
+  let recovered = false;
+  const fixture = client(async config => {
+    if (config.url === '/auth/refresh-token') {
+      await gate.promise;
+      recovered = true;
+      return response(config);
+    }
+    if (!recovered) throw httpError(config, 401);
+    return response(config);
+  });
+  let canceled = false;
+  const owner = fixture.api.get('/first', { signal: controller.signal }).then(
+    () => { throw new Error('Canceled owner unexpectedly succeeded'); },
+    error => { assert.equal(error.code, 'ERR_CANCELED'); canceled = true; },
+  );
+  const queued = fixture.api.get('/second');
+  try {
+    await flush();
+    controller.abort();
+    await flush();
+    assert.equal(canceled, true, 'canceled refresh owner is still waiting for shared refresh');
+  } finally {
+    gate.resolve();
+    await owner;
+    assert.equal((await queued).status, 200);
+  }
+  assert.equal(fixture.requests.filter(config => config.url === '/first').length, 1);
+  assert.equal(fixture.requests.filter(config => config.url === '/auth/refresh-token').length, 1);
+  assert.deepEqual(fixture.events, []);
+});
+
+const refreshListenerCases = ['success', 'failure', 'cancellation'].flatMap(outcome =>
+  ['first', 'second'].map(caller => ({ outcome, caller })),
+);
+for (const { outcome, caller } of refreshListenerCases) {
+  test(`${caller} caller cancellation listeners are released on refresh ${outcome}`, async () => {
+    const gate = deferred();
+    const controller = new AbortController();
+    const listeners = new Set();
+    const addListener = controller.signal.addEventListener.bind(controller.signal);
+    const removeListener = controller.signal.removeEventListener.bind(controller.signal);
+    controller.signal.addEventListener = (type, listener, options) => {
+      if (type === 'abort') listeners.add(listener);
+      addListener(type, listener, options);
+    };
+    controller.signal.removeEventListener = (type, listener, options) => {
+      if (type === 'abort') listeners.delete(listener);
+      removeListener(type, listener, options);
+    };
+    let recovered = false;
+    const fixture = client(async config => {
+      if (config.url === '/auth/refresh-token') {
+        await gate.promise;
+        if (outcome === 'failure') throw httpError(config, 503);
+        recovered = true;
+        return response(config);
+      }
+      if (!recovered) throw httpError(config, 401);
+      return response(config);
+    });
+    const pending = Promise.allSettled([
+      fixture.api.get('/first', caller === 'first' ? { signal: controller.signal } : {}),
+      fixture.api.get('/second', caller === 'second' ? { signal: controller.signal } : {}),
+    ]);
+    try {
+      await flush();
+      assert.equal(listeners.size, 1);
+      if (outcome === 'cancellation') controller.abort();
+    } finally {
+      gate.resolve();
+      await pending;
+    }
+    const results = await pending;
+    assert.equal(listeners.size, 0);
+    if (outcome === 'failure') {
+      assert.ok(results.every(result => result.status === 'rejected' && result.reason.response.status === 503));
+    } else {
+      const callerIndex = caller === 'first' ? 0 : 1;
+      assert.equal(results[1 - callerIndex].status, 'fulfilled');
+      assert.equal(results[callerIndex].status, outcome === 'success' ? 'fulfilled' : 'rejected');
+      if (outcome === 'cancellation') assert.equal(results[callerIndex].reason.code, 'ERR_CANCELED');
+    }
+    controller.abort();
+    assert.equal(fixture.requests.filter(config => config.url === '/auth/refresh-token').length, 1);
+    assert.deepEqual(fixture.events, []);
+  });
+}
+
+for (const status of [400, 401, 403, 503]) {
+  test(`refresh HTTP ${status} after owner cancellation settles remaining callers and allows recovery`, async () => {
+    const gate = deferred();
+    const controller = new AbortController();
+    let failing = true;
+    let recovered = false;
+    const fixture = client(async config => {
+      if (config.url === '/auth/refresh-token') {
+        await gate.promise;
+        if (failing) throw httpError(config, status);
+        recovered = true;
+        return response(config);
+      }
+      if (!recovered) throw httpError(config, 401);
+      return response(config);
+    });
+    let ownerError;
+    const owner = fixture.api.get('/first', { signal: controller.signal }).catch(error => { ownerError = error; });
+    const queued = fixture.api.get('/second').catch(error => error);
+    try {
+      await flush();
+      controller.abort();
+      await flush();
+      assert.equal(ownerError?.code, 'ERR_CANCELED');
+    } finally {
+      gate.resolve();
+      await owner;
+      await queued;
+    }
+    assert.equal((await queued).response.status, status === 503 ? 503 : 401);
+    assert.deepEqual(fixture.events, status === 503 ? [] : ['auth-logout']);
+    assert.equal(fixture.requests.filter(config => config.url === '/first').length, 1);
+    failing = false;
+    assert.equal((await fixture.api.get('/recovery')).status, 200);
+    assert.equal(fixture.requests.filter(config => config.url === '/auth/refresh-token').length, 2);
+  });
+}
+
+test('a caller arriving after owner cancellation still shares the active refresh', async () => {
+  const gate = deferred();
+  const controller = new AbortController();
+  let recovered = false;
+  const fixture = client(async config => {
+    if (config.url === '/auth/refresh-token') {
+      await gate.promise;
+      recovered = true;
+      return response(config);
+    }
+    if (!recovered) throw httpError(config, 401);
+    return response(config);
+  });
+  const owner = fixture.api.get('/first', { signal: controller.signal }).catch(error => error);
+  let lateCaller;
+  try {
+    await flush();
+    controller.abort();
+    await flush();
+    lateCaller = fixture.api.get('/late');
+    await flush();
+    assert.equal(fixture.requests.filter(config => config.url === '/auth/refresh-token').length, 1);
+  } finally {
+    gate.resolve();
+    await owner;
+    if (lateCaller) await lateCaller;
+  }
+  assert.equal((await owner).code, 'ERR_CANCELED');
+  assert.equal((await lateCaller).status, 200);
+  assert.equal(fixture.requests.filter(config => config.url === '/first').length, 1);
+  assert.deepEqual(fixture.events, []);
+});
+
+test('a refresh failure after its sole caller cancels is observed and releases the refresh lock', async () => {
+  const gate = deferred();
+  const controller = new AbortController();
+  let failing = true;
+  let recovered = false;
+  const fixture = client(async config => {
+    if (config.url === '/auth/refresh-token') {
+      await gate.promise;
+      if (failing) throw httpError(config, 503);
+      recovered = true;
+      return response(config);
+    }
+    if (!recovered) throw httpError(config, 401);
+    return response(config);
+  });
+  const owner = fixture.api.get('/first', { signal: controller.signal }).catch(error => error);
+  try {
+    await flush();
+    controller.abort();
+    await flush();
+  } finally {
+    gate.resolve();
+    await owner;
+    await flush();
+  }
+  assert.equal((await owner).code, 'ERR_CANCELED');
+  assert.deepEqual(fixture.events, []);
+  failing = false;
+  assert.equal((await fixture.api.get('/recovery')).status, 200);
+  assert.equal(fixture.requests.filter(config => config.url === '/auth/refresh-token').length, 2);
+});
+
+test('a pre-canceled request does not start a refresh or enter the adapter', async () => {
+  const controller = new AbortController();
+  controller.abort();
+  const fixture = client(config => { throw httpError(config, 401); });
+  await assert.rejects(fixture.api.get('/first', { signal: controller.signal }), error => error.code === 'ERR_CANCELED');
+  assert.deepEqual(fixture.requests, []);
+  assert.deepEqual(fixture.events, []);
+});
+
 test('a write timeout is returned without replaying the write or logging out', async () => {
   const fixture = client(config => { throw new axios.AxiosError('TEST ONLY timeout', 'ECONNABORTED', config); });
   await assert.rejects(fixture.api.post('/suggest', { name: 'TEST ONLY' }), error => error.code === 'ECONNABORTED');
@@ -322,5 +590,71 @@ test('an unresponsive loopback refresh times out, releases both callers, and rec
     for (const socket of sockets) socket.destroy();
     server.close();
     if (pending) await pending;
+  }
+});
+
+test('native HTTP owner cancellation settles while shared refresh remains available', { timeout: 5000 }, async () => {
+  const refreshStarted = deferred();
+  const queuedUnauthorized = deferred();
+  const sockets = new Set();
+  let refreshReply;
+  let recovered = false;
+  let refreshes = 0;
+  const server = createServer((request, reply) => {
+    if (request.url === '/api/auth/refresh-token') {
+      refreshes += 1;
+      refreshReply = reply;
+      refreshStarted.resolve();
+      return;
+    }
+    reply.writeHead(recovered ? 200 : 401, { 'Content-Type': 'application/json' });
+    reply.end(JSON.stringify({ status: recovered ? 'success' : 'error' }));
+  });
+  server.on('connection', socket => {
+    sockets.add(socket);
+    socket.on('close', () => sockets.delete(socket));
+  });
+  server.listen(0, '127.0.0.1');
+  await once(server, 'listening');
+  const fixture = client();
+  fixture.api.defaults.baseURL = `http://127.0.0.1:${server.address().port}/api`;
+  const adapter = axios.getAdapter('http');
+  fixture.api.defaults.adapter = async config => {
+    try {
+      return await adapter({ ...config, proxy: false });
+    } catch (error) {
+      if (config.url === '/second') queuedUnauthorized.resolve();
+      throw error;
+    }
+  };
+  const controller = new AbortController();
+  const owner = fixture.api.get('/first', { signal: controller.signal }).catch(error => error);
+  let queued;
+  let deadline;
+  try {
+    await refreshStarted.promise;
+    queued = fixture.api.get('/second').catch(error => error);
+    await queuedUnauthorized.promise;
+    await flush();
+    controller.abort();
+    const canceled = await Promise.race([
+      owner,
+      new Promise(resolve => { deadline = setTimeout(() => resolve(null), 1000); }),
+    ]);
+    assert.equal(canceled?.code, 'ERR_CANCELED', 'native owner stayed pending behind the stalled refresh');
+    assert.equal(refreshReply.writableEnded, false);
+    recovered = true;
+    refreshReply.writeHead(200, { 'Content-Type': 'application/json' });
+    refreshReply.end(JSON.stringify({ status: 'success' }));
+    assert.equal((await queued).status, 200);
+    assert.equal(refreshes, 1);
+    assert.deepEqual(fixture.events, []);
+  } finally {
+    clearTimeout(deadline);
+    controller.abort();
+    for (const socket of sockets) socket.destroy();
+    server.close();
+    await owner;
+    if (queued) await queued;
   }
 });
