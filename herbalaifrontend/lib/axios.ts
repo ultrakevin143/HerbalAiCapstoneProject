@@ -3,6 +3,7 @@ import axios from 'axios';
 const api = axios.create({
   baseURL: '/api',
   withCredentials: true,
+  timeout: 30_000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -43,6 +44,8 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
+    originalRequest._retry = true;
+
     if (isRefreshing) {
       return new Promise((resolve, reject) => {
         failedQueue.push({ resolve, reject });
@@ -55,12 +58,11 @@ api.interceptors.response.use(
         });
     }
 
-    originalRequest._retry = true;
     isRefreshing = true;
 
     try {
       // Call refresh-token endpoint on the backend
-      await api.post('/auth/refresh-token');
+      await api.post('/auth/refresh-token', undefined, { timeout: 10_000 });
       isRefreshing = false;
       processQueue(null);
       return api(originalRequest);

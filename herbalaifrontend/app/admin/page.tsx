@@ -594,7 +594,7 @@ export default function AdminPage() {
         };
       });
 
-      const res = await api.post('/knowledge-base/import', { facts });
+      const res = await api.post('/knowledge-base/import', { facts }, { timeout: 120_000 });
       if (res.data?.status === 'success') {
         await refreshKbPage();
         const summary = res.data.data;

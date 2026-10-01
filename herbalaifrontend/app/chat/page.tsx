@@ -59,6 +59,17 @@ function ChatContent() {
 
   const messageListRef = useRef<HTMLDivElement>(null);
   const processedInitialQuery = useRef(false);
+  const activeRequestRef = useRef<AbortController | null>(null);
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      activeRequestRef.current?.abort();
+      activeRequestRef.current = null;
+    };
+  }, []);
 
   // Fetch herbs to map local name to ID for source linking
   useEffect(() => {
@@ -97,7 +108,10 @@ function ChatContent() {
   }, [loading, isAuthenticated, sessionUnavailable, router]);
 
   const handleSendQuery = React.useCallback(async (queryText: string) => {
-    if (!queryText.trim() || isSending) return;
+    if (!queryText.trim() || isSending || activeRequestRef.current || !mountedRef.current) return;
+
+    const controller = new AbortController();
+    activeRequestRef.current = controller;
 
     const userMsgId = Date.now().toString();
     const newMsg: Message = {
@@ -120,6 +134,7 @@ function ChatContent() {
       let modelMessageAdded = false;
 
       await streamDrAiResponse(queryText, cleanHistory, ({ event, data }) => {
+        if (!mountedRef.current || controller.signal.aborted || activeRequestRef.current !== controller) return;
         if (event === 'sources') {
           sources = data.sources;
           return;
@@ -143,12 +158,17 @@ function ChatContent() {
             message.id === modelMessageId ? { ...message, sources } : message
           ));
         }
-      });
+      }, { signal: controller.signal });
     } catch {
-      setMessages((prev) => prev.filter((message) => message.id !== modelMessageId));
+      if (!mountedRef.current || controller.signal.aborted || activeRequestRef.current !== controller) return;
+      setMessages((prev) => prev.filter((message) => message.id !== modelMessageId && message.id !== userMsgId));
+      setInput((current) => current || queryText);
       setChatError('Dr. Ai could not complete the answer. Please try again later.');
     } finally {
-      setIsSending(false);
+      if (activeRequestRef.current === controller) {
+        activeRequestRef.current = null;
+        if (mountedRef.current) setIsSending(false);
+      }
     }
   }, [history, isSending]);
 
@@ -158,7 +178,6 @@ function ChatContent() {
     const initialQ = searchParams.get('q');
     if (initialQ?.trim()) {
       processedInitialQuery.current = true;
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       handleSendQuery(initialQ.trim());
     }
   }, [searchParams, isAuthenticated, handleSendQuery]);

@@ -101,6 +101,14 @@ jobs:
         working-directory: herbalaifrontend
         run: node --test ../scripts/messenger-sync.test.mjs
 
+      - name: Run session refresh recovery regressions
+        working-directory: herbalaifrontend
+        run: node --test ../scripts/auth-refresh.test.mjs
+
+      - name: Run Dr. Ai stream recovery regressions
+        working-directory: herbalaifrontend
+        run: node --test ../scripts/dr-ai-stream.test.mjs
+
       - name: Run Frontend Build
         working-directory: herbalaifrontend
         env:

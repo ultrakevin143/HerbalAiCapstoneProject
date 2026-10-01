@@ -5,11 +5,12 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../context/AuthContext';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
+import SessionUnavailable from '../../../components/SessionUnavailable';
 import api from '../../../lib/axios';
 import { ArrowLeft, AlertCircle } from 'lucide-react';
 
 export default function NewThreadPage() {
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { isAuthenticated, loading: authLoading, sessionUnavailable, checkSession } = useAuth();
   const router = useRouter();
 
   // Form states
@@ -30,10 +31,10 @@ export default function NewThreadPage() {
 
   // Protect client side transition
   useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
+    if (!authLoading && !isAuthenticated && !sessionUnavailable) {
       router.push('/signin?callbackUrl=/community/new');
     }
-  }, [authLoading, isAuthenticated, router]);
+  }, [authLoading, isAuthenticated, sessionUnavailable, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,6 +97,10 @@ export default function NewThreadPage() {
         <Footer />
       </div>
     );
+  }
+
+  if (sessionUnavailable && !isAuthenticated) {
+    return <SessionUnavailable retry={() => { void checkSession(true); }} />;
   }
 
   if (!isAuthenticated) {

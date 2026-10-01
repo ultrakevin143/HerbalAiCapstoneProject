@@ -39,3 +39,28 @@ Screenshots remain outside Git in the local temporary directory: `herbalai-picke
 The existing authenticated Messenger suite adds a guarded database case with 22 eligible contacts, one banned contact, and a temporarily matching current-user name. It checks 20/2/final-empty pagination, repeatable ordering, lowercase search, literal punctuation in names and username search, and exclusion of self and banned users. It restores the current user's name and deletes only its isolated fixture IDs in finally. The suite rejects targets other than test-mode loopback `/herbalai_test`.
 
 No local database run is claimed: PostgreSQL/Docker is absent here. The new real-database assertions must pass GitHub isolated CI before deployment. At this observation, this batch is local and the public site still runs the previous reviewed commit. Deployment and live smoke evidence will be recorded after observation, not inferred from local tests.
+
+## Publication follow-up
+
+Reviewed commit `fcf424e8243695e1754a6628b7e7d11ea17317ff` contains eight explicitly staged application, regression-test, and documentation files, including the previous release's factual documentation follow-up. [Temporary-branch CI 36833645805](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/36833645805) passed both jobs: 458 isolated backend tests across 61 files, including the ten-case authenticated Messenger suite, and all 30 frontend Messenger regressions plus lint, typecheck, and build. The new real-database picker assertions were therefore executed successfully, not merely authored or mocked. The final empty-error-spacing adjustment is included in that successful frontend build.
+
+After ancestry checks, the same commit was fast-forward pushed to `main` and `codex/readability-accessibility`. No force push, production fixture, environment setting, migration, or primary-checkout change was involved. At this intermediate observation, deployment confirmation and patched live smoke checks remain pending.
+
+The controlled local preview and memory fixture processes were stopped after testing, and the temporary viewport override was removed. This post-publication evidence is saved locally for the next reviewed documentation batch; its presence does not imply another application deployment.
+
+## Confirmed release and live smoke
+
+The same reviewed commit passed [main CI 36833928672](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/36833928672) and [deployment-branch CI 36833927738](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/36833927738). Both the Vercel and Railway HerbalAiCapstoneProject deployment status contexts reported success.
+
+In a separate agent-created live browser tab after deployment:
+
+- Messenger refresh restored the authenticated Herbal QA contributor session.
+- New Message loaded 15 eligible profiles and no Load more button. This live dataset does not exercise a second page; failed-page recovery and 20/2 pagination are proved by the controlled browser and isolated database tests above, not by this live smoke.
+- A space-padded uppercase ADMIN search returned only Admin Admin. Selecting it closed the picker and loaded the existing test-message history. No message was sent or edited.
+- Reopening New Message cleared the search and restored the same 15-profile list.
+- The protected Suggestions page remained available after a separate test-tab reload and restored the same account.
+- The library loaded 37 herbs, and Community loaded its four existing discussions without a visible loading error. No public record was created or deleted.
+
+Live screenshot: `C:/Users/Hp/AppData/Local/Temp/herbalai-picker-live-20261001.png`. The original user-facing Suggestions tab and its possible drafts were not reloaded or navigated during this smoke.
+
+This batch does not claim fresh signup/email/reset acceptance, physical-device evidence, five-participant UAT, or full dialog keyboard accessibility. The next focused audit is shared HTTP/session-refresh timeout recovery: the picker request timeout does not by itself bound an unresponsive authentication-refresh interceptor. That shared path has not been repaired or validated by this batch.

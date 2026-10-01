@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import SessionUnavailable from '../../components/SessionUnavailable';
 import SuggestionStatusBadge, { type SuggestionStatus } from '../../components/SuggestionStatusBadge';
 import api from '../../lib/axios';
 import {
@@ -51,7 +52,7 @@ const submissionStatusCopy: Record<SuggestionStatus, { title: string; detail: st
 };
 
 export default function SuggestHerbPage() {
-  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { user, isAuthenticated, loading: authLoading, sessionUnavailable, checkSession } = useAuth();
   const router = useRouter();
 
   // Form Fields
@@ -95,10 +96,10 @@ export default function SuggestHerbPage() {
 
   // Protect client side transitions just in case middleware is bypassed
   useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
+    if (!authLoading && !isAuthenticated && !sessionUnavailable) {
       router.push('/signin?callbackUrl=/suggest');
     }
-  }, [authLoading, isAuthenticated, router]);
+  }, [authLoading, isAuthenticated, sessionUnavailable, router]);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -302,6 +303,10 @@ export default function SuggestHerbPage() {
         <Footer />
       </div>
     );
+  }
+
+  if (sessionUnavailable && !isAuthenticated) {
+    return <SessionUnavailable retry={() => { void checkSession(true); }} />;
   }
 
   if (!isAuthenticated) {
