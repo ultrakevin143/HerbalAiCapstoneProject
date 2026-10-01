@@ -91,3 +91,5 @@ Authenticated live moderation checks are pending because Chrome profiles were no
 ## Messenger sidebar consistency follow-up
 
 `MESSENGER_SIDEBAR_CONSISTENCY_2026-10-01.md` records two failing baseline callback cases, the ordering/concurrent-preview repair, and nineteen total Messenger regressions including the page's actual refresh wiring. Check its executed results for browser, CI, deployment, and live evidence; it does not change styling, backend configuration, or the remaining manual acceptance boundaries.
+
+The follow-up repair passed full isolated CI and was deployed to main/Vercel/Railway. Mercado's authenticated live reload and offline failed-send text-draft retention passed. Text retention is no longer an unobserved gate; image retention and genuine human tab resume remain separate. Gina Chrome was disconnected, so no new two-profile live race or administrator write is recorded. See the follow-up's publication section for exact commits, CI runs, cleanup, and evidence boundaries.
