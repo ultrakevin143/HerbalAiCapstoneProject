@@ -109,6 +109,10 @@ jobs:
         working-directory: herbalaifrontend
         run: node --test ../scripts/dr-ai-stream.test.mjs
 
+      - name: Run password settings regressions
+        working-directory: herbalaifrontend
+        run: node --test ../scripts/password-settings.test.mjs
+
       - name: Run Frontend Build
         working-directory: herbalaifrontend
         env:

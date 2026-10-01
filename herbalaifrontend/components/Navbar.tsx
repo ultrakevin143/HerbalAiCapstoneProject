@@ -181,7 +181,7 @@ export default function Navbar() {
                           className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-left text-sm font-medium text-foreground transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
                         >
                           <Pencil className="size-4 shrink-0 text-muted" aria-hidden="true" />
-                          <span>Edit Profile</span>
+                          <span>Account settings</span>
                         </button>
 
                         <div className="px-1 py-1">
@@ -274,6 +274,7 @@ export default function Navbar() {
                       setIsMobileMenuOpen(false);
                       setIsProfileEditorOpen(true);
                     }}
+                    aria-label="Account settings"
                     className="flex w-full items-center gap-3 rounded-xl bg-white/60 px-3 py-2.5 text-left text-sm font-extrabold text-[#1b4332] dark:bg-soft dark:text-ink"
                   >
                     <UserRound size={18} aria-hidden="true" className="shrink-0 text-[#40916c]" />
@@ -335,6 +336,7 @@ export default function Navbar() {
 
       {/* Profile Editor Modal */}
       <ProfileEditorModal
+        key={isProfileEditorOpen ? user?.id : 'closed'}
         isOpen={isProfileEditorOpen}
         onClose={() => setIsProfileEditorOpen(false)}
       />

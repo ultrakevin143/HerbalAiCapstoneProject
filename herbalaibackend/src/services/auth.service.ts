@@ -470,10 +470,44 @@ export const forgotPassword = async (email: string) => {
   return neutralResponse;
 };
 
+export const changePassword = async (
+  userId: string, sessionVersion: number, currentPassword: string, newPassword: string,
+) => {
+  const user = await userRepo.findPasswordCredentials(userId);
+  if (!user || user.sessionVersion !== sessionVersion) {
+    throw { status: 401, message: "Your session has expired. Please sign in again." };
+  }
+  if (user.isBanned) throw { status: 403, message: "Your account has been banned." };
+  if (!await comparePassword(currentPassword, user.password)) {
+    throw { status: 400, message: "Current password is incorrect." };
+  }
+  if (await comparePassword(newPassword, user.password)) {
+    throw { status: 400, message: "Choose a password different from your current password." };
+  }
+  const passwordHash = await hashPassword(newPassword);
+  if (!await userRepo.replacePassword(userId, user.password, sessionVersion, passwordHash)) {
+    throw { status: 409, message: "Your account changed during this request. Please sign in again." };
+  }
+  userRepo.invalidateCachedUser(userId);
+  notifySessionInvalidated(userId);
+  return { message: "Password changed. Sign in again with your new password." };
+};
+
+export const requestPasswordSetup = async (userId: string) => {
+  const user = await userRepo.findUserById(userId);
+  if (!user) throw { status: 401, message: "Please sign in again." };
+  if (user.isBanned) throw { status: 403, message: "Your account has been banned." };
+  return forgotPassword(user.email);
+};
+
 export const resetPassword = async (token: string, newPassword: string) => {
   const tokenRecord = await tokenRepo.findActiveTokenByValue(token, "PASSWORD_RESET");
   if (!tokenRecord) {
     throw { status: 400, message: "Invalid or expired password reset token." };
+  }
+
+  if (await comparePassword(newPassword, tokenRecord.user.password)) {
+    throw { status: 400, message: "Choose a password different from your current password." };
   }
 
   const hashedPassword = await hashPassword(newPassword);

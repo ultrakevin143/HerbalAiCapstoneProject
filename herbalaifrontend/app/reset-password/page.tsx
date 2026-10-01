@@ -43,6 +43,11 @@ function ResetPasswordForm() {
       return;
     }
 
+    if (new TextEncoder().encode(password).length > 72) {
+      setError('Password must be at most 72 UTF-8 bytes.');
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
       return;

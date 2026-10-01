@@ -107,6 +107,26 @@ export const findUserById = async (id: string) => {
   return userSessionCache.getOrSet(userCacheKey(id), ENV.AUTH_USER_CACHE_TTL_MS, () => sessionLookup.load(id));
 };
 
+export const findPasswordCredentials = (id: string) => prisma.user.findUnique({
+  where: { id },
+  select: { id: true, password: true, sessionVersion: true, isBanned: true },
+});
+
+export const replacePassword = (
+  id: string, expectedHash: string, expectedVersion: number, passwordHash: string,
+): Promise<boolean> => prisma.$transaction(async transaction => {
+  const changed = await transaction.user.updateMany({
+    where: { id, password: expectedHash, sessionVersion: expectedVersion, isBanned: false },
+    data: { password: passwordHash, sessionVersion: { increment: 1 } },
+  });
+  if (changed.count !== 1) return false;
+  await transaction.token.updateMany({
+    where: { userId: id, type: { in: ["REFRESH", "PASSWORD_RESET"] }, revokedAt: null },
+    data: { revokedAt: new Date() },
+  });
+  return true;
+}, { timeout: 15_000 });
+
 export const createUser = async (data: Prisma.UserCreateInput) => {
   return prisma.user.create({
     data,

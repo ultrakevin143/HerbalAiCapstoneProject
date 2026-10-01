@@ -227,6 +227,35 @@ export class AuthController {
     }
   };
 
+  public changePassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const user = (req as AuthenticatedRequest).user;
+      if (!user) {
+        res.status(401).json({ status: "error", message: "Authentication required" });
+        return;
+      }
+      const result = await authService.changePassword(
+        user.userId, user.sessionVersion ?? 0, req.body.currentPassword, req.body.newPassword,
+      );
+      const options = { httpOnly: true, secure: ENV.NODE_ENV === "production", sameSite: ENV.NODE_ENV === "production" ? "none" as const : "lax" as const, path: "/" };
+      res.clearCookie("accessToken", options);
+      res.clearCookie("refreshToken", options);
+      res.status(200).json({ status: "success", message: result.message });
+    } catch (error) { next(error); }
+  };
+
+  public requestPasswordSetup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const user = (req as AuthenticatedRequest).user;
+      if (!user) {
+        res.status(401).json({ status: "error", message: "Authentication required" });
+        return;
+      }
+      const result = await authService.requestPasswordSetup(user.userId);
+      res.status(200).json({ status: "success", message: result.message });
+    } catch (error) { next(error); }
+  };
+
   // --- Google SSO ---
 
   public googleAuth = (req: Request, res: Response): void => {

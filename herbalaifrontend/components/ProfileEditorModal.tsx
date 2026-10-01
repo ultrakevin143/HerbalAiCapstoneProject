@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Save, UserRound, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import PasswordSettings from './PasswordSettings';
 
 interface ProfileEditorModalProps {
   isOpen: boolean;
@@ -49,11 +50,11 @@ export default function ProfileEditorModal({ isOpen, onClose }: ProfileEditorMod
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2 id="profile-editor-title" className="flex items-center gap-2 text-xl font-extrabold text-ink">
-              <UserRound className="h-5 w-5" /> Edit profile
+              <UserRound className="h-5 w-5" /> Account settings
             </h2>
-            <p className="mt-1 text-sm text-muted">Update the personal details shown around Herbal-Ai.</p>
+            <p className="mt-1 text-sm text-muted">Manage your profile and password.</p>
           </div>
-          <button type="button" onClick={onClose} aria-label="Close profile editor" className="rounded-full p-2 text-muted hover:bg-panel">
+          <button type="button" onClick={onClose} aria-label="Close account settings" className="rounded-full p-2 text-muted hover:bg-panel">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -80,6 +81,7 @@ export default function ProfileEditorModal({ isOpen, onClose }: ProfileEditorMod
             <Save className="h-4 w-4" /> {saving ? 'Saving...' : 'Save profile'}
           </button>
         </form>
+        <PasswordSettings email={user.email} onChanged={onClose} />
       </div>
     </div>
   );

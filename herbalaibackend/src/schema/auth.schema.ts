@@ -1,5 +1,17 @@
 import { z } from "zod";
 
+const newPasswordSchema = z.string().min(8, "Password must be at least 8 characters")
+  .refine(password => Buffer.byteLength(password, "utf8") <= 72, "Password must be at most 72 UTF-8 bytes");
+
+export const changePasswordSchema = z.object({
+  body: z.object({
+    currentPassword: z.string().min(1, "Current password is required"),
+    newPassword: newPasswordSchema,
+  }).strict(),
+});
+
+export const passwordSetupSchema = z.object({ body: z.object({}).strict() });
+
 export const signupSchema = z.object({
   body: z.object({
     username: z
@@ -31,7 +43,7 @@ export const forgotPasswordSchema = z.object({
 export const resetPasswordSchema = z.object({
   body: z.object({
     token: z.string().min(1, "Token is required"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    password: newPasswordSchema,
   }),
 });
 
