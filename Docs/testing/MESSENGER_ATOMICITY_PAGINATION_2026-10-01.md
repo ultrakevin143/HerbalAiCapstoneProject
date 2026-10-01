@@ -25,3 +25,20 @@ Before repair, the focused HTTP/repository checks produced **11 failures and 23 
 ## Remaining evidence boundaries
 
 The prior two-profile live send/edit check passed. Its native delete confirmation stalled browser automation, so deletion remains unobserved there until the tester clears the prompt or a fresh controlled check succeeds. This browser-tool limitation is not counted as a backend failure. Other historical manual gaps and unrecorded participant UAT remain separate; this report does not claim every system flow is error-free.
+
+## Executed CI and release results
+
+- Code commit `a58cf1d3454045d0c79255ece929ae508f2cb03b` passed temporary-branch CI run `36794997024`. The complete backend suite passed **412 tests across 60 files**, including all eight authenticated Messenger database cases, nine repository-boundary cases, and 27 HTTP validation cases. PostgreSQL concurrency and timestamp-tie fixtures therefore passed against the isolated migrated database, not only mocks. Frontend lint/typecheck/build also passed without frontend source changes.
+- After fetching and checking remote ancestry, the same commit was pushed to `main` and `codex/readability-accessibility`. Main CI `36795179643` and deployment-branch CI `36795179612` passed. Both `Vercel` and `herbal-ai-staging - HerbalAiCapstoneProject` reported successful deployment for that exact commit.
+- Live `/api/health` returned 200. Anonymous conversation/history reads and deletion of the controlled QA message returned 401 before mutation. These authorization smoke checks are not substitutes for authenticated mutation tests.
+
+## Live authenticated observations
+
+- A fresh tab in the existing Mercado Chrome profile restored the Herbal QA contributor without credential entry. It loaded the controlled conversation with Admin Admin after a full reload. The older sender tab remained blocked by the browser automation's focus command; using a fresh tab resolved ordinary navigation and editing.
+- The existing, agent-created TEST ONLY message was edited through the normal live UI twice; both observed `/api/messages/380` responses were HTTP 200. The Gina administrator's full reload loaded the first saved edit from history. The second edit arrived in Gina without another reload, confirming realtime delivery after the receiver reconnected.
+- **New reconnect follow-up:** Gina's already-open pre-deployment conversation did not display the first edit until reloaded, although that edit was saved successfully. After reload, realtime delivery worked again. This is an observed stale-tab behavior across deployment, not proof of the specific socket failure cause. Inspect reconnect/history reconciliation in a separate frontend-authorized batch; the present backend-only release does not claim to fix that behavior.
+- Targeted deletion of only the disposable message opened the expected native confirmation. Both the high-level dialog handler and the supported raw dialog command stalled on the browser automation's focus setup. The tester has been asked to click OK in the new Mercado QA tab. **Deletion is still pending live confirmation**, not counted as passed; isolated authenticated deletion/concurrency coverage passed separately.
+- A supplemental read-only browser navigation to the authenticated API history URL was blocked by the browser client before a page loaded. It is not counted as a live cursor result or application defect. Equal-timestamp pagination is verified by the isolated database fixtures; no bulk production messages were created to exercise it.
+- A screenshot of the Gina receiver after the successful second edit is saved outside Git as `herbalai-messenger-atomic-edit-20261001.png` in the local temporary directory. No credentials, password reset links, or provider secrets are stored in this report.
+
+Source inspection confirms the Messenger client currently logs `connect` but does not reconcile history there. That missing reconciliation is a candidate explanation for missed events during downtime, not a complete diagnosis of the observed connection state. No frontend code was changed in this backend-only batch.
