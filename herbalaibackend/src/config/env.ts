@@ -32,6 +32,8 @@ export const ENV = {
     .map((model) => model.trim())
     .filter((model, index, models) => Boolean(model) && models.indexOf(model) === index),
   DR_AI_MODEL_TIMEOUT_MS: boundedInteger('DR_AI_MODEL_TIMEOUT_MS', 15_000, 1_000, 30_000),
+  DR_AI_EMBEDDING_TIMEOUT_MS: boundedInteger('DR_AI_EMBEDDING_TIMEOUT_MS', 10_000, 1_000, 30_000),
+  DR_AI_REQUEST_TIMEOUT_MS: boundedInteger('DR_AI_REQUEST_TIMEOUT_MS', 90_000, 1_000, 110_000),
   DR_AI_MAX_MODEL_ATTEMPTS: boundedInteger('DR_AI_MAX_MODEL_ATTEMPTS', 4, 1, 6),
   DR_AI_MODEL_COOLDOWN_MS: boundedInteger('DR_AI_MODEL_COOLDOWN_MS', 60_000, 0, 300_000),
   GOOGLE_CLIENT_ID: process.env['GOOGLE_CLIENT_ID'] || '',

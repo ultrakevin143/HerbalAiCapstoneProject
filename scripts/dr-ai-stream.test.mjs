@@ -76,6 +76,26 @@ test('done completes and cancels an open transport without waiting for EOF', asy
   }
 });
 
+test('SSE heartbeats renew only the idle gap without emitting an answer or extending the total budget', async () => {
+  const fixtureBody = body(event('sources', { sources: [] }), false);
+  const fixture = harness(async () => new Response(fixtureBody.stream));
+  const pending = observe(fixture.run());
+  await flush();
+  const totalTimer = [...fixture.timers.keys()].find(key => fixture.timers.get(key).delay === 120_000);
+  const previousGap = [...fixture.timers.keys()].find(key => fixture.timers.get(key).delay === 30_000);
+  fixtureBody.controller.enqueue(encoder.encode(': heartbeat\n\n'));
+  await flush();
+  const renewedGap = [...fixture.timers.keys()].find(key => fixture.timers.get(key).delay === 30_000);
+  assert.notEqual(previousGap, renewedGap);
+  assert.equal(fixture.timers.has(totalTimer), true);
+  assert.deepEqual(fixture.events.map(value => value.event), ['sources']);
+  fixture.fire(120_000);
+  await pending.completed;
+  assert.equal(pending.outcome.error?.name, 'TimeoutError');
+  assert.equal(fixtureBody.cancelled(), 1);
+  assert.equal(fixture.timers.size, 0);
+});
+
 test('external cancellation settles a stalled body and releases its reader', async () => {
   const fixtureBody = body('', false);
   const controller = new AbortController();

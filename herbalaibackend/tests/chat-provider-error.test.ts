@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { EventEmitter } from 'node:events';
 
 const mocks = vi.hoisted(() => ({ askDrAi: vi.fn(), streamDrAi: vi.fn() }));
 vi.mock('../src/services/chat.service.js', () => mocks);
@@ -13,7 +14,7 @@ describe('Dr. Ai provider errors', () => {
     const json = vi.fn();
     const status = vi.fn().mockReturnValue({ json });
 
-    await sendMessage({ body: { message: 'Lagundi' } } as never, { status } as never);
+    await sendMessage(Object.assign(new EventEmitter(), { body: { message: 'Lagundi' } }) as never, Object.assign(new EventEmitter(), { status }) as never);
 
     expect(status).toHaveBeenCalledWith(503);
     expect(json).toHaveBeenCalledWith({
@@ -31,7 +32,7 @@ describe('Dr. Ai provider errors', () => {
       })(),
     });
     const writes: string[] = [];
-    const res = {
+    const res = Object.assign(new EventEmitter(), {
       destroyed: false,
       headersSent: true,
       status: vi.fn().mockReturnThis(),
@@ -39,9 +40,9 @@ describe('Dr. Ai provider errors', () => {
       flushHeaders: vi.fn(),
       write: (value: string) => writes.push(value),
       end: vi.fn(),
-    };
+    });
 
-    await streamMessage({ body: { message: 'Lagundi' } } as never, res as never);
+    await streamMessage(Object.assign(new EventEmitter(), { body: { message: 'Lagundi' } }) as never, res as never);
 
     expect(writes.join('')).toContain('event: error');
     expect(writes.join('')).toContain('Dr. Ai is temporarily unavailable. Please try again later.');

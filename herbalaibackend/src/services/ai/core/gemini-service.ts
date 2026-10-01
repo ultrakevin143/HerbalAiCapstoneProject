@@ -2,11 +2,12 @@ import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/ge
 import type { Content } from "@google/generative-ai";
 import { ENV } from "../../../config/env.js";
 import { DR_AI_SYSTEM_PROMPT } from "../../../config/drAiSystemPrompt.js";
+import { awaitAiOperation, createAiDeadline, iterateAiOperation } from "./request-lifetime.js";
+import type { AiRequestOptions } from "./request-lifetime.js";
 
 const genAI = new GoogleGenerativeAI(ENV.GEMINI_API_KEY || "");
 
 const CHAT_MODELS = ENV.DR_AI_CHAT_MODELS;
-const CHAT_REQUEST_OPTIONS = { timeout: ENV.DR_AI_MODEL_TIMEOUT_MS };
 const MODEL_COOLDOWNS = new Map<string, number>();
 
 const EMBEDDING_MODEL = "gemini-embedding-2";
@@ -108,15 +109,16 @@ function chunkText(text: string, size: number = 2000, overlap: number = 200): st
  * @param text The input text to embed.
  * @returns An array of numbers representing the vector (768 dimensions).
  */
-export async function generateEmbedding(text: string): Promise<number[]> {
+export async function generateEmbedding(text: string, options: AiRequestOptions = {}): Promise<number[]> {
+  options.signal?.throwIfAborted();
   if (!ENV.GEMINI_API_KEY) {
     throw new Error("GEMINI_API_KEY is not configured.");
   }
   const chunks = chunkText(text);
   const model = genAI.getGenerativeModel({ model: EMBEDDING_MODEL });
 
-  const embedOptions = (t: string) => ({
-    content: { parts: [{ text: t }], role: "user" },
+  const embedOptions = (chunk: string) => ({
+    content: { parts: [{ text: chunk }], role: "user" },
     outputDimensionality: 768
   });
 
@@ -125,30 +127,37 @@ export async function generateEmbedding(text: string): Promise<number[]> {
     throw new Error("Cannot generate embedding for empty text.");
   }
 
-  if (chunks.length === 1) {
-    const result = await model.embedContent(embedOptions(firstChunk));
-    return result.embedding.values;
-  }
-
-  const results = await Promise.all(
-    chunks.map(chunk => model.embedContent(embedOptions(chunk)))
-  );
-  const embeddings = results.map(r => r.embedding.values);
-
-  // Average embeddings to maintain single-vector compatibility
-  const firstEmb = embeddings[0];
-  if (!firstEmb) {
-    throw new Error("Failed to generate any embeddings.");
-  }
-
-  const dim = firstEmb.length;
-  const avg = new Array(dim).fill(0);
-  for (const emb of embeddings) {
-    for (let i = 0; i < dim; i++) {
-      avg[i] += emb[i] ?? 0;
+  const deadline = createAiDeadline(ENV.DR_AI_EMBEDDING_TIMEOUT_MS, options.signal);
+  try {
+    if (chunks.length === 1) {
+      const result = await awaitAiOperation(() => model.embedContent(embedOptions(firstChunk), { signal: deadline.signal }), deadline.signal);
+      return result.embedding.values;
     }
+
+    const results = await awaitAiOperation(() => Promise.all(
+      chunks.map(chunk => model.embedContent(embedOptions(chunk), { signal: deadline.signal }))
+    ), deadline.signal);
+    const embeddings = results.map(result => result.embedding.values);
+
+    const firstEmb = embeddings[0];
+    if (!firstEmb) {
+      throw new Error("Failed to generate any embeddings.");
+    }
+
+    const dimension = firstEmb.length;
+    const average = new Array(dimension).fill(0);
+    for (const embedding of embeddings) {
+      for (let index = 0; index < dimension; index++) {
+        average[index] += embedding[index] ?? 0;
+      }
+    }
+    return average.map(value => value / embeddings.length);
+  } catch (error) {
+    deadline.abort(error);
+    throw error;
+  } finally {
+    deadline.dispose();
   }
-  return avg.map(v => v / embeddings.length);
 }
 
 /**
@@ -162,8 +171,10 @@ export async function generateEmbedding(text: string): Promise<number[]> {
 export async function generateChatResponse(
   prompt: string,
   context: string,
-  history: Content[] = []
+  history: Content[] = [],
+  options: AiRequestOptions = {},
 ): Promise<string> {
+  options.signal?.throwIfAborted();
   if (!ENV.GEMINI_API_KEY) {
     throw new Error("GEMINI_API_KEY is not configured.");
   }
@@ -174,10 +185,12 @@ export async function generateChatResponse(
 
   const candidates = getModelCandidates();
   for (const [index, modelName] of candidates.entries()) {
+    options.signal?.throwIfAborted();
+    const deadline = createAiDeadline(ENV.DR_AI_MODEL_TIMEOUT_MS, options.signal);
     try {
       const chat = createChat(modelName, history);
 
-      const result = await chat.sendMessage(fullPrompt, CHAT_REQUEST_OPTIONS);
+      const result = await awaitAiOperation(() => chat.sendMessage(fullPrompt, { signal: deadline.signal }), deadline.signal);
 
       // Log token usage for tracking
       if (result.response.usageMetadata) {
@@ -189,11 +202,14 @@ export async function generateChatResponse(
       recordModelSuccess(modelName, index + 1);
       return text;
     } catch (error) {
+      options.signal?.throwIfAborted();
       const err = error as GeminiRequestError;
       console.warn(`Model ${modelName} failed:`, err.message);
       lastError = err;
       if (!isRetryableModelError(err)) throw err;
       putModelOnCooldown(modelName);
+    } finally {
+      deadline.dispose();
     }
   }
 
@@ -203,8 +219,10 @@ export async function generateChatResponse(
 export async function* generateChatResponseStream(
   prompt: string,
   context: string,
-  history: Content[] = []
+  history: Content[] = [],
+  options: AiRequestOptions = {},
 ): AsyncGenerator<string> {
+  options.signal?.throwIfAborted();
   if (!ENV.GEMINI_API_KEY) {
     throw new Error("GEMINI_API_KEY is not configured.");
   }
@@ -214,18 +232,21 @@ export async function* generateChatResponseStream(
 
   const candidates = getModelCandidates();
   for (const [index, modelName] of candidates.entries()) {
+    options.signal?.throwIfAborted();
+    const deadline = createAiDeadline(ENV.DR_AI_MODEL_TIMEOUT_MS, options.signal);
     try {
       let answer = "";
-      const result = await createChat(modelName, history).sendMessageStream(fullPrompt, CHAT_REQUEST_OPTIONS);
-      // The SDK aggregates the response concurrently with iteration. Observe its
-      // rejection immediately; an interrupted stream otherwise risks an unhandled rejection.
-      void result.response.catch(() => undefined);
-      for await (const chunk of result.stream) {
+      const result = await awaitAiOperation(async () => {
+        const stream = await createChat(modelName, history).sendMessageStream(fullPrompt, { signal: deadline.signal });
+        void stream.response.catch(() => undefined);
+        return stream;
+      }, deadline.signal);
+      for await (const chunk of iterateAiOperation(result.stream, deadline.signal)) {
         const text = chunk.text();
         if (text) answer += text;
       }
 
-      const response = await result.response;
+      const response = await awaitAiOperation(() => result.response, deadline.signal);
       if (response.usageMetadata) {
         console.log(`📊 AI Token Usage [${modelName}] | Prompt: ${response.usageMetadata.promptTokenCount} | Response: ${response.usageMetadata.candidatesTokenCount} | Total: ${response.usageMetadata.totalTokenCount}`);
       }
@@ -234,11 +255,15 @@ export async function* generateChatResponseStream(
       yield answer;
       return;
     } catch (error) {
+      options.signal?.throwIfAborted();
       const err = error as GeminiRequestError;
       console.warn(`Streaming model ${modelName} failed:`, err.message);
       lastError = err;
       if (!isRetryableModelError(err)) throw err;
       putModelOnCooldown(modelName);
+    } finally {
+      deadline.abort();
+      deadline.dispose();
     }
   }
 

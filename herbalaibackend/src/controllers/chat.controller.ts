@@ -2,8 +2,28 @@ import type { Request, Response } from "express";
 import { askDrAi, streamDrAi } from "../services/chat.service.js";
 import type { ChatTurn } from "../services/chat.service.js";
 import { MAX_CHAT_HISTORY_TURNS } from "../schema/chat.schema.js";
+import { ENV } from "../config/env.js";
+import { awaitAiOperation, createAiDeadline, iterateAiOperation } from "../services/ai/core/request-lifetime.js";
 
 const CHAT_UNAVAILABLE_MESSAGE = "Dr. Ai is temporarily unavailable. Please try again later.";
+
+const createChatLifetime = (req: Request, res: Response) => {
+  const deadline = createAiDeadline(ENV.DR_AI_REQUEST_TIMEOUT_MS);
+  const onDisconnect = () => {
+    if (!res.writableFinished) deadline.abort(new DOMException('Chat client disconnected.', 'AbortError'));
+  };
+  req.once('aborted', onDisconnect);
+  res.once('close', onDisconnect);
+  if (req.aborted || res.destroyed) onDisconnect();
+  return {
+    signal: deadline.signal,
+    dispose: () => {
+      req.removeListener('aborted', onDisconnect);
+      res.removeListener('close', onDisconnect);
+      deadline.dispose();
+    },
+  };
+};
 
 const appendToHistory = (history: ChatTurn[], message: string, reply: string): ChatTurn[] => {
   const newTurns: ChatTurn[] = [
@@ -25,6 +45,7 @@ const appendToHistory = (history: ChatTurn[], message: string, reply: string): C
  *   history  {ChatTurn[]} - Updated conversation history (append & send back next time)
  */
 export const sendMessage = async (req: Request, res: Response) => {
+  let lifetime: ReturnType<typeof createChatLifetime> | undefined;
   try {
     const { message, history = [] } = req.body;
 
@@ -50,7 +71,11 @@ export const sendMessage = async (req: Request, res: Response) => {
       });
     }
 
-    const { reply, sources, metrics } = await askDrAi(message.trim(), history as ChatTurn[]);
+    lifetime = createChatLifetime(req, res);
+    const { reply, sources, metrics } = await awaitAiOperation(
+      () => askDrAi(message.trim(), history as ChatTurn[], { signal: lifetime!.signal }), lifetime.signal,
+    );
+    lifetime.signal.throwIfAborted();
     if (metrics) {
       res.setHeader(
         "Server-Timing",
@@ -71,12 +96,15 @@ export const sendMessage = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
+    if (res.destroyed || req.aborted) return;
     const err = error as { message?: string; status?: number };
     console.error("Chat Controller Error:", err?.message || error);
     return res.status(503).json({
       status: "error",
       message: CHAT_UNAVAILABLE_MESSAGE,
     });
+  } finally {
+    lifetime?.dispose();
   }
 };
 
@@ -85,6 +113,8 @@ const writeSse = (res: Response, event: string, data: unknown) => {
 };
 
 export const streamMessage = async (req: Request, res: Response) => {
+  let lifetime: ReturnType<typeof createChatLifetime> | undefined;
+  let heartbeat: ReturnType<typeof setInterval> | undefined;
   try {
     const { message, history = [] } = req.body;
     if (!message || typeof message !== "string" || !message.trim()) {
@@ -98,25 +128,35 @@ export const streamMessage = async (req: Request, res: Response) => {
     }
 
     const trimmedMessage = message.trim();
+    lifetime = createChatLifetime(req, res);
+    lifetime.signal.throwIfAborted();
     res.status(200);
     res.setHeader("Content-Type", "text/event-stream; charset=utf-8");
     res.setHeader("Cache-Control", "no-cache, no-transform");
     res.setHeader("Connection", "keep-alive");
     res.setHeader("X-Accel-Buffering", "no");
     res.flushHeaders();
-    const stream = await streamDrAi(trimmedMessage, history as ChatTurn[]);
+    heartbeat = setInterval(() => {
+      if (!res.destroyed && !res.writableEnded) res.write(': heartbeat\n\n');
+    }, 15_000);
+    const stream = await awaitAiOperation(
+      () => streamDrAi(trimmedMessage, history as ChatTurn[], { signal: lifetime!.signal }), lifetime.signal,
+    );
+    lifetime.signal.throwIfAborted();
     writeSse(res, "sources", { sources: stream.sources });
 
-    for await (const text of stream.chunks) {
-      if (res.destroyed) return;
+    for await (const text of iterateAiOperation(stream.chunks, lifetime.signal)) {
+      lifetime.signal.throwIfAborted();
       writeSse(res, "chunk", { text });
     }
 
+    lifetime.signal.throwIfAborted();
     const result = stream.getResult();
     const updatedHistory = appendToHistory(history as ChatTurn[], trimmedMessage, result.reply);
     writeSse(res, "done", { history: updatedHistory, sources: result.sources, metrics: result.metrics });
     return res.end();
   } catch (error) {
+    if (res.destroyed || req.aborted) return;
     const err = error as { message?: string; status?: number };
     console.error("Streaming Chat Controller Error:", err?.message || error);
     if (!res.headersSent) {
@@ -127,5 +167,8 @@ export const streamMessage = async (req: Request, res: Response) => {
     }
     writeSse(res, "error", { message: CHAT_UNAVAILABLE_MESSAGE });
     return res.end();
+  } finally {
+    clearInterval(heartbeat);
+    lifetime?.dispose();
   }
 };

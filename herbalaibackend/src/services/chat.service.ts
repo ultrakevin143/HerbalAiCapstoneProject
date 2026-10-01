@@ -1,6 +1,7 @@
 import { AskAIService } from "./ai/chat/ask-ai-service.js";
 import { createDrAiStream } from "./ai/chat/ask-ai-service.js";
 import type { DrAiTimingMetrics } from "./ai/chat/ask-ai-service.js";
+import type { AiRequestOptions } from "./ai/core/request-lifetime.js";
 
 /**
  * Represents a single message in a conversation history.
@@ -38,8 +39,10 @@ const safetyReply = (userMessage: string): string | null => {
  */
 export const askDrAi = async (
   userMessage: string,
-  history: ChatTurn[] = []
+  history: ChatTurn[] = [],
+  options: AiRequestOptions = {},
 ): Promise<{ reply: string; sources: Source[]; metrics?: DrAiTimingMetrics }> => {
+  options.signal?.throwIfAborted();
   // Safety check — block clearly off-topic or dangerous queries before querying db/AI
   const blockedReply = safetyReply(userMessage);
   if (blockedReply) {
@@ -50,7 +53,7 @@ export const askDrAi = async (
   }
 
   // Delegate RAG flow to AskAIService
-  const result = await AskAIService(userMessage, history);
+  const result = await AskAIService(userMessage, history, options);
   
   if (result.status === "error") {
     throw {
@@ -66,7 +69,8 @@ export const askDrAi = async (
   };
 };
 
-export const streamDrAi = async (userMessage: string, history: ChatTurn[] = []) => {
+export const streamDrAi = async (userMessage: string, history: ChatTurn[] = [], options: AiRequestOptions = {}) => {
+  options.signal?.throwIfAborted();
   const blockedReply = safetyReply(userMessage);
   if (blockedReply) {
     const chunks = async function* () { yield blockedReply; };
@@ -76,5 +80,5 @@ export const streamDrAi = async (userMessage: string, history: ChatTurn[] = []) 
       getResult: () => ({ reply: blockedReply, sources: [] as Source[], metrics: undefined }),
     };
   }
-  return createDrAiStream(userMessage, history);
+  return createDrAiStream(userMessage, history, options);
 };

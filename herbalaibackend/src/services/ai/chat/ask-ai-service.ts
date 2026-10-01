@@ -4,6 +4,8 @@ import { generateEmbedding, generateChatResponse, generateChatResponseStream } f
 import type { Content } from "@google/generative-ai";
 import type { HerbQueryResult } from "../../../repositories/herb.repository.js";
 import type { KBQueryResult } from "../../../repositories/knowledgebase.repository.js";
+import { awaitAiOperation, iterateAiOperation } from "../core/request-lifetime.js";
+import type { AiRequestOptions } from "../core/request-lifetime.js";
 
 const STOP_WORDS = new Set([
   "a", "about", "and", "are", "dose", "dosage", "for", "from", "guidance", "herb", "herbal", "how", "is", "it",
@@ -145,9 +147,9 @@ const formatKBContext = (entries: RetrievedKB[]) => entries.map((entry, index) =
   })}`
 ).join('\n\n');
 
-async function prepareDrAiContext(question: string, history: Content[], pediatricRequest: boolean): Promise<PreparedDrAiContext> {
+async function prepareDrAiContext(question: string, history: Content[], pediatricRequest: boolean, options: AiRequestOptions): Promise<PreparedDrAiContext> {
   const catalogStartedAt = performance.now();
-  const { herbs: catalog } = await findAllHerbs();
+  const { herbs: catalog } = await awaitAiOperation(() => findAllHerbs(), options.signal);
   const normalizedQuestion = normalize(question);
   let namedHerbs = catalog.filter((herb) =>
     herb.isVerified !== false && [herb.localName, herb.scientificName]
@@ -171,7 +173,7 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
       normalize(herb.scientificName),
       ...normalize(herb.localName).split(' '),
     ]);
-    const namedKnowledge = await findActiveKBByTerms(exactTerms, 3);
+    const namedKnowledge = await awaitAiOperation(() => findActiveKBByTerms(exactTerms, 3), options.signal);
     const context = [
       namedHerbs.map((herb, index) => formatHerbContext(herb, index, question, pediatricRequest)).join("\n\n"),
       namedKnowledge.length > 0 && !pediatricRequest ? `General Knowledge Base / FAQs:\n${formatKBContext(namedKnowledge)}` : '',
@@ -194,8 +196,9 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
   const embeddingStartedAt = performance.now();
   let embedding: number[];
   try {
-    embedding = await generateEmbedding(question);
+    embedding = await awaitAiOperation(() => generateEmbedding(question, options), options.signal);
   } catch {
+    options.signal?.throwIfAborted();
     console.warn('Dr. Ai embedding unavailable; repository retrieval could not finish.');
     return {
       context: RETRIEVAL_UNAVAILABLE_CONTEXT,
@@ -212,10 +215,10 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
   const vectorStr = `[${embedding.join(",")}]`;
 
   const retrievalStartedAt = performance.now();
-  const [rawKB, rawHerbs] = await Promise.all([
+  const [rawKB, rawHerbs] = await awaitAiOperation(() => Promise.all([
     searchSimilarKB(vectorStr, 3),
     searchSimilarHerbs(vectorStr, 3)
-  ]);
+  ]), options.signal);
   const retrievalMs = performance.now() - retrievalStartedAt;
 
   const explicitlyNamedHerbs = rawHerbs.filter((herb) =>
@@ -290,17 +293,18 @@ const logMetrics = (question: string, prepared: PreparedDrAiContext, metrics: Dr
   }));
 };
 
-export async function AskAIService(question: string, history: Content[] = []) {
+export async function AskAIService(question: string, history: Content[] = [], options: AiRequestOptions = {}) {
   const totalStartedAt = performance.now();
   try {
     const pediatricRequest = isPediatricRequest(question, history);
-    const prepared = await prepareDrAiContext(question, history, pediatricRequest);
+    const prepared = await prepareDrAiContext(question, history, pediatricRequest, options);
     const generationStartedAt = performance.now();
     let answer = prepared.fallbackReply;
     if (prepared.sources.length > 0 && !pediatricRequest) {
       try {
-        answer = await generateChatResponse(question, prepared.context, history);
+        answer = await awaitAiOperation(() => generateChatResponse(question, prepared.context, history, options), options.signal);
       } catch {
+        options.signal?.throwIfAborted();
         console.warn('Dr. Ai generation unavailable; using retrieved records.');
       }
     }
@@ -323,20 +327,22 @@ export async function AskAIService(question: string, history: Content[] = []) {
       },
     };
   } catch (error) {
+    options.signal?.throwIfAborted();
     console.error("AskAIService Error:", error);
     return { code: 500, status: "error", message: "Dr. Ai assistant is currently unavailable." };
   }
 }
 
-export async function createDrAiStream(question: string, history: Content[] = []) {
+export async function createDrAiStream(question: string, history: Content[] = [], options: AiRequestOptions = {}) {
   const totalStartedAt = performance.now();
   const pediatricRequest = isPediatricRequest(question, history);
-  const prepared = await prepareDrAiContext(question, history, pediatricRequest);
+  const prepared = await prepareDrAiContext(question, history, pediatricRequest, options);
   const generationStartedAt = performance.now();
   let firstChunkMs: number | undefined;
   let reply = "";
 
   const chunks = async function* () {
+    options.signal?.throwIfAborted();
     if (prepared.sources.length === 0 || pediatricRequest) {
       firstChunkMs = performance.now() - generationStartedAt;
       reply = prepared.fallbackReply;
@@ -344,12 +350,13 @@ export async function createDrAiStream(question: string, history: Content[] = []
       return;
     }
     try {
-      for await (const text of generateChatResponseStream(question, prepared.context, history)) {
+      for await (const text of iterateAiOperation(generateChatResponseStream(question, prepared.context, history, options), options.signal)) {
         firstChunkMs ??= performance.now() - generationStartedAt;
         reply += text;
         yield text;
       }
     } catch {
+      options.signal?.throwIfAborted();
       console.warn('Dr. Ai streaming unavailable; using retrieved records.');
       firstChunkMs ??= performance.now() - generationStartedAt;
       reply = prepared.fallbackReply;

@@ -39,6 +39,51 @@ describe('RAG response context', () => {
     expect(mocks.embed).not.toHaveBeenCalled();
   });
 
+  it('does not read the catalog for an already canceled request', async () => {
+    const controller = new AbortController();
+    controller.abort();
+    await expect(createDrAiStream('Lagundi', [], { signal: controller.signal })).rejects.toMatchObject({ name: 'AbortError' });
+    expect(mocks.catalog).not.toHaveBeenCalled();
+  });
+
+  it('stops waiting for catalog retrieval and does not start a later provider call', async () => {
+    const controller = new AbortController();
+    let release!: (value: unknown) => void;
+    mocks.catalog.mockImplementation(() => new Promise(resolve => { release = resolve; }));
+    const outcome = createDrAiStream('Lagundi', [], { signal: controller.signal }).catch(error => error);
+    await vi.waitFor(() => expect(mocks.catalog).toHaveBeenCalledOnce());
+    controller.abort();
+    expect((await outcome).name).toBe('AbortError');
+    release({ herbs: [herb] });
+    await Promise.resolve();
+    expect(mocks.exactKb).not.toHaveBeenCalled();
+    expect(mocks.stream).not.toHaveBeenCalled();
+  });
+
+  it('does not turn embedding cancellation into a successful retrieval-unavailable fallback', async () => {
+    const controller = new AbortController();
+    mocks.embed.mockImplementation(async (_question, options) => {
+      expect(options.signal).toBe(controller.signal);
+      controller.abort();
+      throw controller.signal.reason;
+    });
+    await expect(createDrAiStream('Unknown plant', [], { signal: controller.signal })).rejects.toMatchObject({ name: 'AbortError' });
+    expect(mocks.stream).not.toHaveBeenCalled();
+    expect(mocks.herbs).not.toHaveBeenCalled();
+  });
+
+  it('does not emit a source-only fallback after generation is canceled', async () => {
+    const controller = new AbortController();
+    mocks.stream.mockImplementation(async function* (_question, _context, _history, options) {
+      expect(options.signal).toBe(controller.signal);
+      controller.abort();
+      throw controller.signal.reason;
+    });
+    const result = await createDrAiStream('Lagundi', [], { signal: controller.signal });
+    await expect(result.chunks.next()).rejects.toMatchObject({ name: 'AbortError' });
+    expect(result.getResult().reply).toBe('');
+  });
+
   it('does not include child-age dosage tables for a general evidence question', async () => {
     mocks.catalog.mockResolvedValue({ herbs: [{ ...herb, dosage: 'Ages 2–4: 3 leaves; adults: 7 leaves.' }] });
     mocks.exactKb.mockResolvedValue([{
