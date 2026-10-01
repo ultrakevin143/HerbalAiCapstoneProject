@@ -24,6 +24,43 @@ export const mergeConversationMessages = <Message extends MessageIdentity>(
   return [...messages.values()].sort(compareMessages);
 };
 
+type ConversationContact = { id: string; name: string };
+type ConversationPreview<Contact extends ConversationContact> = { contact: Contact; lastMessage: string; lastTime: string };
+type PreviewMessage<Contact extends ConversationContact> = MessageIdentity & {
+  content: string;
+  sender?: Contact;
+  receiver?: Contact;
+  isDeleted?: boolean;
+  imageUrl?: string | null;
+};
+
+export const updateConversationPreview = <Contact extends ConversationContact>(
+  current: ConversationPreview<Contact>[], message: PreviewMessage<Contact>, userId: string,
+): ConversationPreview<Contact>[] => {
+  if (!message || typeof message.content !== 'string' || typeof message.senderId !== 'string' || typeof message.receiverId !== 'string') return current;
+  const peerId = message.senderId === userId ? message.receiverId : message.senderId;
+  if (!isConversationMessage(message, userId, peerId)) return current;
+  const existing = current.find(conversation => conversation.contact.id === peerId);
+  const contact = existing?.contact ?? (message.senderId === userId ? message.receiver : message.sender);
+  if (!contact || typeof contact.name !== 'string') return current;
+  if (existing?.lastTime && Date.parse(message.time) < Date.parse(existing.lastTime)) return current;
+  const updated = {
+    contact: { ...contact, id: peerId },
+    lastMessage: message.isDeleted ? 'This message was deleted' : message.imageUrl ? '📷 Sent an image' : message.content,
+    lastTime: message.time,
+  };
+  return [updated, ...current.filter(conversation => conversation.contact.id !== peerId)].sort((first, second) =>
+    (Date.parse(second.lastTime) || 0) - (Date.parse(first.lastTime) || 0) || first.contact.id.localeCompare(second.contact.id));
+};
+
+export const reconcileConversationPreviews = <Contact extends ConversationContact>(
+  snapshot: ConversationPreview<Contact>[], updates: Iterable<PreviewMessage<Contact>>, userId: string,
+): ConversationPreview<Contact>[] => {
+  let conversations = snapshot;
+  for (const message of updates) conversations = updateConversationPreview(conversations, message, userId);
+  return conversations;
+};
+
 export const createHistoryRequests = <Message extends MessageIdentity>() => {
   let revision = 0;
   let current: { revision: number; userId: string; contactId: string } | null = null;

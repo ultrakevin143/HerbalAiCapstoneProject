@@ -8,7 +8,7 @@ import SessionUnavailable from '../../components/SessionUnavailable';
 import EmptyState from '../../components/EmptyState';
 import api from '../../lib/axios';
 import io, { Socket } from 'socket.io-client';
-import { createHistoryRequests, isConversationMessage, mergeConversationMessages, startMessengerConnection } from '../../lib/messenger-sync';
+import { createHistoryRequests, isConversationMessage, mergeConversationMessages, reconcileConversationPreviews, startMessengerConnection, updateConversationPreview } from '../../lib/messenger-sync';
 import { 
   Send, 
   MessageSquare, 
@@ -130,6 +130,7 @@ function MessengerContent() {
   const menuRef = useRef<HTMLDivElement>(null);
   const prependingMessagesRef = useRef(false);
   const conversationQueryRef = useRef(0);
+  const conversationEventsRef = useRef<Map<number, ChatMessage> | null>(null);
   const activeContactRef = useRef<UserProfile | null>(null);
   const [historyRequests] = useState(() => createHistoryRequests<ChatMessage>());
   const synchronizeRef = useRef<() => Promise<void>>(async () => {});
@@ -141,23 +142,12 @@ function MessengerContent() {
         (message.senderId !== user?.id && message.receiverId !== user?.id)) return;
     const userId = user.id;
     historyRequests.record(message);
+    conversationEventsRef.current?.set(message.id, message);
     const contactId = activeContactRef.current?.id;
     if (contactId && isConversationMessage(message, userId, contactId)) {
       setMessages(current => mergeConversationMessages(current, [message], userId, contactId, allowInsert));
     }
-    setConversations(current => {
-      const peerId = message.senderId === userId ? message.receiverId : message.senderId;
-      const existing = current.find(conversation => conversation.contact.id === peerId);
-      const contact = existing?.contact ?? (message.senderId === userId ? message.receiver : message.sender);
-      if (!contact || typeof contact.name !== 'string') return current;
-      if (existing?.lastTime && Date.parse(message.time) < Date.parse(existing.lastTime)) return current;
-      const updated = {
-        contact: { ...contact, id: peerId },
-        lastMessage: message.isDeleted ? 'This message was deleted' : message.imageUrl ? '📷 Sent an image' : message.content,
-        lastTime: message.time,
-      };
-      return [updated, ...current.filter(conversation => conversation.contact.id !== peerId)];
-    });
+    setConversations(current => updateConversationPreview(current, message, userId));
   }, [user, historyRequests]);
 
   // Redirect if not authenticated
@@ -221,6 +211,7 @@ function MessengerContent() {
       connection.stop();
       historyRequests.cancel();
       conversationQueryRef.current += 1;
+      conversationEventsRef.current = null;
     };
   }, [isAuthenticated, user, applyMessage, checkSession, historyRequests]);
 
@@ -230,17 +221,21 @@ function MessengerContent() {
   }, [searchTerm]);
 
   const refreshConversations = useCallback(async () => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || !user) return;
     const version = ++conversationQueryRef.current;
+    const updates = new Map<number, ChatMessage>();
+    conversationEventsRef.current = updates;
     try {
       const response = await api.get('/messages/conversations', { params: { limit: 25, offset: 0, search: debouncedConversationSearch }, timeout: 10000 });
       if (version !== conversationQueryRef.current || response.data?.status !== 'success') return;
-      const page: Conversation[] = response.data.data.conversations || [];
-      setConversations(page);
+      const page: Conversation[] = response.data.data.conversations;
+      if (!Array.isArray(page)) throw new Error('Conversations are unavailable.');
+      setConversations(reconcileConversationPreviews(page, updates.values(), user.id));
       setConversationOffset(page.length);
       setHasMoreConversations(Boolean(response.data.data.hasMore));
     } catch (error) { if (version === conversationQueryRef.current) console.error('Failed to fetch conversations', error); }
-  }, [isAuthenticated, debouncedConversationSearch]);
+    finally { if (conversationEventsRef.current === updates) conversationEventsRef.current = null; }
+  }, [isAuthenticated, user, debouncedConversationSearch]);
 
   useEffect(() => {
     let cancelled = false;
