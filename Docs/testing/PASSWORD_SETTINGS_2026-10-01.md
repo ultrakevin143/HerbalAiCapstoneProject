@@ -53,3 +53,15 @@ A static layout preview was generated outside Git using the real component and b
 5. On an authorized disposable Google account, request the settings email link, observe Gmail delivery, have the user choose a password themselves, then verify email/password and Google login resolve the same account. Confirm a reused link is rejected.
 
 Real password entry/submission, physical-device results and participant UAT are not invented. This report documents a tested local implementation, not completed live acceptance.
+
+## Authorized release and live findings
+
+The user subsequently authorized publication and live testing. The reviewed sixteen-file password-settings batch was committed as `ec6d313845c797bf94245062f121a10822442da6`, leaving the three pre-existing evidence-document edits unstaged. Isolated CI run [36865999919](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/36865999919) passed: 523 backend tests across 67 files, including all six PostgreSQL password-settings cases, and 104 frontend regressions. The same commit was atomically fast-forwarded to main and codex/readability-accessibility. Vercel and Railway reported successful deployments for that SHA.
+
+After publication, a separate live contributor tab restored Herbal QA and the library's 37 published herbs. The new Account settings menu and all password controls rendered. Display name was correctly initialized, and the account username matched the existing disposable QA account. A separate Gina administrator tab restored its dashboard without Forbidden; no administrator password or database record was changed.
+
+The settings Email a password link action completed with the neutral recovery response. Searching the exact disposable Gmail alias with in:anywhere/newer_than:1h returned one new matching password-reset email in Inbox, timestamped 9:17 PM Philippine time on 1 October. This proves actual delivery for this request, not unlimited future mail availability or a completed password change.
+
+A live keyboard defect was reproduced: pressing Tab while the final Email a password link control was focused moved focus to the herbal-library search input behind the still-open modal. DOM inspection confirmed dialogContainsFocus was false. This pre-existing profile-dialog behavior became visible during password-settings acceptance and was not counted as a pass.
+
+A focused frontend follow-up adds initial dialog focus, Tab/Shift+Tab containment, Escape closing, background-scroll locking and cleanup/focus restoration. It preserves the existing styling and adds eight regression cases for the actual focus helper. Local combined frontend regressions now pass 112/112; frontend typecheck, lint and production build also passed. This follow-up still requires reviewed publication and live confirmation at the time of this entry.

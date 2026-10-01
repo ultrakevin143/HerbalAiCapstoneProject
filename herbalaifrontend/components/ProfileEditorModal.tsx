@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Save, UserRound, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import PasswordSettings from './PasswordSettings';
+import { activateDialog } from '../lib/dialog-focus';
 
 interface ProfileEditorModalProps {
   isOpen: boolean;
@@ -17,6 +18,18 @@ export default function ProfileEditorModal({ isOpen, onClose }: ProfileEditorMod
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef(onClose);
+  const userId = user?.id;
+
+  useEffect(() => { closeRef.current = onClose; }, [onClose]);
+  useEffect(() => {
+    if (!isOpen || !userId || !panelRef.current) return;
+    const returnFocus = Array.from(document.querySelectorAll<HTMLElement>(
+      'button[aria-label="User account menu"],button[aria-label="Toggle navigation menu"]',
+    )).find(control => control.getClientRects().length > 0);
+    return activateDialog(panelRef.current, () => closeRef.current(), returnFocus);
+  }, [isOpen, userId]);
 
   if (!isOpen || !user) return null;
 
@@ -41,6 +54,8 @@ export default function ProfileEditorModal({ isOpen, onClose }: ProfileEditorMod
   return (
     <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4 py-6" onClick={onClose}>
       <div
+        ref={panelRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby="profile-editor-title"

@@ -12,8 +12,11 @@ const compile = async path => ts.transpileModule(await readFile(new URL(path, im
 }).outputText;
 const compiled = await compile('../herbalaifrontend/components/PasswordSettings.tsx');
 const profileCompiled = await compile('../herbalaifrontend/components/ProfileEditorModal.tsx');
+const dialogCompiled = await compile('../herbalaifrontend/lib/dialog-focus.ts');
+const dialogExports = {};
+new Function('exports', dialogCompiled)(dialogExports);
 const icons = new Proxy({}, { get: () => props => React.createElement('svg', props) });
-const user = { name: 'TEST settings', email: 'test@example.invalid', username: 'settings_test', avatar: null };
+const user = { id: 'TEST-settings-user', name: 'TEST settings', email: 'test@example.invalid', username: 'settings_test', avatar: null };
 const load = (source, react, api, passwordComponent) => {
   const exports = {};
   const dependency = name => {
@@ -22,6 +25,7 @@ const load = (source, react, api, passwordComponent) => {
     if (name === '../lib/axios') return { __esModule: true, default: api };
     if (name === '../context/AuthContext') return { useAuth: () => ({ user, updateProfile: async () => {} }) };
     if (name === './PasswordSettings') return { __esModule: true, default: passwordComponent };
+    if (name === '../lib/dialog-focus') return dialogExports;
     return requireFrontend(name);
   };
   new Function('require', 'exports', source)(dependency, exports);
@@ -185,4 +189,104 @@ test('password visibility uses a labelled toggle without changing field values',
   assert.equal((markup.match(/type="text"/g) || []).length, 3);
   assert.match(markup, /Hide passwords/);
   assert.equal(instance.state[0], 'TEST-original-password');
+});
+
+const dialogFixture = () => {
+  const listeners = new Map();
+  const owner = {
+    activeElement: null, body: { style: { overflow: 'auto' } },
+    addEventListener: (name, listener) => listeners.set(name, listener),
+    removeEventListener: (name, listener) => { if (listeners.get(name) === listener) listeners.delete(name); },
+  };
+  const element = (visible = true) => ({
+    isConnected: true, disabled: false,
+    getClientRects: () => visible ? [{}] : [],
+    focus() { owner.activeElement = this; },
+  });
+  const previous = element();
+  previous.focus();
+  const controls = [element(), element(), element()];
+  const panel = {
+    ownerDocument: owner, focus() { owner.activeElement = this; },
+    contains: target => target === panel || controls.includes(target),
+    querySelectorAll: () => controls.filter(control => !control.disabled),
+  };
+  let closes = 0;
+  const cleanup = dialogExports.activateDialog(panel, () => { closes++; }, previous);
+  const key = (value, shiftKey = false) => {
+    let prevented = false;
+    listeners.get('keydown')({ key: value, shiftKey, preventDefault() { prevented = true; }, stopPropagation() {} });
+    return prevented;
+  };
+  return { owner, previous, panel, controls, listeners, cleanup, key, closes: () => closes };
+};
+
+test('dialog takes focus and locks background scrolling, then restores both on cleanup', () => {
+  const instance = dialogFixture();
+  assert.equal(instance.owner.activeElement, instance.panel);
+  assert.equal(instance.owner.body.style.overflow, 'hidden');
+  instance.cleanup();
+  assert.equal(instance.owner.activeElement, instance.previous);
+  assert.equal(instance.owner.body.style.overflow, 'auto');
+  assert.equal(instance.listeners.size, 0);
+});
+
+test('Tab from the last control wraps to the first instead of the library behind the dialog', () => {
+  const instance = dialogFixture();
+  instance.controls.at(-1).focus();
+  assert.equal(instance.key('Tab'), true);
+  assert.equal(instance.owner.activeElement, instance.controls[0]);
+  instance.cleanup();
+});
+
+test('Shift+Tab from the first control wraps to the last', () => {
+  const instance = dialogFixture();
+  instance.controls[0].focus();
+  assert.equal(instance.key('Tab', true), true);
+  assert.equal(instance.owner.activeElement, instance.controls.at(-1));
+  instance.cleanup();
+});
+
+test('Tab from the panel or an accidentally focused background control enters the dialog', () => {
+  const instance = dialogFixture();
+  assert.equal(instance.key('Tab'), true);
+  assert.equal(instance.owner.activeElement, instance.controls[0]);
+  instance.previous.focus();
+  assert.equal(instance.key('Tab', true), true);
+  assert.equal(instance.owner.activeElement, instance.controls.at(-1));
+  instance.cleanup();
+});
+
+test('disabled and hidden controls do not become keyboard wrap targets', () => {
+  const instance = dialogFixture();
+  instance.controls[0].disabled = true;
+  instance.controls.at(-1).getClientRects = () => [];
+  assert.equal(instance.key('Tab'), true);
+  assert.equal(instance.owner.activeElement, instance.controls[1]);
+  instance.cleanup();
+});
+
+test('an empty or busy dialog keeps focus on its panel', () => {
+  const instance = dialogFixture();
+  instance.controls.splice(0);
+  instance.previous.focus();
+  assert.equal(instance.key('Tab'), true);
+  assert.equal(instance.owner.activeElement, instance.panel);
+  instance.cleanup();
+});
+
+test('Escape closes once while ordinary typing is not intercepted', () => {
+  const instance = dialogFixture();
+  assert.equal(instance.key('a'), false);
+  assert.equal(instance.closes(), 0);
+  assert.equal(instance.key('Escape'), true);
+  assert.equal(instance.closes(), 1);
+  instance.cleanup();
+});
+
+test('cleanup does not try to focus a removed account-menu trigger', () => {
+  const instance = dialogFixture();
+  instance.previous.isConnected = false;
+  instance.cleanup();
+  assert.equal(instance.owner.activeElement, instance.panel);
 });
