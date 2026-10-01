@@ -4,10 +4,10 @@ import * as forumRepo from '../repositories/forum.repository.js';
 import { publicPagination } from '../utils/public-pagination.js';
 
 const parsePositiveId = (value: unknown): number | null => {
-  if (typeof value === 'number') return Number.isSafeInteger(value) && value > 0 ? value : null;
+  if (typeof value === 'number') return Number.isSafeInteger(value) && value > 0 && value <= 2147483647 ? value : null;
   if (typeof value !== 'string' || !/^[1-9]\d*$/.test(value)) return null;
   const parsed = Number(value);
-  return Number.isSafeInteger(parsed) ? parsed : null;
+  return Number.isSafeInteger(parsed) && parsed <= 2147483647 ? parsed : null;
 };
 
 export class ForumController {

@@ -79,3 +79,7 @@ Authenticated live moderation checks are pending because Chrome profiles were no
 ## Messenger atomicity and pagination follow-up
 
 `MESSENGER_ATOMICITY_PAGINATION_2026-10-01.md` records the next backend-only batch: conditional owner/non-deleted mutations, suppression of duplicate deletion broadcasts, and time-plus-ID history pagination. Read its executed results for the distinction between local mocks, isolated PostgreSQL concurrency fixtures, and live checks. No frontend or production credential change is included.
+
+## Forum ID range follow-up
+
+`FORUM_ID_BOUNDARIES_2026-10-01.md` records the forum's missing PostgreSQL Int upper bound, the two-line shared-parser repair, and regression coverage for thread/comment endpoints and parent IDs. Consult its executed results before counting isolated-database or live checks as passed. The Messenger reconnect/history issue remains separate and requires frontend behavior work.

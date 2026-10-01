@@ -162,4 +162,28 @@ describe('isolated authenticated community moderation flow', () => {
     expect((await prisma.threadComment.findUniqueOrThrow({ where: { id: commentId } })).isDeleted).toBe(false);
     expect(await prisma.auditLog.count({ where: { adminId: missingAdminId } })).toBe(0);
   }, 30000);
+
+  it('rejects oversized thread, comment, and parent IDs without database errors or writes', async () => {
+    const threadId = await createDiscussion();
+    const initialThreads = await prisma.thread.count({ where: { authorId: { in: userIds } } });
+    const initialComments = await prisma.threadComment.count({ where: { authorId: { in: userIds } } });
+    const initialAudit = await prisma.auditLog.count({ where: { adminId: { in: userIds } } });
+    const routes = [
+      ['get', '/threads/', ''], ['delete', '/threads/', ''], ['post', '/threads/', '/like'],
+      ['get', '/threads/', '/like-status'], ['get', '/threads/', '/comment-like-statuses'],
+      ['post', '/threads/', '/comments'], ['post', '/comments/', '/like'], ['delete', '/comments/', ''],
+    ] as const;
+    for (const id of ['2147483648', '9007199254740991', '999999999999']) {
+      for (const [method, prefix, routeSuffix] of routes) {
+        expect((await author[method](`/api/forum${prefix}${id}${routeSuffix}`).send({ content: 'TEST ONLY oversized ID' })).status).toBe(400);
+      }
+      expect((await author.post(`/api/forum/threads/${threadId}/comments`).send({ content: 'TEST ONLY oversized parent', parentCommentId: id })).status).toBe(400);
+      expect((await author.post(`/api/forum/threads/${threadId}/comments`).send({ content: 'TEST ONLY oversized parent', parentCommentId: Number(id) })).status).toBe(400);
+    }
+    expect((await request(app).get('/api/forum/threads/2147483647')).status).toBe(404);
+    expect(await prisma.thread.count({ where: { authorId: { in: userIds } } })).toBe(initialThreads);
+    expect(await prisma.threadComment.count({ where: { authorId: { in: userIds } } })).toBe(initialComments);
+    expect(await prisma.auditLog.count({ where: { adminId: { in: userIds } } })).toBe(initialAudit);
+    expect(await prisma.thread.findUniqueOrThrow({ where: { id: threadId } })).toMatchObject({ views: 0, likes: 0, isDeleted: false });
+  }, 30000);
 });
