@@ -15,6 +15,9 @@ const profileCompiled = await compile('../herbalaifrontend/components/ProfileEdi
 const dialogCompiled = await compile('../herbalaifrontend/lib/dialog-focus.ts');
 const forgotCompiled = await compile('../herbalaifrontend/app/forgot-password/page.tsx');
 const resetCompiled = await compile('../herbalaifrontend/app/reset-password/page.tsx');
+const feedbackCompiled = await compile('../herbalaifrontend/lib/request-feedback.ts');
+const feedbackExports = {};
+new Function('exports', feedbackCompiled)(feedbackExports);
 const dialogExports = {};
 new Function('exports', dialogCompiled)(dialogExports);
 const icons = new Proxy({}, { get: () => props => React.createElement('svg', props) });
@@ -26,6 +29,7 @@ const load = (source, react, api, passwordComponent, overrides = {}) => {
     if (name === 'react') return react;
     if (name === 'lucide-react') return icons;
     if (name === '../lib/axios' || name === '../../lib/axios') return { __esModule: true, default: api };
+    if (name === '../lib/request-feedback' || name === '../../lib/request-feedback') return feedbackExports;
     if (name === '../context/AuthContext') return { useAuth: () => ({ user, updateProfile: async () => {} }) };
     if (name === './PasswordSettings') return { __esModule: true, default: passwordComponent };
     if (name === '../lib/dialog-focus') return dialogExports;
@@ -114,6 +118,66 @@ test('settings explain optional app-password creation without claiming to know t
 const pageOverrides = token => ({
   'next/link': { __esModule: true, default: ({ href, children }) => React.createElement('a', { href }, children) },
   'next/navigation': { useRouter: () => ({ replace() {} }), useSearchParams: () => new URLSearchParams(token ? { token } : {}) },
+});
+
+const recoveryFixture = (surface, post) => {
+  const state = surface === 'profile' ? [user.name, '', false, null, null]
+    : surface === 'forgot' ? [user.email, null, null, false]
+    : ['TEST-new-password', 'TEST-new-password', null, null, false];
+  let cursor = 0;
+  const hooks = { ...React, useEffect() {}, useRef: value => ({ current: value }), useState: () => {
+    const index = cursor++;
+    return [state[index], value => { state[index] = value; }];
+  } };
+  const overrides = surface === 'profile' ? {
+    '../context/AuthContext': { useAuth: () => ({ user, updateProfile: body => post('/auth/me', body) }) },
+  } : pageOverrides('TEST-only-reset-token');
+  const source = surface === 'profile' ? profileCompiled : surface === 'forgot' ? forgotCompiled : resetCompiled;
+  const component = load(source, hooks, { post }, () => null, overrides);
+  const render = () => {
+    cursor = 0;
+    const tree = component({ isOpen: true, onClose() {} });
+    return surface === 'reset' ? children(tree)[0].type() : tree;
+  };
+  return {
+    state, render,
+    submit: () => find(render(), element => element.type === 'form').props.onSubmit({ preventDefault() {} }),
+  };
+};
+
+for (const surface of ['profile', 'forgot', 'reset']) {
+  for (const message of [{ detail: 'TEST malformed message' }, 42, true, '   ']) {
+    test(`${surface} failure stays renderable for ${JSON.stringify(message)}`, async () => {
+      const instance = recoveryFixture(surface, async () => { throw { response: { data: { message } } }; });
+      await instance.submit();
+      const markup = renderToStaticMarkup(instance.render());
+      assert.match(markup, /Unable to save your profile|Failed to request password reset|Failed to reset password/);
+      assert.equal(instance.state[surface === 'profile' ? 2 : surface === 'forgot' ? 3 : 4], false);
+    });
+  }
+}
+
+for (const surface of ['forgot', 'reset']) {
+  for (const response of [{}, { data: null }, { data: { message: { detail: 'TEST invalid success' } } }, { data: { message: '   ' } }]) {
+    test(`${surface} acknowledgement stays renderable for ${JSON.stringify(response)}`, async () => {
+      const instance = recoveryFixture(surface, async () => response);
+      await instance.submit();
+      const markup = renderToStaticMarkup(instance.render());
+      assert.match(markup, surface === 'forgot' ? /If an account with that email exists/ : /Password has been reset successfully/);
+      if (surface === 'forgot') assert.doesNotMatch(markup, /has been sent/);
+      assert.equal(instance.state[surface === 'forgot' ? 1 : 2], null);
+    });
+  }
+}
+
+test('expired reset-token feedback removes the form and offers normal recovery', async () => {
+  const instance = recoveryFixture('reset', async () => { throw { response: { data: { message: 'Invalid or expired password reset token.' } } }; });
+  await instance.submit();
+  assert.equal(instance.state[2], 'Invalid or expired password reset token.');
+  const markup = renderToStaticMarkup(instance.render());
+  assert.doesNotMatch(markup, /<form|type="password"/);
+  assert.match(markup, /Request a New Reset Link/);
+  assert.match(markup, /href="\/forgot-password"/);
 });
 
 test('public recovery explains separate Herbal-Ai credentials and the continuing Google option', () => {

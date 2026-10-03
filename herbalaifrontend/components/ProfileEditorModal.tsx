@@ -5,6 +5,7 @@ import { Save, UserRound, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import PasswordSettings from './PasswordSettings';
 import { activateDialog } from '../lib/dialog-focus';
+import { requestError } from '../lib/request-feedback';
 
 interface ProfileEditorModalProps {
   isOpen: boolean;
@@ -42,10 +43,7 @@ export default function ProfileEditorModal({ isOpen, onClose }: ProfileEditorMod
       await updateProfile({ name: name.trim(), avatar: avatar.trim() || null });
       setMessage('Profile saved.');
     } catch (caught: unknown) {
-      const apiMessage = typeof caught === 'object' && caught !== null && 'response' in caught
-        ? (caught as { response?: { data?: { message?: string } } }).response?.data?.message
-        : null;
-      setError(apiMessage || 'Unable to save your profile. Please try again.');
+      setError(requestError(caught, 'Unable to save your profile. Please try again.'));
     } finally {
       setSaving(false);
     }

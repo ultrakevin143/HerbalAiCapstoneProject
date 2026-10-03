@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import api from '../../lib/axios';
+import { requestError, responseMessage } from '../../lib/request-feedback';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -18,15 +19,9 @@ export default function ForgotPasswordPage() {
 
     try {
       const response = await api.post('/auth/forgot-password', { email });
-      setSuccess(response.data?.message || 'If an account with that email exists, a password link has been requested. Check your inbox and Spam folder; if you requested one recently, wait an hour before trying again.');
+      setSuccess(responseMessage(response, 'If an account with that email exists, a password link has been requested. Check your inbox and Spam folder; if you requested one recently, wait an hour before trying again.'));
     } catch (err: unknown) {
-      console.error(err);
-      const axiosErr = err as { response?: { data?: { message?: string } }; message?: string };
-      setError(
-        axiosErr.response?.data?.message ||
-        axiosErr.message ||
-        'Failed to request password reset. Please try again.'
-      );
+      setError(requestError(err, 'Failed to request password reset. Please try again.'));
     } finally {
       setLoading(false);
     }

@@ -4,6 +4,7 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import api from '../../lib/axios';
+import { requestError, responseMessage } from '../../lib/request-feedback';
 
 function ResetPasswordForm() {
   const router = useRouter();
@@ -63,16 +64,11 @@ function ResetPasswordForm() {
 
       setPassword('');
       setConfirmPassword('');
-      setSuccess(response.data.message || 'Password has been reset successfully!');
+      setSuccess(responseMessage(response, 'Password has been reset successfully!'));
     } catch (err: unknown) {
-      const axiosErr = err as { response?: { data?: { message?: string } }; message?: string };
       setPassword('');
       setConfirmPassword('');
-      setError(
-        axiosErr.response?.data?.message ||
-        axiosErr.message ||
-        'Failed to reset password. The link may have expired or is invalid.'
-      );
+      setError(requestError(err, 'Failed to reset password. The link may have expired or is invalid.'));
     } finally {
       setLoading(false);
     }

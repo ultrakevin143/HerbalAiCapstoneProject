@@ -4,15 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { Eye, EyeOff, KeyRound, Mail } from 'lucide-react';
 import api from '../lib/axios';
-
-function requestError(caught: unknown, fallback: string): string {
-  const data = (caught as { response?: { data?: { message?: unknown; errors?: unknown } } } | null)?.response?.data;
-  const firstError = Array.isArray(data?.errors) ? data.errors[0] as { message?: unknown } | null : null;
-  for (const candidate of [firstError?.message, data?.message]) {
-    if (typeof candidate === 'string' && candidate.trim()) return candidate.trim();
-  }
-  return fallback;
-}
+import { requestError, responseMessage } from '../lib/request-feedback';
 
 export default function PasswordSettings({ email, onChanged }: { email: string; onChanged: () => void }) {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -72,10 +64,7 @@ export default function PasswordSettings({ email, onChanged }: { email: string; 
     setLinkError(null);
     try {
       const response = await api.post('/auth/password-setup', {});
-      const responseMessage = response?.data?.message;
-      setMessage(typeof responseMessage === 'string' && responseMessage.trim()
-        ? responseMessage
-        : 'Check your email and Spam folder. Requests are limited to once an hour.');
+      setMessage(responseMessage(response, 'Check your email and Spam folder. Requests are limited to once an hour.'));
     } catch (caught: unknown) {
       setLinkError(requestError(caught, 'Could not request a password link. Check your connection and try again.'));
     } finally {
