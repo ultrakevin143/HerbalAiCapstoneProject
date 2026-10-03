@@ -253,6 +253,38 @@ test('setup fallback requests checking inbox without claiming mail delivery was 
   assert.match(renderToStaticMarkup(instance.render()), /Password link requested/);
 });
 
+for (const [name, data] of [
+  ['object message', { message: { detail: 'TEST invalid object' } }],
+  ['numeric message', { message: 42 }],
+  ['boolean message', { message: true }],
+  ['whitespace message', { message: '   ' }],
+  ['object validation message', { errors: [{ message: { detail: 'TEST invalid validation' } }] }],
+  ['array validation message', { errors: [{ message: ['TEST invalid array'] }] }],
+]) {
+  for (const action of ['change', 'link']) {
+    test(`malformed ${name} stays renderable after ${action} failure`, async () => {
+      const instance = fixture({}, async () => { throw { response: { data } }; });
+      await instance[action]();
+      const markup = renderToStaticMarkup(instance.render());
+      assert.equal(typeof instance.state[action === 'change' ? 5 : 7], 'string');
+      assert.match(markup, action === 'change' ? /Could not confirm the password change/ : /Could not request a password link/);
+      assert.equal(instance.lock.current, false);
+      assert.equal(instance.state[4], null);
+      assert.equal(instance.state[0], 'TEST-original-password');
+    });
+  }
+}
+
+test('a malformed validation detail does not hide a valid response message', async () => {
+  const instance = fixture({}, async () => { throw { response: { data: {
+    errors: [{ message: { detail: 'TEST invalid validation' } }],
+    message: 'Current password is incorrect.',
+  } } }; });
+  await instance.change();
+  assert.equal(instance.state[5], 'Current password is incorrect.');
+  assert.match(renderToStaticMarkup(instance.render()), /Current password is incorrect/);
+});
+
 test('link failure unlocks the form and presents an error, not success', async () => {
   const instance = fixture({}, async () => { throw new Error('TEST mail request failure'); });
   await instance.link();

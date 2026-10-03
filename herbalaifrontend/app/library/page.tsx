@@ -251,8 +251,18 @@ function LibraryContent() {
             {filteredHerbs.map((herb) => (
               <div
                 key={herb.id}
+                role="button"
+                tabIndex={0}
+                aria-haspopup="dialog"
+                aria-label={`View ${herb.localName} details`}
                 onClick={() => setSelectedHerb(herb)}
-                className="herb-figma-card library-herb-card group flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-line bg-panel shadow-sm transition-colors hover:border-line-strong"
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    setSelectedHerb(herb);
+                  }
+                }}
+                className="herb-figma-card library-herb-card group flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-line bg-panel shadow-sm transition-colors hover:border-line-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 {/* Image & Category Overlay */}
                 <div className="herb-figma-img relative flex h-44 w-full items-center justify-center overflow-hidden bg-soft sm:h-48 lg:h-52">

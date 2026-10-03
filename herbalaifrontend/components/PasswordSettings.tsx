@@ -6,8 +6,12 @@ import { Eye, EyeOff, KeyRound, Mail } from 'lucide-react';
 import api from '../lib/axios';
 
 function requestError(caught: unknown, fallback: string): string {
-  const response = (caught as { response?: { data?: { message?: string; errors?: { message?: string }[] } } } | null)?.response;
-  return response?.data?.errors?.[0]?.message || response?.data?.message || fallback;
+  const data = (caught as { response?: { data?: { message?: unknown; errors?: unknown } } } | null)?.response?.data;
+  const firstError = Array.isArray(data?.errors) ? data.errors[0] as { message?: unknown } | null : null;
+  for (const candidate of [firstError?.message, data?.message]) {
+    if (typeof candidate === 'string' && candidate.trim()) return candidate.trim();
+  }
+  return fallback;
 }
 
 export default function PasswordSettings({ email, onChanged }: { email: string; onChanged: () => void }) {

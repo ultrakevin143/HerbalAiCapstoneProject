@@ -117,6 +117,10 @@ jobs:
         working-directory: herbalaifrontend
         run: node --test ../scripts/admin-logout.test.mjs
 
+      - name: Run library keyboard regressions
+        working-directory: herbalaifrontend
+        run: node --test ../scripts/library-accessibility.test.mjs
+
       - name: Run Frontend Build
         working-directory: herbalaifrontend
         env:

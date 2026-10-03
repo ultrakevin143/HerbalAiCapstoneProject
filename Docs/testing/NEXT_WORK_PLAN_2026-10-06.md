@@ -2,6 +2,8 @@
 
 Prepared 2 October 2026. Scheduled start: **6 October 2026, 8:10 PM Asia/Manila** (12:10 PM UTC). This is a one-time continuation in the existing chat, not a promise that every manual acceptance check can finish unattended.
 
+On 3 October 2026, the user canceled that future schedule and requested immediate execution of this plan. The automation service reported that live-password-acceptance-checks already did not exist; no active matching local automation configuration was found. Today's execution and evidence are recorded in RELEASE_REVIEW_2026-10-03.md. The phases below remain the work plan, not a claim that all acceptance gates have passed.
+
 ## Objective and working boundaries
 
 Close reproducible release-readiness defects in priority order and produce an evidence-backed system handoff. Reuse the selective-release-check worktree; inspect its current branch, applicable AGENTS.md files, remote state and working diff before editing. Preserve the unrelated dirty Desktop checkout and all existing uncommitted reports. Keep the established visual design and both Google and optional email/password login methods.
