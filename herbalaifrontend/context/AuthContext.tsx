@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import api from '../lib/axios';
+import { responseMessage } from '../lib/request-feedback';
 import { cachedApiGet, invalidateApiGetCache } from '../lib/request-cache';
 
 export interface User {
@@ -97,7 +98,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         throw new Error('Signup response is missing verification status. Check whether your account was created before trying again.');
       }
       return {
-        message: response.data?.message || (result.verificationRequired ? 'Account created. Please check your email to verify it.' : 'Account created. You can sign in now.'),
+        message: responseMessage(response, result.verificationRequired ? 'Account created. Please check your email to verify it.' : 'Account created. You can sign in now.'),
         verificationRequired: result.verificationRequired,
         verificationEmailSent: result.verificationEmailSent,
       };

@@ -7,6 +7,7 @@ import { CheckCircle2, CircleAlert, LoaderCircle } from 'lucide-react';
 import AuthBrandPanel from '../../components/AuthBrandPanel';
 import { ThemeToggle } from '../../components/DisplayPreferences';
 import api from '../../lib/axios';
+import { requestError, responseMessage } from '../../lib/request-feedback';
 
 type VerificationStatus = 'loading' | 'success' | 'error';
 
@@ -22,9 +23,9 @@ function ResendVerificationForm() {
 
     try {
       const response = await api.post('/auth/resend-email-verification', { email: email.trim() });
-      setResendMessage(response.data?.message || 'If this account is unverified, a new link has been sent.');
-    } catch {
-      setResendMessage('We could not send a new link right now. Please try again later.');
+      setResendMessage(responseMessage(response, 'If this account is unverified, a new link has been sent.'));
+    } catch (err: unknown) {
+      setResendMessage(requestError(err, 'We could not send a new link right now. Please try again later.'));
     } finally {
       setResending(false);
     }
@@ -119,16 +120,10 @@ function VerifyEmailContent() {
       try {
         const response = await api.get(`/auth/verify-email?token=${token}`);
         setStatus('success');
-        setMessage(response.data.message || 'Your email address has been verified successfully!');
+        setMessage(responseMessage(response, 'Your email address has been verified successfully!'));
       } catch (err: unknown) {
-        console.error(err);
-        const axiosErr = err as { response?: { data?: { message?: string } }; message?: string };
         setStatus('error');
-        setMessage(
-          axiosErr.response?.data?.message ||
-          axiosErr.message ||
-          'Verification failed. The link may have expired or is invalid.'
-        );
+        setMessage(requestError(err, 'Verification failed. The link may have expired or is invalid.'));
       }
     };
 

@@ -7,6 +7,7 @@ import { useAuth } from '../../context/AuthContext';
 import AuthBrandPanel from '../../components/AuthBrandPanel';
 import { ThemeToggle } from '../../components/DisplayPreferences';
 import { safeAuthCallback } from '../../lib/auth-redirect';
+import { requestError } from '../../lib/request-feedback';
 
 export default function SignInPage() {
   const { login } = useAuth();
@@ -28,12 +29,11 @@ export default function SignInPage() {
       const callbackUrl = new URLSearchParams(window.location.search).get('callbackUrl');
       const safeCallback = safeAuthCallback(callbackUrl);
       router.push(safeCallback || (loggedInUser?.role === 'admin' ? '/admin' : '/'));
-    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-      setError(
-        err.response?.data?.message || 
-        err.message || 
-        'Invalid email/username or password. Please check your credentials.'
-      );
+    } catch (err: unknown) {
+      const response = (err as { response?: unknown } | null)?.response;
+      setError(requestError(err, response
+        ? 'Invalid email/username or password. Please check your credentials.'
+        : 'Unable to sign in. Check your connection and try again.'));
     } finally {
       setLoading(false);
     }

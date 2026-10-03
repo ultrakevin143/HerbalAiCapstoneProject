@@ -8,6 +8,7 @@ import { useAuth } from '../../context/AuthContext';
 import AuthBrandPanel from '../../components/AuthBrandPanel';
 import { ThemeToggle } from '../../components/DisplayPreferences';
 import api from '../../lib/axios';
+import { requestError, responseMessage } from '../../lib/request-feedback';
 
 export default function SignUpPage() {
   const { signup } = useAuth();
@@ -73,15 +74,16 @@ export default function SignUpPage() {
         setTimeout(() => router.push('/signin'), 5000);
       }
 
-    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-      const uncertainResponse = !err.response || [502, 504].includes(err.response.status);
+    } catch (err: unknown) {
+      const response = (err as { response?: { status?: number; data?: { verificationRequired?: unknown } } } | null)?.response;
+      const uncertainResponse = !response || response.status === 502 || response.status === 504;
       setSignupUncertain(uncertainResponse);
-      setCanResend(err.response?.status === 409 && err.response?.data?.verificationRequired === true);
-      setError(
-        (uncertainResponse ? 'We could not confirm your signup. Before trying again, sign in with the email and password you just entered.' : err.response?.status === 503 ? 'Account creation is temporarily unavailable. Please try again later.' : err.response?.data?.message) ||
-        err.message ||
-        'Registration failed. Please check your inputs.'
-      );
+      setCanResend(response?.status === 409 && response?.data?.verificationRequired === true);
+      setError(uncertainResponse
+        ? 'We could not confirm your signup. Before trying again, sign in with the email and password you just entered.'
+        : response.status === 503
+          ? 'Account creation is temporarily unavailable. Please try again later.'
+          : requestError(err, 'Registration failed. Please check your inputs.'));
       setLoading(false);
     }
   };
@@ -91,9 +93,9 @@ export default function SignUpPage() {
     setResendMessage(null);
     try {
       const response = await api.post('/auth/resend-email-verification', { email: email.trim() });
-      setResendMessage(response.data?.message || 'If this account is unverified, a new link has been sent.');
-    } catch {
-      setResendMessage('The verification email could not be sent right now. Please try again later.');
+      setResendMessage(responseMessage(response, 'If this account is unverified, a new link has been sent.'));
+    } catch (err: unknown) {
+      setResendMessage(requestError(err, 'The verification email could not be sent right now. Please try again later.'));
     } finally {
       setResending(false);
     }
