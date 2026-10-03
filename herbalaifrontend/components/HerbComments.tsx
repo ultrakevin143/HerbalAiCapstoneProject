@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../lib/axios';
+import { createDiscussionRefresh, reconcileDeletedComments } from '../lib/library-discussion';
 import io, { Socket } from 'socket.io-client';
 import { Heart } from 'lucide-react';
 import UserProfileModal from './UserProfileModal';
@@ -45,6 +46,7 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
   const [replyContent, setReplyContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [likingCommentIds, setLikingCommentIds] = useState<Set<number>>(() => new Set());
   
   // Profile popup state
   const [selectedProfile, setSelectedProfile] = useState<{ id: string; name: string; avatar?: string | null; role: string } | null>(null);
@@ -65,7 +67,13 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
   const mutationVersion = useRef(0);
   const commentVersions = useRef(new Map<number, number>());
   const deletedCommentIds = useRef(new Set<number>());
+  const knownCommentIds = useRef(new Set<number>());
+  const pendingLikeIds = useRef(new Set<number>());
   const fetchSequence = useRef(0);
+  const fetchAbortController = useRef<AbortController | null>(null);
+  const discussionActive = useRef(true);
+  const discussionGeneration = useRef(0);
+  const refreshQueue = useRef<(() => Promise<void>) | null>(null);
   const markCommentChanged = useCallback((commentId: number) => {
     commentVersions.current.set(commentId, ++mutationVersion.current);
   }, []);
@@ -73,75 +81,93 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
     deletedCommentIds.current.add(commentId);
     markCommentChanged(commentId);
   }, [markCommentChanged]);
+  const removeComment = useCallback((commentId: number) => {
+    markCommentDeleted(commentId);
+    setComments((current) => reconcileDeletedComments(current, deletedCommentIds.current));
+    setReplyingTo((current) => current === commentId ? null : current);
+  }, [markCommentDeleted]);
   const appendComment = useCallback((comment: HerbComment) => {
-    if (deletedCommentIds.current.has(comment.id)) return;
+    const retained = reconcileDeletedComments([comment], deletedCommentIds.current)[0];
+    if (!retained || knownCommentIds.current.has(comment.id)) return;
+    knownCommentIds.current.add(comment.id);
     markCommentChanged(comment.id);
-    setComments((current) => current.some((item) => item.id === comment.id) ? current : [...current, comment]);
+    setComments((current) => current.some((item) => item.id === comment.id) ? current : [...current, retained]);
   }, [markCommentChanged]);
 
   const fetchCommentsCallback = useCallback(async () => {
+    if (!discussionActive.current) return;
     const requestVersion = mutationVersion.current;
     const requestSequence = ++fetchSequence.current;
+    fetchAbortController.current?.abort();
+    const controller = new AbortController();
+    fetchAbortController.current = controller;
     try {
-      const res = await api.get(`/herbs/${herbId}/comments`);
-      if (requestSequence === fetchSequence.current && res.data?.status === 'success') {
+      const res = await api.get(`/herbs/${herbId}/comments`, { signal: controller.signal });
+      if (discussionActive.current && !controller.signal.aborted && requestSequence === fetchSequence.current && res.data?.status === 'success') {
         const fetched: HerbComment[] = res.data.data.comments || [];
+        for (const comment of fetched) knownCommentIds.current.add(comment.id);
         const changedIds = new Set<number>();
         for (const [commentId, version] of commentVersions.current) {
           if (version > requestVersion) changedIds.add(commentId);
         }
         const deletedIds = new Set(deletedCommentIds.current);
         setComments((current) => {
-          return [
+          return reconcileDeletedComments([
             ...fetched.filter((comment) => !deletedIds.has(comment.id) && !changedIds.has(comment.id)),
             ...current.filter((comment) => changedIds.has(comment.id)),
-          ];
+          ], deletedIds);
         });
       }
     } catch (err) {
-      console.error('Failed to fetch comments', err);
+      if (discussionActive.current && requestSequence === fetchSequence.current && !controller.signal.aborted) {
+        if ((err as { response?: { status?: number } }).response?.status === 404) setComments([]);
+        console.error('Failed to fetch comments', err);
+      }
     } finally {
-      if (requestSequence === fetchSequence.current) setLoading(false);
+      if (discussionActive.current && requestSequence === fetchSequence.current) setLoading(false);
     }
   }, [herbId]);
+  const refreshComments = useCallback(() => {
+    return discussionActive.current ? refreshQueue.current?.() ?? Promise.resolve() : Promise.resolve();
+  }, []);
 
   useEffect(() => {
-    fetchCommentsCallback();
+    discussionActive.current = true;
+    const generation = ++discussionGeneration.current;
+    refreshQueue.current = createDiscussionRefresh(fetchCommentsCallback, () => discussionActive.current && discussionGeneration.current === generation);
+    void refreshComments();
 
     // Initialize Socket.io connection
     const backendUrl = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
-    socketRef.current = io(backendUrl, {
+    const socket = io(backendUrl, {
       withCredentials: true,
     });
+    socketRef.current = socket;
+    const isCurrentSocket = () => discussionActive.current && socketRef.current === socket;
+    socketRef.current.on('connect', () => { if (isCurrentSocket()) void refreshComments(); });
 
     socketRef.current.on('new_comment', (comment: HerbComment) => {
-      if (comment.herbId === herbId) {
+      if (isCurrentSocket() && comment?.herbId === herbId) {
         appendComment(comment);
+        void refreshComments();
       }
     });
 
     socketRef.current.on('comment_deleted', (commentId: number) => {
-      markCommentDeleted(commentId);
-      setComments((prev) => prev.filter((c) => c.id !== commentId));
+      if (isCurrentSocket()) removeComment(commentId);
     });
 
-    socketRef.current.on('comment_liked', ({ commentId, likes, userLikes }) => {
-      markCommentChanged(commentId);
-      setComments((prev) => 
-        prev.map((c) => 
-          c.id === commentId 
-            ? { ...c, likes, userLikes } 
-            : c
-        )
-      );
+    socketRef.current.on('comment_liked', (event: { herbId?: string } | null) => {
+      if (!isCurrentSocket() || (event?.herbId && event.herbId !== herbId)) return;
+      void refreshComments();
     });
 
     return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-      }
+      discussionActive.current = false;
+      fetchAbortController.current?.abort();
+      socket.disconnect();
     };
-  }, [herbId, fetchCommentsCallback, appendComment, markCommentChanged, markCommentDeleted]);
+  }, [herbId, fetchCommentsCallback, refreshComments, appendComment, removeComment]);
 
 
   const handleSubmitComment = async (e: React.FormEvent, parentId: number | null = null) => {
@@ -156,7 +182,9 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
         content,
         parentCommentId: parentId,
       });
+      if (!discussionActive.current) return;
       appendComment(response.data.data.comment);
+      void refreshComments();
 
       if (parentId) {
         setReplyingTo(null);
@@ -176,8 +204,7 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
     if (!window.confirm('Are you sure you want to delete this comment?')) return;
     try {
       await api.delete(`/herbs/comments/${commentId}`);
-      markCommentDeleted(commentId);
-      setComments((prev) => prev.filter((c) => c.id !== commentId));
+      removeComment(commentId);
     } catch (err) {
       console.error('Failed to delete comment', err);
       alert('Failed to delete comment.');
@@ -185,32 +212,30 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
   };
 
   const handleToggleLike = async (commentId: number) => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !user?.id) {
       alert('Please sign in to react to comments.');
       return;
     }
     
-    markCommentChanged(commentId);
-    setComments((prev) => prev.map((c) => {
-      if (c.id === commentId) {
-        const hasLiked = c.userLikes.some((ul) => ul.userId === user?.id);
-        return {
-          ...c,
-          likes: hasLiked ? c.likes - 1 : c.likes + 1,
-          userLikes: hasLiked 
-            ? c.userLikes.filter((ul) => ul.userId !== user?.id)
-            : [...c.userLikes, { userId: user?.id as string }]
-        };
-      }
-      return c;
-    }));
+    if (!discussionActive.current || deletedCommentIds.current.has(commentId) || pendingLikeIds.current.has(commentId)) return;
+    pendingLikeIds.current.add(commentId);
+    setLikingCommentIds((current) => new Set(current).add(commentId));
 
     try {
       await api.post(`/herbs/comments/${commentId}/like`);
     } catch (err) {
       console.error('Failed to toggle like', err);
-      // Revert optimism if it fails by fetching
-      fetchCommentsCallback();
+    } finally {
+      try {
+        if (discussionActive.current) await refreshComments();
+      } finally {
+        pendingLikeIds.current.delete(commentId);
+        if (discussionActive.current) setLikingCommentIds((current) => {
+          const next = new Set(current);
+          next.delete(commentId);
+          return next;
+        });
+      }
     }
   };
 
@@ -315,6 +340,8 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
                   <div className="flex items-center gap-4 mt-1.5 ml-2">
                     <button 
                       onClick={() => handleToggleLike(comment.id)}
+                      disabled={likingCommentIds.has(comment.id)}
+                      aria-busy={likingCommentIds.has(comment.id)}
                       aria-label={comment.userLikes?.some(ul => ul.userId === user?.id) ? 'Unlike comment' : 'Like comment'}
                       aria-pressed={comment.userLikes?.some(ul => ul.userId === user?.id)}
                       className={`text-xs font-bold flex items-center gap-1.5 transition-colors ${
@@ -405,6 +432,8 @@ export default function HerbComments({ herbId }: HerbCommentsProps) {
                         <div className="flex items-center gap-4 mt-1 ml-2">
                           <button 
                             onClick={() => handleToggleLike(reply.id)}
+                            disabled={likingCommentIds.has(reply.id)}
+                            aria-busy={likingCommentIds.has(reply.id)}
                             aria-label={reply.userLikes?.some(ul => ul.userId === user?.id) ? 'Unlike reply' : 'Like reply'}
                             aria-pressed={reply.userLikes?.some(ul => ul.userId === user?.id)}
                             className={`text-xs font-bold flex items-center gap-1.5 transition-colors ${

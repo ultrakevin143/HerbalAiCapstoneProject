@@ -68,7 +68,7 @@ router.post("/logout", authController.logout);
 
 // Email Verification & Password Reset
 router.get("/verify-email", authController.verifyEmail);
-router.post("/resend-email-verification", emailLinkLimiter, authController.resendEmailVerification);
+router.post("/resend-email-verification", emailLinkLimiter, validateSchema(forgotPasswordSchema), authController.resendEmailVerification);
 router.post("/forgot-password", emailLinkLimiter, validateSchema(forgotPasswordSchema), authController.forgotPassword);
 router.post("/reset-password", validateSchema(resetPasswordSchema), authController.resetPassword);
 

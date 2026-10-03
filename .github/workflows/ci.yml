@@ -83,7 +83,9 @@ jobs:
         with:
           node-version: 22
           cache: "npm"
-          cache-dependency-path: herbalaifrontend/package-lock.json
+          cache-dependency-path: |
+            herbalaifrontend/package-lock.json
+            herbalaibackend/package-lock.json
 
       - name: Install dependencies
         working-directory: herbalaifrontend
@@ -96,6 +98,10 @@ jobs:
       - name: Run Frontend Lint
         working-directory: herbalaifrontend
         run: npm run lint
+
+      - name: Run deployment configuration and guarded flow regressions
+        working-directory: herbalaifrontend
+        run: node --test ../scripts/deployment-config.test.mjs ../scripts/deployment-flow.test.mjs
 
       - name: Run Messenger recovery regressions
         working-directory: herbalaifrontend
@@ -124,6 +130,22 @@ jobs:
       - name: Run library keyboard regressions
         working-directory: herbalaifrontend
         run: node --test ../scripts/library-accessibility.test.mjs
+
+      - name: Run library reply retention regressions
+        working-directory: herbalaifrontend
+        run: node --test ../scripts/library-discussion.test.mjs
+
+      - name: Run account-scoped request cache regressions
+        working-directory: herbalaifrontend
+        run: node --test ../scripts/request-cache.test.mjs
+
+      - name: Install notification loopback server dependencies
+        working-directory: herbalaibackend
+        run: npm ci --ignore-scripts
+
+      - name: Run notification recovery regressions
+        working-directory: herbalaifrontend
+        run: node --test ../scripts/notifications.test.mjs
 
       - name: Run Frontend Build
         working-directory: herbalaifrontend

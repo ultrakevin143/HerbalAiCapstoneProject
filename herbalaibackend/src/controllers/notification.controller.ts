@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import * as notifRepo from "../repositories/notification.repository.js";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware.js";
+import { parsePositiveIntString } from "../utils/positive-int.js";
 
 export class NotificationController {
   /**
@@ -17,7 +18,12 @@ export class NotificationController {
         return;
       }
 
-      const limit = parseInt((req.query["limit"] as string) || "30", 10);
+      const requestedLimit = req.query["limit"];
+      const limit = requestedLimit === undefined ? 30 : parsePositiveIntString(requestedLimit, 100);
+      if (limit === null) {
+        res.status(400).json({ status: "error", code: 400, message: "Invalid notification limit. Use an integer from 1 to 100." });
+        return;
+      }
       const [notifications, unreadCount] = await Promise.all([
         notifRepo.getUserNotifications(userId, limit),
         notifRepo.countUnreadNotifications(userId),
@@ -44,14 +50,14 @@ export class NotificationController {
     try {
       const authReq = req as AuthenticatedRequest;
       const userId = authReq.user?.userId;
-      const id = parseInt(req.params["id"] as string, 10);
 
       if (!userId) {
         res.status(401).json({ status: "error", code: 401, message: "Authentication required" });
         return;
       }
 
-      if (isNaN(id)) {
+      const id = parsePositiveIntString(req.params["id"]);
+      if (id === null) {
         res.status(400).json({ status: "error", code: 400, message: "Invalid notification ID" });
         return;
       }

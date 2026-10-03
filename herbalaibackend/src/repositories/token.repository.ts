@@ -121,6 +121,19 @@ export const revokeOtherUserTokensByType = async (userId: string, type: string, 
   });
 };
 
+export const revokeOlderUserTokensByType = async (userId: string, type: string, currentTokenId: string, createdAt: Date) => {
+  return prisma.token.updateMany({
+    where: {
+      userId,
+      type,
+      id: { not: currentTokenId },
+      createdAt: { lt: createdAt },
+      revokedAt: null,
+    },
+    data: { revokedAt: new Date() },
+  });
+};
+
 export const cleanupTokens = async (userId: string) => {
   // 1. Delete all expired or revoked tokens for this user
   await prisma.token.deleteMany({

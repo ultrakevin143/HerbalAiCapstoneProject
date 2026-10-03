@@ -360,13 +360,10 @@ export const resendEmailVerification = async (email: string) => {
     return { message: "If this email is registered and unverified, a new link has been sent." };
   }
 
-  // Revoke all previous pending EMAIL_VERIFY tokens to prevent token accumulation
-  await tokenRepo.revokeAllUserTokensByType(user.id, "EMAIL_VERIFY");
-
   const verificationToken = crypto.randomBytes(32).toString("hex");
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
-  await tokenRepo.createToken({
+  const replacement = await tokenRepo.createToken({
     userId: user.id,
     type: "EMAIL_VERIFY",
     token: verificationToken,
@@ -375,10 +372,11 @@ export const resendEmailVerification = async (email: string) => {
 
   const verificationUrl = `${ENV.FRONTEND_URL}/verify-email?token=${verificationToken}`;
 
-  await sendMail({
-    to: user.email,
-    subject: `${ENV.APP_NAME} - Verify Your Email`,
-    html: `
+  try {
+    const delivery = await sendMail({
+      to: user.email,
+      subject: `${ENV.APP_NAME} - Verify Your Email`,
+      html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
         <h2 style="color: #1b4332; text-align: center;">Welcome to ${escapeHtml(ENV.APP_NAME)}</h2>
         <p>Hi <strong>${escapeHtml(user.name)}</strong>,</p>
@@ -390,9 +388,23 @@ export const resendEmailVerification = async (email: string) => {
         <p style="word-break: break-all; color: #40916c;">${verificationUrl}</p>
         <p style="color: #666; font-size: 12px; margin-top: 30px;">This link will expire in 24 hours.</p>
       </div>
-    `,
-  });
-
+      `,
+    });
+    if (delivery?.suppressed) throw new Error("Verification email was suppressed.");
+  } catch {
+    console.error("Verification email delivery failed");
+    try {
+      await tokenRepo.revokeToken(replacement.id);
+    } catch {
+      console.error("Failed to clean up undelivered verification link");
+    }
+    throw { status: 503, code: "VERIFICATION_EMAIL_UNAVAILABLE" };
+  }
+  try {
+    await tokenRepo.revokeOlderUserTokensByType(user.id, "EMAIL_VERIFY", replacement.id, replacement.createdAt);
+  } catch {
+    console.error("Failed to retire previous verification links");
+  }
   return { message: "If this email is registered and unverified, a new link has been sent." };
 };
 

@@ -11,12 +11,18 @@ import { ENV } from '../config/env.js';
 import type { HerbEvidenceClass } from '@prisma/client';
 import { editSuggestionSchema, reviewReferencesSchema, suggestHerbSchema } from '../schema/suggest.schema.js';
 
+const parseSuggestionId = (value: unknown): number | null => {
+  if (typeof value !== 'string' || !/^[1-9]\d*$/.test(value)) return null;
+  const parsed = Number(value);
+  return Number.isSafeInteger(parsed) && parsed <= 2147483647 ? parsed : null;
+};
+
 export class SuggestController {
   public edit = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const reviewerId = (req as AuthenticatedRequest).user?.userId;
-      const id = Number(req.params.id);
-      if (!reviewerId || !Number.isSafeInteger(id) || id <= 0) {
+      const id = parseSuggestionId(req.params.id);
+      if (!reviewerId || id === null) {
         res.status(400).json({ status: 'error', message: 'Invalid review request.' });
         return;
       }
@@ -42,8 +48,8 @@ export class SuggestController {
   public resubmit = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const submitterId = (req as AuthenticatedRequest).user?.userId;
-      const id = Number(req.params.id);
-      if (!submitterId || !Number.isSafeInteger(id) || id <= 0) {
+      const id = parseSuggestionId(req.params.id);
+      if (!submitterId || id === null) {
         res.status(400).json({ status: 'error', message: 'Invalid submission request.' });
         return;
       }
@@ -239,9 +245,9 @@ export class SuggestController {
     try {
       const authReq = req as AuthenticatedRequest;
       const reviewerId = authReq.user?.userId;
-      const id = parseInt(req.params.id as string, 10);
+      const id = parseSuggestionId(req.params.id);
 
-      if (isNaN(id)) {
+      if (id === null) {
         res.status(400).json({
           status: 'error',
           code: 400,
@@ -390,14 +396,14 @@ export class SuggestController {
     try {
       const authReq = req as AuthenticatedRequest;
       const reviewerId = authReq.user?.userId;
-      const id = parseInt(req.params.id as string, 10);
+      const id = parseSuggestionId(req.params.id);
       const reviewNotes = req.body.reviewNotes?.trim();
 
       if (!reviewerId) {
         res.status(401).json({ status: 'error', code: 401, message: 'Authentication required.' });
         return;
       }
-      if (isNaN(id)) {
+      if (id === null) {
         res.status(400).json({ status: 'error', code: 400, message: 'Invalid suggestion ID' });
         return;
       }
@@ -449,9 +455,9 @@ export class SuggestController {
     try {
       const authReq = req as AuthenticatedRequest;
       const reviewerId = authReq.user?.userId;
-      const id = parseInt(req.params.id as string, 10);
+      const id = parseSuggestionId(req.params.id);
 
-      if (isNaN(id)) {
+      if (id === null) {
         res.status(400).json({
           status: 'error',
           code: 400,

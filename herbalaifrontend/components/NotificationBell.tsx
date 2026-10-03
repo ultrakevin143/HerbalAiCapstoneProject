@@ -7,17 +7,11 @@ import { Bell, Check, CheckCheck, ShieldCheck, FileText, ExternalLink, MessageCi
 import api from '../lib/axios';
 import { cachedApiGet, invalidateApiGetCache } from '../lib/request-cache';
 import { playNotificationSound, prepareNotificationSound } from '../lib/notification-sound';
+import { useAuth } from '../context/AuthContext';
+import { createRefreshCoordinator } from '../lib/refresh-coordinator';
+import { isOwnedNotification, notificationSnapshot, type NotificationItem } from '../lib/notification-state';
 
-export interface NotificationItem {
-  id: number;
-  userId: string;
-  title: string;
-  message: string;
-  type: string;
-  link: string | null;
-  isRead: boolean;
-  createdAt: string;
-}
+export type { NotificationItem } from '../lib/notification-state';
 
 type NotificationCategory = 'all' | 'community' | 'messages';
 
@@ -28,12 +22,21 @@ const getNotificationCategory = (type: string): Exclude<NotificationCategory, 'a
 };
 
 export default function NotificationBell() {
+  const { user } = useAuth();
+  return user ? <AccountNotificationBell key={user.id} userId={user.id} /> : null;
+}
+
+function AccountNotificationBell({ userId }: { userId: string }) {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [unreadCount, setUnreadCount] = useState<number>(0);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [activeCategory, setActiveCategory] = useState<NotificationCategory>('all');
   const panelRef = useRef<HTMLDivElement>(null);
+  const activeRef = useRef(false);
+  const refreshRef = useRef<(() => Promise<void>) | null>(null);
+  const pendingReads = useRef(new Set<number | 'all'>());
+  const [readingIds, setReadingIds] = useState<Set<number | 'all'>>(() => new Set());
 
   const categoryCounts = useMemo(() => ({
     all: notifications.filter((notification) => !notification.isRead).length,
@@ -47,53 +50,87 @@ export default function NotificationBell() {
 
   useEffect(() => {
     let isMounted = true;
-    const prepareSound = () => prepareNotificationSound();
+    activeRef.current = true;
+    let sequence = 0;
+    const knownIds = new Set<number>();
+    const controller = new AbortController();
+    const prepareSound = () => {
+      try { prepareNotificationSound(); } catch { console.error('Notification sound is unavailable.'); }
+    };
     window.addEventListener('pointerdown', prepareSound, { once: true });
     window.addEventListener('keydown', prepareSound, { once: true });
 
-    const loadNotifications = async () => {
+    const loadNotifications = async (force = false) => {
+      const requestSequence = ++sequence;
       try {
-        const res = await cachedApiGet('/notifications', 10_000);
-        if (isMounted && res.data?.status === 'success') {
-          const notifs = res.data.data.notifications || [];
-          setNotifications(notifs);
-          setUnreadCount(notifs.filter((n: NotificationItem) => !n.isRead).length);
+        const res = await cachedApiGet('/notifications', 10_000, force, userId);
+        if (isMounted && requestSequence === sequence && res.data?.status === 'success') {
+          const snapshot = notificationSnapshot(res.data.data, userId);
+          for (const notification of snapshot.notifications) knownIds.add(notification.id);
+          setNotifications(snapshot.notifications);
+          setUnreadCount(snapshot.unreadCount);
         }
       } catch (err) {
-        console.error('Failed to fetch notifications:', err);
+        if (isMounted && requestSequence === sequence) console.error('Failed to fetch notifications:', err);
       } finally {
-        if (isMounted) {
+        if (isMounted && requestSequence === sequence) {
           setLoading(false);
         }
       }
     };
 
-    loadNotifications();
+    const refresh = createRefreshCoordinator(() => loadNotifications(true), () => isMounted);
+    refreshRef.current = refresh;
+    void loadNotifications();
+    const resume = () => {
+      if (isMounted && document.visibilityState !== 'hidden') {
+        void refresh();
+        if (!socket.connected) socket.connect();
+      }
+    };
+    window.addEventListener('focus', resume);
+    document.addEventListener('visibilitychange', resume);
 
     const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000';
-    const socket: Socket = io(socketUrl, { autoConnect: false });
-    api.get('/auth/socket-token').then((response) => {
-      if (!isMounted) return;
-      socket.auth = { token: response.data.data.token };
-      socket.connect();
-    }).catch((error) => console.error('Failed to authenticate notification connection:', error));
+    const socket: Socket = io(socketUrl, {
+      autoConnect: false,
+      auth: (complete) => {
+        void api.get('/auth/socket-token', { signal: controller.signal }).then((response) => {
+          if (isMounted) complete({ token: response.data.data.token });
+        }).catch(() => {
+          if (isMounted) {
+            console.error('Failed to authenticate notification connection.');
+            complete({});
+          }
+        });
+      },
+    });
+    socket.on('connect', () => { if (isMounted) void refresh(); });
 
     socket.on('notification', (newNotif: NotificationItem) => {
-      if (isMounted) {
+      if (isMounted && isOwnedNotification(newNotif, userId)) {
         invalidateApiGetCache('/notifications');
-        setNotifications((prev) => [newNotif, ...prev]);
-        setUnreadCount((prev) => prev + 1);
-        if (newNotif.type === 'DIRECT_MESSAGE') void playNotificationSound(newNotif.id);
+        if (!knownIds.has(newNotif.id)) {
+          knownIds.add(newNotif.id);
+          if (!newNotif.isRead && newNotif.type === 'DIRECT_MESSAGE') void playNotificationSound(newNotif.id).catch(() => undefined);
+        }
+        void refresh();
       }
     });
+    socket.connect();
 
     return () => {
       isMounted = false;
+      activeRef.current = false;
+      refreshRef.current = null;
+      controller.abort();
       window.removeEventListener('pointerdown', prepareSound);
       window.removeEventListener('keydown', prepareSound);
+      window.removeEventListener('focus', resume);
+      document.removeEventListener('visibilitychange', resume);
       socket.disconnect();
     };
-  }, []);
+  }, [userId]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -110,31 +147,38 @@ export default function NotificationBell() {
     };
   }, [isOpen]);
 
-  const handleMarkAsRead = async (id: number, link?: string | null) => {
+  const performRead = async (key: number | 'all', path: string) => {
+    if (!activeRef.current || pendingReads.current.has('all') || pendingReads.current.has(key) || (key === 'all' && pendingReads.current.size > 0)) return;
+    pendingReads.current.add(key);
+    setReadingIds((current) => new Set(current).add(key));
     try {
-      await api.patch(`/notifications/${id}/read`);
-      invalidateApiGetCache('/notifications');
-      setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
-      );
-      setUnreadCount((prev) => Math.max(0, prev - 1));
+      await api.patch(path);
     } catch (err) {
       console.error('Failed to mark notification as read:', err);
+    } finally {
+      try {
+        invalidateApiGetCache('/notifications');
+        if (activeRef.current) await refreshRef.current?.();
+      } finally {
+        pendingReads.current.delete(key);
+        if (activeRef.current) setReadingIds((current) => {
+          const next = new Set(current);
+          next.delete(key);
+          return next;
+        });
+      }
     }
-    if (link) {
+  };
+
+  const handleMarkAsRead = async (id: number, link?: string | null) => {
+    await performRead(id, `/notifications/${id}/read`);
+    if (link && activeRef.current) {
       setIsOpen(false);
     }
   };
 
   const handleMarkAllAsRead = async () => {
-    try {
-      await api.patch('/notifications/read-all');
-      invalidateApiGetCache('/notifications');
-      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
-      setUnreadCount(0);
-    } catch (err) {
-      console.error('Failed to mark all as read:', err);
-    }
+    await performRead('all', '/notifications/read-all');
   };
 
   return (
@@ -171,6 +215,8 @@ export default function NotificationBell() {
               <button
                 type="button"
                 onClick={handleMarkAllAsRead}
+                disabled={readingIds.size > 0}
+                aria-busy={readingIds.has('all')}
                 className="flex items-center gap-1 text-sm font-semibold text-ink hover:underline"
               >
                 <CheckCheck className="h-3.5 w-3.5" />
@@ -244,6 +290,8 @@ export default function NotificationBell() {
                       <button
                         type="button"
                         onClick={() => handleMarkAsRead(notif.id)}
+                        disabled={readingIds.has('all') || readingIds.has(notif.id)}
+                        aria-busy={readingIds.has('all') || readingIds.has(notif.id)}
                         title="Mark as read"
                         className="text-muted hover:text-ink p-0.5"
                       >

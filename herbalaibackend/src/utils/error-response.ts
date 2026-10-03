@@ -4,6 +4,16 @@ export function databaseErrorCode(err: Error & { code?: unknown }) {
 }
 
 export function errorResponse(err: Error & { status?: number; code?: unknown }, production: boolean) {
+  if (err.code === 'VERIFICATION_EMAIL_UNAVAILABLE') {
+    return {
+      status: 503,
+      body: {
+        status: 'error',
+        code: 'VERIFICATION_EMAIL_UNAVAILABLE',
+        message: 'Verification email could not be sent. Please try again later. Any previous unexpired verification link is unchanged.',
+      },
+    };
+  }
   if (err.code === 'MEDIA_UPLOAD_UNAVAILABLE') {
     return {
       status: 503,

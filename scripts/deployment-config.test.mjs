@@ -1,10 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 
 const read = path => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const dockerfile = read('herbalaifrontend/Dockerfile');
 const compose = read('docker-compose.yml').split('  frontend:')[1];
+
+test('CI schedules every native regression script', () => {
+  const workflow = read('.github/workflows/ci.yml');
+  const scheduled = [...workflow.matchAll(/node --test[^\r\n]*/g)].flatMap(command =>
+    [...command[0].matchAll(/scripts\/([^\s]+\.test\.mjs)/g)].map(script => script[1]));
+  const expected = readdirSync(new URL('./', import.meta.url)).filter(name => name.endsWith('.test.mjs'));
+  assert.deepEqual(expected.filter(name => !scheduled.includes(name)).sort(), []);
+});
 
 test('public browser URLs are passed to the builder before Next build', () => {
   const builder = dockerfile.split('FROM base AS builder')[1].split('FROM base AS runner')[0];

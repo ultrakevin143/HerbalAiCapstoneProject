@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import * as auditRepo from "../repositories/audit.repository.js";
+import { parsePositiveIntString } from "../utils/positive-int.js";
 
 export class AuditController {
   /**
@@ -8,8 +9,18 @@ export class AuditController {
    */
   public getAuditLogs = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const limit = parseInt((req.query["limit"] as string) || "50", 10);
-      const offset = parseInt((req.query["offset"] as string) || "0", 10);
+      const requestedLimit = req.query["limit"];
+      const limit = requestedLimit === undefined ? 50 : parsePositiveIntString(requestedLimit, 100);
+      if (limit === null) {
+        res.status(400).json({ status: "error", code: 400, message: "Invalid audit limit. Use an integer from 1 to 100." });
+        return;
+      }
+      const requestedOffset = req.query["offset"];
+      const offset = requestedOffset === undefined || requestedOffset === "0" ? 0 : parsePositiveIntString(requestedOffset, 10000);
+      if (offset === null) {
+        res.status(400).json({ status: "error", code: 400, message: "Invalid audit offset. Use an integer from 0 to 10000." });
+        return;
+      }
 
       const { logs, total } = await auditRepo.findAuditLogs(limit, offset);
 

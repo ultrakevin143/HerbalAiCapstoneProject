@@ -26,6 +26,16 @@ describe('production error responses', () => {
       },
     });
   });
+  it.each([true, false])('returns safe verification-delivery recovery in production=%s', production => {
+    const error = Object.assign(new Error('Private sender and credential detail'), { code: 'VERIFICATION_EMAIL_UNAVAILABLE' });
+    expect(errorResponse(error, production)).toEqual({
+      status: 503,
+      body: {
+        status: 'error', code: 'VERIFICATION_EMAIL_UNAVAILABLE',
+        message: 'Verification email could not be sent. Please try again later. Any previous unexpired verification link is unchanged.',
+      },
+    });
+  });
   it.each([true, false])('redacts database failures in production=%s', (production) => {
     for (const code of ['P2028', 'P2024', 'P1001', 'ECONNRESET']) {
       const error = Object.assign(new Error('Transaction API error: secret postgres://user:password@host'), { code });

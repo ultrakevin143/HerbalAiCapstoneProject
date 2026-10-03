@@ -3,6 +3,7 @@ import { prisma } from '../lib/prisma.js';
 import { runAuditedMutation } from '../repositories/audit.repository.js';
 
 import * as herbRepo from '../repositories/herb.repository.js';
+import { createHerbComment, deleteHerbComment, lockPublishedHerb } from '../repositories/herb-comment.repository.js';
 import { publicPagination } from '../utils/public-pagination.js';
 
 interface AuthenticatedRequest extends Request {
@@ -11,6 +12,22 @@ interface AuthenticatedRequest extends Request {
     role: string;
   };
 }
+
+const parseCommentId = (value: unknown): number | null => {
+  if (typeof value === 'number') return Number.isSafeInteger(value) && value > 0 && value <= 2147483647 ? value : null;
+  if (typeof value !== 'string' || !/^[1-9]\d*$/.test(value)) return null;
+  const parsed = Number(value);
+  return Number.isSafeInteger(parsed) && parsed <= 2147483647 ? parsed : null;
+};
+
+const emitCommentEvent = async (event: string, payload: unknown): Promise<void> => {
+  try {
+    const { io } = await import('../server.js');
+    io.emit(event, payload);
+  } catch {
+    console.error('Failed to broadcast library comment update.');
+  }
+};
 
 export class HerbController {
   public getCatalog = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -106,9 +123,17 @@ export class HerbController {
   public getComments = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const id = req.params.id as string;
+      const herb = await prisma.herb.findFirst({
+        where: { id, publicationStatus: 'PUBLISHED', isVerified: true },
+        select: { id: true },
+      });
+      if (!herb) {
+        res.status(404).json({ status: 'error', code: 404, message: 'Herb not found' });
+        return;
+      }
       
       const comments = await prisma.herbComment.findMany({
-        where: { herbId: id, isDeleted: false },
+        where: { herbId: id, isDeleted: false, herb: { publicationStatus: 'PUBLISHED', isVerified: true } },
         include: {
           author: { select: { id: true, name: true, username: true, avatar: true, role: true } },
           userLikes: { select: { userId: true } },
@@ -128,31 +153,27 @@ export class HerbController {
   public addComment = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const id = req.params.id as string;
-      const { content, parentCommentId } = req.body;
+      const { content, parentCommentId } = req.body ?? {};
       const authReq = req as AuthenticatedRequest;
       const userId = authReq.user?.userId;
 
-      if (!userId || !content) {
-        res.status(400).json({ status: 'error', message: 'User ID and content are required' });
+      if (!userId) {
+        res.status(401).json({ status: 'error', message: 'Authentication required' });
         return;
       }
+      if (typeof content !== 'string' || !content.trim()) {
+        res.status(400).json({ status: 'error', message: 'Comment content is required.' });
+        return;
+      }
+      const parsedParentId = parentCommentId === undefined || parentCommentId === null
+        ? null : parseCommentId(parentCommentId);
+      if (parentCommentId !== undefined && parentCommentId !== null && parsedParentId === null) {
+        res.status(400).json({ status: 'error', message: 'Invalid parent comment ID.' });
+        return;
+      }
+      const newComment = await createHerbComment(id, userId, content.trim(), parsedParentId);
 
-      const newComment = await prisma.herbComment.create({
-        data: {
-          herbId: id,
-          authorId: userId,
-          content,
-          parentCommentId: parentCommentId || null,
-        },
-        include: {
-          author: { select: { id: true, name: true, username: true, avatar: true, role: true } },
-          userLikes: { select: { userId: true } },
-        },
-      });
-
-      // Broadcast the new comment via Socket.io
-      const { io } = await import('../server.js');
-      io.emit('new_comment', newComment);
+      await emitCommentEvent('new_comment', newComment);
 
       res.status(201).json({ status: 'success', code: 201, data: { comment: newComment } });
     } catch (error) {
@@ -165,7 +186,6 @@ export class HerbController {
    */
   public toggleCommentLike = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const commentId = req.params.commentId as string;
       const authReq = req as AuthenticatedRequest;
       const userId = authReq.user?.userId;
 
@@ -174,41 +194,47 @@ export class HerbController {
         return;
       }
 
-      const commentIdInt = parseInt(commentId, 10);
-      
-      // Check if user already liked it
-      const existingLike = await prisma.herbCommentLike.findUnique({
-        where: { commentId_userId: { commentId: commentIdInt, userId } },
-      });
-
-      let increment = 0;
-
-      if (existingLike) {
-        // Unlike
-        await prisma.herbCommentLike.delete({
-          where: { commentId_userId: { commentId: commentIdInt, userId } },
-        });
-        increment = -1;
-      } else {
-        // Like
-        await prisma.herbCommentLike.create({
-          data: { commentId: commentIdInt, userId },
-        });
-        increment = 1;
+      const commentIdInt = parseCommentId(req.params.commentId);
+      if (commentIdInt === null) {
+        res.status(400).json({ status: 'error', message: 'Invalid comment ID.' });
+        return;
       }
 
-      const updatedComment = await prisma.herbComment.update({
-        where: { id: commentIdInt },
-        data: { likes: { increment } },
-        include: {
-          userLikes: { select: { userId: true } },
-        },
-      });
+      const updatedComment = await prisma.$transaction(async (transaction) => {
+        const comment = await transaction.herbComment.findUnique({
+          where: { id: commentIdInt }, select: { herbId: true },
+        });
+        if (!comment || !await lockPublishedHerb(transaction, comment.herbId)) return null;
+        const target = await transaction.herbComment.updateMany({
+          where: {
+            id: commentIdInt, isDeleted: false,
+            herb: { publicationStatus: 'PUBLISHED', isVerified: true },
+          },
+          data: { likes: { increment: 0 } },
+        });
+        if (target.count === 0) return null;
 
-      // Broadcast the like update
-      const { io } = await import('../server.js');
-      io.emit('comment_liked', { 
+        const key = { commentId_userId: { commentId: commentIdInt, userId } };
+        const existingLike = await transaction.herbCommentLike.findUnique({ where: key });
+        if (existingLike) {
+          await transaction.herbCommentLike.delete({ where: key });
+        } else {
+          await transaction.herbCommentLike.create({ data: { commentId: commentIdInt, userId } });
+        }
+        const likes = await transaction.herbCommentLike.count({ where: { commentId: commentIdInt } });
+        return transaction.herbComment.update({
+          where: { id: commentIdInt }, data: { likes },
+          include: { userLikes: { select: { userId: true } } },
+        });
+      });
+      if (!updatedComment) {
+        res.status(404).json({ status: 'error', message: 'Comment not found' });
+        return;
+      }
+
+      await emitCommentEvent('comment_liked', {
         commentId: commentIdInt, 
+        herbId: updatedComment.herbId,
         likes: updatedComment.likes, 
         userLikes: updatedComment.userLikes 
       });
@@ -224,7 +250,6 @@ export class HerbController {
    */
   public deleteComment = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const commentId = parseInt(req.params.commentId as string, 10);
       const authReq = req as AuthenticatedRequest;
       const userId = authReq.user?.userId;
       const userRole = authReq.user?.role;
@@ -234,30 +259,15 @@ export class HerbController {
         return;
       }
 
-      const comment = await prisma.herbComment.findUnique({
-        where: { id: commentId },
-      });
-
-      if (!comment) {
-        res.status(404).json({ status: 'error', message: 'Comment not found' });
+      const commentId = parseCommentId(req.params.commentId);
+      if (commentId === null) {
+        res.status(400).json({ status: 'error', message: 'Invalid comment ID.' });
         return;
       }
 
-      if (comment.authorId !== userId && userRole !== 'admin') {
-        res.status(403).json({ status: 'error', message: 'Not authorized to delete this comment' });
-        return;
-      }
+      await deleteHerbComment(commentId, userId, userRole ?? 'contributor');
 
-      // Soft delete: Mark as deleted and clear content OR hard delete?
-      // Let's hard delete it if it has no replies, otherwise soft delete?
-      // Since onDelete: Cascade/SetNull is configured, hard delete is fine and cleaner for a simple app.
-      await prisma.herbComment.delete({
-        where: { id: commentId },
-      });
-
-      // Broadcast delete
-      const { io } = await import('../server.js');
-      io.emit('comment_deleted', commentId);
+      await emitCommentEvent('comment_deleted', commentId);
 
       res.status(200).json({ status: 'success', code: 200, message: 'Comment deleted successfully' });
     } catch (error) {

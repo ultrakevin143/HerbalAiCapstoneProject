@@ -1,6 +1,8 @@
 import { v2 as cloudinary } from 'cloudinary';
 import { ENV } from '../config/env.js';
 
+const UPLOAD_TIMEOUT_MS = 20_000;
+
 export class MediaUploadError extends Error {
   readonly code = 'MEDIA_UPLOAD_UNAVAILABLE';
 
@@ -28,19 +30,29 @@ export async function uploadToCloudinary(
   folder: string = 'herbal_ai_suggestions'
 ): Promise<string> {
   return new Promise((resolve, reject) => {
+    let settled = false;
+    let uploadStream: ReturnType<typeof cloudinary.uploader.upload_stream> | undefined;
+    const deadline = setTimeout(() => rejectUpload(), UPLOAD_TIMEOUT_MS);
     const rejectUpload = () => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(deadline);
       console.error('Cloudinary upload failed');
       reject(new MediaUploadError());
+      uploadStream?.destroy();
     };
 
     try {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        { folder },
+      uploadStream = cloudinary.uploader.upload_stream(
+        { folder, timeout: UPLOAD_TIMEOUT_MS },
         (error, result) => {
+          if (settled) return;
           if (error || !result?.secure_url) {
             rejectUpload();
             return;
           }
+          settled = true;
+          clearTimeout(deadline);
           resolve(result.secure_url);
         }
       );

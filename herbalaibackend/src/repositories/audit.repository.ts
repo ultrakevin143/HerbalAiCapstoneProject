@@ -4,7 +4,7 @@ import type { Prisma } from "@prisma/client";
 export interface CreateAuditLogParams {
   adminId: string;
   action: string;
-  targetType: "SuggestedHerb" | "Herb" | "User" | "KnowledgeBase" | "Thread" | "ThreadComment";
+  targetType: "SuggestedHerb" | "Herb" | "User" | "KnowledgeBase" | "Thread" | "ThreadComment" | "HerbComment";
   targetId: string;
   details?: Record<string, unknown>;
 }

@@ -2,39 +2,42 @@ import type { AxiosResponse } from 'axios';
 import api from './axios';
 
 interface CachedResponse {
+  url: string;
   response: AxiosResponse;
   expiresAt: number;
 }
 
 const responses = new Map<string, CachedResponse>();
-const pending = new Map<string, Promise<AxiosResponse>>();
+const pending = new Map<string, { url: string; request: Promise<AxiosResponse> }>();
 
 export const cachedApiGet = async (
   url: string,
   ttlMs = 60_000,
-  force = false
+  force = false,
+  ownerId?: string,
 ): Promise<AxiosResponse> => {
+  const key = JSON.stringify([ownerId ?? null, url]);
   if (!force) {
-    const cached = responses.get(url);
+    const cached = responses.get(key);
     if (cached && cached.expiresAt > Date.now()) return cached.response;
-    if (cached) responses.delete(url);
+    if (cached) responses.delete(key);
 
-    const inFlight = pending.get(url);
-    if (inFlight) return inFlight;
+    const inFlight = pending.get(key);
+    if (inFlight) return inFlight.request;
   }
 
   const request = api.get(url)
     .then((response) => {
-      if (ttlMs > 0 && pending.get(url) === request) {
-        responses.set(url, { response, expiresAt: Date.now() + ttlMs });
+      if (ttlMs > 0 && pending.get(key)?.request === request) {
+        responses.set(key, { url, response, expiresAt: Date.now() + ttlMs });
       }
       return response;
     })
     .finally(() => {
-      if (pending.get(url) === request) pending.delete(url);
+      if (pending.get(key)?.request === request) pending.delete(key);
     });
 
-  pending.set(url, request);
+  pending.set(key, { url, request });
   return request;
 };
 
@@ -44,10 +47,10 @@ export const invalidateApiGetCache = (prefix?: string): void => {
     pending.clear();
     return;
   }
-  for (const key of responses.keys()) {
-    if (key.startsWith(prefix)) responses.delete(key);
+  for (const [key, cached] of responses) {
+    if (cached.url.startsWith(prefix)) responses.delete(key);
   }
-  for (const key of pending.keys()) {
-    if (key.startsWith(prefix)) pending.delete(key);
+  for (const [key, inFlight] of pending) {
+    if (inFlight.url.startsWith(prefix)) pending.delete(key);
   }
 };

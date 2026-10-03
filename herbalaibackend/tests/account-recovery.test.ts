@@ -90,6 +90,22 @@ describe('Registration and account recovery (mail intercepted)', () => {
     expect((await login(user.email)).status).toBe(200);
   }, 40000);
 
+  it('preserves the original verification link when resending mail fails', async () => {
+    const user = await signup();
+    const original = await token(user.id, 'EMAIL_VERIFY');
+    sendMail.mockRejectedValueOnce(new Error('Intercepted delivery failure'));
+    const response = await request(app).post('/api/auth/resend-email-verification').send({ email: user.email });
+    expect(response.status).toBe(503);
+    expect(response.body.message).not.toContain('Intercepted');
+    expect((await prisma.token.findUniqueOrThrow({ where: { id: original.id } })).revokedAt).toBeNull();
+    const replacements = await prisma.token.findMany({
+      where: { userId: user.id, type: 'EMAIL_VERIFY', id: { not: original.id } },
+    });
+    expect(replacements).toHaveLength(1);
+    expect(replacements[0]?.revokedAt).not.toBeNull();
+    expect((await request(app).get('/api/auth/verify-email').query({ token: original.token })).status).toBe(200);
+  });
+
   it('rejects an expired verification link without activating the account', async () => {
     const user = await signup();
     const verification = await token(user.id, 'EMAIL_VERIFY');
