@@ -139,6 +139,10 @@ jobs:
         working-directory: herbalaifrontend
         run: node --test ../scripts/request-cache.test.mjs
 
+      - name: Run reviewed About directory regressions
+        working-directory: herbalaifrontend
+        run: node --test ../scripts/about-herb-records.test.mjs
+
       - name: Install notification loopback server dependencies
         working-directory: herbalaibackend
         run: npm ci --ignore-scripts

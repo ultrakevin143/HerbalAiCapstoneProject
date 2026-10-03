@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
@@ -13,125 +13,38 @@ import {
 } from 'lucide-react';
 import OptimizedFillImage from '../../components/OptimizedFillImage';
 import { useAuth } from '../../context/AuthContext';
-
-interface PitahcHerb {
-  id: string;
-  name: string;
-  scientificName: string;
-  englishName: string;
-  indications: string[];
-  preparation: string;
-  scientificFact: string;
-  image: string;
-}
+import HerbReferences from '../../components/HerbReferences';
+import { cachedApiGet } from '../../lib/request-cache';
+import { aboutHerbRecords, type AboutHerb } from '../../lib/about-herb-records';
 
 export default function AboutPage() {
   const { isAuthenticated } = useAuth();
+  const [pitahcHerbs, setPitahcHerbs] = useState<AboutHerb[]>([]);
+  const [activeHerbId, setActiveHerbId] = useState<string | null>(null);
+  const [recordsLoading, setRecordsLoading] = useState(true);
+  const [recordsError, setRecordsError] = useState<string | null>(null);
+  const [retryRecords, setRetryRecords] = useState(0);
+  const activeHerb = pitahcHerbs.find((herb) => herb.id === activeHerbId) ?? pitahcHerbs[0];
 
-  const pitahcHerbs: PitahcHerb[] = [
-    {
-      id: 'lagundi',
-      name: 'Lagundi',
-      scientificName: 'Vitex negundo',
-      englishName: 'Five-leaved Chaste Tree',
-      indications: ['Cough relief', 'Asthma management', 'Cold & Flu symptoms', 'Fever relief'],
-      preparation: 'Boil 1/2 cup of chopped dry leaves (or 1 cup of fresh leaves) in 2 cups of water for 15 minutes. Strain and drink 1/3 cup three times a day.',
-      scientificFact: 'Lagundi contains chrysoplenol D, a substance with anti-histaminic and muscle relaxant properties, making it highly effective against respiratory conditions.',
-      image: 'https://res.cloudinary.com/dclqw6at7/image/upload/v1787555318/herbal_ai_herbs/lagundi_doh.jpg',
-    },
-    {
-      id: 'sambong',
-      name: 'Sambong',
-      scientificName: 'Blumea balsamifera',
-      englishName: 'Ngai Camphor',
-      indications: ['Kidney stones dissolution', 'Edema (water retention)', 'Hypertension relief'],
-      preparation: 'Boil chopped leaves in water (approx. 1 leaf per cup) for 15 minutes. Drink 1 cup three to four times daily to promote urination.',
-      scientificFact: 'Studies show that Sambong extracts act as a natural diuretic and help prevent the formation of calcium oxalate kidney stones.',
-      image: 'https://res.cloudinary.com/dclqw6at7/image/upload/v1787555319/herbal_ai_herbs/sambong_doh.jpg',
-    },
-    {
-      id: 'ampalaya',
-      name: 'Ampalaya',
-      scientificName: 'Momordica charantia',
-      englishName: 'Bitter Melon',
-      indications: ['Mild non-insulin-dependent diabetes', 'Blood sugar regulation'],
-      preparation: 'Steam or boil fresh leaves and eat as a vegetable daily, or boil chopped leaves and drink the decoction once a day after a meal.',
-      scientificFact: 'Ampalaya contains polypeptide-p, an insulin-like compound, as well as charantin, which has been shown to lower blood glucose levels.',
-      image: 'https://res.cloudinary.com/dclqw6at7/image/upload/v1787555496/herbal_ai_herbs/ampalaya_doh.jpg',
-    },
-    {
-      id: 'bayabas',
-      name: 'Bayabas',
-      scientificName: 'Psidium guajava',
-      englishName: 'Guava',
-      indications: ['Antiseptic wound wash', 'Mouthwash for swollen gums', 'Diarrhea relief'],
-      preparation: 'For wounds, boil 1 cup of chopped leaves in 2 cups of water for 15 minutes; use warm decoction to wash wounds. For mouth wash, gargle the warm liquid.',
-      scientificFact: 'Guava leaves are rich in flavonoids, tannins, and essential oils that exhibit strong antibacterial, astringent, and anti-inflammatory properties.',
-      image: 'https://res.cloudinary.com/dclqw6at7/image/upload/v1787555141/herbal_ai_herbs/bayabas_doh.jpg',
-    },
-    {
-      id: 'bawang',
-      name: 'Bawang',
-      scientificName: 'Allium sativum',
-      englishName: 'Garlic',
-      indications: ['Hypertension management', 'Blood cholesterol reduction', 'Toothache relief'],
-      preparation: 'Eat 1-2 raw cloves or lightly grilled cloves daily with meals. For toothache, crush a fresh clove and apply directly to the affected tooth.',
-      scientificFact: 'Crushing garlic releases allicin, a powerful organosulfur compound that acts as a natural vasodilator, antimicrobial, and antioxidant.',
-      image: 'https://res.cloudinary.com/dclqw6at7/image/upload/v1787555497/herbal_ai_herbs/bawang_doh.jpg',
-    },
-    {
-      id: 'tsaang-gubat',
-      name: 'Tsaang Gubat',
-      scientificName: 'Carmona retusa',
-      englishName: 'Forest Tea / Carmona',
-      indications: ['Stomach ache relief', 'Abdominal colic', 'Diarrhea management'],
-      preparation: 'Boil 1/2 cup of chopped leaves in 2 cups of water for 15 minutes. Drink 1/2 cup every 4 hours or as needed for abdominal pain.',
-      scientificFact: 'Tsaang Gubat contains triterpenes like a-amyrin and b-amyrin, which exhibit antispasmodic activity, relaxing smooth gastrointestinal muscles.',
-      image: 'https://res.cloudinary.com/dclqw6at7/image/upload/v1787555500/herbal_ai_herbs/tsaang_gubat_doh.jpg',
-    },
-    {
-      id: 'yerba-buena',
-      name: 'Yerba Buena',
-      scientificName: 'Clinopodium douglasii',
-      englishName: 'Mint / Peppermint',
-      indications: ['Body pain and arthritis', 'Headache & toothache', 'Cough & cold'],
-      preparation: 'Boil chopped leaves in water for 15 minutes. Drink decoction for pain, or crush fresh leaves and apply directly to the forehead for headaches.',
-      scientificFact: 'The plant contains significant amounts of menthol, which stimulates cold-sensitive receptors in the skin, producing an analgesic effect.',
-      image: 'https://res.cloudinary.com/dclqw6at7/image/upload/v1787555499/herbal_ai_herbs/yerba_buena_doh.jpg',
-    },
-    {
-      id: 'niyog-niyogan',
-      name: 'Niyog-niyogan',
-      scientificName: 'Combretum indicum',
-      englishName: 'Yesterday, Today, and Tomorrow',
-      indications: ['Intestinal deworming (Ascaris)', 'Parasitic elimination'],
-      preparation: 'Eat mature, dried seeds 2 hours after dinner (5-7 seeds for children aged 7-12; 8-10 seeds for adults). Chew thoroughly. If ineffective, repeat after 1 week.',
-      scientificFact: 'The seeds contain L-quisqualic acid, an amino acid derivative that acts as an anthelmintic by paralyzing intestinal worms.',
-      image: 'https://res.cloudinary.com/dclqw6at7/image/upload/v1787555501/herbal_ai_herbs/niyogniogan_doh.jpg',
-    },
-    {
-      id: 'ulasimang-bato',
-      name: 'Ulasimang Bato',
-      scientificName: 'Peperomia pellucida',
-      englishName: 'Shiny Bush / Pansit-pansitan',
-      indications: ['Gout management', 'Rheumatoid arthritis', 'Uric acid reduction'],
-      preparation: 'Eat a fresh salad of washed leaves (1/2 cup) twice a day, or boil 1 cup of clean leaves in 2 cups of water for 15 minutes and drink twice daily.',
-      scientificFact: 'Pharmacological studies demonstrate that Ulasimang Bato contains compounds that inhibit xanthine oxidase, the enzyme responsible for uric acid synthesis.',
-      image: 'https://res.cloudinary.com/dclqw6at7/image/upload/v1787555502/herbal_ai_herbs/ulasimang_bato_doh.jpg',
-    },
-    {
-      id: 'akapulko',
-      name: 'Akapulko',
-      scientificName: 'Senna alata',
-      englishName: 'Ringworm Bush',
-      indications: ['Ringworm & Tinea infections', 'Eczema & Scabies', 'Athlete\'s foot'],
-      preparation: 'Crush fresh leaves thoroughly to extract juice. Apply the pure juice directly to the affected skin area twice daily.',
-      scientificFact: 'Akapulko leaves contain chrysophanic acid and anthraquinones, which possess potent antifungal properties that combat dermatophyte infections.',
-      image: 'https://res.cloudinary.com/dclqw6at7/image/upload/v1787555501/herbal_ai_herbs/akapulko_doh.jpg',
-    },
-  ];
-
-  const [activeHerb, setActiveHerb] = useState<PitahcHerb>(pitahcHerbs[0]);
+  useEffect(() => {
+    let cancelled = false;
+    const loadRecords = async () => {
+      setRecordsLoading(true);
+      setRecordsError(null);
+      try {
+        const response = await cachedApiGet('/herbs?isDohApproved=true&limit=20', 60_000, retryRecords > 0);
+        const records = aboutHerbRecords(response.data);
+        if (!records.length) throw new Error('No reviewed records available');
+        if (!cancelled) setPitahcHerbs(records);
+      } catch {
+        if (!cancelled) setRecordsError('Reviewed plant records are temporarily unavailable. Try again or open the Library.');
+      } finally {
+        if (!cancelled) setRecordsLoading(false);
+      }
+    };
+    void loadRecords();
+    return () => { cancelled = true; };
+  }, [retryRecords]);
 
   return (
     <div className="min-h-screen flex flex-col bg-transparent">
@@ -255,17 +168,25 @@ export default function AboutPage() {
             </div>
 
             {/* Interactive Grid & Detail Panel */}
+            {recordsLoading && <p role="status" className="text-muted">Loading reviewed plant records...</p>}
+            {recordsError && <div role="alert" className="space-y-3 text-error-ink">
+              <p>{recordsError}</p>
+              <button type="button" className="flat-button flat-button-secondary" onClick={() => setRetryRecords((current) => current + 1)}>Try again</button>
+            </div>}
+            {activeHerb && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               
               {/* Plant selection menu */}
-              <div className="lg:col-span-5 grid grid-cols-2 gap-3">
+              <div className="lg:col-span-5 grid grid-cols-1 min-[360px]:grid-cols-2 gap-3">
                 {pitahcHerbs.map((herb) => {
                   const isActive = activeHerb.id === herb.id;
                   return (
                     <button
                       key={herb.id}
-                      onClick={() => setActiveHerb(herb)}
-                      className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between h-[110px] group cursor-pointer ${
+                      type="button"
+                      aria-pressed={isActive}
+                      onClick={() => setActiveHerbId(herb.id)}
+                      className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between gap-2 min-h-[110px] group cursor-pointer ${
                         isActive
                           ? 'bg-[#2d6a4f] text-white border-[#2d6a4f] shadow-sm'
                           : 'bg-white/45 dark:bg-panel/75 hover:bg-white/70 dark:hover:bg-panel border-black/10 dark:border-line text-[#1b4332] dark:text-ink hover:-translate-y-0.5'
@@ -292,8 +213,8 @@ export default function AboutPage() {
                 <div className="glass-card bg-white/55 dark:bg-panel/85 backdrop-blur-md border border-black/10 dark:border-line rounded-3xl p-6 sm:p-8 shadow-sm">
                   <div className="space-y-6">
                     {/* Header */}
-                    <div className="flex items-center justify-between border-b border-[#1b4332]/10 dark:border-line pb-4">
-                      <div>
+                    <div className="flex flex-col min-[360px]:flex-row items-start min-[360px]:items-center justify-between gap-3 border-b border-[#1b4332]/10 dark:border-line pb-4">
+                      <div className="min-w-0 break-words">
                         <span className="text-xs font-black uppercase tracking-widest text-[#40916c]">
                           {activeHerb.englishName}
                         </span>
@@ -354,18 +275,19 @@ export default function AboutPage() {
                     {/* Evidence note */}
                     <div>
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">
-                        Repository Evidence Note
+                        Safety & Evidence
                       </h4>
                       <p className="text-xs font-semibold text-[#2d6a4f] dark:text-[#74c69d] italic bg-[#74c69d]/10 border border-[#74c69d]/25 rounded-2xl p-4 flex items-start gap-2">
                         <Lightbulb className="h-4 w-4 shrink-0 text-[#40916c] mt-0.5" />
-                        <span>{activeHerb.scientificFact}</span>
+                        <span>{activeHerb.safetyNotes}</span>
                       </p>
+                      <div className="mt-4"><HerbReferences sources={activeHerb.sources} /></div>
                     </div>
                   </div>
 
                   <div className="border-t border-[#1b4332]/10 dark:border-line pt-4 mt-6 flex justify-end">
                     <Link
-                      href={`/library?q=${activeHerb.name}`}
+                      href={`/library?id=${encodeURIComponent(activeHerb.id)}`}
                       className="text-xs font-bold text-[#40916c] hover:underline flex items-center gap-1.5"
                     >
                       <span>View full research & comments in the Library</span>
@@ -376,6 +298,7 @@ export default function AboutPage() {
               </div>
 
             </div>
+            )}
           </section>
 
           {/* Collaborative Capstone Section */}
