@@ -9,7 +9,7 @@ import { createNotification } from '../repositories/notification.repository.js';
 import { sendMail } from '../lib/mailer.js';
 import { ENV } from '../config/env.js';
 import type { HerbEvidenceClass } from '@prisma/client';
-import { editSuggestionSchema, reviewReferencesSchema, suggestHerbSchema } from '../schema/suggest.schema.js';
+import { editSuggestionSchema, hasPublicationReferenceCoverage, suggestHerbSchema } from '../schema/suggest.schema.js';
 
 const parseSuggestionId = (value: unknown): number | null => {
   if (typeof value !== 'string' || !/^[1-9]\d*$/.test(value)) return null;
@@ -293,8 +293,8 @@ export class SuggestController {
         return;
       }
 
-      if (!reviewReferencesSchema.safeParse(suggestion.references).success) {
-        res.status(400).json({ status: 'error', message: 'Use Edit & references to save at least one complete reference before publishing.' });
+      if (!hasPublicationReferenceCoverage(suggestion.references, suggestion.warnings)) {
+        res.status(400).json({ status: 'error', message: 'Use Edit & references to document identity, medicinal uses, preparation, dosage, and any written safety warnings before publishing.' });
         return;
       }
       if (req.body.revision !== suggestion.revision) {

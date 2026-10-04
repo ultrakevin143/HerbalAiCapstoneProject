@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { editSuggestionSchema, reviewReferencesSchema } from '../src/schema/suggest.schema.js';
+import { editSuggestionSchema, hasPublicationReferenceCoverage, reviewReferencesSchema } from '../src/schema/suggest.schema.js';
 
 const mocks = vi.hoisted(() => ({ findUnique: vi.fn(), updateMany: vi.fn(), auditCreate: vi.fn() }));
 vi.mock('../src/lib/prisma.js', () => ({ prisma: {
@@ -17,6 +17,21 @@ describe('Admin review edits', () => {
       expect(reviewReferencesSchema.safeParse(references).success).toBe(false);
     }
     expect(reviewReferencesSchema.safeParse([{ ...source, url: '', citation: 'Printed journal, volume 1' }]).success).toBe(true);
+  });
+  it('requires references to cover every public claim field before publication', () => {
+    expect(hasPublicationReferenceCoverage([{ ...source, supports: ['identity'] }])).toBe(false);
+    expect(hasPublicationReferenceCoverage([{ ...source, supports: ['identity', 'medicinalUses', 'preparationMethod', 'dosage'] }])).toBe(true);
+  });
+  it.each([null, undefined, [], [{ ...source, url: 'javascript:alert(1)' }]])('rejects malformed or missing publication references %#', (references) => {
+    expect(hasPublicationReferenceCoverage(references)).toBe(false);
+  });
+  it('requires safety coverage only when warnings contain text', () => {
+    const references = [{ ...source, supports: ['identity', 'medicinalUses', 'preparationMethod', 'dosage'] }];
+    for (const warnings of [undefined, null, '', '   ']) {
+      expect(hasPublicationReferenceCoverage(references, warnings)).toBe(true);
+    }
+    expect(hasPublicationReferenceCoverage(references, 'Avoid use during pregnancy.')).toBe(false);
+    expect(hasPublicationReferenceCoverage([...references, { ...source, supports: ['warnings'] }], 'Avoid use during pregnancy.')).toBe(true);
   });
   it('rejects publication and ownership fields in the edit payload', () => {
     expect(editSuggestionSchema.safeParse({ body }).success).toBe(true);

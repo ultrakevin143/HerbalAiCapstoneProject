@@ -1,7 +1,7 @@
 import { prisma } from "../lib/prisma.js";
 import type { HerbEvidenceClass, Prisma } from "@prisma/client";
 import crypto from "crypto";
-import { reviewReferencesSchema, type SuggestionEdit } from '../schema/suggest.schema.js';
+import { hasPublicationReferenceCoverage, reviewReferencesSchema, type SuggestionEdit } from '../schema/suggest.schema.js';
 
 export const editSuggestion = async (id: number, reviewerId: string, edit: SuggestionEdit) => {
   return prisma.$transaction(async (tx) => {
@@ -131,15 +131,10 @@ export const approveSuggestion = async (
       throw new Error("A documented information source is required before approval.");
     }
 
-    let sourceUrl: string | null = null;
-    try {
-      const parsedSource = new URL(informationSource);
-      if (parsedSource.protocol === "http:" || parsedSource.protocol === "https:") {
-        sourceUrl = parsedSource.toString();
-      }
-    } catch {
-      sourceUrl = null;
+    if (!hasPublicationReferenceCoverage(suggestion.references, suggestion.warnings)) {
+      throw new Error('References must cover identity, medicinal uses, preparation, dosage, and any written safety warnings.');
     }
+    const references = reviewReferencesSchema.parse(suggestion.references);
 
     await tx.herb.create({
       data: {
@@ -164,17 +159,9 @@ export const approveSuggestion = async (
         reviewer: { connect: { id: reviewerId } },
         sourceSuggestion: { connect: { id } },
         sources: {
-          create: Array.isArray(suggestion.references) && suggestion.references.length > 0
-            ? reviewReferencesSchema.parse(suggestion.references).map((source) => ({
-              ...source, url: source.url || null, citation: source.citation || null,
-            }))
-            : {
-            title: "Contributor-provided information source",
-            url: sourceUrl,
-            citation: sourceUrl ? null : informationSource,
-            supports: ["identity", "medicinalUses", "preparationMethod", "dosage", "warnings"],
-            accessedAt: sourceUrl ? new Date() : null,
-          },
+          create: references.map((source) => ({
+            ...source, url: source.url || null, citation: source.citation || null,
+          })),
         },
       },
     });

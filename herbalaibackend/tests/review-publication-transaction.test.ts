@@ -38,7 +38,7 @@ describe('Review to publication in a rolled-back database transaction', () => {
         expect(revised?.status).toBe('Pending');
         expect(revised?.references).toEqual([]);
         const references = [
-          { title: 'Identity citation', publisher: 'QA', url: '', citation: 'Synthetic A', publishedAt: '2026', supports: ['identity' as const] },
+          { title: 'Identity citation', publisher: 'QA', url: '', citation: 'Synthetic A', publishedAt: '2026', supports: ['identity' as const, 'medicinalUses' as const, 'preparationMethod' as const, 'dosage' as const] },
           { title: 'Safety citation', publisher: 'QA', url: 'https://example.invalid/qa', citation: '', publishedAt: '2026', supports: ['warnings' as const] },
         ];
         const edit = { ...content, warnings: 'Synthetic test only', imageUrl: '', references, reviewNotes: 'QA reviewed', revision: revised!.revision };
@@ -54,7 +54,7 @@ describe('Review to publication in a rolled-back database transaction', () => {
         expect(herb).toMatchObject({ warnings: 'Synthetic test only', publicationStatus: 'PUBLISHED', isVerified: true, reviewedById: reviewerId, sourceSuggestionId: submission.id, provenance: 'COMMUNITY_SUBMISSION' });
         expect(herb!.sources).toHaveLength(2);
         expect(herb!.sources).toEqual(expect.arrayContaining([
-          expect.objectContaining({ title: 'Identity citation', supports: ['identity'], citation: 'Synthetic A' }),
+          expect.objectContaining({ title: 'Identity citation', supports: ['identity', 'medicinalUses', 'preparationMethod', 'dosage'], citation: 'Synthetic A' }),
           expect.objectContaining({ title: 'Safety citation', supports: ['warnings'], url: 'https://example.invalid/qa' }),
         ]));
         const embedded = await transaction.$queryRaw<{ present: boolean }[]>`SELECT embedding IS NOT NULL AS present FROM "Herb" WHERE id = ${herbId}`;

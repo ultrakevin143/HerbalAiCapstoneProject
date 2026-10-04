@@ -32,6 +32,17 @@ export const referenceSchema = z.object({
 
 export const reviewReferencesSchema = z.array(referenceSchema).min(1, 'Add at least one reference').max(20);
 
+const requiredPublicationFields = ['identity', 'medicinalUses', 'preparationMethod', 'dosage'] as const;
+
+export const hasPublicationReferenceCoverage = (references: unknown, warnings?: string | null): boolean => {
+  const parsed = reviewReferencesSchema.safeParse(references);
+  if (!parsed.success) return false;
+
+  const coveredFields = new Set(parsed.data.flatMap((reference) => reference.supports));
+  return requiredPublicationFields.every((field) => coveredFields.has(field))
+    && (!warnings?.trim() || coveredFields.has('warnings'));
+};
+
 export const editSuggestionSchema = z.object({
   body: suggestHerbSchema.shape.body.extend({
     imageUrl: z.union([z.literal(''), z.string().url().refine((value) => /^https?:\/\//i.test(value)), z.string().regex(/^\/images\/herbs\/[a-zA-Z0-9._-]+$/)]),

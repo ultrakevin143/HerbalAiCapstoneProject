@@ -36,7 +36,7 @@ const body = { revision: 2, evidenceClass: 'DOCUMENTED_TRADITIONAL_USE', reviewN
 describe('Review HTTP results and side effects', () => {
   beforeEach(() => {
     vi.resetAllMocks();
-    mocks.find.mockResolvedValue({ ...content, id: 7, status: 'Pending', revision: 2, submitterId: 'qa-owner', references: [{ title: 'QA source', citation: 'QA citation', supports: ['identity'] }] });
+    mocks.find.mockResolvedValue({ ...content, id: 7, status: 'Pending', revision: 2, submitterId: 'qa-owner', references: [{ title: 'QA source', citation: 'QA citation', supports: ['identity', 'medicinalUses', 'preparationMethod', 'dosage'] }] });
     mocks.embed.mockResolvedValue([1, 0]);
     mocks.notify.mockResolvedValue({ id: 1 });
     mocks.user.mockResolvedValue({ name: 'QA', email: 'qa@example.invalid' });
@@ -85,6 +85,46 @@ describe('Review HTTP results and side effects', () => {
     expect((await request(app).post('/7/approve').send(body)).status).toBe(503);
     expect(mocks.approve).not.toHaveBeenCalled();
     expect(mocks.notify).not.toHaveBeenCalled();
+  });
+
+  it('blocks publication when references do not cover every published claim field', async () => {
+    mocks.find.mockResolvedValue({ ...content, id: 7, status: 'Pending', revision: 2, submitterId: 'qa-owner', references: [{ title: 'Identity only', citation: 'QA citation', supports: ['identity'] }] });
+    const response = await request(app).post('/7/approve').send(body);
+    expect(response.status).toBe(400);
+    expect(response.body.message).toContain('identity, medicinal uses, preparation, dosage');
+    expect(mocks.embed).not.toHaveBeenCalled();
+    expect(mocks.approve).not.toHaveBeenCalled();
+    expect(mocks.notify).not.toHaveBeenCalled();
+    expect(mocks.mail).not.toHaveBeenCalled();
+  });
+
+  it.each(['identity', 'medicinalUses', 'preparationMethod', 'dosage', 'warnings'])
+    ('blocks approval with missing %s coverage before any side effect', async (missingField) => {
+      const supports = ['identity', 'medicinalUses', 'preparationMethod', 'dosage', 'warnings'].filter((field) => field !== missingField);
+      mocks.find.mockResolvedValue({
+        ...content, id: 7, status: 'Pending', revision: 2, submitterId: 'qa-owner',
+        warnings: 'Safety information is limited.', references: [{ title: 'QA source', citation: 'QA citation', supports }],
+      });
+      const response = await request(app).post('/7/approve').send(body);
+      expect(response.status).toBe(400);
+      expect(mocks.embed).not.toHaveBeenCalled();
+      expect(mocks.approve).not.toHaveBeenCalled();
+      expect(mocks.notify).not.toHaveBeenCalled();
+      expect(mocks.mail).not.toHaveBeenCalled();
+    });
+
+  it('publishes warnings with coverage distributed across reviewed references', async () => {
+    mocks.find.mockResolvedValue({
+      ...content, id: 7, status: 'Pending', revision: 2, submitterId: 'qa-owner', warnings: 'Safety information is limited.',
+      references: [
+        { title: 'Identity and uses', citation: 'QA reference A', supports: ['identity', 'medicinalUses'] },
+        { title: 'Preparation and safety', citation: 'QA reference B', supports: ['preparationMethod', 'dosage', 'warnings'] },
+      ],
+    });
+    mocks.approve.mockResolvedValue({ id: 'qa-herb' });
+    expect((await request(app).post('/7/approve').send(body)).status).toBe(200);
+    expect(mocks.approve).toHaveBeenCalledTimes(1);
+    expect(mocks.notify).toHaveBeenCalledTimes(1);
   });
 
   it('publishes once and sends notification only after repository success', async () => {

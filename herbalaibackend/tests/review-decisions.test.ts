@@ -49,4 +49,29 @@ describe('Atomic review decisions', () => {
     expect(mocks.updateMany.mock.calls[0][0].data.reviewNotes).toBe('Not a real herb');
     expect(mocks.audit.mock.calls[0][0].data.details.reviewNotes).toBe('Not a real herb');
   });
+
+  it.each([
+    [],
+    [{ title: 'Identity only', citation: 'QA citation', supports: ['identity'] }],
+    [{ title: 'Invalid source', url: 'javascript:alert(1)', supports: ['identity', 'medicinalUses', 'preparationMethod', 'dosage'] }],
+  ])('blocks direct publication with incomplete references %#', async (references) => {
+    mocks.updateMany.mockResolvedValue({ count: 1 });
+    mocks.findUniqueOrThrow.mockResolvedValue({
+      id: 7, localName: 'QA', scientificName: 'QA', informationSource: 'QA citation', references,
+    });
+    await expect(approveSuggestion(7, 'admin', null, 'DOCUMENTED_TRADITIONAL_USE', 'Notes', 3))
+      .rejects.toThrow('References must cover identity, medicinal uses, preparation, dosage, and any written safety warnings.');
+    expect(mocks.herb).not.toHaveBeenCalled();
+    expect(mocks.audit).not.toHaveBeenCalled();
+  });
+  it('blocks a direct publication with unsupported written warnings', async () => {
+    mocks.updateMany.mockResolvedValue({ count: 1 });
+    mocks.findUniqueOrThrow.mockResolvedValue({
+      id: 7, localName: 'QA', scientificName: 'QA', informationSource: 'QA citation', warnings: 'Safety information is limited.',
+      references: [{ title: 'QA reference', citation: 'QA citation', supports: ['identity', 'medicinalUses', 'preparationMethod', 'dosage'] }],
+    });
+    await expect(approveSuggestion(7, 'admin', null, 'DOCUMENTED_TRADITIONAL_USE', 'Notes', 3)).rejects.toThrow('References must cover');
+    expect(mocks.herb).not.toHaveBeenCalled();
+    expect(mocks.audit).not.toHaveBeenCalled();
+  });
 });
