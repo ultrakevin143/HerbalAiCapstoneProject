@@ -33,6 +33,42 @@ describe('Admin review edits', () => {
     expect(hasPublicationReferenceCoverage(references, 'Avoid use during pregnancy.')).toBe(false);
     expect(hasPublicationReferenceCoverage([...references, { ...source, supports: ['warnings'] }], 'Avoid use during pregnancy.')).toBe(true);
   });
+  it.each(['identity', 'medicinalUses', 'preparationMethod', 'dosage'])('does not let safety coverage substitute for missing %s coverage', missing => {
+    const supports = ['identity', 'medicinalUses', 'preparationMethod', 'dosage', 'warnings'].filter(field => field !== missing);
+    expect(hasPublicationReferenceCoverage([{ ...source, supports }], 'Written safety limitation.')).toBe(false);
+  });
+  it('accepts distinct references that collectively cover the reviewed fields', () => {
+    const references = ['identity', 'medicinalUses', 'preparationMethod', 'dosage', 'warnings'].map(field => ({
+      ...source, title: `TEST ${field} reference`, supports: [field],
+    }));
+    expect(hasPublicationReferenceCoverage(references, 'Written safety limitation.')).toBe(true);
+  });
+  it('does not count repeated identity citations as coverage for different fields', () => {
+    const references = Array.from({ length: 5 }, (_, index) => ({
+      ...source, title: `TEST identity reference ${index}`, supports: ['identity'],
+    }));
+    expect(hasPublicationReferenceCoverage(references)).toBe(false);
+  });
+  it.each(['humanEvidence', 'preclinicalEvidence', 'traditionalUse', 'limitations'])('does not silently convert legacy %s tags into reviewed field coverage', legacy => {
+    const references = [{ ...source, supports: ['identity', 'medicinalUses', 'preparationMethod', 'dosage', legacy] }];
+    expect(hasPublicationReferenceCoverage(references, 'Written safety limitation.')).toBe(false);
+  });
+  it.each([
+    { title: '   ' },
+    { url: '', citation: '   ' },
+    { supports: ['identity', null] },
+    { supports: 'identity,medicinalUses,preparationMethod,dosage' },
+    { url: 'file:///private/research.pdf' },
+  ])('rejects malformed citations rather than relying on their claimed coverage %#', invalid => {
+    const references = [{ ...source, supports: ['identity', 'medicinalUses', 'preparationMethod', 'dosage'], ...invalid }];
+    expect(hasPublicationReferenceCoverage(references)).toBe(false);
+  });
+  it.each([[20, true], [21, false]] as const)('enforces the reviewed-reference cap at %s citations', (count, allowed) => {
+    const references = Array.from({ length: count }, (_, index) => ({
+      ...source, title: `TEST reviewed reference ${index}`, supports: ['identity', 'medicinalUses', 'preparationMethod', 'dosage'],
+    }));
+    expect(hasPublicationReferenceCoverage(references)).toBe(allowed);
+  });
   it('rejects publication and ownership fields in the edit payload', () => {
     expect(editSuggestionSchema.safeParse({ body }).success).toBe(true);
     expect(editSuggestionSchema.safeParse({ body: { ...body, submitterId: 'other' } }).success).toBe(false);

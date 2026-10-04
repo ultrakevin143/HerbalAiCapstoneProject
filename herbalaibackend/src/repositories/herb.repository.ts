@@ -47,10 +47,12 @@ export interface FindHerbsOptions {
  */
 export const findAllHerbs = async (options: FindHerbsOptions = {}) => {
   const { search, category, isDohApproved, page, limit } = options;
+  const trimmedCategory = category?.trim();
+  const categoryFilter = trimmedCategory && trimmedCategory.toLowerCase() !== 'all' ? trimmedCategory : undefined;
 
   const cacheKey = `${HERB_CACHE_PREFIX}list:${JSON.stringify({
     search: search?.trim().toLowerCase() || null,
-    category: category?.trim().toLowerCase() || null,
+    category: categoryFilter?.toLowerCase() ?? null,
     isDohApproved: isDohApproved ?? null,
     page: page ?? null,
     limit: limit ?? null,
@@ -63,8 +65,8 @@ export const findAllHerbs = async (options: FindHerbsOptions = {}) => {
       isVerified: true,
     };
 
-    if (category && category.toLowerCase() !== 'all') {
-      where.category = { equals: category, mode: 'insensitive' };
+    if (categoryFilter) {
+      where.category = { equals: categoryFilter, mode: 'insensitive' };
     }
 
     if (isDohApproved !== undefined) {
