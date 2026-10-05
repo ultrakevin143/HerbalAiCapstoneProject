@@ -69,6 +69,16 @@ interface PreparedDrAiContext {
 
 type CatalogHerb = Awaited<ReturnType<typeof findAllHerbs>>['herbs'][number];
 
+const herbNames = (herb: HerbQueryResult | CatalogHerb) => [
+  herb.localName,
+  herb.scientificName,
+  ...('sourceScientificName' in herb ? [herb.sourceScientificName] : []),
+  ...('cebuanoName' in herb ? [herb.cebuanoName] : []),
+].filter((name): name is string => typeof name === 'string' && name.trim().length > 0).map(normalize);
+
+const matchesHerbName = (normalizedText: string, herb: HerbQueryResult | CatalogHerb) =>
+  herbNames(herb).some(name => name.length > 2 && new RegExp(`(^|[^a-z0-9])${name}(?=$|[^a-z0-9])`).test(normalizedText));
+
 const NO_MATCH_CONTEXT = "No specific knowledge base or verified herb documents found matching this query in the database.";
 const NO_MATCH_REPLY = "I could not find a verified Herbal-Ai source for this question. I cannot confirm treatment or cure claims without a documented record. Please consult a licensed health professional for medical decisions.";
 const isPediatricQuestion = (question: string) => /\b(child|children|kid|kids|baby|infant|newborn|toddler|pediatric|paediatric|anak|bata|sanggol)\b|\b(?:\d{1,2}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)[- ](?:year|month)[- ]old\b|\b(?:age(?:d)?\s*)?\d{1,2}\s*(?:yo|y\/o|mo|months? old|taong gulang)\b/i.test(question);
@@ -149,30 +159,23 @@ const formatKBContext = (entries: RetrievedKB[]) => entries.map((entry, index) =
 
 async function prepareDrAiContext(question: string, history: Content[], pediatricRequest: boolean, options: AiRequestOptions): Promise<PreparedDrAiContext> {
   const catalogStartedAt = performance.now();
-  const { herbs: catalog } = await awaitAiOperation(() => findAllHerbs(), options.signal);
+  const { herbs } = await awaitAiOperation(() => findAllHerbs(), options.signal);
+  const catalog = herbs.filter(herb => herb.isVerified !== false && (herb.publicationStatus === undefined || herb.publicationStatus === 'PUBLISHED'));
   const normalizedQuestion = normalize(question);
-  let namedHerbs = catalog.filter((herb) =>
-    herb.isVerified !== false && [herb.localName, herb.scientificName]
-      .map(normalize)
-      .some((name) => name.length > 2 && normalizedQuestion.includes(name))
-  ).slice(0, 2);
+  let namedHerbs = catalog.filter(herb => matchesHerbName(normalizedQuestion, herb)).slice(0, 2);
 
   if (namedHerbs.length === 0 && /\b(it|its|that|this|those|them|prepare|preparation|dosage|dose|frequency|how much|how often)\b/i.test(question)) {
     const previousUserQuestion = [...history].reverse().find((turn) => turn.role === 'user');
     const previousText = normalize(previousUserQuestion?.parts.map((part) => part.text ?? '').join(' ') ?? '');
-    const previousHerbs = catalog.filter((herb) =>
-      [herb.localName, herb.scientificName].map(normalize)
-        .some((name) => name.length > 2 && previousText.includes(name))
-    );
+    const previousHerbs = catalog.filter(herb => matchesHerbName(previousText, herb));
     if (previousHerbs.length === 1 && /\b(it|its|that|this|those|them)\b/i.test(question)) namedHerbs = previousHerbs;
   }
 
   if (namedHerbs.length > 0) {
-    const exactTerms = namedHerbs.flatMap((herb) => [
-      normalize(herb.localName),
-      normalize(herb.scientificName),
+    const exactTerms = [...new Set(namedHerbs.flatMap(herb => [
+      ...herbNames(herb),
       ...normalize(herb.localName).split(' '),
-    ]);
+    ]))];
     const namedKnowledge = await awaitAiOperation(() => findActiveKBByTerms(exactTerms, 3), options.signal);
     const context = [
       namedHerbs.map((herb, index) => formatHerbContext(herb, index, question, pediatricRequest)).join("\n\n"),
@@ -221,11 +224,7 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
   ]), options.signal);
   const retrievalMs = performance.now() - retrievalStartedAt;
 
-  const explicitlyNamedHerbs = rawHerbs.filter((herb) =>
-    [herb.localName, herb.scientificName]
-      .map(normalize)
-      .some((name) => name.length > 2 && normalizedQuestion.includes(name))
-  );
+  const explicitlyNamedHerbs = rawHerbs.filter(herb => matchesHerbName(normalizedQuestion, herb));
 
   const closeKB = selectCloseMatches(rawKB, 2);
   const kbWithScores = closeKB.map((entry) => ({
@@ -243,7 +242,7 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
   const semanticallyCloseHerbs = selectCloseMatches(rawHerbs, 2).filter((herb) =>
     lexicalOverlap(
       question,
-      `${herb.localName} ${herb.scientificName} ${herb.medicinalUses} ${herb.warnings ?? ""}`
+      `${herb.localName} ${herb.scientificName} ${herb.medicinalUses} ${herb.preparationMethod ?? ""} ${herb.warnings ?? ""}`
     ) >= 0.2
   );
 

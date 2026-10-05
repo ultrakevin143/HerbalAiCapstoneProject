@@ -1,0 +1,129 @@
+import { readFileSync } from 'node:fs';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+const mocks = vi.hoisted(() => ({ catalog: vi.fn(), herbs: vi.fn(), kb: vi.fn(), exactKb: vi.fn(), embed: vi.fn(), answer: vi.fn(), stream: vi.fn() }));
+vi.mock('../src/repositories/herb.repository.js', () => ({ findAllHerbs: mocks.catalog, searchSimilarHerbs: mocks.herbs }));
+vi.mock('../src/repositories/knowledgebase.repository.js', () => ({ searchSimilarKB: mocks.kb, findActiveKBByTerms: mocks.exactKb }));
+vi.mock('../src/services/ai/core/gemini-service.js', () => ({ generateEmbedding: mocks.embed, generateChatResponse: mocks.answer, generateChatResponseStream: mocks.stream }));
+
+import { AskAIService, createDrAiStream } from '../src/services/ai/chat/ask-ai-service.js';
+import { DR_AI_SYSTEM_PROMPT } from '../src/config/drAiSystemPrompt.js';
+
+const batch = JSON.parse(readFileSync(new URL('../content/herbs/expansion-batch-02.json', import.meta.url), 'utf8')) as {
+  sources: Record<string, { title: string; url: string }>;
+  herbs: Array<{ id: string; slug: string; localName: string; scientificName: string; sourceScientificName: string | null; preparationMethod: string; medicinalUses: string; dosage: string; warnings: string; fieldSources: Record<string, string[]> }>;
+};
+const fixture = (slug: string) => {
+  const herb = batch.herbs.find(item => item.slug === slug);
+  if (!herb) throw new Error(`Missing herb fixture: ${slug}`);
+  return {
+    ...herb,
+    publicationStatus: 'PUBLISHED',
+    isVerified: true,
+    cebuanoName: null as string | null,
+    evidenceClass: 'DOCUMENTED_TRADITIONAL_USE',
+    sources: herb.fieldSources.preparationMethod.map(sourceId => ({ ...batch.sources[sourceId], supports: ['preparationMethod'] })),
+  };
+};
+
+describe('preparation retrieval regressions (isolated published fixtures, not live publication)', () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+    mocks.catalog.mockResolvedValue({ herbs: [fixture('oregano')] });
+    mocks.herbs.mockResolvedValue([]);
+    mocks.kb.mockResolvedValue([]);
+    mocks.exactKb.mockResolvedValue([]);
+    mocks.embed.mockResolvedValue([0.1]);
+    mocks.answer.mockResolvedValue('Grounded test response.');
+    mocks.stream.mockImplementation(async function* () { yield 'Grounded test response.'; });
+  });
+
+  it.each(['Oregano', 'Coleus amboinicus', 'Plectranthus amboinicus'])('retrieves the current preparation and citations through %s', async name => {
+    const herb = fixture('oregano');
+    await AskAIService(`How is ${name} prepared?`);
+    expect(mocks.answer.mock.calls[0]?.[1]).toContain(herb.preparationMethod);
+    expect(mocks.answer.mock.calls[0]?.[1]).toContain(batch.sources['ust-oregano'].url);
+    expect(mocks.embed).not.toHaveBeenCalled();
+  });
+
+  it.each(batch.herbs.map(herb => herb.slug))('passes current %s wording, limitations and field references without embedding', async slug => {
+    const herb = fixture(slug);
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    await AskAIService(`What preparation is recorded for ${herb.localName}?`);
+    const context = mocks.answer.mock.calls[0]?.[1];
+    expect(context).toContain(herb.preparationMethod);
+    expect(context).toContain(herb.warnings);
+    for (const source of herb.sources) expect(context).toContain(source.url);
+    expect(mocks.embed).not.toHaveBeenCalled();
+  });
+
+  it('keeps an incomplete entry incomplete when a matching preparation source is unavailable', async () => {
+    const herb = { ...fixture('mabolo'), preparationMethod: 'No clinically validated home preparation is provided in this entry.', sources: [] };
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    mocks.answer.mockRejectedValue(new Error('test provider unavailable'));
+    const result = await AskAIService('How is Mabolo prepared?');
+    expect(result.data?.answer).toContain('No clinically validated home preparation is provided in this entry.');
+    expect(result.data?.answer).not.toContain('Boil');
+  });
+
+  it('recognizes a stored regional name, including a follow-up', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [{ ...fixture('oregano'), cebuanoName: 'Kalabo' }] });
+    await AskAIService('How is it prepared?', [{ role: 'user', parts: [{ text: 'Tell me about Kalabo.' }] }]);
+    expect(mocks.answer.mock.calls[0]?.[1]).toContain(fixture('oregano').preparationMethod);
+    expect(mocks.embed).not.toHaveBeenCalled();
+  });
+
+  it('does not match Atis inside hepatitis', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [{ ...fixture('oregano'), localName: 'Atis', scientificName: 'Annona squamosa', sourceScientificName: null }] });
+    const result = await AskAIService('Can plants cure hepatitis?');
+    expect(mocks.answer).not.toHaveBeenCalled();
+    expect(result.data?.sources).toEqual([]);
+  });
+
+  it.each(['DRAFT', 'ARCHIVED'])('does not use a %s record even if incorrectly marked verified', async publicationStatus => {
+    mocks.catalog.mockResolvedValue({ herbs: [{ ...fixture('oregano'), publicationStatus }] });
+    await AskAIService('How is Oregano prepared?');
+    expect(mocks.answer).not.toHaveBeenCalled();
+  });
+
+  it('does not substitute Philippine oregano for another scientific species', async () => {
+    const result = await AskAIService('How is Origanum vulgare prepared?');
+    expect(result.data?.sources).toEqual([]);
+    expect(mocks.answer).not.toHaveBeenCalled();
+  });
+
+  it('retains a close semantic match when the relevant term occurs only in preparation', async () => {
+    const herb = fixture('mayana');
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    mocks.herbs.mockResolvedValue([{ ...herb, distance: 0.1 }]);
+    await AskAIService('Which record describes a poultice?');
+    expect(mocks.answer.mock.calls[0]?.[1]).toContain(herb.preparationMethod);
+    expect(mocks.answer.mock.calls[0]?.[1]).toContain(batch.sources['la-union-preparations'].url);
+  });
+
+  it('returns the recorded preparation without synthesizing a new dose when generation fails', async () => {
+    mocks.answer.mockRejectedValue(new Error('test provider unavailable'));
+    const result = await AskAIService('How is Plectranthus amboinicus prepared?');
+    expect(result.data?.answer).toContain(fixture('oregano').preparationMethod);
+    expect(result.data?.answer).toContain('cannot synthesize a dose');
+  });
+
+  it('retrieves the same current record for streaming and non-streaming answers', async () => {
+    const response = await createDrAiStream('How is Plectranthus amboinicus prepared?');
+    for await (const chunk of response.chunks) expect(chunk).toBe('Grounded test response.');
+    expect(mocks.stream.mock.calls[0]?.[1]).toContain(fixture('oregano').preparationMethod);
+    expect(response.getResult().sources).toContainEqual({ type: 'herb', title: 'Oregano', distance: 0 });
+  });
+
+  it('continues to withhold preparation quantities for a child through a botanical alias', async () => {
+    const result = await AskAIService('How do I prepare Plectranthus amboinicus for my child?');
+    expect(result.data?.sources).toContainEqual({ type: 'herb', title: 'Oregano', distance: 0 });
+    expect(result.data?.answer).toContain('cannot provide child-specific preparation');
+    expect(mocks.answer).not.toHaveBeenCalled();
+  });
+
+  it('keeps descriptive ethnobotany and food preparation out of medicinal recipe synthesis', () => {
+    expect(DR_AI_SYSTEM_PROMPT).toContain('A traditional-use description is not a validated home recipe');
+    expect(DR_AI_SYSTEM_PROMPT).toContain('Do not turn food preparation into medicinal treatment');
+  });
+});

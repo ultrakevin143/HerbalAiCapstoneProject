@@ -3,6 +3,7 @@ import path from "node:path";
 import dotenv from "dotenv";
 import { closeDatabasePool, prisma } from "../src/lib/prisma.js";
 import { generateEmbedding } from "../src/services/ai/core/gemini-service.js";
+import { builtInHerbEmbeddingText, herbSourceAccessedAt } from "../src/content/built-in-herb-fields.js";
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ type SourceDefinition = {
   url: string;
   reviewCoverage: string;
   retrievalNote?: string;
+  accessedAt?: string;
 };
 
 type Alias = {
@@ -87,19 +89,6 @@ const sourceSupports = (herb: DraftHerb) => {
   return supports;
 };
 
-const embeddingText = (herb: DraftHerb) => [
-  herb.localName,
-  ...herb.aliases.map(alias => alias.name),
-  herb.scientificName,
-  herb.sourceScientificName,
-  herb.category,
-  herb.proposedEvidenceClass,
-  herb.medicinalUses,
-  herb.preparationMethod,
-  herb.dosage,
-  herb.warnings,
-].filter(Boolean).join(" ");
-
 const main = async () => {
   const publish = hasFlag("--publish");
   const dryRun = hasFlag("--dry-run");
@@ -126,6 +115,7 @@ const main = async () => {
     if (herb.reviewGaps.length === 0) throw new Error(`${herb.localName} must retain its unresolved review gaps.`);
     for (const sourceId of sourceSupports(herb).keys()) {
       if (!batch.sources[sourceId]) throw new Error(`${herb.localName} references missing source ${sourceId}.`);
+      herbSourceAccessedAt(batch.sources[sourceId], batch.preparedAt);
     }
   }
 
@@ -170,7 +160,7 @@ const main = async () => {
       select: { id: true },
     });
     if (!reviewer) throw new Error("The supplied reviewer must be an active administrator.");
-    for (const herb of herbs) embeddings.set(herb.id, await generateEmbedding(embeddingText(herb)));
+    for (const herb of herbs) embeddings.set(herb.id, await generateEmbedding(builtInHerbEmbeddingText(herb)));
   }
 
   await prisma.$transaction(async tx => {
@@ -235,7 +225,7 @@ const main = async () => {
             url: source.url,
             citation: source.retrievalNote ?? `Review coverage: ${source.reviewCoverage}.`,
             supports: [...fields].sort(),
-            accessedAt: new Date(`${batch.preparedAt}T00:00:00.000Z`),
+            accessedAt: herbSourceAccessedAt(source, batch.preparedAt),
           };
         }),
       });

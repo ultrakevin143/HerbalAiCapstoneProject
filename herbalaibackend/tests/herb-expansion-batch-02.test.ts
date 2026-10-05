@@ -11,11 +11,15 @@ const batch = JSON.parse(
     slug: string;
     localName: string;
     scientificName: string;
+    publicationStatus: string;
+    isVerified: boolean;
     isDohApproved: boolean;
     proposedEvidenceClass: string;
     medicinalUses: string;
     preparationMethod: string;
     dosage: string;
+    warnings: string;
+    reviewGaps: string[];
     fieldSources: Record<string, string[]>;
     evidenceReview: { sourceIds: string[] };
     image: { path: string; sourceUrl: string; license: string; visuallyChecked: boolean };
@@ -31,10 +35,29 @@ describe("Philippine twenty-herb expansion batch", () => {
     for (const herb of batch.herbs) {
       expect(herb.id).toBe(`builtin-${herb.slug}`);
       expect(herb.isDohApproved).toBe(false);
+      expect(herb.publicationStatus).toBe("DRAFT");
+      expect(herb.isVerified).toBe(false);
       expect(herb.proposedEvidenceClass).toBe("DOCUMENTED_TRADITIONAL_USE");
       expect(herb.medicinalUses).toMatch(/traditional|laboratory|Philippine/i);
-      expect(herb.preparationMethod).toMatch(/No clinically validated home preparation/i);
-      expect(herb.dosage).toMatch(/No verified human treatment dose/i);
+      if (herb.fieldSources.preparationMethod.length) {
+        expect(herb.preparationMethod).toMatch(/traditional|Food preparation only/i);
+        expect(herb.reviewGaps.join(" ")).toMatch(/review/i);
+      } else {
+        expect(herb.preparationMethod).toMatch(/No clinically validated home preparation/i);
+      }
+      if (herb.fieldSources.dosage?.length) {
+        expect(herb.slug).toBe("takip-kohol");
+        expect(herb.dosage).toMatch(/external.*not a personalized/i);
+      } else {
+        expect(herb.dosage).toMatch(/No verified human treatment dose/i);
+      }
+    }
+  });
+
+  it.each(batch.herbs)("$localName retains an explicit safety review gap when warnings lack citations", (herb) => {
+    expect(herb.warnings.trim().length).toBeGreaterThan(0);
+    if (!herb.fieldSources.warnings?.length) {
+      expect(herb.reviewGaps.join(" ")).toMatch(/safety.*warnings|warnings.*safety/i);
     }
   });
 

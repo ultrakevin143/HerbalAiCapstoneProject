@@ -19,7 +19,8 @@
       "publisher": "University of Santo Tomas",
       "url": "https://www.ust.edu.ph/ust-manila-plant-databse/oregano/",
       "reviewCoverage": "WEB_PAGE",
-      "retrievalNote": "Used for Philippine identity and traditional-use context; not treated as clinical proof."
+      "retrievalNote": "Reviewed 2026-10-05: names the Philippine species and reports leaf juice and infusions. It does not supply a standardized quantity, infusion time or clinically validated treatment dose.",
+      "accessedAt": "2026-10-05"
     },
     "kew-makabuhay": {
       "title": "Tinospora crispa (L.) Hook.f. & Thomson",
@@ -27,6 +28,134 @@
       "url": "https://powo.science.kew.org/taxon/581600-1",
       "reviewCoverage": "TAXON_RECORD",
       "retrievalNote": "Confirms Tinospora crispa as the accepted name, Tinospora rumphii as a synonym, Philippine native distribution, and makabuhay as a Tagalog common name."
+    },
+    "ema-centella-2022": {
+      "title": "European Union herbal monograph on Centella asiatica (L.) Urb., herba — Revision 1",
+      "publisher": "European Medicines Agency",
+      "url": "https://www.ema.europa.eu/en/documents/herbal-monograph/european-union-herbal-monograph-centella-asiatica-l-urb-herba-revision-1_en.pdf",
+      "reviewCoverage": "MONOGRAPH_PAGES_4_TO_7",
+      "retrievalNote": "Reviewed 2026-10-05: traditional cutaneous use of pharmacopoeial material, not oral treatment.",
+      "accessedAt": "2026-10-05"
+    },
+    "la-union-preparations": {
+      "title": "Ethnomedicinal Knowledge of Plants among the Indigenous Peoples of Santol, La Union, Philippines",
+      "publisher": "Electronic Journal of Biology; Michelle B. Ducusin",
+      "url": "https://ejbio.imedpub.com/ethnomedicinal-knowledge-of-plants-among-the-indigenouspeoples-of-santol-la-union-philippines.php?aid=21461",
+      "reviewCoverage": "METHODS_AND_TABLE_2_MAYANA_AND_KAMOTE",
+      "retrievalNote": "External Mayana leaf poultice and cooked kamote tops reviewed; community-use reports, not clinical treatment trials.",
+      "accessedAt": "2026-10-05"
+    },
+    "nnc-pandan-food": {
+      "title": "Pandan Leaves' Probable Health Benefits",
+      "publisher": "National Nutrition Council, Republic of the Philippines",
+      "url": "https://nnc.gov.ph/mindanao-region/pandan-leaves-probable-health-benefits/",
+      "reviewCoverage": "BOTANICAL_AND_CULINARY_PARAGRAPHS_ONLY",
+      "retrievalNote": "Reviewed 2026-10-05: used only for Pandanus amaryllifolius food flavouring/preparation, not the page's anecdotal medicinal claims. Its broad genus-level edibility sentence is not adopted.",
+      "accessedAt": "2026-10-05"
+    },
+    "ayta-preparations-2018": {
+      "title": "Medicinal Plants Used by Ayta Communities in Dinalupihan, Bataan, Philippines",
+      "publisher": "Pharmacognosy Journal; Tantengco et al. (2018)",
+      "url": "https://www.phcogj.com/sites/default/files/PharmacognJ-10-5-859_0.pdf",
+      "reviewCoverage": "TABLE_1_PAGES_4_5_8",
+      "retrievalNote": "Leaf forms and routes reviewed; descriptive interviews, not human safety or efficacy trials.",
+      "accessedAt": "2026-10-05"
+    },
+    "loboc-preparations-2026": {
+      "title": "Quantitative ethnobotany of medical plants in non-indigenous communities of Loboc, Bohol, Philippines",
+      "publisher": "Ethnobotany Research and Applications; Beloy et al. (2026)",
+      "url": "https://ethnobotanyjournal.org/index.php/era/article/download/7714/2268/75646",
+      "reviewCoverage": "METHODS_AND_TABLE_2_ONION_ROW",
+      "retrievalNote": "Publisher PDF web text reviewed. No voucher specimens deposited. Local PDF retrieval returned HTML.",
+      "accessedAt": "2026-10-05"
+    },
+    "nparks-gabi-food": {
+      "title": "Colocasia esculenta (L.) Schott",
+      "publisher": "National Parks Board, Singapore",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/1/8/1835",
+      "reviewCoverage": "FOOD_USES_AND_RAW_PLANT_CAUTION",
+      "retrievalNote": "Cooked leaf food use only; no cooking duration or medicinal recipe validated.",
+      "accessedAt": "2026-10-05"
+    },
+    "nparks-okra-food": {
+      "title": "Abelmoschus esculentus (L.) Moench",
+      "publisher": "National Parks Board, Singapore",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/1/5/1581",
+      "reviewCoverage": "CULINARY_FRUIT_USE",
+      "retrievalNote": "Fruit food use only; no medicinal recipe inferred from root-use claims.",
+      "accessedAt": "2026-10-05"
+    },
+    "manobo-preparations-2020": {
+      "title": "Quantitative ethnopharmacological documentation and molecular confirmation of medicinal plants used by the Manobo tribe of Agusan del Sur, Philippines",
+      "publisher": "Journal of Ethnobiology and Ethnomedicine; Dapar et al. (2020)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7227330/",
+      "reviewCoverage": "TABLE_3_CANANGA_ROW",
+      "retrievalNote": "Europe PMC XML reviewed. Bark/leaf decoction differs from flower oil; interview reports do not prove safe dosing.",
+      "accessedAt": "2026-10-05"
+    },
+    "tkdl-katakataka": {
+      "title": "Hanlilika or anlilikga or aritana — Kalanchoe pinnata",
+      "publisher": "Philippine Traditional Knowledge Digital Library on Health",
+      "url": "https://tkdlph.piaem.org/index.php/ct-menu-item-3/ct-menu-item-7/7962-hanlilika-or-anlilikga-or-aritana",
+      "reviewCoverage": "INDEXED_PUBLIC_RECORD",
+      "retrievalNote": "Search-indexed Siquijor record reviewed; direct retrieval failed. Poultice report only; all-ages frequency claim not adopted.",
+      "accessedAt": "2026-10-05"
+    },
+    "tinospora-hepatitis-2014": {
+      "title": "Toxic hepatitis induced by a herbal medicine: Tinospora crispa",
+      "publisher": "Phytomedicine; Langrand et al. (2014)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24867504/",
+      "reviewCoverage": "CASE_REPORT_ABSTRACT",
+      "retrievalNote": "Human case abstract reviewed; material was botanically and chromatographically identified. No safe threshold established.",
+      "accessedAt": "2026-10-05"
+    },
+    "prosea-saluyot-food": {
+      "title": "Corchorus aestuans — PROSEA",
+      "publisher": "Plant Resources of South-East Asia; Brink, Jansen and Bosch; reproduced on Pl@ntUse",
+      "url": "https://plantuse.plantnet.org/en/Corchorus_aestuans_(PROSEA)",
+      "reviewCoverage": "EXACT_SPECIES_FOOD_USE",
+      "retrievalNote": "Botanical account reviewed. Cooked leaf use only, not another Corchorus species or the seed medicinal descriptions.",
+      "accessedAt": "2026-10-05"
+    },
+    "cavite-preparations-2021": {
+      "title": "The local practice of using medicinal plants in Cavite, Philippines",
+      "publisher": "Indian Journal of Traditional Knowledge; Caunca and Balinado (2021)",
+      "url": "https://nopr.niscpr.res.in/bitstream/123456789/57216/3/IJTK%2020%282%29%20335-343.pdf",
+      "reviewCoverage": "METHODS_AND_TABLE_2_ROWS_17_AND_50",
+      "retrievalNote": "Publisher PDF extracted: Langka leaf crushing/external; Mangosteen leaf decoction/internal. Interview reports, not validated recipes. Source prints Garcinia x mangostana.",
+      "accessedAt": "2026-10-05"
+    },
+    "panay-preparations-2021": {
+      "title": "Medicinal plants used by the indigenous Ati tribe in Tobias Fornier, Antique, Philippines",
+      "publisher": "Biodiversitas; Cordero and Alejandro (2021)",
+      "url": "https://smujo.id/biodiv/article/download/7286/4544",
+      "reviewCoverage": "TABLE_2_CITRUS_MAXIMA_HNUL0020607",
+      "retrievalNote": "Publisher PDF: separate leaf/skin-disease row reports boiled external wash. Mixed postpartum oral/bathing row is not adopted.",
+      "accessedAt": "2026-10-05"
+    },
+    "smithsonian-mabolo-2004": {
+      "title": "Medicinal Plants of the Guianas (Guyana, Surinam, French Guiana)",
+      "publisher": "Smithsonian Institution; DeFilipps, Maina and Crepin (2004)",
+      "url": "https://naturalhistory.si.edu/media/1868",
+      "reviewCoverage": "PRINTED_PAGE_113_DIOSPYROS_DISCOLOR",
+      "retrievalNote": "Historical compilation, not Philippine clinical guidance. Young-leaf decoction reported; no standardized recipe or explicitly specified route in that sentence.",
+      "accessedAt": "2026-10-05"
+    },
+    "kew-mabolo": {
+      "title": "Diospyros blancoi A.DC.",
+      "publisher": "Royal Botanic Gardens, Kew — Plants of the World Online",
+      "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:322146-1/general-information",
+      "reviewCoverage": "ACCEPTED_NAME_AND_SYNONYM",
+      "retrievalNote": "Diospyros discolor is included as a synonym of accepted Diospyros blancoi.",
+      "accessedAt": "2026-10-05"
+    },
+    "tramil-anonas": {
+      "title": "Annona reticulata — Caribbean Herbal Pharmacopoeia",
+      "publisher": "TRAMIL, edition 3",
+      "url": "https://www.tramil.net/en/plant/annona-reticulata",
+      "reviewCoverage": "SURVEY_PREPARATION_RECOMMENDATIONS_AND_TOXICITY",
+      "retrievalNote": "Caribbean leaf decoction report and neurotoxicity cautions reviewed. English salt quantity has inconsistent teaspoon/milligram units; measurements are not imported.",
+      "accessedAt": "2026-10-05"
     }
   },
   "herbs": [
@@ -47,7 +176,7 @@
       "category": "Traditional respiratory use",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine university documentation records traditional leaf preparations for cough and digestive discomfort. This is documented traditional use, not clinical proof, and this species is different from Mediterranean oregano (Origanum vulgare).",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Documented traditional preparation: leaves are crushed to express their juice, or made into a leaf infusion. These are reported Philippine practices, not clinically validated instructions. The university source supplies no standardized leaf quantity, water volume or preparation time, so none is invented here. This is Coleus amboinicus, not Mediterranean oregano.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "Plant-specific safety, medicine interactions, and use during pregnancy or childhood are not established in this review. Do not use it as a substitute for assessment of persistent cough or breathing difficulty.",
       "regionFound": "Cultivated in Philippine home gardens.",
@@ -71,11 +200,14 @@
         "medicinalUses": [
           "ust-oregano"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "ust-oregano"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review of reported leaf preparations before offering a home-use recipe or dosage",
+        "Independent safety-source review and sentence-level attribution of existing warnings"
       ],
       "image": {
         "path": "/images/herbs/oregano.jpg",
@@ -104,10 +236,10 @@
       "proposedEvidenceClass": "DOCUMENTED_TRADITIONAL_USE",
       "category": "Documented traditional use",
       "plantPart": "Whole plant",
-      "medicinalUses": "Philippine research records traditional use for anxiety, depression or neurological concerns, inflammation, infection, and diabetes. These records do not establish clinical effectiveness for those conditions.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
-      "dosage": "No verified human treatment dose is supplied.",
-      "warnings": "No clinically validated home preparation or dose is provided. Mental-health symptoms, infection, diabetes, and wounds require appropriate professional care.",
+      "medicinalUses": "Philippine research records traditional use for anxiety, depression or neurological concerns, inflammation, infection, and diabetes. These records do not establish clinical effectiveness for those conditions. Separately, EMA recognizes a traditional cutaneous preparation for minor wounds, based on longstanding use rather than established clinical efficacy.",
+      "preparationMethod": "EMA traditional-use preparation for minor wounds: add 0.6 g of pharmacopoeial comminuted Centella herb to a small amount of boiling water; use the still-warm infusion in an impregnated dressing for external application. The monograph specifies neither water volume nor steeping time. It does not authorize substituting unverified garden plants or drinking the infusion.",
+      "dosage": "Adult/elderly monograph reference: three 0.6 g external applications daily (1.8 g/day), for at most one week; not a personalized treatment recommendation.",
+      "warnings": "External use only. Not recommended under 18, in pregnancy/breastfeeding, or with Centella/Apiaceae allergy. Seek professional care if symptoms persist or worsen. This is not an oral treatment for diabetes, mental-health symptoms or infection.",
       "regionFound": "Documented in Philippine medicinal-plant research.",
       "evidenceReview": {
         "sourceIds": [
@@ -127,13 +259,22 @@
           "ph-toxicology"
         ],
         "medicinalUses": [
-          "ph-toxicology"
+          "ph-toxicology",
+          "ema-centella-2022"
         ],
-        "preparationMethod": [],
-        "warnings": []
+        "preparationMethod": [
+          "ema-centella-2022"
+        ],
+        "warnings": [
+          "ema-centella-2022"
+        ],
+        "dosage": [
+          "ema-centella-2022"
+        ]
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review of the cutaneous monograph and suitability of pharmacopoeial material before offering practical treatment guidance",
+        "Independent safety review and sentence-level attribution of existing clinical-care warnings"
       ],
       "image": {
         "path": "/images/herbs/takip-kohol.jpg",
@@ -163,7 +304,7 @@
       "category": "Traditional topical use",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research records traditional leaf use for bruises and sprains and reports laboratory antibacterial and antioxidant findings. Laboratory findings are not proof of treatment benefit in people.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Documented traditional preparation: the La Union study reports leaves pounded into a soft, juicy material for topical use in sprains and bruises. This describes an external leaf poultice, not a clinically validated recipe. No leaf count, duration or treatment dose is established here. It is not an oral root-decoction instruction; raw leaves should not be placed on open wounds.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "No clinically validated preparation or dose is provided. Stop topical use if irritation occurs; significant pain, swelling, or suspected fracture needs medical assessment.",
       "regionFound": "Documented in North Cotabato and widely grown as an ornamental plant.",
@@ -187,11 +328,14 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "la-union-preparations"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review of the reported leaf poultice and safe topical practice before offering a treatment recipe or dose",
+        "Independent safety-source review and sentence-level attribution of existing warnings"
       ],
       "image": {
         "path": "/images/herbs/mayana.jpg",
@@ -221,7 +365,7 @@
       "category": "Traditional use / food plant",
       "plantPart": "Fruit",
       "medicinalUses": "Philippine ethnobotanical research records the fruit in traditional use for inflammation, gastric ulcer, diarrhea, and urinary concerns. This documentation does not prove that eating okra treats these conditions.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Food preparation only: NParks describes young Abelmoschus esculentus fruits eaten fresh or cooked as a vegetable, with mucilage used in soups or stews. No medicinal fruit preparation, dose or cooking duration is supplied. Root-use claims do not establish a fruit remedy.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "No medicinal dose or home treatment is established. Persistent abdominal pain, diarrhea, bleeding, or urinary symptoms require professional assessment.",
       "regionFound": "Common Philippine food crop; included in a North Cotabato medicinal-plant study.",
@@ -245,11 +389,15 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "nparks-okra-food"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
       ],
       "image": {
         "path": "/images/herbs/okra.jpg",
@@ -279,7 +427,7 @@
       "category": "Traditional use / food plant",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research records onion leaves in traditional use for abdominal pain and reports laboratory antimicrobial and antioxidant properties. These findings do not establish onion as a treatment for infection or abdominal disease.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Documented traditional preparation: the Loboc study records direct or crushed Allium cepa leaves used externally for respiratory/digestive ailment categories. No application site, quantity or duration is specified, so this is not a complete home instruction. It is not an oral bulb recipe; botanical identification lacked deposited vouchers.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "The cited record concerns leaves and provides no validated medicinal preparation or dose. Severe or persistent abdominal pain requires medical assessment.",
       "regionFound": "Common Philippine food crop; documented in North Cotabato research.",
@@ -303,11 +451,15 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "loboc-preparations-2026"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
       ],
       "image": {
         "path": "/images/herbs/sibuyas.jpeg",
@@ -337,9 +489,9 @@
       "category": "Documented traditional use",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research records traditional leaf use for abdominal pain, diarrhea, boils, fatigue, fever, and inflammation, alongside laboratory antiparasitic, insecticidal, and anticancer findings. None of these laboratory findings establishes a cancer treatment.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Traditional oral preparation withheld: TRAMIL reports a Caribbean Annona reticulata leaf decoction but warns about neurotoxicity associated with prolonged consumption. Its English recipe also contains inconsistent salt units. This does not establish a safe Philippine home recipe. Boiling instructions and treatment quantities are not imported.",
       "dosage": "No verified human treatment dose is supplied.",
-      "warnings": "No safe home preparation or dose is established. Do not ingest leaves or use them to replace treatment for fever, infection, parasites, or cancer.",
+      "warnings": "Do not use Anonas leaf preparations to replace treatment for infection, fever, parasites or cancer. TRAMIL warns about neurotoxicity associated with prolonged consumption and excludes medicinal use during pregnancy, breastfeeding and in children under twelve. A safe home treatment dose is not established here.",
       "regionFound": "Familiar Philippine fruit tree; documented in medicinal-plant research.",
       "evidenceReview": {
         "sourceIds": [
@@ -361,11 +513,18 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
-        "warnings": []
+        "preparationMethod": [
+          "tramil-anonas"
+        ],
+        "warnings": [
+          "tramil-anonas"
+        ]
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Preparation evidence still unresolved: the Caribbean TRAMIL decoction addresses a different indication and includes inconsistent salt units; methanol/animal methods do not establish a Philippine home recipe",
+        "Preparation source is descriptive or safety-limited; no independently validated human treatment recipe or dose is added"
       ],
       "image": {
         "path": "/images/herbs/anonas.jpg",
@@ -395,7 +554,7 @@
       "category": "Documented traditional use",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research records traditional use of the leaves for cough and diarrhea. This is ethnobotanical documentation, not clinical evidence of effectiveness.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Documented traditional preparation: the Ayta study records oral leaf decoction or sap for respiratory complaints. Amounts, water volume and duration are not specified. This is Artemisia vulgaris, not Artemisia absinthium; the report does not establish a safe treatment recipe.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "No clinically validated preparation or dose is provided. Avoid medicinal use during pregnancy unless specifically cleared by a qualified clinician; persistent cough or diarrhea needs assessment.",
       "regionFound": "Documented in Philippine medicinal-plant research.",
@@ -419,11 +578,15 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "ayta-preparations-2018"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
       ],
       "image": {
         "path": "/images/herbs/damong-maria.jpg",
@@ -453,7 +616,7 @@
       "category": "Documented traditional use",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research records traditional use of langka leaves for diabetes, wounds, and abdominal pain. This does not establish effectiveness, and the leaves are not equivalent to eating the fruit.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Documented traditional preparation: the Cavite survey records crushed Artocarpus heterophyllus leaves used externally for arthritis. This is a community-use description, not a validated treatment or home recipe. Leaf quantity, processing details and application duration are not supplied. Root decoctions and fruit uses are different preparations.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "No medicinal preparation or dose is established. Do not replace diabetes care or apply unsterile plant material to open wounds.",
       "regionFound": "Common Philippine fruit tree; documented in North Cotabato research.",
@@ -477,11 +640,16 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "cavite-preparations-2021"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Exact leaf preparation remains unresolved: reviewed Philippine studies use bark or roots; leaf laboratory ointment extraction is not a home recipe",
+        "Preparation source is descriptive or safety-limited; no independently validated human treatment recipe or dose is added"
       ],
       "image": {
         "path": "/images/herbs/langka.jpg",
@@ -511,7 +679,7 @@
       "category": "Documented traditional use",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research records traditional leaf use for headache, burns, and wounds and reports laboratory antimicrobial, antifungal, antileishmanial, and antihistamine activity. Laboratory activity does not establish a human treatment.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Documented traditional preparation: the Ayta study reports leaves and shoots applied externally to the forehead for fever. No processing sequence or duration is specified. This is a report, not validated fever treatment; seed food colouring uses a different part.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "The leaves are not interchangeable with culinary seed coloring. No safe medicinal preparation or dose is established; burns and infected wounds require proper care.",
       "regionFound": "Commonly cultivated in the Philippines; documented in North Cotabato research.",
@@ -535,11 +703,15 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "ayta-preparations-2018"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
       ],
       "image": {
         "path": "/images/herbs/atsuete.jpg",
@@ -569,7 +741,7 @@
       "category": "Research-stage traditional plant",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research reports leaf use relating to urinary-tract and other microbial infections. This record and laboratory research do not establish that ylang-ylang treats infection in people.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Documented traditional preparation: the Manobo study records an oral bark/leaf decoction for respiratory or stomach complaints. It does not specify a leaf-only recipe, water ratio or boiling duration. Flower oil is a separate preparation, not a substitute for leaves. Reported drinking amounts do not establish a safe dose.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "No home preparation or dose is established. Suspected urinary infection, fever, flank pain, pregnancy-related symptoms, or persistent symptoms require medical assessment.",
       "regionFound": "Cultivated in the Philippines; included in North Cotabato medicinal-plant research.",
@@ -593,11 +765,15 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "manobo-preparations-2020"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
       ],
       "image": {
         "path": "/images/herbs/ylang-ylang.jpg",
@@ -627,7 +803,7 @@
       "category": "Documented traditional use",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research records traditional use of suha leaves in postpartum bathing and reports laboratory anticancer findings. This does not establish cancer prevention or treatment, and a postpartum bath is not evidence for internal use.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Documented traditional preparation: the Ati survey in Antique records boiled Citrus maxima leaves used as an external wash for skin complaints. No leaf quantity, water ratio or duration is supplied. This is not validated treatment or an oral remedy; the separate mixed postpartum preparation is not adopted.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "No oral medicinal preparation or dose is supported. Postpartum care and possible infection require professional guidance; avoid applying irritating preparations to broken skin.",
       "regionFound": "Common Philippine citrus tree; documented in North Cotabato research.",
@@ -651,11 +827,16 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "panay-preparations-2021"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Preparation evidence still unresolved: Loboc mixes internal/external and pregnancy categories without an unambiguous leaf-only protocol; no pregnancy or postpartum recipe adopted",
+        "Preparation source is descriptive or safety-limited; no independently validated human treatment recipe or dose is added"
       ],
       "image": {
         "path": "/images/herbs/suha.jpg",
@@ -685,7 +866,7 @@
       "category": "Documented traditional use / food plant",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research records traditional leaf use for hypertension and itching and reports laboratory diuretic and antioxidant activity. This does not establish treatment effectiveness.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Food preparation only: NParks describes Colocasia esculenta leaves and petioles cooked as vegetables and warns against eating raw material because of calcium oxalate. No leaf cooking time or medicinal dose is supplied. This is not a preparation for hypertension or itching; the source distinguishes this species from look-alike aroids.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "Raw or improperly prepared gabi can irritate the mouth and skin. Food preparation is not a medicinal dose, and prescribed blood-pressure treatment should not be replaced.",
       "regionFound": "Common Philippine food crop; documented in North Cotabato research.",
@@ -709,11 +890,15 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "nparks-gabi-food"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
       ],
       "image": {
         "path": "/images/herbs/gabi.jpg",
@@ -743,7 +928,7 @@
       "category": "Documented traditional use / food plant",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research records traditional leaf use for sprain, inflammation, fever, and constipation. This documentation does not establish a clinically effective treatment.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Food preparation only: the PROSEA account describes Corchorus aestuans leaves cooked as a vegetable, releasing mucilage. No cooking duration or medicinal dose is supplied. This is not a treatment recipe for fever or inflammation; methods for Corchorus olitorius or Corchorus capsularis are not substituted.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "No medicinal dose is established. Fever, severe pain, significant injury, or persistent constipation requires appropriate assessment.",
       "regionFound": "Familiar Philippine leafy vegetable; documented in North Cotabato research.",
@@ -767,11 +952,15 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "prosea-saluyot-food"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified review of exact-species food preparation versus medicinal claims; the original toxicity paper's use reference studies Corchorus capsularis"
       ],
       "image": {
         "path": "/images/herbs/saluyot.jpeg",
@@ -791,7 +980,7 @@
       "scientificName": "Diospyros blancoi",
       "scientificAuthor": null,
       "family": null,
-      "sourceScientificName": null,
+      "sourceScientificName": "Diospyros discolor",
       "aliases": [],
       "publicationStatus": "DRAFT",
       "isVerified": false,
@@ -801,7 +990,7 @@
       "category": "Documented traditional use",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research records traditional leaf use for several conditions, including colds, diarrhea, hypertension, stomachache, and eczema. Listing these uses does not prove effectiveness for any of them.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Documented traditional preparation: the Smithsonian compilation reports a young-leaf decoction under Diospyros discolor, a synonym of Diospyros blancoi. This is a Guianas historical report, not Philippine clinical guidance. No amount, water ratio, duration or explicit administration route is specified; none is invented. It is not validated cardiovascular or diabetes treatment.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "No validated home preparation or dose is provided. Do not replace prescribed cardiovascular or diabetes treatment; persistent symptoms need professional assessment.",
       "regionFound": "Philippine fruit tree documented in medicinal-plant research.",
@@ -814,7 +1003,8 @@
       },
       "fieldSources": {
         "identity": [
-          "ph-toxicology"
+          "ph-toxicology",
+          "kew-mabolo"
         ],
         "localNames": [
           "ph-toxicology"
@@ -825,11 +1015,16 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "smithsonian-mabolo-2004"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Preparation evidence still unresolved: available leaf-extract studies use laboratory solvents or animals, not a validated human home preparation",
+        "Preparation source is descriptive or safety-limited; no independently validated human treatment recipe or dose is added"
       ],
       "image": {
         "path": "/images/herbs/mabolo.jpeg",
@@ -859,9 +1054,9 @@
       "category": "Research-stage traditional plant",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research records leaf use for cough and reports laboratory neuroprotective and antioxidant activity. These laboratory findings do not establish a treatment for neurologic disease or cough.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Documented traditional preparation: the Cavite survey records an oral Garcinia mangostana leaf decoction for fever, including reported dengue use. This is not proof of effectiveness or a dengue treatment recommendation. No leaf quantity, water ratio or boiling duration is supplied. Fruit-rind supplements are not interchangeable.",
       "dosage": "No verified human treatment dose is supplied.",
-      "warnings": "The record concerns leaves, not commercial rind supplements or the edible fruit. No medicinal preparation or dose is established.",
+      "warnings": "This record concerns leaves, not fruit-rind supplements. Reported use does not establish effectiveness or a safe dose. Suspected dengue or persistent fever needs medical assessment; do not delay care to use this preparation.",
       "regionFound": "Cultivated and sold in the Philippines; documented in North Cotabato research.",
       "evidenceReview": {
         "sourceIds": [
@@ -883,11 +1078,16 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "cavite-preparations-2021"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Leaf preparation remains unresolved: original use reference concerns fruit hulls; fruit-peel recipes and laboratory leaf tinctures cannot be transferred to this leaf record",
+        "Preparation source is descriptive or safety-limited; no independently validated human treatment recipe or dose is added"
       ],
       "image": {
         "path": "/images/herbs/mangosteen.jpg",
@@ -917,7 +1117,7 @@
       "category": "Food plant / laboratory research",
       "plantPart": "Leaves",
       "medicinalUses": "A Philippine study included kamote leaves and reported antioxidant findings from laboratory analysis. This does not establish that kamote leaves prevent or treat a specific disease.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Food preparation only: the La Union study records cooked leaf tops eaten as a vegetable. This documents community practice, not treatment of anemia. No cooking duration or medicinal dose is supplied; laboratory antioxidant results do not create a treatment recipe.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "Cooked leaves may be food, but no medicinal preparation or treatment dose is established. Do not translate laboratory extract findings into home dosing.",
       "regionFound": "Common Philippine food crop; documented in North Cotabato research.",
@@ -941,11 +1141,15 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "la-union-preparations"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
       ],
       "image": {
         "path": "/images/herbs/kamote.jpg",
@@ -975,7 +1179,7 @@
       "category": "Documented traditional use",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research records traditional leaf use for feverish colds, whooping cough, wound healing, and other serious conditions. These records do not establish clinical effectiveness or justify self-treatment of malaria, snakebite, or fractures.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Documented traditional preparation: the Siquijor TKDL record describes pounded Kalanchoe pinnata leaves as an external poultice for boils. This is a community report, not validated treatment or permission for oral use. Its all-ages frequency claim is not adopted as safe dosing; sterility and safe application duration are not established.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "Do not use the plant for snakebite, suspected malaria, fracture, or serious infection. No safe internal preparation or dose is established.",
       "regionFound": "Commonly grown in Philippine gardens; documented in medicinal-plant research.",
@@ -999,11 +1203,15 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "tkdl-katakataka"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
       ],
       "image": {
         "path": "/images/herbs/katakataka.jpg",
@@ -1033,7 +1241,7 @@
       "category": "Documented traditional use",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research records traditional leaf use for loose bowel movement and reports laboratory antibacterial activity. This does not establish a treatment for bacterial infection or diarrhea.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Documented traditional preparation: the Ayta study reports an oral decoction of leaves and shoots for diarrhea or stomachache. No leaf-to-water ratio or boiling time is specified. This is reported practice, not validated treatment or a complete home recipe.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "No validated preparation or dose is provided. Diarrhea with dehydration, blood, fever, or persistent symptoms requires medical care.",
       "regionFound": "Widely familiar Philippine roadside and garden tree; documented in North Cotabato research.",
@@ -1057,11 +1265,15 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "ayta-preparations-2018"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
       ],
       "image": {
         "path": "/images/herbs/aratiles.jpeg",
@@ -1091,7 +1303,7 @@
       "category": "Documented traditional use / food plant",
       "plantPart": "Leaves",
       "medicinalUses": "Philippine research records traditional leaf use for fever and reports laboratory antibacterial and anticancer activity. These findings do not establish pandan as a treatment for infection, fever, or cancer.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Food preparation only: identified Pandanus amaryllifolius leaves are used to flavour rice and other dishes during cooking, or ground for a culinary extract. This explains ordinary food use, not a medicinal tea recipe. The cited source does not establish a preparation or dose for fever, diabetes or cancer; other Pandanus species must not be substituted.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "Culinary aroma use is not a medicinal dose. No clinically validated treatment preparation is provided; persistent fever needs assessment.",
       "regionFound": "Common Philippine culinary and garden plant; documented in North Cotabato research.",
@@ -1115,11 +1327,14 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
+        "preparationMethod": [
+          "nnc-pandan-food"
+        ],
         "warnings": []
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "A medicinal preparation and dose still require a separate authoritative source and qualified review; food flavouring is not treatment guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings"
       ],
       "image": {
         "path": "/images/herbs/pandan.jpeg",
@@ -1149,9 +1364,9 @@
       "category": "Documented traditional use",
       "plantPart": "Stem",
       "medicinalUses": "Philippine research records traditional stem use for wounds, skin disease, fever, diarrhea, stomachache, and other conditions. These records do not establish clinical effectiveness, and the study's laboratory toxicity assay cannot define a safe human dose.",
-      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "preparationMethod": "Traditional oral preparation withheld: a human case report linked botanically confirmed Tinospora crispa ingestion to toxic hepatitis. No safe home stem preparation or dose is established here. Traditional-use reports cannot resolve that safety gap; this entry does not provide boiling or drinking instructions.",
       "dosage": "No verified human treatment dose is supplied.",
-      "warnings": "No safe home preparation or dose is established. Do not use it to self-treat malaria, serious infection, fertility concerns, or persistent gastrointestinal symptoms.",
+      "warnings": "No safe home preparation or dose is established. Do not use it to self-treat malaria, serious infection, fertility concerns, or persistent gastrointestinal symptoms. A human case report documented toxic hepatitis after ingestion of identified Tinospora crispa; this does not determine a safe dose or the frequency of injury.",
       "regionFound": "Documented in Philippine medicinal-plant research.",
       "evidenceReview": {
         "sourceIds": [
@@ -1174,11 +1389,18 @@
         "medicinalUses": [
           "ph-toxicology"
         ],
-        "preparationMethod": [],
-        "warnings": []
+        "preparationMethod": [
+          "tinospora-hepatitis-2014"
+        ],
+        "warnings": [
+          "tinospora-hepatitis-2014"
+        ]
       },
       "reviewGaps": [
-        "Qualified health-professional review before adding any preparation or dosage guidance"
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing",
+        "Independent attribution review of the remaining pre-existing warnings"
       ],
       "image": {
         "path": "/images/herbs/makabuhay.jpg",
