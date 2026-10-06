@@ -29,7 +29,17 @@ describe('preparation-only PostgreSQL CI gate', () => {
     const gate = step('Run guarded preparation PostgreSQL gate');
     expect(gate).toContain(`HERBALAI_TEST_DATABASE_URL: ${testUrl}`);
     expect(gate).toContain('run: npm run test:preparations:database');
-    expect(workflow).not.toMatch(/run:.*prisma (generate|migrate deploy)/);
+    expect(workflow).not.toMatch(/run:.*prisma migrate deploy/);
+  });
+
+  it('generates the schema-derived client before checking enum-dependent tooling', () => {
+    const generation = step('Generate preparation tooling Prisma client');
+    expect(generation).toContain(`DATABASE_URL: ${testUrl}`);
+    expect(generation).toContain(`DIRECT_URL: ${testUrl}`);
+    expect(generation).toContain('DOTENV_CONFIG_PATH: /dev/null');
+    expect(generation).toContain('run: node node_modules/prisma/build/index.js generate');
+    expect(workflow.indexOf('- name: Generate preparation tooling Prisma client')).toBeGreaterThan(workflow.indexOf('- name: Install backend dependencies'));
+    expect(workflow.indexOf('- name: Generate preparation tooling Prisma client')).toBeLessThan(workflow.indexOf('- name: Strictly typecheck preparation tooling'));
   });
 
   it('strictly checks tooling and tests excluded from the application tsconfig', () => {

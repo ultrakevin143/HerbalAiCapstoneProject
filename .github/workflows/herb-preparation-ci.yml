@@ -54,6 +54,14 @@ jobs:
         working-directory: herbalaibackend
         run: npm ci
 
+      - name: Generate preparation tooling Prisma client
+        working-directory: herbalaibackend
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@127.0.0.1:5432/herbalai_test?sslmode=disable
+          DIRECT_URL: postgresql://test_user:test_password@127.0.0.1:5432/herbalai_test?sslmode=disable
+          DOTENV_CONFIG_PATH: /dev/null
+        run: node node_modules/prisma/build/index.js generate
+
       - name: Strictly typecheck preparation tooling
         working-directory: herbalaibackend
         run: >-
