@@ -68,7 +68,8 @@ describe("sourced preparation enrichment", () => {
     const herb = getHerb('makabuhay');
     expect(herb.preparationMethod).toMatch(/^Traditional oral preparation withheld:.*toxic hepatitis/);
     expect(herb.warnings).toContain('human case report');
-    expect(herb.fieldSources.preparationMethod).toEqual(['tinospora-hepatitis-2014']);
+    expect(herb.preparationMethod).toContain('aqueous extracts of fresh stems');
+    expect(herb.fieldSources.preparationMethod).toEqual(['tinospora-hepatitis-2014', 'tinospora-hepatitis-2018']);
     expect(herb.fieldSources.warnings).toEqual(['tinospora-hepatitis-2014']);
   });
 

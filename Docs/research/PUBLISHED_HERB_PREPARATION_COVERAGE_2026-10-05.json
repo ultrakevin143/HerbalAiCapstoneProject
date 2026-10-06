@@ -313,7 +313,8 @@
         "contentFile": "herbalaibackend/content/herbs/expansion-batch-02.json",
         "recordId": "builtin-makabuhay",
         "preparationSourceIds": [
-          "tinospora-hepatitis-2014"
+          "tinospora-hepatitis-2014",
+          "tinospora-hepatitis-2018"
         ]
       }
     },

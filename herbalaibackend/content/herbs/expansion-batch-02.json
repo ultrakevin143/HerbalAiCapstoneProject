@@ -109,6 +109,14 @@
       "retrievalNote": "Human case abstract reviewed; material was botanically and chromatographically identified. No safe threshold established.",
       "accessedAt": "2026-10-05"
     },
+    "tinospora-hepatitis-2018": {
+      "title": "Clerodane furanoditerpenoids as the probable cause of toxic hepatitis induced by Tinospora crispa",
+      "publisher": "Scientific Reports; Cachet et al. (2018)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30202067/",
+      "reviewCoverage": "PRIMARY_HUMAN_CASE_ABSTRACT",
+      "retrievalNote": "Reviewed 2026-10-05: human injury followed aqueous extracts of fresh stems, not just powdered tablets. Species identification used a chemical marker. The abstract does not establish a safe preparation, dose or injury frequency. No offending preparation recipe is imported.",
+      "accessedAt": "2026-10-05"
+    },
     "prosea-saluyot-food": {
       "title": "Corchorus aestuans — PROSEA",
       "publisher": "Plant Resources of South-East Asia; Brink, Jansen and Bosch; reproduced on Pl@ntUse",
@@ -1364,7 +1372,7 @@
       "category": "Documented traditional use",
       "plantPart": "Stem",
       "medicinalUses": "Philippine research records traditional stem use for wounds, skin disease, fever, diarrhea, stomachache, and other conditions. These records do not establish clinical effectiveness, and the study's laboratory toxicity assay cannot define a safe human dose.",
-      "preparationMethod": "Traditional oral preparation withheld: a human case report linked botanically confirmed Tinospora crispa ingestion to toxic hepatitis. No safe home stem preparation or dose is established here. Traditional-use reports cannot resolve that safety gap; this entry does not provide boiling or drinking instructions.",
+      "preparationMethod": "Traditional oral preparation withheld: human case reports linked identified Tinospora crispa ingestion to toxic hepatitis, including aqueous extracts of fresh stems, not only powdered products. No safe home stem preparation or dose is established here. Traditional-use reports cannot resolve that safety gap; this entry does not provide boiling or drinking instructions.",
       "dosage": "No verified human treatment dose is supplied.",
       "warnings": "No safe home preparation or dose is established. Do not use it to self-treat malaria, serious infection, fertility concerns, or persistent gastrointestinal symptoms. A human case report documented toxic hepatitis after ingestion of identified Tinospora crispa; this does not determine a safe dose or the frequency of injury.",
       "regionFound": "Documented in Philippine medicinal-plant research.",
@@ -1390,7 +1398,8 @@
           "ph-toxicology"
         ],
         "preparationMethod": [
-          "tinospora-hepatitis-2014"
+          "tinospora-hepatitis-2014",
+          "tinospora-hepatitis-2018"
         ],
         "warnings": [
           "tinospora-hepatitis-2014"

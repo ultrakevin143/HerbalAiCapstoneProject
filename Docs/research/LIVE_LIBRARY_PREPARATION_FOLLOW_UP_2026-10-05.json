@@ -1,0 +1,334 @@
+{
+  "capturedAt": "2026-10-05T12:50:24.916Z",
+  "sourceUrl": "https://herbalaiph.vercel.app/api/herbs?limit=100",
+  "httpStatus": 200,
+  "productionWritesPerformed": false,
+  "counts": {
+    "published": 38,
+    "genericPlaceholders": 20,
+    "blankPreparations": 0,
+    "otherPreparationNotes": 18
+  },
+  "records": [
+    {
+      "id": "82dde18f-a83d-41f6-ac4a-7c3eac3ecdc9",
+      "localName": "Akapulko",
+      "scientificName": "Senna alata",
+      "preparationMethod": "Grind enough fresh Akapulko leaves to obtain extract and apply it to the affected skin. Recorded guidance also describes a cooled leaf decoction as an alternative wash if the fresh extract causes allergy.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "h-1e7cceafb1033a17",
+      "localName": "Ampalaya",
+      "scientificName": "Momordica charantia",
+      "preparationMethod": "Under health-professional guidance, eating Ampalaya leaves as salad or with meals, or boiling 2 cups of sprouts in 2 glasses of water until half remains, then straining the decoction.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-anonas",
+      "localName": "Anonas",
+      "scientificName": "Annona reticulata",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-aratiles",
+      "localName": "Aratiles",
+      "scientificName": "Muntingia calabura",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-atsuete",
+      "localName": "Atsuete",
+      "scientificName": "Bixa orellana",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "72f25ea8-36b5-4c6c-805e-42186e39bfaa",
+      "localName": "Bawang",
+      "scientificName": "Allium sativum",
+      "preparationMethod": "Consult a health center for diagnosis and advice. Recorded guidance notes that a health professional may advise garlic soaked in vinegar, sterilized, grilled, or fried in a little oil and taken with meals.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "h-792d71c0eccb0cfc",
+      "localName": "Bayabas",
+      "scientificName": "Psidium guajava",
+      "preparationMethod": "For wounds or scabies, boil 1–2 handfuls of leafy tops in a small pot of water, cool to lukewarm, and use as a wash. For swollen gums, boil 1 handful, cool, and use as a gargle.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-damong-maria",
+      "localName": "Damong Maria",
+      "scientificName": "Artemisia vulgaris",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-gabi",
+      "localName": "Gabi",
+      "scientificName": "Colocasia esculenta",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "h-c132f53f302dc204",
+      "localName": "Gumamela",
+      "scientificName": "Hibiscus rosa-sinensis",
+      "preparationMethod": "The human study used a standardized 4% leaf-extract ointment together with medical compression therapy. It does not provide a safe home-preparation method.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "h-a2eb84453b7dc7d0",
+      "localName": "Indian Heliotrope",
+      "scientificName": "Heliotropium indicum",
+      "preparationMethod": "No clinically validated preparation is available. The library does not recommend preparing or consuming this plant.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "h-84ec276856199592",
+      "localName": "Kalingag",
+      "scientificName": "Cinnamomum mercadoi",
+      "preparationMethod": "The study records decoctions or alcohol-based preparations of bark, branches and roots. This describes reported traditional practice only; it is not a home-preparation instruction.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-kamote",
+      "localName": "Kamote",
+      "scientificName": "Ipomoea batatas",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-katakataka",
+      "localName": "Katakataka",
+      "scientificName": "Kalanchoe pinnata",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "h-b608b956c6101d4e",
+      "localName": "Lagundi",
+      "scientificName": "Vitex negundo",
+      "preparationMethod": "Boil crushed fresh Lagundi leaves in 2 cups of water until only half of the water remains. Keep the pot uncovered once it starts boiling.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-langka",
+      "localName": "Langka",
+      "scientificName": "Artocarpus heterophyllus",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-luya",
+      "localName": "Luya",
+      "scientificName": "Zingiber officinale",
+      "preparationMethod": "The cited research used measured oral ginger preparations, not a standardized home tea recipe.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-luyang-dilaw",
+      "localName": "Luyang dilaw",
+      "scientificName": "Curcuma longa",
+      "preparationMethod": "Research used a specific extract in capsules. Kitchen turmeric, isolated curcumin, and enhanced-absorption supplements are not interchangeable.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-mabolo",
+      "localName": "Mabolo",
+      "scientificName": "Diospyros blancoi",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-makabuhay",
+      "localName": "Makabuhay",
+      "scientificName": "Tinospora crispa",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-malunggay",
+      "localName": "Malunggay",
+      "scientificName": "Moringa oleifera",
+      "preparationMethod": "The cited trial used leaf capsules. Cooked leaves and differently formulated supplements should not be treated as equivalent research preparations.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-mangosteen",
+      "localName": "Mangosteen",
+      "scientificName": "Garcinia mangostana",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-mayana",
+      "localName": "Mayana",
+      "scientificName": "Coleus scutellarioides",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "04d52d3b-b738-4ede-8275-46ba18758ac6",
+      "localName": "Niyog-niyogan",
+      "scientificName": "Combretum indicum",
+      "preparationMethod": "Take seeds from the plant's withered fruit, chew them thoroughly, and follow with one-half to 1 glass of water.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-okra",
+      "localName": "Okra",
+      "scientificName": "Abelmoschus esculentus",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-oregano",
+      "localName": "Oregano",
+      "scientificName": "Coleus amboinicus",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-pandan",
+      "localName": "Pandan",
+      "scientificName": "Pandanus amaryllifolius",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-sabila",
+      "localName": "Sabila",
+      "scientificName": "Aloe vera",
+      "preparationMethod": "The study used a formulated topical gel alongside prescription treatment. Inner gel, yellow latex, and whole-leaf extracts have different safety profiles; no home extraction method is supplied.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-saluyot",
+      "localName": "Saluyot",
+      "scientificName": "Corchorus aestuans",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "h-25e54a1f7aaba3fc",
+      "localName": "Sambong",
+      "scientificName": "Blumea balsamifera",
+      "preparationMethod": "Boil minced, freshly picked Sambong leaves in 2 glasses of water until only half remains, keeping the pot uncovered once boiling. Cool, strain, and divide into 3 portions.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-sibuyas",
+      "localName": "Sibuyas",
+      "scientificName": "Allium cepa",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-suha",
+      "localName": "Suha",
+      "scientificName": "Citrus maxima",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-takip-kohol",
+      "localName": "Takip-kohol",
+      "scientificName": "Centella asiatica",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    },
+    {
+      "id": "h-33500111229eaede",
+      "localName": "Tanglad",
+      "scientificName": "Cymbopogon citratus",
+      "preparationMethod": "Clinical research used standardized topical or mouth-rinse formulations with measured essential-oil concentrations. The studies do not support a reproducible home preparation.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "h-cbfe9c04f7d24456",
+      "localName": "Tsaang Gubat",
+      "scientificName": "Ehretia microphylla",
+      "preparationMethod": "Boil chopped fresh Tsaang Gubat leaves in 1 glass of water until half remains, keeping the pot uncovered once boiling. Cool and strain.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "da83efd3-0a97-43de-a81b-c16068f1112a",
+      "localName": "Ulasimang Bato",
+      "scientificName": "Peperomia pellucida",
+      "preparationMethod": "Recorded guidance describes eating uncompressed leafy tops as salad, or boiling 1½ glasses (3 cups) of the plant in 2 glasses of water until half remains and then straining.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "h-4daf09c5a0b641ba",
+      "localName": "Yerba Buena",
+      "scientificName": "Mentha × villosa",
+      "preparationMethod": "For toothache, boil ground fresh leaves in 2 glasses of water until half remains, cool, strain, and divide into 2 portions. For headache, Recorded guidance describes crushing fresh leaves and massaging the extract onto the forehead and top of the head.",
+      "genericPlaceholder": false,
+      "blankPreparation": false
+    },
+    {
+      "id": "builtin-ylang-ylang",
+      "localName": "Ylang-ylang",
+      "scientificName": "Cananga odorata",
+      "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+      "genericPlaceholder": true,
+      "blankPreparation": false
+    }
+  ],
+  "status": "OBSERVED_LIVE_CATALOG_NOT_A_DEPLOYMENT",
+  "uiChecks": [
+    {
+      "id": "builtin-oregano",
+      "outcome": "Preparation heading renders the exact generic API message; no hidden-field defect observed."
+    },
+    {
+      "id": "h-a2eb84453b7dc7d0",
+      "outcome": "Indian Heliotrope displays a deliberate safety restriction plus warnings; it is not a missing-field defect."
+    }
+  ],
+  "limitations": [
+    "All 38 API preparation strings were read; two plant-detail screens were directly observed. This is not a full visual inspection of all 38 modals.",
+    "Twenty researched replacements remain on the CI branch; the public catalog still contains their previous generic wording.",
+    "The new fifty-candidate expansion remains separate and unpublished. No credential or database mutation was involved."
+  ]
+}

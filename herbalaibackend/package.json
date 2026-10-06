@@ -17,6 +17,7 @@
     "herbs:publish": "tsx prisma/import-built-in-herbs.ts --publish",
     "kb:import": "tsx prisma/import-kb-facts.ts",
     "embed:herbs": "tsx prisma/reembed-herbs.ts",
+    "test:preparations:database": "tsx prisma/test-herb-preparations.ts",
     "test": "vitest run"
   },
   "prisma": {

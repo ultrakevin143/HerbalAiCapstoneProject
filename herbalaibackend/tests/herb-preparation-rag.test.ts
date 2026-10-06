@@ -13,8 +13,14 @@ const batch = JSON.parse(readFileSync(new URL('../content/herbs/expansion-batch-
   sources: Record<string, { title: string; url: string }>;
   herbs: Array<{ id: string; slug: string; localName: string; scientificName: string; sourceScientificName: string | null; preparationMethod: string; medicinalUses: string; dosage: string; warnings: string; fieldSources: Record<string, string[]> }>;
 };
+const foodBatch = JSON.parse(readFileSync(new URL('../content/herbs/expansion-batch-01.json', import.meta.url), 'utf8')) as typeof batch;
+const foodReview = JSON.parse(readFileSync(new URL('../../Docs/research/HERB_PREPARATION_SOURCE_FOLLOW_UP_2026-10-05.json', import.meta.url), 'utf8')) as {
+  sources: Record<string, { title: string; url: string }>;
+  proposals: Array<{ recordId: string; localName: string; scientificName: string; proposedPreparationMethod: string; preparationSourceIds: string[] }>;
+};
+const sourceCatalog = { ...foodBatch.sources, ...batch.sources, ...foodReview.sources };
 const fixture = (slug: string) => {
-  const herb = batch.herbs.find(item => item.slug === slug);
+  const herb = batch.herbs.find(item => item.slug === slug) ?? foodBatch.herbs.find(item => item.slug === slug);
   if (!herb) throw new Error(`Missing herb fixture: ${slug}`);
   return {
     ...herb,
@@ -22,7 +28,7 @@ const fixture = (slug: string) => {
     isVerified: true,
     cebuanoName: null as string | null,
     evidenceClass: 'DOCUMENTED_TRADITIONAL_USE',
-    sources: herb.fieldSources.preparationMethod.map(sourceId => ({ ...batch.sources[sourceId], supports: ['preparationMethod'] })),
+    sources: herb.fieldSources.preparationMethod.map(sourceId => ({ ...sourceCatalog[sourceId], supports: ['preparationMethod'] })),
   };
 };
 
@@ -125,5 +131,34 @@ describe('preparation retrieval regressions (isolated published fixtures, not li
   it('keeps descriptive ethnobotany and food preparation out of medicinal recipe synthesis', () => {
     expect(DR_AI_SYSTEM_PROMPT).toContain('A traditional-use description is not a validated home recipe');
     expect(DR_AI_SYSTEM_PROMPT).toContain('Do not turn food preparation into medicinal treatment');
+  });
+
+  it.each(['luya', 'luyang-dilaw', 'malunggay', 'tanglad'])('retrieves %s food preparation and its citations without requiring embeddings for a named plant', async slug => {
+    const proposal = foodReview.proposals[0]!;
+    const herb = slug === 'tanglad' ? {
+      ...fixture('luya'), id: proposal.recordId, slug, localName: proposal.localName,
+      scientificName: proposal.scientificName, sourceScientificName: null, aliases: [],
+      medicinalUses: 'Study formulations are not equivalent to culinary use.',
+      preparationMethod: proposal.proposedPreparationMethod, dosage: 'No general medicinal dosage is established.',
+      warnings: 'Concentrated essential oil should not be swallowed or applied undiluted.',
+      fieldSources: { preparationMethod: proposal.preparationSourceIds },
+      sources: proposal.preparationSourceIds.map(sourceId => ({ ...sourceCatalog[sourceId], supports: ['preparationMethod'] })),
+    } : fixture(slug);
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    await AskAIService(`How is ${herb.scientificName} prepared as food?`);
+    const context = mocks.answer.mock.calls[0]?.[1];
+    expect(context).toContain(herb.preparationMethod);
+    for (const source of herb.sources) expect(context).toContain(source.url);
+    expect(mocks.embed).not.toHaveBeenCalled();
+  });
+
+  it('preserves food-versus-treatment limits in the stored fallback when generation fails', async () => {
+    const herb = fixture('luya');
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    mocks.answer.mockRejectedValue(new Error('test provider unavailable'));
+    const result = await AskAIService('How is Zingiber officinale prepared as food?');
+    expect(result.data?.answer).toContain(herb.preparationMethod);
+    expect(result.data?.answer).toContain('not medicinal doses');
+    expect(result.data?.answer).toContain('cannot synthesize a dose');
   });
 });

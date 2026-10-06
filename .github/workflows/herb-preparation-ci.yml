@@ -1,0 +1,90 @@
+name: Herb Preparation PostgreSQL Gate
+
+on:
+  push:
+    branches: ["codex/mvp-acceptance-ci"]
+    paths:
+      - "herbalaibackend/**"
+      - ".github/workflows/herb-preparation-ci.yml"
+  pull_request:
+    branches: ["main", "master", "develop"]
+    paths:
+      - "herbalaibackend/**"
+      - ".github/workflows/herb-preparation-ci.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: herb-preparation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preparation-postgres:
+    name: Isolated preparation rollback and concurrency checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: herbalai_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U test_user -d herbalai_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout reviewed source
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: herbalaibackend/package-lock.json
+
+      - name: Install backend dependencies
+        working-directory: herbalaibackend
+        run: npm ci
+
+      - name: Strictly typecheck preparation tooling
+        working-directory: herbalaibackend
+        run: >-
+          node node_modules/typescript/bin/tsc --noEmit --module nodenext --target esnext
+          --strict --esModuleInterop --skipLibCheck --exactOptionalPropertyTypes --noUncheckedIndexedAccess
+          prisma/test-herb-preparations.ts prisma/update-herb-preparations.ts
+          tests/herb-preparation-ci.test.ts tests/herb-preparation-isolated-runner.test.ts
+          tests/herb-preparation-update-database.test.ts
+
+      - name: Lint preparation tooling
+        working-directory: herbalaibackend
+        run: >-
+          node node_modules/eslint/bin/eslint.js --no-ignore
+          prisma/test-herb-preparations.ts tests/herb-preparation-ci.test.ts
+          tests/herb-preparation-isolated-runner.test.ts
+
+      - name: Run preparation boundary regressions
+        working-directory: herbalaibackend
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@127.0.0.1:5432/herbalai_test?sslmode=disable
+          DIRECT_URL: postgresql://test_user:test_password@127.0.0.1:5432/herbalai_test?sslmode=disable
+          DOTENV_CONFIG_PATH: /dev/null
+          GEMINI_API_KEY: ""
+          NODE_ENV: test
+        run: >-
+          node node_modules/vitest/vitest.mjs run --maxWorkers=1
+          tests/herb-preparation-ci.test.ts tests/herb-preparation-isolated-runner.test.ts
+          tests/herb-preparation-update.test.ts tests/herb-preparation-release.test.ts
+
+      - name: Run guarded preparation PostgreSQL gate
+        working-directory: herbalaibackend
+        env:
+          HERBALAI_TEST_DATABASE_URL: postgresql://test_user:test_password@127.0.0.1:5432/herbalai_test?sslmode=disable
+        run: npm run test:preparations:database
