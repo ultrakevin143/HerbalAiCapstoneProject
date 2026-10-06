@@ -174,7 +174,8 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
     const previousUserQuestion = [...history].reverse().find((turn) => turn.role === 'user');
     const previousText = normalize(previousUserQuestion?.parts.map((part) => part.text ?? '').join(' ') ?? '');
     const previousHerbs = catalog.filter(herb => matchesHerbName(previousText, herb));
-    if (previousHerbs.length === 1 && /\b(it|its|that|this|those|them)\b/i.test(question)) namedHerbs = previousHerbs;
+    const directQuestion = question.split(/[.!?]|\b(?:if|unless)\b/i, 1)[0] ?? '';
+    if (previousHerbs.length === 1 && /\b(it|its|that|this|those|them)\b/i.test(directQuestion)) namedHerbs = previousHerbs;
   }
 
   if (namedHerbs.length > 0) {
