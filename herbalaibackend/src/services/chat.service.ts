@@ -19,12 +19,8 @@ export interface Source {
 }
 
 const safetyReply = (userMessage: string): string | null => {
-  const lowerMsg = userMessage.toLowerCase();
-  const offTopicKeywords = [
-    "bomb", "weapon", "hack", "illegal", "kill", "suicide",
-    "how to make drugs", "synthetic drug", "shabu", "meth",
-  ];
-  return offTopicKeywords.some((keyword) => lowerMsg.includes(keyword))
+  const offTopicKeywords = /\b(?:bomb(?:s|ing|er|ers)?|weapons?|hack(?:s|ed|ing|er|ers)?|illegal(?:ly)?|kill(?:s|ed|ing|er|ers)?|suicid(?:e|al)|shabu|meth(?:amphetamine)?|how\s+to\s+make\s+drugs|synthetic\s+drugs?)\b/i;
+  return offTopicKeywords.test(userMessage)
     ? "I'm sorry, I can only help with Philippine herbal medicine questions. For that topic, please seek appropriate professional help.\n\n⚠️ *Disclaimer: This information is for traditional knowledge guidance only and does NOT constitute medical advice. Always consult a licensed physician.*"
     : null;
 };
