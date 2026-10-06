@@ -22,6 +22,30 @@ afterEach(() => {
 });
 
 describe('Gemini transport fallback (no live provider calls)', () => {
+  it('sends the beginner preparation restrictions to non-streaming generation', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(json('Mocked response'));
+    vi.stubGlobal('fetch', fetchMock);
+    await generateChatResponse('Explain preparation step by step', 'Recorded preparation text');
+    const request = JSON.parse(fetchMock.mock.calls[0]?.[1].body);
+    const text = request.contents.at(-1).parts[0].text;
+    expect(text).toContain('Every numbered action must be traceable to the retrieved preparation text');
+    expect(text).toContain('Keep alternative preparations in separate lists');
+    expect(text).toContain('NO_FIELD_SPECIFIC_REFERENCE');
+    expect(text).toContain('If a method is withheld, do not generate a recipe');
+  });
+
+  it('sends the same beginner restrictions to streaming generation', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(`data: ${JSON.stringify(content('Mocked response'))}\n\n`, { headers: { 'Content-Type': 'text/event-stream' } }));
+    vi.stubGlobal('fetch', fetchMock);
+    for await (const chunk of generateChatResponseStream('Explain preparation step by step', 'Recorded preparation text')) expect(chunk).toBe('Mocked response');
+    const request = JSON.parse(fetchMock.mock.calls[0]?.[1].body);
+    const text = request.contents.at(-1).parts[0].text;
+    expect(text).toContain('Every numbered action must be traceable to the retrieved preparation text');
+    expect(text).toContain('Keep alternative preparations in separate lists');
+    expect(text).toContain('Incomplete documented method');
+    expect(text).toContain('Preserve external-only, food-only, traditional-report and study-formulation limits');
+  });
+
   it('does not start an embedding for an already canceled caller', async () => {
     const controller = new AbortController();
     controller.abort();

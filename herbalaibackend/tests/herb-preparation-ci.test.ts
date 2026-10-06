@@ -39,7 +39,9 @@ describe('preparation-only PostgreSQL CI gate', () => {
     }
     for (const file of ['prisma/test-herb-preparations.ts', 'prisma/update-herb-preparations.ts',
       'tests/herb-preparation-ci.test.ts', 'tests/herb-preparation-isolated-runner.test.ts',
-      'tests/herb-preparation-update-database.test.ts']) expect(check).toContain(file);
+      'tests/herb-preparation-update-database.test.ts', 'tests/herb-preparation-source-tags.test.ts',
+      'tests/herb-preparation-source-tag-release.test.ts', 'tests/herb-preparation-source-tag-release-database.test.ts',
+      'tests/helpers/source-tag-fixture.ts']) expect(check).toContain(file);
   });
 
   it('pins both URLs and disables dotenv/provider access for non-database boundary checks', () => {
@@ -50,8 +52,10 @@ describe('preparation-only PostgreSQL CI gate', () => {
     expect(check).toContain('GEMINI_API_KEY: ""');
     expect(check).toContain('NODE_ENV: test');
     for (const file of ['herb-preparation-ci.test.ts', 'herb-preparation-isolated-runner.test.ts',
-      'herb-preparation-update.test.ts', 'herb-preparation-release.test.ts']) expect(check).toContain(file);
+      'herb-preparation-update.test.ts', 'herb-preparation-release.test.ts', 'herb-preparation-source-tags.test.ts',
+      'herb-preparation-source-tag-release.test.ts', 'herb-beginner-guide.test.ts', 'gemini-fallback.test.ts']) expect(check).toContain(file);
     expect(check).not.toContain('herb-preparation-update-database.test.ts');
+    expect(check).not.toContain('herb-preparation-source-tag-release-database.test.ts');
   });
 
   it('cannot hide a failed gate behind continuation or conditional failure bypass', () => {

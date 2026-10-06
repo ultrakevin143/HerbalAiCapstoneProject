@@ -81,10 +81,11 @@ const matchesHerbName = (normalizedText: string, herb: HerbQueryResult | Catalog
 
 const NO_MATCH_CONTEXT = "No specific knowledge base or verified herb documents found matching this query in the database.";
 const NO_MATCH_REPLY = "I could not find a verified Herbal-Ai source for this question. I cannot confirm treatment or cure claims without a documented record. Please consult a licensed health professional for medical decisions.";
+const isPreparationQuestion = (question: string) => /\b(prepare|prepared|preparing|preparations?|step[- ]by[- ]step|walk me through|beginner(?:['’]s)? guide|how (?:do i|to) make|ihanda|paghahanda|pag-andam|andamon)\b/i.test(question);
 const isPediatricQuestion = (question: string) => /\b(child|children|kid|kids|baby|infant|newborn|toddler|pediatric|paediatric|anak|bata|sanggol)\b|\b(?:\d{1,2}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)[- ](?:year|month)[- ]old\b|\b(?:age(?:d)?\s*)?\d{1,2}\s*(?:yo|y\/o|mo|months? old|taong gulang)\b/i.test(question);
 const isPediatricRequest = (question: string, history: Content[]) => {
   if (isPediatricQuestion(question)) return true;
-  if (/\b(adult|grown-up)\b/i.test(question) || !/\b(it|its|this|that|them|give|dose|dosage|how much|how often)\b/i.test(question)) return false;
+  if (/\b(adult|grown-up)\b/i.test(question) || !(isPreparationQuestion(question) || /\b(it|its|this|that|them|give|dose|dosage|how much|how often)\b/i.test(question))) return false;
   const previousQuestion = [...history].reverse().find((turn) => turn.role === 'user');
   return isPediatricQuestion(previousQuestion?.parts.map((part) => part.text ?? '').join(' ') ?? '');
 };
@@ -129,9 +130,14 @@ const formatHerbContext = (herb: HerbQueryResult | CatalogHerb, index: number, q
     scientificName: herb.scientificName,
     medicinalUses: herb.medicinalUses,
     preparation: pediatricRequest ? 'Pediatric preparation instructions withheld; consult a licensed clinician.' : withoutPediatricQuantities(herb.preparationMethod || 'Not documented in this record.'),
-    ...(/\b(dose|dosage|amount|how much|frequency|how often)\b/i.test(question) && !pediatricRequest
+    ...((isPreparationQuestion(question) || /\b(dose|dosage|amount|how much|frequency|how often)\b/i.test(question)) && !pediatricRequest
       ? { dosageField: withoutPediatricQuantities(herb.dosage || 'Not documented in this record.') }
       : {}),
+    ...(isPreparationQuestion(question) ? {
+      preparationReferenceCoverage: 'sources' in herb && herb.sources.some(source => source.supports?.includes('preparationMethod'))
+        ? 'FIELD_SPECIFIC_REFERENCE_RECORDED; metadata is not proof of a complete or safe household recipe.'
+        : 'NO_FIELD_SPECIFIC_REFERENCE; do not invent a citation or present this as a sourced complete household recipe.',
+    } : {}),
     warnings: herb.warnings || 'Not documented; this does not establish safety.',
     ...('evidenceClass' in herb ? { evidenceClass: herb.evidenceClass } : {}),
     ...('sources' in herb ? { references: herb.sources } : {}),

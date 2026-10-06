@@ -1,0 +1,128 @@
+{
+  "status": "SOURCE_TAG_PLAN_NOT_EXECUTABLE",
+  "writeAllowed": false,
+  "publicationAllowed": false,
+  "productionWritesPerformed": false,
+  "reviewSha256": "02dc1fdc5bbc56fe626c011ea617718370fe9ecd1ea9de8e2c2edb2c4a96c708",
+  "baselineCheckedAt": "2026-10-06T07:26:11.889Z",
+  "changes": [
+    {
+      "herbId": "h-a2eb84453b7dc7d0",
+      "localName": "Indian Heliotrope",
+      "scientificName": "Heliotropium indicum",
+      "expectedPreparationMethod": "No clinically validated preparation is available. The library does not recommend preparing or consuming this plant.",
+      "sourceId": 21,
+      "sourceBefore": {
+        "id": 21,
+        "herbId": "h-a2eb84453b7dc7d0",
+        "title": "Heliotropium indicum: bioactive compounds, preclinical activity, and toxicological profile",
+        "publisher": "Evidence-Based Complementary and Alternative Medicine",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8187075/",
+        "citation": null,
+        "supports": [
+          "traditionalUse",
+          "preclinicalEvidence",
+          "warnings",
+          "limitations"
+        ],
+        "accessedAt": "2026-09-12T16:22:30.618Z"
+      },
+      "sourceBeforeSha256": "f09091f76441d575ff0b5b4e9ff5eefe693f7e0db3ee1e781e4d5ad4747083ad",
+      "proposedSupports": [
+        "traditionalUse",
+        "preclinicalEvidence",
+        "warnings",
+        "limitations",
+        "preparationMethod"
+      ],
+      "fieldPurpose": "SAFETY_WITHHOLDING",
+      "reviewedMeaning": "The review describes toxicological concerns and unresolved clinical safety, dosing and preparation standardization. This supports retaining the repository's withholding policy, not adding a household method or claiming that no human study exists.",
+      "reviewLocator": "Abstract; section 7.21 Toxicological Profile; section 9 Conclusion and Future Directions",
+      "reviewedTitle": "Heliotropium indicum L.: From Farm to a Source of Bioactive Compounds with Therapeutic Activity",
+      "limitations": "This is a review, not a validated safe medicinal preparation. The library's do-not-prepare/consume statement is a conservative editorial restriction."
+    },
+    {
+      "herbId": "h-33500111229eaede",
+      "localName": "Tanglad",
+      "scientificName": "Cymbopogon citratus",
+      "expectedPreparationMethod": "Clinical research used standardized topical or mouth-rinse formulations with measured essential-oil concentrations. The studies do not support a reproducible home preparation.",
+      "sourceId": 19,
+      "sourceBefore": {
+        "id": 19,
+        "herbId": "h-33500111229eaede",
+        "title": "Topical Cymbopogon citratus essential oil for pityriasis versicolor: phase I and II pilot study",
+        "publisher": "Anais Brasileiros de Dermatologia",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3754369/",
+        "citation": null,
+        "supports": [
+          "humanEvidence",
+          "medicinalUses",
+          "limitations"
+        ],
+        "accessedAt": "2026-09-12T16:22:29.858Z"
+      },
+      "sourceBeforeSha256": "0414813d8a8ab2314ff15482c8ade3e17ab4f4f0bd071f0fefe16263e11311ce",
+      "proposedSupports": [
+        "humanEvidence",
+        "medicinalUses",
+        "limitations",
+        "preparationMethod"
+      ],
+      "fieldPurpose": "STUDY_FORMULATION_LIMITS",
+      "reviewedMeaning": "The study evaluates formulated essential-oil shampoo and cream under a clinical protocol. It supports the current topical study-formulation description, not a stalk/leaf tea or a beginner household essential-oil recipe.",
+      "reviewLocator": "Clinical phases I/II methods and pharmaceutical shampoo/cream formulations",
+      "reviewedTitle": "Treatment of pityriasis versicolor with topical application of essential oil of Cymbopogon citratus (DC) Stapf - therapeutic pilot study",
+      "limitations": "Study-specific formulation and schedule must not become self-treatment instructions; no therapeutic household recipe is adopted."
+    },
+    {
+      "herbId": "h-33500111229eaede",
+      "localName": "Tanglad",
+      "scientificName": "Cymbopogon citratus",
+      "expectedPreparationMethod": "Clinical research used standardized topical or mouth-rinse formulations with measured essential-oil concentrations. The studies do not support a reproducible home preparation.",
+      "sourceId": 20,
+      "sourceBefore": {
+        "id": 20,
+        "herbId": "h-33500111229eaede",
+        "title": "Clinical applications of lemongrass essential oil: scoping review",
+        "publisher": "Pharmaceuticals",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10892616/",
+        "citation": null,
+        "supports": [
+          "humanEvidence",
+          "medicinalUses",
+          "limitations"
+        ],
+        "accessedAt": "2026-09-12T16:22:30.330Z"
+      },
+      "sourceBeforeSha256": "6f54487311c016ca47fcf4c05c969d6d5a5b50f546bade443a0b59369c766122",
+      "proposedSupports": [
+        "humanEvidence",
+        "medicinalUses",
+        "limitations",
+        "preparationMethod"
+      ],
+      "fieldPurpose": "STUDY_FORMULATION_LIMITS",
+      "reviewedMeaning": "The review distinguishes study mouthrinses/gels, mixed-oil products, C. flexuosus and uncertain-species interventions. Exact C. citratus formulations support the broad research-only preparation description; mixed or uncertain-species results are not assigned to this plant as interchangeable recipes.",
+      "reviewLocator": "Section 3.1 Oromucosal Application; section 3.5 Limitations and Perspectives; Table 1",
+      "reviewedTitle": "Exploring the Clinical Applications of Lemongrass Essential Oil: A Scoping Review",
+      "limitations": "Evidence is limited and heterogeneous. No ordinary culinary, homemade oil or child-specific medicinal regimen is established by this metadata change."
+    }
+  ],
+  "unchangedFields": [
+    "preparationMethod",
+    "dosage",
+    "warnings",
+    "identity",
+    "images",
+    "publicationStatus",
+    "embedding",
+    "sourceTitles",
+    "sourceUrls"
+  ],
+  "releaseGates": [
+    "Fresh independently confirmed database snapshot and current source IDs",
+    "Transaction-time baseline comparison, additive-only update and audit record",
+    "Isolated PostgreSQL rollback/concurrency tests before live writes",
+    "Public catalog and Dr. Ai source-context verification after release"
+  ]
+}

@@ -62,6 +62,8 @@ jobs:
           prisma/test-herb-preparations.ts prisma/update-herb-preparations.ts
           tests/herb-preparation-ci.test.ts tests/herb-preparation-isolated-runner.test.ts
           tests/herb-preparation-update-database.test.ts
+          tests/herb-preparation-source-tags.test.ts tests/herb-preparation-source-tag-release.test.ts
+          tests/herb-preparation-source-tag-release-database.test.ts tests/helpers/source-tag-fixture.ts
 
       - name: Lint preparation tooling
         working-directory: herbalaibackend
@@ -69,6 +71,8 @@ jobs:
           node node_modules/eslint/bin/eslint.js --no-ignore
           prisma/test-herb-preparations.ts tests/herb-preparation-ci.test.ts
           tests/herb-preparation-isolated-runner.test.ts
+          tests/herb-preparation-source-tags.test.ts tests/herb-preparation-source-tag-release.test.ts
+          tests/herb-preparation-source-tag-release-database.test.ts tests/helpers/source-tag-fixture.ts
 
       - name: Run preparation boundary regressions
         working-directory: herbalaibackend
@@ -82,6 +86,8 @@ jobs:
           node node_modules/vitest/vitest.mjs run --maxWorkers=1
           tests/herb-preparation-ci.test.ts tests/herb-preparation-isolated-runner.test.ts
           tests/herb-preparation-update.test.ts tests/herb-preparation-release.test.ts
+          tests/herb-preparation-source-tags.test.ts tests/herb-preparation-source-tag-release.test.ts
+          tests/herb-beginner-guide.test.ts tests/gemini-fallback.test.ts
 
       - name: Run guarded preparation PostgreSQL gate
         working-directory: herbalaibackend

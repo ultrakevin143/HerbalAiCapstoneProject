@@ -63,13 +63,15 @@ describe('isolated preparation validation runner', () => {
     expect(isolatedPreparationEnvironment({ HERBALAI_TEST_DATABASE_URL: value })['DIRECT_URL']).toBe(value);
   });
 
-  it('orders generation, migrations and only the eight-test preparation database suite', () => {
+  it('orders generation, migrations and both required preparation database suites', () => {
     const execute = vi.fn();
     expect(runIsolatedPreparationTests(inherited, execute)).toEqual([
       'Prisma client generation', 'Isolated schema migrations', 'Preparation PostgreSQL regressions',
+      'Preparation source-tag PostgreSQL regressions',
     ]);
     expect(execute.mock.calls.map(call => call[0].args.slice(1))).toEqual([
       ['generate'], ['migrate', 'deploy'], ['run', 'tests/herb-preparation-update-database.test.ts', '--maxWorkers=1'],
+      ['run', 'tests/herb-preparation-source-tag-release-database.test.ts', '--maxWorkers=1'],
     ]);
     for (const call of execute.mock.calls) {
       expect(call[1]['DATABASE_URL']).toBe(testUrl);
@@ -79,7 +81,7 @@ describe('isolated preparation validation runner', () => {
     expect(isolatedPreparationSteps().every(step => step.timeout > 0 && step.timeout <= 300000)).toBe(true);
   });
 
-  it.each([0, 1, 2])('stops when stage %i fails and never claims later completion', failureIndex => {
+  it.each([0, 1, 2, 3])('stops when stage %i fails and never claims later completion', failureIndex => {
     let currentIndex = 0;
     const execute = vi.fn(() => {
       if (currentIndex++ === failureIndex) throw new Error('Synthetic failure');
@@ -117,7 +119,7 @@ describe('isolated preparation validation runner', () => {
       environment['DIRECT_URL'] = inherited.DIRECT_URL;
     });
     runIsolatedPreparationTests(inherited, execute);
-    expect(execute).toHaveBeenCalledTimes(3);
+    expect(execute).toHaveBeenCalledTimes(4);
   });
 
   it('makes the existing Prisma config select loopback despite an inherited synthetic direct URL, without connecting', () => {

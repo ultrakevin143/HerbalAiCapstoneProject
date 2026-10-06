@@ -1,0 +1,83 @@
+{
+  "checkedAt": "2026-10-06T07:26:11.889Z",
+  "publicUrl": "https://herbalaicapstoneproject-staging.up.railway.app/api/herbs?limit=100",
+  "status": 200,
+  "productionWritesPerformed": false,
+  "records": [
+    {
+      "id": "h-a2eb84453b7dc7d0",
+      "localName": "Indian Heliotrope",
+      "scientificName": "Heliotropium indicum",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true,
+      "preparationMethod": "No clinically validated preparation is available. The library does not recommend preparing or consuming this plant.",
+      "sources": [
+        {
+          "id": 21,
+          "herbId": "h-a2eb84453b7dc7d0",
+          "title": "Heliotropium indicum: bioactive compounds, preclinical activity, and toxicological profile",
+          "publisher": "Evidence-Based Complementary and Alternative Medicine",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8187075/",
+          "citation": null,
+          "supports": [
+            "traditionalUse",
+            "preclinicalEvidence",
+            "warnings",
+            "limitations"
+          ],
+          "accessedAt": "2026-09-12T16:22:30.618Z"
+        },
+        {
+          "id": 22,
+          "herbId": "h-a2eb84453b7dc7d0",
+          "title": "Natural toxins in food: pyrrolizidine alkaloids",
+          "publisher": "World Health Organization",
+          "url": "https://www.who.int/news-room/fact-sheets/detail/natural-toxins-in-food",
+          "citation": null,
+          "supports": [
+            "warnings"
+          ],
+          "accessedAt": "2026-09-12T16:22:30.876Z"
+        }
+      ]
+    },
+    {
+      "id": "h-33500111229eaede",
+      "localName": "Tanglad",
+      "scientificName": "Cymbopogon citratus",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true,
+      "preparationMethod": "Clinical research used standardized topical or mouth-rinse formulations with measured essential-oil concentrations. The studies do not support a reproducible home preparation.",
+      "sources": [
+        {
+          "id": 19,
+          "herbId": "h-33500111229eaede",
+          "title": "Topical Cymbopogon citratus essential oil for pityriasis versicolor: phase I and II pilot study",
+          "publisher": "Anais Brasileiros de Dermatologia",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3754369/",
+          "citation": null,
+          "supports": [
+            "humanEvidence",
+            "medicinalUses",
+            "limitations"
+          ],
+          "accessedAt": "2026-09-12T16:22:29.858Z"
+        },
+        {
+          "id": 20,
+          "herbId": "h-33500111229eaede",
+          "title": "Clinical applications of lemongrass essential oil: scoping review",
+          "publisher": "Pharmaceuticals",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10892616/",
+          "citation": null,
+          "supports": [
+            "humanEvidence",
+            "medicinalUses",
+            "limitations"
+          ],
+          "accessedAt": "2026-09-12T16:22:30.330Z"
+        }
+      ]
+    }
+  ]
+}

@@ -39,6 +39,8 @@ export const isolatedPreparationSteps = (): IsolatedPreparationStep[] => [
   { label: 'Isolated schema migrations', args: [path.join(backendRoot, 'node_modules/prisma/build/index.js'), 'migrate', 'deploy'], timeout: 180000 },
   { label: 'Preparation PostgreSQL regressions', args: [path.join(backendRoot, 'node_modules/vitest/vitest.mjs'), 'run',
     'tests/herb-preparation-update-database.test.ts', '--maxWorkers=1'], timeout: 300000 },
+  { label: 'Preparation source-tag PostgreSQL regressions', args: [path.join(backendRoot, 'node_modules/vitest/vitest.mjs'), 'run',
+    'tests/herb-preparation-source-tag-release-database.test.ts', '--maxWorkers=1'], timeout: 300000 },
 ];
 
 type Executor = (step: IsolatedPreparationStep, environment: NodeJS.ProcessEnv, cwd: string) => void;

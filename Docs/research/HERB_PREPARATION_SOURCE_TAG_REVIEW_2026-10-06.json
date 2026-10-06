@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-06",
+  "status": "SOURCE_TAG_REVIEW_NOT_APPLIED",
+  "productionWritesPerformed": false,
+  "scope": "Add only preparationMethod citation-support metadata to the two existing published records. No recipe, safety, title, image, identity, publication or embedding changes.",
+  "sources": [
+    {
+      "id": "heliotrope-review",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8187075/",
+      "reviewedTitle": "Heliotropium indicum L.: From Farm to a Source of Bioactive Compounds with Therapeutic Activity",
+      "scientificName": "Heliotropium indicum",
+      "fieldPurpose": "SAFETY_WITHHOLDING",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewLocator": "Abstract; section 7.21 Toxicological Profile; section 9 Conclusion and Future Directions",
+      "reviewedMeaning": "The review describes toxicological concerns and unresolved clinical safety, dosing and preparation standardization. This supports retaining the repository's withholding policy, not adding a household method or claiming that no human study exists.",
+      "accessNote": "Full-text XML read through the public Europe PMC API on 2026-10-06; PMC HTML returned a browser-check page.",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC8187075/fullTextXML",
+      "limitations": "This is a review, not a validated safe medicinal preparation. The library's do-not-prepare/consume statement is a conservative editorial restriction."
+    },
+    {
+      "id": "tanglad-pilot",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3754369/",
+      "reviewedTitle": "Treatment of pityriasis versicolor with topical application of essential oil of Cymbopogon citratus (DC) Stapf - therapeutic pilot study",
+      "scientificName": "Cymbopogon citratus",
+      "fieldPurpose": "STUDY_FORMULATION_LIMITS",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewLocator": "Clinical phases I/II methods and pharmaceutical shampoo/cream formulations",
+      "reviewedMeaning": "The study evaluates formulated essential-oil shampoo and cream under a clinical protocol. It supports the current topical study-formulation description, not a stalk/leaf tea or a beginner household essential-oil recipe.",
+      "accessNote": "Full-text XML methods read through the public Europe PMC API on 2026-10-06; PMC HTML returned a browser-check page.",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3754369/fullTextXML",
+      "limitations": "Study-specific formulation and schedule must not become self-treatment instructions; no therapeutic household recipe is adopted."
+    },
+    {
+      "id": "tanglad-scoping-review",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10892616/",
+      "reviewedTitle": "Exploring the Clinical Applications of Lemongrass Essential Oil: A Scoping Review",
+      "scientificName": "Cymbopogon citratus",
+      "fieldPurpose": "STUDY_FORMULATION_LIMITS",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewLocator": "Section 3.1 Oromucosal Application; section 3.5 Limitations and Perspectives; Table 1",
+      "reviewedMeaning": "The review distinguishes study mouthrinses/gels, mixed-oil products, C. flexuosus and uncertain-species interventions. Exact C. citratus formulations support the broad research-only preparation description; mixed or uncertain-species results are not assigned to this plant as interchangeable recipes.",
+      "accessNote": "Relevant full-text XML paragraphs read through the public Europe PMC API on 2026-10-06; bibliographic identity cross-checked against PubMed 38399374.",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10892616/fullTextXML",
+      "limitations": "Evidence is limited and heterogeneous. No ordinary culinary, homemade oil or child-specific medicinal regimen is established by this metadata change."
+    }
+  ],
+  "records": [
+    {
+      "herbId": "h-a2eb84453b7dc7d0",
+      "localName": "Indian Heliotrope",
+      "scientificName": "Heliotropium indicum",
+      "expectedPreparationMethod": "No clinically validated preparation is available. The library does not recommend preparing or consuming this plant.",
+      "sourceIds": [
+        "heliotrope-review"
+      ]
+    },
+    {
+      "herbId": "h-33500111229eaede",
+      "localName": "Tanglad",
+      "scientificName": "Cymbopogon citratus",
+      "expectedPreparationMethod": "Clinical research used standardized topical or mouth-rinse formulations with measured essential-oil concentrations. The studies do not support a reproducible home preparation.",
+      "sourceIds": [
+        "tanglad-pilot",
+        "tanglad-scoping-review"
+      ]
+    }
+  ]
+}
