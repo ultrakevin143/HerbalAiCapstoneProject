@@ -4,6 +4,7 @@ import type { ChatTurn } from "../services/chat.service.js";
 import { MAX_CHAT_HISTORY_TURNS } from "../schema/chat.schema.js";
 import { ENV } from "../config/env.js";
 import { awaitAiOperation, createAiDeadline, iterateAiOperation } from "../services/ai/core/request-lifetime.js";
+import { retainDrAiHistory } from '../services/ai/chat/conversation-context.js';
 
 const CHAT_UNAVAILABLE_MESSAGE = "Dr. Ai is temporarily unavailable. Please try again later.";
 
@@ -30,7 +31,7 @@ const appendToHistory = (history: ChatTurn[], message: string, reply: string): C
     { role: "user", parts: [{ text: message }] },
     { role: "model", parts: [{ text: reply }] },
   ];
-  return [...history, ...newTurns].slice(-MAX_CHAT_HISTORY_TURNS);
+  return retainDrAiHistory([...history, ...newTurns], MAX_CHAT_HISTORY_TURNS);
 };
 
 /**
