@@ -93,7 +93,8 @@ export const readPublicPreparationCatalog = async (request: typeof fetch = fetch
 export const assertPreparationCatalogIdentity = async (client: PoolClient, records: CatalogIdentity[]): Promise<void> => {
   const database = await client.query('SELECT id, "localName", "scientificName" FROM "Herb" WHERE "publicationStatus" = $1 AND "isVerified" = true', ['PUBLISHED']);
   const identities = database.rows.map(row => identitySchema.parse(row)).sort((left, right) => left.id.localeCompare(right.id));
-  if (preparationDigest(identities) !== preparationDigest(records)) throw new Error('Database does not match the full public catalog identity snapshot.');
+  const reviewedIdentities = records.map(record => identitySchema.parse(record)).sort((left, right) => left.id.localeCompare(right.id));
+  if (preparationDigest(identities) !== preparationDigest(reviewedIdentities)) throw new Error('Database does not match the full public catalog identity snapshot.');
 };
 
 export const readOnlyPreparationPlan = async (client: PoolClient, rawBatch: unknown, target: PreparationReleaseArguments['target'], catalog: CatalogIdentity[]) => {

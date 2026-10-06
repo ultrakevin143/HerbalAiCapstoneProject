@@ -169,6 +169,39 @@ describe('read-only release snapshot orchestration (mocked SQL, not PostgreSQL c
     await expect(assertPreparationCatalogIdentity({ query } as unknown as PoolClient, catalog)).resolves.toBeUndefined();
   });
 
+  it('compares complete identities independent of reviewed catalog order without mutating either input', async () => {
+    const rows = [...catalog];
+    const reviewed = [...catalog].reverse();
+    const originalRows = [...rows];
+    const originalReviewed = [...reviewed];
+    const query = vi.fn().mockResolvedValue({ rows });
+    await expect(assertPreparationCatalogIdentity({ query } as unknown as PoolClient, reviewed)).resolves.toBeUndefined();
+    expect(rows).toEqual(originalRows);
+    expect(reviewed).toEqual(originalReviewed);
+  });
+
+  it.each([
+    catalog.slice(1),
+    [...catalog, { id: 'qa-extra', localName: 'TEST ONLY extra', scientificName: 'TEST ONLY extra species' }],
+    [catalog[0]!, ...catalog.slice(0, -1)],
+    catalog.map((record, index) => index === 0 ? { ...record, localName: 'TEST ONLY renamed' } : record),
+    catalog.map((record, index) => index === 0 ? { ...record, scientificName: 'TEST ONLY different species' } : record),
+    catalog.map((record, index) => index === 0 ? { ...record, id: 'qa-replaced' } : record),
+    catalog.map((record, index) => index === 0 ? { ...record, id: '' } : record),
+  ].map(reviewed => ({ reviewed })))('still rejects incomplete, duplicated, changed or malformed reviewed identities %#', async ({ reviewed }) => {
+    const query = vi.fn().mockResolvedValue({ rows: catalog });
+    await expect(assertPreparationCatalogIdentity({ query } as unknown as PoolClient, reviewed)).rejects.toThrow();
+  });
+
+  it.each([
+    catalog.slice(1),
+    [...catalog, { id: 'qa-extra', localName: 'TEST ONLY extra', scientificName: 'TEST ONLY extra species' }],
+    [catalog[0]!, ...catalog.slice(0, -1)],
+  ].map(rows => ({ rows })))('still rejects missing, extra or duplicated database identities %#', async ({ rows }) => {
+    const query = vi.fn().mockResolvedValue({ rows });
+    await expect(assertPreparationCatalogIdentity({ query } as unknown as PoolClient, [...catalog].reverse())).rejects.toThrow(/catalog/);
+  });
+
   it.each([
     { status: 'success', data: { total: 21, herbs: catalog } },
     { status: 'success', data: { total: 2, herbs: [catalog[0], catalog[0]] } },

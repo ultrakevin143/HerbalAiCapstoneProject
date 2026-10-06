@@ -2,6 +2,22 @@
 
 Date: 2026-10-05. Local release-tool repair and authored isolated PostgreSQL checks; no live content write.
 
+## October 6 authorized CI execution and ordering repair
+
+The user authorized committing/pushing only the reviewed twenty-four-file preparation bundle to `codex/mvp-acceptance-ci`. Commit `397f7b7742d632b2d4151577a5030f67afcff16c` was pushed, and its path set exactly matched the tested source manifest. Main and `codex/readability-accessibility` still pointed to `95cf80761106f95ea4faaca0437fb4ddc348896f`; no production branch, provider setting or live herb was changed. Unrelated workflow/auth/mail/frontend and fifty-candidate edits stayed local.
+
+The first [dedicated PostgreSQL job](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37395566423) successfully installed dependencies, strictly checked/linted the tooling, passed 93 boundary tests, generated the Prisma client and migrated the isolated test database. The real SQL regression stage then failed; its runner intentionally withholds child output. The separate [general CI run](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37395566466) exposed the exact failure: **six preparation PostgreSQL cases passed and two failed**, with **1,148 passing / two failing backend tests across 88 files**. Frontend typecheck, lint, its scheduled native regressions and build passed.
+
+Both SQL failures occurred at catalog identity comparison, before the intended repeatable-read/concurrent-write or READ ONLY rejection assertion. Database identities were sorted, but the reviewed catalog was hashed in caller-provided order. The SQL fixtures capture the transaction's unordered database rows as their test catalog; identical identities could therefore be refused solely because their array order differed. The CLI's normal public fetch already sorts its catalog, so this failure does not establish corrupt live content or a production outage.
+
+The focused repair parses and sorts both identity lists by ID before digest comparison, without mutating either input. Complete IDs, local/scientific names, duplicate/missing/extra entries and malformed identities remain checked. The eight SQL fixtures were not skipped, reduced, relaxed or replaced by mocks. Eleven additional boundary cases verify reviewed-order independence, immutability and continued refusal of mismatched or malformed identities.
+
+During test authoring, Vitest initially unpacked array-valued table rows, causing three harness failures in addition to the real ordering failure. Object-wrapped table rows corrected the harness. The corrected pre-repair reproduction was **one failure / 38 passes**. After the repair, the final preparation subset passed **104 tests across four files**, 14.26 seconds, and strict tooling/test TypeScript passed.
+
+A fresh source-only snapshot over commit 397f7b7 with just the two corrective runtime/test files passed **1,037 non-database tests across 70 files**, 64.47 seconds, strict tooling/test TypeScript, backend build and source lint. Eighteen database-dependent suites remained excluded locally. Its first export command had a malformed PowerShell prefix argument and failed before exporting; the corrected command exported successfully and the real index remained unchanged. No environment files or unrelated local edits were added to that corrective snapshot. Source equality and whitespace checks passed before the corrective CI-only push.
+
+The corrective change still requires an observed successful remote SQL run. The historical October 5 unrun-local statements below are preserved as dated evidence; they are not the current remote execution status. No live content application or clinical/preparation clearance follows automatically from CI.
+
 ## Reproduced connection guard bypass
 
 The installed `pg` connection-string parser gives a query-string `host` precedence over the URI hostname. Constructing a client without connecting demonstrated that `postgresql://localhost/herbalai_test?host=example.invalid` selects `example.invalid`, while the previous preparation target guard accepted the apparent localhost target. This affected the unpublished preparation release tool and its isolated-test guard. It is not evidence of a production database redirect or leaked credential.
