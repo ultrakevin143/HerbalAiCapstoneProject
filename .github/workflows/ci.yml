@@ -131,6 +131,10 @@ jobs:
         working-directory: herbalaifrontend
         run: node --test ../scripts/library-accessibility.test.mjs
 
+      - name: Run footer and sources regressions
+        working-directory: herbalaifrontend
+        run: node --test scripts/footer.test.mjs ../scripts/sources-methodology.test.mjs
+
       - name: Run library reply retention regressions
         working-directory: herbalaifrontend
         run: node --test ../scripts/library-discussion.test.mjs
