@@ -1,10 +1,15 @@
 import type { Request, Response, NextFunction } from 'express';
+import { createHash } from 'node:crypto';
 import { prisma } from '../lib/prisma.js';
 import { runAuditedMutation } from '../repositories/audit.repository.js';
 
 import * as herbRepo from '../repositories/herb.repository.js';
 import { createHerbComment, deleteHerbComment, lockPublishedHerb } from '../repositories/herb-comment.repository.js';
 import { publicPagination } from '../utils/public-pagination.js';
+import { herbUpdateSchema } from '../schema/herb-update.schema.js';
+import { canonicalScientificName, normalizeIdentity } from '../content/herb-expansion-review.js';
+import { herbEmbeddingFields, herbEmbeddingText } from '../content/herb-embedding.js';
+import { generateEmbedding } from '../services/ai/core/gemini-service.js';
 
 interface AuthenticatedRequest extends Request {
   user?: {
@@ -286,7 +291,12 @@ export class HerbController {
         res.status(401).json({ status: 'error', code: 401, message: 'Authentication required' });
         return;
       }
-      
+      const parsed = herbUpdateSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({ status: 'error', message: 'Invalid herb edit.', errors: parsed.error.issues.map(issue => ({ path: issue.path.join('.'), message: issue.message })) });
+        return;
+      }
+
       const herb = await prisma.herb.findUnique({
         where: { id },
       });
@@ -296,45 +306,50 @@ export class HerbController {
         return;
       }
 
-      // Check if new name already exists and it's not the same herb
-      const localNameInput = req.body.localName?.trim();
-      const scientificNameInput = req.body.scientificName?.trim();
-
-      if (localNameInput && localNameInput !== herb.localName) {
-        const existingName = await prisma.herb.findFirst({
-          where: { localName: { equals: localNameInput, mode: 'insensitive' } }
-        });
-        if (existingName) {
-          res.status(400).json({ status: 'error', message: `A herb with the name "${localNameInput}" already exists.` });
+      const changes = Object.fromEntries(Object.entries(parsed.data).filter(([, value]) => value !== undefined)) as {
+        [Key in keyof typeof parsed.data]: Exclude<typeof parsed.data[Key], undefined>;
+      };
+      const after = { ...herb, ...changes };
+      const refreshEmbedding = herbEmbeddingFields.some(field => after[field] !== herb[field]);
+      let embedding: number[] | null = null;
+      if (refreshEmbedding && herb.publicationStatus === 'PUBLISHED' && herb.isVerified) {
+        try {
+          embedding = await generateEmbedding(herbEmbeddingText(after));
+          if (embedding.length !== 768 || !embedding.every(Number.isFinite) || !embedding.some(value => value !== 0)) throw new Error('Invalid generated embedding.');
+        } catch {
+          res.status(503).json({ status: 'error', message: 'The AI index could not be updated. No herb changes were saved; please try again later.' });
           return;
         }
       }
-
       const updatedHerb = await runAuditedMutation({
         adminId,
         action: 'UPDATE_HERB',
         targetType: 'Herb',
       }, async (transaction) => {
+        await transaction.$executeRaw`LOCK TABLE "Herb" IN SHARE ROW EXCLUSIVE MODE`;
+        const current = await transaction.herb.findUnique({ where: { id } });
+        if (!current || current.updatedAt.getTime() !== herb.updatedAt.getTime()) throw Object.assign(new Error('This herb changed while you were editing. Refresh and review it again.'), { status: 409 });
+        const identityChanged = changes.localName !== undefined && changes.localName !== herb.localName
+          || changes.scientificName !== undefined && changes.scientificName !== herb.scientificName;
+        if (identityChanged) {
+          const others = await transaction.herb.findMany({ where: { id: { not: id } }, select: { localName: true, scientificName: true, sourceScientificName: true } });
+          const conflict = others.some(other =>
+            changes.localName !== undefined && normalizeIdentity(other.localName) === normalizeIdentity(after.localName)
+            || changes.scientificName !== undefined && [other.scientificName, other.sourceScientificName].some(name => name && canonicalScientificName(name) === canonicalScientificName(after.scientificName)));
+          if (conflict) throw Object.assign(new Error('Another herb already uses that name or botanical identity.'), { status: 400 });
+        }
         const updated = await transaction.herb.update({
           where: { id },
-          data: {
-            localName: localNameInput || herb.localName,
-            cebuanoName: req.body.cebuanoName !== undefined ? req.body.cebuanoName : herb.cebuanoName,
-            scientificName: scientificNameInput || herb.scientificName,
-            category: req.body.category || herb.category,
-            medicinalUses: req.body.medicinalUses || herb.medicinalUses,
-            preparationMethod: req.body.preparationMethod || herb.preparationMethod,
-            dosage: req.body.dosage || herb.dosage,
-            regionFound: req.body.regionFound !== undefined ? req.body.regionFound : herb.regionFound,
-            warnings: req.body.warnings !== undefined ? req.body.warnings : herb.warnings,
-            imageUrl: req.body.imageUrl !== undefined ? req.body.imageUrl : herb.imageUrl,
-            isDohApproved: req.body.isDohApproved !== undefined ? req.body.isDohApproved : herb.isDohApproved,
-          },
+          data: changes,
         });
+        if (refreshEmbedding) {
+          const vector = embedding ? `[${embedding.join(',')}]` : null;
+          await transaction.$executeRaw`UPDATE "Herb" SET embedding = ${vector}::vector WHERE id = ${id}`;
+        }
         return {
           result: updated,
           targetId: id,
-          details: { localName: updated.localName, scientificName: updated.scientificName },
+          details: { localName: updated.localName, scientificName: updated.scientificName, changedFields: Object.keys(changes), embeddingRefreshed: refreshEmbedding, embeddingInputSha256: refreshEmbedding ? createHash('sha256').update(herbEmbeddingText(after)).digest('hex') : null },
         };
       });
       herbRepo.invalidateHerbCache();

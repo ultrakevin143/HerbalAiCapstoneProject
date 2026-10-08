@@ -65,3 +65,32 @@ test('pointer activation still opens the same selected herb', () => {
   execute('onClick', herb, value => selected.push(value))();
   assert.deepEqual(selected, [herb]);
 });
+
+const dialogSource = await readFile(new URL('../herbalaifrontend/components/AccessibleDialog.tsx', import.meta.url), 'utf8');
+const dialogSyntax = ts.createSourceFile('dialog.tsx', dialogSource, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+let dialogKeyboard;
+const findDialogKeyboard = node => {
+  if (ts.isJsxAttribute(node) && node.name.getText(dialogSyntax) === 'onKeyDown') dialogKeyboard = node.initializer.expression;
+  ts.forEachChild(node, findDialogKeyboard);
+};
+findDialogKeyboard(dialogSyntax);
+
+for (const backwards of [true, false]) {
+  test(`dialog ${backwards ? 'reverse' : 'forward'} focus wrap includes collapsed disclosure summaries`, () => {
+    const close = { tabIndex: 0, matches: () => false, getClientRects: () => [{}], closest: () => null, focus() { focused = close; } };
+    const summary = { tabIndex: 0, matches: () => false, getClientRects: () => [{}], closest: () => null, focus() { focused = summary; } };
+    const hiddenAnswer = { tabIndex: 0, matches: () => false, getClientRects: () => [{}], closest: () => ({ querySelector: () => ({ contains: () => false }) }), focus() { focused = hiddenAnswer; } };
+    let focused = backwards ? close : summary;
+    let prevented = false;
+    const document = { get activeElement() { return focused; } };
+    const compiled = ts.transpileModule(`const handler = ${dialogKeyboard.getText(dialogSyntax)};`, {
+      compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.None },
+    }).outputText;
+    const handler = new Function('document', compiled + '\nreturn handler;')(document);
+    handler({ key: 'Tab', shiftKey: backwards, preventDefault() { prevented = true; }, currentTarget: {
+      querySelectorAll(selector) { return selector.split(',').map(value => value.trim()).includes('summary') ? [close, summary, hiddenAnswer] : [close, hiddenAnswer]; },
+    } });
+    assert.equal(prevented, true);
+    assert.equal(focused, backwards ? summary : close);
+  });
+}

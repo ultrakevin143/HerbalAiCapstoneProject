@@ -7,6 +7,9 @@ import routes from './routes/index.js';
 import { requestTiming } from './middlewares/request-timing.middleware.js';
 import { databaseErrorCode, errorResponse } from './utils/error-response.js';
 import { getDatabasePoolMetrics } from './lib/prisma.js';
+import { testCreditsWebhook } from './controllers/credits-webhook.controller.js';
+import { getCreditsConfig } from './config/credits.js';
+import rateLimit from 'express-rate-limit';
 
 const app = express();
 
@@ -24,11 +27,13 @@ app.use((_req: Request, res: Response, next: NextFunction) => {
 });
 
 // --- Core Middleware ---
+getCreditsConfig();
 app.use(cors({
   origin: ENV.FRONTEND_URL,
   credentials: true
 }));
 
+app.post('/api/credits/webhook', rateLimit({ windowMs: 60000, max: 120, standardHeaders: true, legacyHeaders: false }), express.raw({ type: 'application/json', limit: '64kb' }), testCreditsWebhook);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

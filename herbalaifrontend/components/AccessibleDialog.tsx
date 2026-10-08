@@ -6,7 +6,7 @@ import { X } from 'lucide-react';
 let openDialogs = 0;
 let previousOverflow = '';
 
-export default function AccessibleDialog({ label, onClose, children }: { label: string; onClose: () => void; children: ReactNode }) {
+export default function AccessibleDialog({ label, onClose, children, variant = 'center' }: { label: string; onClose: () => void; children: ReactNode; variant?: 'center' | 'drawer' }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -27,10 +27,14 @@ export default function AccessibleDialog({ label, onClose, children }: { label: 
   }, []);
 
   return (
-    <dialog ref={dialogRef} aria-label={label} className="herb-detail-dialog" onCancel={(event) => { event.preventDefault(); onClose(); }} onKeyDown={(event) => {
+    <dialog ref={dialogRef} aria-label={label} className={variant === 'drawer' ? 'herb-detail-dialog credits-drawer' : 'herb-detail-dialog'} onCancel={(event) => { event.preventDefault(); onClose(); }} onKeyDown={(event) => {
       if (event.key !== 'Tab') return;
-      const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('a[href], button, input, textarea, select, [tabindex]'))
-        .filter(element => element.tabIndex >= 0 && !element.matches(':disabled') && element.getClientRects().length > 0);
+      const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('a[href], button, input, textarea, select, summary, [tabindex]'))
+        .filter(element => element.tabIndex >= 0 && !element.matches(':disabled') && element.getClientRects().length > 0)
+        .filter(element => {
+          const closedDetails = element.closest('details:not([open])');
+          return !closedDetails || closedDetails.querySelector('summary')?.contains(element);
+        });
       const first = controls[0];
       const last = controls[controls.length - 1];
       if (event.shiftKey && document.activeElement === first) {

@@ -16,7 +16,7 @@ import {
   ArrowRight,
   ExternalLink,
 } from 'lucide-react';
-import { getHerbRegionalNames, matchesRegionalNames } from '../../lib/regionalCommonNames';
+import { getHerbRegionalNames } from '../../lib/regionalCommonNames';
 import { cachedApiGet } from '../../lib/request-cache';
 import OptimizedFillImage from '../../components/OptimizedFillImage';
 import EmptyState from '../../components/EmptyState';

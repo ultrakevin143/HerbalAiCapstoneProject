@@ -17,6 +17,7 @@ type StreamEvent =
   | { event: 'done'; data: { history: DrAiStreamTurn[]; sources: DrAiStreamSource[]; metrics?: unknown } };
 
 const API_URL = '/api';
+export class DrAiCreditError extends Error {}
 
 const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
 const validSources = (value: unknown): value is DrAiStreamSource[] => Array.isArray(value) && value.every(source =>
@@ -36,6 +37,7 @@ export const streamDrAiResponse = async (
 ): Promise<void> => {
   options.signal?.throwIfAborted();
   const controller = new AbortController();
+  const requestId = crypto.randomUUID();
   const forwardAbort = () => controller.abort(options.signal?.reason);
   options.signal?.addEventListener('abort', forwardAbort, { once: true });
   let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
@@ -55,7 +57,7 @@ export const streamDrAiResponse = async (
       const response = await fetch(`${API_URL}/chat/stream`, {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
+        headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream', 'X-Idempotency-Key': requestId },
         body: JSON.stringify({ message, history }),
         signal: controller.signal,
       });
@@ -68,6 +70,7 @@ export const streamDrAiResponse = async (
         continue;
       }
       if (!response.ok) {
+        if (response.status === 402) throw new DrAiCreditError('You have no Dr. Ai test credits remaining. Open Credits to check your balance.');
         const body: unknown = await response.json().catch(() => null);
         controller.signal.throwIfAborted();
         throw new Error(isRecord(body) && typeof body.message === 'string' ? body.message : `Dr. Ai request failed with HTTP ${response.status}.`);

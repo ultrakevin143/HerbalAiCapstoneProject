@@ -38,7 +38,7 @@ const harness = fetcher => {
     timer => timers.delete(timer),
   );
   return {
-    requests, refreshes, events, timers,
+    requests, refreshes, events, timers, CreditError: exports.DrAiCreditError,
     run: options => exports.streamDrAiResponse('TEST ONLY question', [], value => events.push(value), options),
     refresh: callback => { refresh = callback; },
     fire: delay => {
@@ -280,6 +280,7 @@ const findCallbacks = node => {
   ts.forEachChild(node, findCallbacks);
 };
 findCallbacks(pageSyntax);
+const pageCreditError = harness(async () => {}).CreditError;
 const pageHarness = stream => {
   let messages = [{ id: 'welcome', role: 'model', text: 'TEST ONLY welcome' }];
   let input = 'TEST ONLY question';
@@ -287,6 +288,7 @@ const pageHarness = stream => {
   let sending = false;
   let error = null;
   let updates = 0;
+  let creditRevision = 0;
   const context = {
     isSending: false, history, activeRequestRef: { current: null }, mountedRef: { current: true },
     setMessages: value => { updates += 1; messages = typeof value === 'function' ? value(messages) : value; },
@@ -294,13 +296,15 @@ const pageHarness = stream => {
     setHistory: value => { updates += 1; history = value; },
     setIsSending: value => { updates += 1; sending = value; },
     setChatError: value => { updates += 1; error = value; },
+    setCreditRevision: value => { updates += 1; creditRevision = value(creditRevision); },
+    DrAiCreditError: pageCreditError,
     streamDrAiResponse: stream,
   };
   const compile = text => {
     const code = ts.transpileModule(`return (${text});`, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText;
     return new Function(...Object.keys(context), code)(...Object.values(context));
   };
-  return { send: compile(sendSource), unmount: lifecycleSource ? compile(lifecycleSource)() : null, state: () => ({ messages, input, history, sending, error, updates }) };
+  return { send: compile(sendSource), unmount: lifecycleSource ? compile(lifecycleSource)() : null, state: () => ({ messages, input, history, sending, error, updates, creditRevision }) };
 };
 
 test('the chat handler blocks duplicate submissions before React rerenders', async () => {
@@ -324,6 +328,20 @@ test('a failed partial answer restores the question draft without committing mod
   assert.deepEqual(fixture.state().history, []);
   assert.equal(fixture.state().sending, false);
   assert.ok(fixture.state().error);
+  assert.equal(fixture.state().creditRevision, 1);
+});
+
+test('zero credit responses preserve the question and show credit-specific feedback', async () => {
+  const transport = harness(async () => new Response(JSON.stringify({ message: 'No test credits.' }), { status: 402 }));
+  await assert.rejects(transport.run(), error => error instanceof transport.CreditError);
+  assert.equal(transport.requests.length, 1);
+  assert.deepEqual(transport.events, []);
+  const fixture = pageHarness(async () => { throw new pageCreditError('TEST ONLY no credits.'); });
+  await fixture.send('TEST ONLY question');
+  assert.equal(fixture.state().input, 'TEST ONLY question');
+  assert.equal(fixture.state().messages.length, 1);
+  assert.equal(fixture.state().creditRevision, 1);
+  assert.equal(fixture.state().error, 'TEST ONLY no credits.');
 });
 
 test('unmount aborts the active stream and ignores late events and state updates', async () => {

@@ -547,6 +547,13 @@ button:disabled { cursor: not-allowed; }
 .chat-messages { min-height: 0; max-height: none; flex: 1; overflow-y: auto; overflow-wrap: anywhere; overscroll-behavior: contain; }
 .chat-composer { flex-shrink: 0; padding: .75rem 1rem; }
 .chat-composer label { font-size: .875rem; }
+dialog.herb-detail-dialog.credits-drawer { inset: 0 0 0 auto; margin: 0; width: min(28rem, 100vw); max-width: 100vw; height: 100dvh; max-height: 100dvh; border-radius: 1.25rem 0 0 1.25rem; padding: 0; overflow-y: auto; overscroll-behavior: contain; }
+dialog.credits-drawer .dialog-content { padding: 1.5rem; overflow-wrap: anywhere; }
+dialog.credits-drawer .dialog-close-button { position: absolute; top: 1rem; right: 1rem; margin: 0; }
+@media (max-width: 639px) {
+  dialog.herb-detail-dialog.credits-drawer { inset: auto 0 0; width: 100%; height: auto; max-height: 85dvh; border-radius: 1.25rem 1.25rem 0 0; }
+  dialog.credits-drawer .dialog-content { padding: 1.25rem; padding-bottom: max(1.25rem, env(safe-area-inset-bottom)); }
+}
 .chat-safety { font-size: .8125rem; line-height: 1.4; color: var(--ui-muted); margin-top: .5rem; }
 .quick-prompts { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
 .quick-prompts button { border: 1px solid var(--ui-line); border-radius: 999px; padding: .375rem .75rem; font-size: .8125rem; background: var(--ui-panel); color: var(--ui-muted); }
@@ -568,7 +575,7 @@ button:disabled { cursor: not-allowed; }
 @media (max-height: 500px) {
   .chat-main { padding-block: 0; }
   .chat-panel > header { padding-block: .25rem; }
-  .chat-panel > header p, .chat-composer > div:first-child { display: none; }
+  .chat-panel > header p, .chat-composer > div:first-child:not(.dr-ai-credit-summary) { display: none; }
   .chat-composer { padding-block: .375rem; }
 }
 .chat-messages p, .chat-messages ul, .chat-messages ol { font-size: var(--reading-text-size); line-height: 1.65; }

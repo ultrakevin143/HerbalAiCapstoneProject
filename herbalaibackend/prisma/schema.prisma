@@ -46,6 +46,59 @@ model User {
   herbCommentLikes     HerbCommentLike[]
   auditLogs            AuditLog[]          @relation("AdminLogs")
   notifications        Notification[]
+  creditWallet         CreditWallet?
+  creditLedger         CreditLedger[]
+  creditRequests       CreditRequest[]
+  creditPurchases      CreditPurchase[]
+}
+
+model CreditWallet {
+  userId    String @id
+  balance   Int @default(0)
+  user      User @relation(fields: [userId], references: [id], onDelete: Restrict)
+}
+
+model CreditLedger {
+  id           String @id
+  userId       String
+  operationKey String @unique
+  kind         String
+  delta        Int
+  createdAt    DateTime @default(now())
+  user         User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  @@index([userId, createdAt])
+}
+
+model CreditRequest {
+  id          String @id
+  userId      String
+  requestKey  String
+  inputHash   String
+  status      String
+  response    Json?
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  user        User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  @@unique([userId, requestKey])
+  @@index([userId, status, expiresAt])
+}
+
+model CreditPurchase {
+  id           String @id
+  userId       String
+  requestKey   String
+  packageId    String
+  credits      Int
+  amountMinor  Int
+  currency     String @default("PHP")
+  status       String
+  checkoutId   String? @unique
+  checkoutUrl  String?
+  paymentId    String? @unique
+  createdAt    DateTime @default(now())
+  user        User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  @@unique([userId, requestKey])
+  @@index([userId, createdAt])
 }
 
 model Herb {

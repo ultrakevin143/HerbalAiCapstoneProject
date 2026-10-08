@@ -30,6 +30,22 @@ test('runtime retains Next configuration for remote image handling', () => {
   assert.ok(runner.includes('COPY --from=builder /app/next.config.ts ./next.config.ts'));
 });
 
+test('CI strictly typechecks administrator fixtures and runs real vector rollback before the full suite', () => {
+  const workflow = read('.github/workflows/ci.yml');
+  const typecheck = workflow.indexOf('name: Typecheck administrator edit acceptance fixtures');
+  const gate = workflow.indexOf('name: Run real administrator vector and audit rollback gate');
+  const fullSuite = workflow.indexOf('name: Run isolated Vitest suites');
+  assert.ok(typecheck > 0 && gate > typecheck && fullSuite > gate);
+  assert.match(workflow.slice(typecheck, gate), /--strict[\s\S]*--exactOptionalPropertyTypes --noUncheckedIndexedAccess/);
+  const gateStep = workflow.slice(gate, fullSuite);
+  for (const variable of ['DATABASE_URL', 'HERBALAI_TEST_DATABASE_URL']) {
+    assert.match(gateStep, new RegExp(`${variable}: postgresql://test_user:test_password@127\\.0\\.0\\.1:5432/herbalai_test\\?sslmode=disable`));
+  }
+  assert.match(gateStep, /npx vitest run tests\/herb-admin-edit-database\.test\.ts --maxWorkers=1/);
+  assert.doesNotMatch(gateStep, /continue-on-error|\|\| true/);
+  assert.match(workflow, /image: pgvector\/pgvector:pg16/);
+});
+
 test('deployment build context excludes environment-specific dotenv files', () => {
   const ignored = read('herbalaifrontend/.dockerignore').split(/\r?\n/);
   assert.ok(ignored.includes('.env'));

@@ -5,6 +5,16 @@ import { MAX_CHAT_HISTORY_TURNS } from "../schema/chat.schema.js";
 import { ENV } from "../config/env.js";
 import { awaitAiOperation, createAiDeadline, iterateAiOperation } from "../services/ai/core/request-lifetime.js";
 import { retainDrAiHistory } from '../services/ai/chat/conversation-context.js';
+import { beginChatCredit } from '../services/credit-chat.service.js';
+import { CreditError } from '../config/credits.js';
+import { completeCreditRequest, releaseCreditRequest } from '../repositories/credits.repository.js';
+import type { CreditHandle } from '../repositories/credits.repository.js';
+
+type CompletedChat = { reply: string; history: ChatTurn[]; sources: unknown; meta?: unknown };
+const refundChatCredit = async (credit: CreditHandle | null | undefined) => {
+  if (!credit || credit.replay) return;
+  try { await releaseCreditRequest(credit); } catch { console.error('Credit refund awaits reservation-expiry recovery.'); }
+};
 
 const CHAT_UNAVAILABLE_MESSAGE = "Dr. Ai is temporarily unavailable. Please try again later.";
 
@@ -47,6 +57,8 @@ const appendToHistory = (history: ChatTurn[], message: string, reply: string): C
  */
 export const sendMessage = async (req: Request, res: Response) => {
   let lifetime: ReturnType<typeof createChatLifetime> | undefined;
+  let credit: CreditHandle | null | undefined;
+  let completed = false;
   try {
     const { message, history = [] } = req.body;
 
@@ -73,6 +85,9 @@ export const sendMessage = async (req: Request, res: Response) => {
     }
 
     lifetime = createChatLifetime(req, res);
+    credit = await beginChatCredit(req, message.trim(), history as ChatTurn[]);
+    lifetime.signal.throwIfAborted();
+    if (credit?.replay) return res.status(200).json({ status: 'success', data: credit.replay });
     const { reply, sources, metrics } = await awaitAiOperation(
       () => askDrAi(message.trim(), history as ChatTurn[], { signal: lifetime!.signal }), lifetime.signal,
     );
@@ -86,25 +101,27 @@ export const sendMessage = async (req: Request, res: Response) => {
 
     // Build the updated history to return to the frontend
     const updatedHistory = appendToHistory(history as ChatTurn[], message.trim(), reply);
-
-    return res.status(200).json({
-      status: "success",
-      data: {
+    if (!reply.trim()) throw new Error('An empty answer cannot consume credits.');
+    const response = {
         reply,
         history: updatedHistory,
         sources,
         meta: metrics ? { timingMs: metrics } : undefined,
-      },
-    });
+    };
+    if (credit) await completeCreditRequest(credit, response);
+    completed = true;
+    return res.status(200).json({ status: 'success', data: response });
   } catch (error) {
+    if (!completed) { await refundChatCredit(credit); credit = null; }
     if (res.destroyed || req.aborted) return;
     const err = error as { message?: string; status?: number };
     console.error("Chat Controller Error:", err?.message || error);
-    return res.status(503).json({
+    return res.status(error instanceof CreditError ? error.status : 503).json({
       status: "error",
-      message: CHAT_UNAVAILABLE_MESSAGE,
+      message: error instanceof CreditError ? error.message : CHAT_UNAVAILABLE_MESSAGE,
     });
   } finally {
+    if (!completed) await refundChatCredit(credit);
     lifetime?.dispose();
   }
 };
@@ -116,6 +133,8 @@ const writeSse = (res: Response, event: string, data: unknown) => {
 export const streamMessage = async (req: Request, res: Response) => {
   let lifetime: ReturnType<typeof createChatLifetime> | undefined;
   let heartbeat: ReturnType<typeof setInterval> | undefined;
+  let credit: CreditHandle | null | undefined;
+  let completed = false;
   try {
     const { message, history = [] } = req.body;
     if (!message || typeof message !== "string" || !message.trim()) {
@@ -130,6 +149,7 @@ export const streamMessage = async (req: Request, res: Response) => {
 
     const trimmedMessage = message.trim();
     lifetime = createChatLifetime(req, res);
+    credit = await beginChatCredit(req, trimmedMessage, history as ChatTurn[]);
     lifetime.signal.throwIfAborted();
     res.status(200);
     res.setHeader("Content-Type", "text/event-stream; charset=utf-8");
@@ -137,6 +157,13 @@ export const streamMessage = async (req: Request, res: Response) => {
     res.setHeader("Connection", "keep-alive");
     res.setHeader("X-Accel-Buffering", "no");
     res.flushHeaders();
+    if (credit?.replay) {
+      const replay = credit.replay as CompletedChat;
+      writeSse(res, 'sources', { sources: replay.sources });
+      writeSse(res, 'chunk', { text: replay.reply });
+      writeSse(res, 'done', { history: replay.history, sources: replay.sources });
+      return res.end();
+    }
     heartbeat = setInterval(() => {
       if (!res.destroyed && !res.writableEnded) res.write(': heartbeat\n\n');
     }, 15_000);
@@ -154,21 +181,26 @@ export const streamMessage = async (req: Request, res: Response) => {
     lifetime.signal.throwIfAborted();
     const result = stream.getResult();
     const updatedHistory = appendToHistory(history as ChatTurn[], trimmedMessage, result.reply);
+    if (!result.reply.trim()) throw new Error('An empty answer cannot consume credits.');
+    if (credit) await completeCreditRequest(credit, { reply: result.reply, history: updatedHistory, sources: result.sources, meta: result.metrics ? { timingMs: result.metrics } : undefined });
+    completed = true;
     writeSse(res, "done", { history: updatedHistory, sources: result.sources, metrics: result.metrics });
     return res.end();
   } catch (error) {
+    if (!completed) { await refundChatCredit(credit); credit = null; }
     if (res.destroyed || req.aborted) return;
     const err = error as { message?: string; status?: number };
     console.error("Streaming Chat Controller Error:", err?.message || error);
     if (!res.headersSent) {
-      return res.status(503).json({
+      return res.status(error instanceof CreditError ? error.status : 503).json({
         status: "error",
-        message: CHAT_UNAVAILABLE_MESSAGE,
+        message: error instanceof CreditError ? error.message : CHAT_UNAVAILABLE_MESSAGE,
       });
     }
     writeSse(res, "error", { message: CHAT_UNAVAILABLE_MESSAGE });
     return res.end();
   } finally {
+    if (!completed) await refundChatCredit(credit);
     clearInterval(heartbeat);
     lifetime?.dispose();
   }

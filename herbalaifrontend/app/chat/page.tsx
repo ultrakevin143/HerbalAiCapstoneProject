@@ -6,8 +6,9 @@ import { useAuth } from '../../context/AuthContext';
 import Navbar from '../../components/Navbar';
 import SessionUnavailable from '../../components/SessionUnavailable';
 import DrAiAvatar from '../../components/DrAiAvatar';
+import DrAiCreditsStatus from '../../components/DrAiCreditsStatus';
 import { cachedApiGet } from '../../lib/request-cache';
-import { streamDrAiResponse } from '../../lib/dr-ai-stream';
+import { DrAiCreditError, streamDrAiResponse } from '../../lib/dr-ai-stream';
 import { Send, Sparkles, BookOpen, AlertCircle, ShieldAlert } from 'lucide-react';
 
 interface ChatTurn {
@@ -45,6 +46,7 @@ function ChatContent() {
   const router = useRouter();
 
   const [input, setInput] = useState('');
+  const [creditRevision, setCreditRevision] = useState(0);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
@@ -161,15 +163,15 @@ function ChatContent() {
           ));
         }
       }, { signal: controller.signal });
-    } catch {
+    } catch (error) {
       if (!mountedRef.current || controller.signal.aborted || activeRequestRef.current !== controller) return;
       setMessages((prev) => prev.filter((message) => message.id !== modelMessageId && message.id !== userMsgId));
       setInput((current) => current || queryText);
-      setChatError('Dr. Ai could not complete the answer. Please try again later.');
+      setChatError(error instanceof DrAiCreditError ? error.message : 'Dr. Ai could not complete the answer. Please try again later.');
     } finally {
       if (activeRequestRef.current === controller) {
         activeRequestRef.current = null;
-        if (mountedRef.current) setIsSending(false);
+        if (mountedRef.current) { setIsSending(false); setCreditRevision(value => value + 1); }
       }
     }
   }, [history, isSending]);
@@ -500,6 +502,7 @@ function ChatContent() {
 
           {/* Input Area */}
           <div className="chat-composer border-t border-black/10 dark:border-line bg-white/70 dark:bg-panel/90">
+            <DrAiCreditsStatus revision={creditRevision} />
             {chatError && (
               <div role="alert" className="mb-3 p-3 rounded-xl border border-rose-200 bg-rose-50 text-rose-800 text-xs font-semibold flex items-center gap-2">
                 <ShieldAlert className="h-4 w-4 shrink-0 text-rose-600" />

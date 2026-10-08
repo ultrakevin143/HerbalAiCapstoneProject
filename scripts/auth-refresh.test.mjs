@@ -568,7 +568,7 @@ test('an unresponsive loopback refresh times out, releases both callers, and rec
   const refreshTimeouts = [];
   fixture.api.defaults.adapter = config => {
     if (config.url === '/auth/refresh-token') refreshTimeouts.push(config.timeout);
-    return adapter({ ...config, proxy: false, timeout: config.timeout > 0 ? Math.min(config.timeout, 150) : 0 });
+    return adapter({ ...config, proxy: false, timeout: config.url === '/auth/refresh-token' ? Math.min(config.timeout, 150) : config.timeout });
   };
   let pending;
   let deadline;

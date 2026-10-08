@@ -9,6 +9,7 @@ import statsRoutes from "./stats.routes.js";
 import messageRoutes from "./message.routes.js";
 import auditRoutes from "./audit.routes.js";
 import notificationRoutes from "./notification.routes.js";
+import creditsRoutes from './credits.routes.js';
 
 const router = Router();
 
@@ -23,6 +24,7 @@ router.use("/stats", statsRoutes);
 router.use("/messages", messageRoutes);
 router.use("/admin/audit-logs", auditRoutes);
 router.use("/notifications", notificationRoutes);
+router.use('/credits', creditsRoutes);
 
 // Health check endpoint inside /api
 router.get("/health", (req, res) => {

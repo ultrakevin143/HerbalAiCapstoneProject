@@ -64,10 +64,29 @@ jobs:
         working-directory: herbalaibackend
         run: npm run lint
 
+      - name: Typecheck administrator edit acceptance fixtures
+        working-directory: herbalaibackend
+        run: >-
+          npx tsc --noEmit --module nodenext --target esnext --strict --esModuleInterop
+          --skipLibCheck --exactOptionalPropertyTypes --noUncheckedIndexedAccess
+          tests/herb-admin-edit-database.test.ts tests/helpers/admin-edit-database-boundary.ts
+
+      - name: Run real administrator vector and audit rollback gate
+        working-directory: herbalaibackend
+        env:
+          DATABASE_URL: postgresql://test_user:test_password@127.0.0.1:5432/herbalai_test?sslmode=disable
+          HERBALAI_TEST_DATABASE_URL: postgresql://test_user:test_password@127.0.0.1:5432/herbalai_test?sslmode=disable
+          JWT_SECRET: ci_test_jwt_secret_key_1234567890
+          JWT_REFRESH_SECRET: ci_test_refresh_jwt_secret_key_1234567890
+          NODE_ENV: test
+          EMAIL_DELIVERY_MODE: log
+        run: npx vitest run tests/herb-admin-edit-database.test.ts --maxWorkers=1
+
       - name: Run isolated Vitest suites
         working-directory: herbalaibackend
         env:
           DATABASE_URL: postgresql://test_user:test_password@localhost:5432/herbalai_test?sslmode=disable
+          HERBALAI_TEST_DATABASE_URL: postgresql://test_user:test_password@127.0.0.1:5432/herbalai_test?sslmode=disable
           JWT_SECRET: ci_test_jwt_secret_key_1234567890
           JWT_REFRESH_SECRET: ci_test_refresh_jwt_secret_key_1234567890
           FRONTEND_URL: http://localhost:3000
@@ -121,6 +140,10 @@ jobs:
       - name: Run password settings regressions
         working-directory: herbalaifrontend
         run: node --test ../scripts/password-settings.test.mjs
+
+      - name: Run test-credit wallet frontend regressions
+        working-directory: herbalaifrontend
+        run: node --test ../scripts/credits.test.mjs
 
       - name: Run custom user ban regressions
         working-directory: herbalaifrontend
