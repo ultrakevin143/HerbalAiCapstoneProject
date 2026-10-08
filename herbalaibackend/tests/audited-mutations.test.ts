@@ -32,7 +32,7 @@ describe('audited administrator mutations', () => {
   });
 
   it('commits ban and unban with their audit entries', async () => {
-    await updateUserBanStatus(targetId, true, adminId);
+    await updateUserBanStatus(targetId, true, adminId, { type: 'indefinite', reason: 'TEST audited moderation' });
     expect(await prisma.user.findUniqueOrThrow({ where: { id: targetId } })).toMatchObject({ isBanned: true });
     expect(await prisma.auditLog.count({ where: { adminId, targetId, action: 'BAN_USER' } })).toBe(1);
 
@@ -42,7 +42,7 @@ describe('audited administrator mutations', () => {
   });
 
   it('rolls back a ban if the audit entry cannot be written', async () => {
-    await expect(updateUserBanStatus(targetId, true, missingAdminId)).rejects.toThrow();
+    await expect(updateUserBanStatus(targetId, true, missingAdminId, { type: 'indefinite', reason: 'TEST audit rollback' })).rejects.toThrow();
     expect(await prisma.user.findUniqueOrThrow({ where: { id: targetId } })).toMatchObject({ isBanned: false });
     expect(await prisma.auditLog.count({ where: { targetId, action: 'BAN_USER' } })).toBe(1);
   });

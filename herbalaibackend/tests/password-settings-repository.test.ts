@@ -20,14 +20,16 @@ describe('Password replacement transaction contract (mocked database)', () => {
     await findPasswordCredentials('test-user');
     expect(findUnique).toHaveBeenCalledWith({
       where: { id: 'test-user' },
-      select: { id: true, password: true, sessionVersion: true, isBanned: true },
+      select: { id: true, password: true, sessionVersion: true, isBanned: true, banExpiresAt: true, banReason: true },
     });
   });
 
   it('guards hash, session version and ban status then revokes refresh and reset links in one transaction', async () => {
     expect(await replacePassword('test-user', 'old-hash', 4, 'new-hash')).toBe(true);
     expect(updateUser).toHaveBeenCalledWith({
-      where: { id: 'test-user', password: 'old-hash', sessionVersion: 4, isBanned: false },
+      where: { id: 'test-user', password: 'old-hash', sessionVersion: 4, OR: [
+        { isBanned: false }, { isBanned: true, banExpiresAt: { lte: expect.any(Date) } },
+      ] },
       data: { password: 'new-hash', sessionVersion: { increment: 1 } },
     });
     expect(updateTokens).toHaveBeenCalledWith({

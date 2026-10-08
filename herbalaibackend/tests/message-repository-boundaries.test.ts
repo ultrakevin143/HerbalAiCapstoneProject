@@ -43,7 +43,7 @@ describe('Messenger repository mutation and pagination boundaries', () => {
   it.each([['%', '\\%'], ['_', '\\_'], ['\\', '\\\\'], ['%_\\', '\\%\\_\\\\'], ["O'Brien", "O'Brien"]])('keeps New Chat name and username search %j literal and preserves visibility/pagination', async (search, escaped) => {
     await getMessageableUsers('sender', search, 20, 20);
     expect(mocks.users).toHaveBeenCalledWith({
-      where: { id: { not: 'sender' }, isBanned: false, OR: [
+      where: { id: { not: 'sender' }, AND: [{ OR: [{ isBanned: false }, { isBanned: true, banExpiresAt: { lte: expect.any(Date) } }] }], OR: [
         { name: { contains: escaped, mode: 'insensitive' } },
         { username: { contains: escaped, mode: 'insensitive' } },
       ] },

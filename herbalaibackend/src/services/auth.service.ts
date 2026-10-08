@@ -3,6 +3,7 @@ import * as tokenRepo from "../repositories/token.repository.js";
 import { hashPassword, comparePassword } from "../utils/password.js";
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "../utils/jwt.js";
 import { OAuth2Client } from "google-auth-library";
+import { banMessage, isAccountBanned } from '../lib/user-ban.js';
 import { ENV } from "../config/env.js";
 import crypto from "crypto";
 import { ensureMailReady, sendMail } from "../lib/mailer.js";
@@ -140,14 +141,12 @@ export const login = async (data: { identifier?: string; email?: string; passwor
     throw { status: 401, message: "Invalid email/username or password." };
   }
 
-  if (user.isBanned) {
-    throw { status: 403, message: "Your account has been banned. Please contact support." };
-  }
-
   const isPasswordValid = await comparePassword(data.password, user.password);
   if (!isPasswordValid) {
     throw { status: 401, message: "Invalid email/username or password." };
   }
+
+  if (isAccountBanned(user)) throw { status: 403, message: banMessage(user) };
 
   if (ENV.REQUIRE_EMAIL_VERIFICATION && user.emailVerificationRequired && !user.emailVerified) {
     throw { status: 403, message: "Please verify your email before logging in." };
@@ -198,7 +197,7 @@ export const refreshToken = async (token: string) => {
   }
 
   const user = await userRepo.findUserById(tokenRecord.userId);
-  if (!user || user.isBanned) {
+  if (!user || isAccountBanned(user)) {
     throw { status: 403, message: "Account banned or does not exist." };
   }
 
@@ -296,9 +295,7 @@ export const googleLogin = async (code: string) => {
     throw { status: 500, message: "Failed to resolve user after Google login." };
   }
 
-  if (user.isBanned) {
-    throw { status: 403, message: "Your account has been banned. Please contact support." };
-  }
+  if (isAccountBanned(user)) throw { status: 403, message: banMessage(user) };
 
   userRepo.primeCachedUser(user);
 
@@ -415,7 +412,7 @@ export const forgotPassword = async (email: string) => {
     message: "If an account with that email exists, a password reset link has been sent. Check your email and Spam folder; if you requested one recently, wait an hour before trying again.",
   };
 
-  if (!user) {
+  if (!user || isAccountBanned(user)) {
     return neutralResponse;
   }
 
@@ -490,7 +487,7 @@ export const changePassword = async (
   if (!user || user.sessionVersion !== sessionVersion) {
     throw { status: 401, message: "Your session has expired. Please sign in again." };
   }
-  if (user.isBanned) throw { status: 403, message: "Your account has been banned." };
+  if (isAccountBanned(user)) throw { status: 403, message: banMessage(user) };
   if (!await comparePassword(currentPassword, user.password)) {
     throw { status: 400, message: "Current password is incorrect." };
   }
@@ -509,7 +506,7 @@ export const changePassword = async (
 export const requestPasswordSetup = async (userId: string) => {
   const user = await userRepo.findUserById(userId);
   if (!user) throw { status: 401, message: "Please sign in again." };
-  if (user.isBanned) throw { status: 403, message: "Your account has been banned." };
+  if (isAccountBanned(user)) throw { status: 403, message: banMessage(user) };
   return forgotPassword(user.email);
 };
 

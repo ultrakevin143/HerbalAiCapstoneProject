@@ -1,4 +1,7 @@
 import { z } from "zod";
+import { banInputSchema } from '../lib/user-ban.js';
+
+export const banUserSchema = z.object({ body: banInputSchema });
 
 const newPasswordSchema = z.string().min(8, "Password must be at least 8 characters")
   .refine(password => Buffer.byteLength(password, "utf8") <= 72, "Password must be at most 72 UTF-8 bytes");

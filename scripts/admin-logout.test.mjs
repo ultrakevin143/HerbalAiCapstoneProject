@@ -10,6 +10,10 @@ const source = await readFile(new URL('../herbalaifrontend/app/admin/page.tsx', 
 const compiled = ts.transpileModule(source, {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true },
 }).outputText;
+const banPolicy = {};
+new Function('exports', ts.transpileModule(await readFile(new URL('../herbalaifrontend/lib/user-ban.ts', import.meta.url), 'utf8'), {
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+}).outputText)(banPolicy);
 const children = element => React.isValidElement(element) ? React.Children.toArray(element.props.children) : [];
 const find = (element, predicate) => {
   if (!React.isValidElement(element)) return undefined;
@@ -38,7 +42,7 @@ const fixture = ({ logout = async () => {}, role = 'admin', loading = false } = 
     useCallback: callback => callback,
     useState(initial) {
       const index = stateCursor++;
-      if (!states.has(index)) states.set(index, initial);
+      if (!states.has(index)) states.set(index, typeof initial === 'function' ? initial() : initial);
       return [states.get(index), value => states.set(index, typeof value === 'function' ? value(states.get(index)) : value)];
     },
     useRef(initial) {
@@ -58,6 +62,7 @@ const fixture = ({ logout = async () => {}, role = 'admin', loading = false } = 
       logout: async () => { calls++; return logout(); },
     }) };
     if (name === '../../lib/axios') return {};
+    if (name === '../../lib/user-ban') return banPolicy;
     if (name === '../../lib/request-cache') return { cachedApiGet: async () => {}, invalidateApiGetCache() {} };
     if (name === '../../components/DisplayPreferences') return { ThemeToggle: wrapper };
     if (name === '../../components/ui/button') return { Button: props => React.createElement('button', props, props.children) };

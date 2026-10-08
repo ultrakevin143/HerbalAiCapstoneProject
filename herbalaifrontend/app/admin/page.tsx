@@ -12,6 +12,8 @@ import SuggestionReviewEditor, { type ReviewReference } from '../../components/S
 import BrandMark from '../../components/BrandMark';
 import { ThemeToggle } from '../../components/DisplayPreferences';
 import SuggestionStatusBadge, { type SuggestionStatus } from '../../components/SuggestionStatusBadge';
+import UserBanDialog from '../../components/UserBanDialog';
+import { isActiveUserBan, type BanUser } from '../../lib/user-ban';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import {
@@ -92,7 +94,7 @@ interface Herb {
   isDohApproved?: boolean;
 }
 
-interface SystemUser {
+interface SystemUser extends BanUser {
   id: string;
   username: string;
   email: string;
@@ -178,6 +180,8 @@ export default function AdminPage() {
   const [usersList, setUsersList] = useState<SystemUser[]>([]);
   const [usersPage, setUsersPage] = useState(1);
   const [usersTotal, setUsersTotal] = useState(0);
+  const [banTarget, setBanTarget] = useState<SystemUser | null>(null);
+  const [banClock, setBanClock] = useState(Date.now);
   const [kbList, setKbList] = useState<KBItem[]>([]);
   const [kbPage, setKbPage] = useState(1);
   const [kbTotal, setKbTotal] = useState(0);
@@ -185,12 +189,17 @@ export default function AdminPage() {
   const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(null);
   
   const [activeTab, setActiveTab] = useState<'dashboard' | 'pending' | 'library' | 'users' | 'knowledgebase' | 'audit'>('dashboard');
+  useEffect(() => {
+    if (activeTab !== 'users') return;
+    const timer = window.setInterval(() => setBanClock(Date.now()), 1_000);
+    return () => window.clearInterval(timer);
+  }, [activeTab]);
+  const usersWithBanStatus = usersList.map(account => ({ ...account, isBanned: isActiveUserBan(account, banClock) }));
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [logoutPending, setLogoutPending] = useState(false);
   const logoutInFlight = useRef(false);
   const [error, setError] = useState<string | null>(null);
   const [actioningId, setActioningId] = useState<number | null>(null);
-  const [banActioningUserId, setBanActioningUserId] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [reviewNotesById, setReviewNotesById] = useState<Record<number, string>>({});
   const [evidenceClassById, setEvidenceClassById] = useState<Record<number, string>>({});
@@ -409,27 +418,13 @@ export default function AdminPage() {
     }
   };
 
-  const handleToggleBan = async (targetUserId: string, currentIsBanned: boolean) => {
-    try {
-      setBanActioningUserId(targetUserId);
-      setError(null);
-      setSuccessMsg(null);
-      
-      const endpoint = currentIsBanned ? `/auth/users/${targetUserId}/unban` : `/auth/users/${targetUserId}/ban`;
-      const res = await api.post(endpoint);
-      
-      if (res.data?.status === 'success') {
-        setSuccessMsg(res.data.message);
-        // Update user locally
-        setUsersList((prev) => 
-          prev.map((u) => 
-            u.id === targetUserId ? { ...u, isBanned: !currentIsBanned } : u
-          )
-        );
-      }
-    } finally {
-      setBanActioningUserId(null);
-    }
+  const handleBanSaved = (updated: BanUser) => {
+    invalidateApiGetCache('/auth/users');
+    invalidateApiGetCache('/admin/audit-logs');
+    setUsersList(previous => previous.map(account => account.id === updated.id ? { ...account, ...updated } : account));
+    setSuccessMsg(updated.isBanned ? 'User banned. Existing sessions were revoked.' : 'User unbanned. They can sign in again.');
+    setError(null);
+    setBanTarget(null);
   };
 
   const handleDeleteHerb = async (id: string) => {
@@ -1240,7 +1235,7 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {usersList.map((u) => (
+                    {usersWithBanStatus.map((u) => (
                       <tr key={u.id}>
                         <td className="font-extrabold text-ink flex items-center gap-2">
                           <div className="h-8 w-8 rounded-full bg-soft text-ink flex items-center justify-center font-bold text-xs border border-line">
@@ -1262,27 +1257,30 @@ export default function AdminPage() {
                         <td>
                           {u.isBanned ? (
                             <span className="admin-status !text-rose-600 !bg-rose-50 border border-rose-100 px-2 py-1 rounded-full text-[10px]">
-                              <span className="dot !bg-rose-500"></span> Banned
+                              <span className="dot !bg-rose-500"></span> {u.banExpiresAt ? 'Temporarily banned' : 'Indefinitely banned'}
                             </span>
                           ) : (
                             <span className="admin-status">
                               <span className="dot"></span> Active
                             </span>
                           )}
+                          {u.isBanned && <div className="mt-2 max-w-xs break-words text-xs text-muted">
+                            <p>{u.banExpiresAt ? `Until ${new Date(u.banExpiresAt).toLocaleString()}` : 'Until an administrator unbans this account'}</p>
+                            <p className="mt-1">{u.banReason || 'No reason recorded for this earlier ban.'}</p>
+                          </div>}
                         </td>
                         <td>
                           {u.id !== user.id && (
                             <button
-                              onClick={() => handleToggleBan(u.id, !!u.isBanned)}
-                              disabled={banActioningUserId !== null}
-                              aria-busy={banActioningUserId === u.id}
+                              onClick={() => { setError(null); setSuccessMsg(null); setBanTarget(u); }}
+                              disabled={banTarget !== null}
                               className={`text-xs font-black px-3 py-1.5 rounded-lg border transition-all ${
                                 u.isBanned 
                                   ? 'border-[#2d6a4f] text-[#2d6a4f] bg-[#eef5f0] hover:bg-[#2d6a4f] hover:text-white' 
                                   : 'border-rose-600 text-rose-600 bg-rose-50 hover:bg-rose-600 hover:text-white'
                               }`}
                             >
-                              {banActioningUserId === u.id ? 'Updating...' : u.isBanned ? 'Unban User' : 'Ban User'}
+                              {u.isBanned ? 'Unban User' : 'Ban User'}
                             </button>
                           )}
                         </td>
@@ -1591,6 +1589,8 @@ export default function AdminPage() {
           )}
         </main>
       </div>
+
+      {banTarget && <UserBanDialog user={banTarget} onSaved={handleBanSaved} onClose={() => setBanTarget(null)} />}
 
       {/* Edit Herb Modal */}
       {isHerbModalOpen && editingHerb && (

@@ -4,11 +4,12 @@ const findUnique = vi.fn();
 const findMany = vi.fn();
 const update = vi.fn();
 const auditCreate = vi.fn();
+const revoke = vi.fn();
 
 vi.mock('../src/lib/prisma.js', () => ({
   prisma: {
     user: { findUnique, findMany, update },
-    $transaction: (callback: (transaction: unknown) => unknown) => callback({ user: { update }, auditLog: { create: auditCreate } }),
+    $transaction: (callback: (transaction: unknown) => unknown) => callback({ user: { update, findUnique }, token: { updateMany: revoke }, auditLog: { create: auditCreate } }),
   },
 }));
 
@@ -29,6 +30,7 @@ const profile = {
 describe('authenticated user cache', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    findUnique.mockResolvedValue({ ...profile, sessionVersion: 0 });
     userRepo.invalidateCachedUser(profile.id);
   });
 
@@ -58,12 +60,12 @@ describe('authenticated user cache', () => {
     update.mockResolvedValue(bannedProfile);
 
     await userRepo.findUserById(profile.id);
-    await userRepo.updateUserBanStatus(profile.id, true, 'test-admin');
+    await userRepo.updateUserBanStatus(profile.id, true, 'test-admin', { type: 'indefinite', reason: 'TEST moderation' });
     await expect(userRepo.findUserById(profile.id)).resolves.toMatchObject({ isBanned: true });
 
     expect(update).toHaveBeenCalledWith(expect.objectContaining({
-      where: { id: profile.id },
-      data: { isBanned: true },
+      where: { id: profile.id, sessionVersion: 0 },
+      data: { isBanned: true, banReason: 'TEST moderation', banExpiresAt: null, sessionVersion: { increment: 1 } },
     }));
     expect(findMany).toHaveBeenCalledTimes(2);
   });
@@ -94,11 +96,23 @@ describe('authenticated user cache', () => {
     update.mockResolvedValue(bannedProfile);
     const oldLookup = userRepo.findUserById(profile.id);
     await vi.waitFor(() => expect(findMany).toHaveBeenCalledTimes(1));
-    await userRepo.updateUserBanStatus(profile.id, true, 'test-admin');
+    await userRepo.updateUserBanStatus(profile.id, true, 'test-admin', { type: 'indefinite', reason: 'TEST moderation' });
     await expect(userRepo.findUserById(profile.id)).resolves.toMatchObject({ isBanned: true });
     release([profile]);
     await oldLookup;
     await expect(userRepo.findUserById(profile.id)).resolves.toMatchObject({ isBanned: true });
     expect(findMany).toHaveBeenCalledTimes(2);
+  });
+
+  it('recalculates expiry even while the raw banned profile is still cached', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      const expiry = new Date(Date.now() + 1000);
+      userRepo.primeCachedUser({ ...profile, isBanned: true, banExpiresAt: expiry });
+      await expect(userRepo.findUserById(profile.id)).resolves.toMatchObject({ isBanned: true });
+      vi.setSystemTime(expiry);
+      await expect(userRepo.findUserById(profile.id)).resolves.toMatchObject({ isBanned: false });
+      expect(findMany).not.toHaveBeenCalled();
+    } finally { vi.useRealTimers(); }
   });
 });

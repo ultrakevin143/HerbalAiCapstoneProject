@@ -417,7 +417,7 @@ export class AuthController {
         return;
       }
 
-      const updatedUser = await userRepo.updateUserBanStatus(targetUserId, true, adminId);
+      const updatedUser = await userRepo.updateUserBanStatus(targetUserId, true, adminId, req.body);
 
       res.status(200).json({
         status: "success",

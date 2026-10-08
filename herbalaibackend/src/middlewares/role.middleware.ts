@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import { Role } from "@prisma/client";
 import { prisma } from "../lib/prisma.js";
 import type { JwtPayload } from "../utils/jwt.js";
+import { isAccountBanned } from '../lib/user-ban.js';
 
 type AuthenticatedRequest = Request & { user?: JwtPayload };
 
@@ -25,7 +26,7 @@ export const permittedRole = (roles: Role[]) => {
     try {
       const account = await prisma.user.findUnique({
         where: { id: authReq.user.userId },
-        select: { role: true, isBanned: true },
+        select: { role: true, isBanned: true, banExpiresAt: true },
       });
 
       if (!account) {
@@ -33,7 +34,7 @@ export const permittedRole = (roles: Role[]) => {
         return;
       }
 
-      if (account.isBanned || !roles.includes(account.role)) {
+      if (isAccountBanned(account) || !roles.includes(account.role)) {
         res.status(403).json({
           code: 403,
           status: "error",

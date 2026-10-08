@@ -4,6 +4,9 @@ import { ENV } from "../config/env.js";
 import { TtlCache } from "../lib/ttl-cache.js";
 import { BatchedLookup } from "../lib/batched-lookup.js";
 import { runAuditedMutation } from "./audit.repository.js";
+import { banInputSchema, banExpiry, eligibleAccountFilter, isAccountBanned } from '../lib/user-ban.js';
+import type { BanInput } from '../lib/user-ban.js';
+import { notifySessionInvalidated } from '../lib/session-invalidation.js';
 
 const userSessionCache = new TtlCache(ENV.AUTH_USER_CACHE_MAX_ENTRIES);
 const userCacheKey = (id: string) => `auth-user:${id}`;
@@ -17,6 +20,8 @@ type SessionUser = {
   role: string;
   joined: Date;
   isBanned: boolean;
+  banReason?: string | null;
+  banExpiresAt?: Date | null;
   emailVerified: Date | null;
 };
 
@@ -29,6 +34,8 @@ const toSessionUser = (user: SessionUser): SessionUser => ({
   role: user.role,
   joined: user.joined,
   isBanned: user.isBanned,
+  ...(user.banReason !== undefined ? { banReason: user.banReason } : {}),
+  ...(user.banExpiresAt !== undefined ? { banExpiresAt: user.banExpiresAt } : {}),
   emailVerified: user.emailVerified,
 });
 
@@ -96,6 +103,8 @@ const fetchSessionUsers = async (ids: string[]) => {
       role: true,
       joined: true,
       isBanned: true,
+      banReason: true,
+      banExpiresAt: true,
       emailVerified: true,
     },
   });
@@ -104,19 +113,20 @@ const fetchSessionUsers = async (ids: string[]) => {
 const sessionLookup = new BatchedLookup(fetchSessionUsers);
 
 export const findUserById = async (id: string) => {
-  return userSessionCache.getOrSet(userCacheKey(id), ENV.AUTH_USER_CACHE_TTL_MS, () => sessionLookup.load(id));
+  const user = await userSessionCache.getOrSet<SessionUser | null>(userCacheKey(id), ENV.AUTH_USER_CACHE_TTL_MS, () => sessionLookup.load(id));
+  return user ? { ...user, isBanned: isAccountBanned(user) } : user;
 };
 
 export const findPasswordCredentials = (id: string) => prisma.user.findUnique({
   where: { id },
-  select: { id: true, password: true, sessionVersion: true, isBanned: true },
+  select: { id: true, password: true, sessionVersion: true, isBanned: true, banExpiresAt: true, banReason: true },
 });
 
 export const replacePassword = (
   id: string, expectedHash: string, expectedVersion: number, passwordHash: string,
 ): Promise<boolean> => prisma.$transaction(async transaction => {
   const changed = await transaction.user.updateMany({
-    where: { id, password: expectedHash, sessionVersion: expectedVersion, isBanned: false },
+    where: { id, password: expectedHash, sessionVersion: expectedVersion, ...eligibleAccountFilter() },
     data: { password: passwordHash, sessionVersion: { increment: 1 } },
   });
   if (changed.count !== 1) return false;
@@ -145,7 +155,7 @@ export const createUser = async (data: Prisma.UserCreateInput) => {
 };
 
 export const findAllUsers = async (limit = 25, offset = 0) => {
-  return prisma.user.findMany({
+  const users = await prisma.user.findMany({
     select: {
       id: true,
       username: true,
@@ -155,25 +165,39 @@ export const findAllUsers = async (limit = 25, offset = 0) => {
       role: true,
       joined: true,
       isBanned: true,
+      banReason: true,
+      banExpiresAt: true,
       emailVerified: true,
     },
     orderBy: [{ joined: 'desc' }, { id: 'desc' }],
     take: limit,
     skip: offset,
   });
+  return users.map(user => ({ ...user, isBanned: isAccountBanned(user) }));
 };
 
 export const countUsers = () => prisma.user.count();
 
-export const updateUserBanStatus = async (id: string, isBanned: boolean, adminId: string) => {
+export const updateUserBanStatus = async (id: string, isBanned: boolean, adminId: string, input?: BanInput) => {
+  if (id === adminId) throw { status: 400, message: 'You cannot change your own ban status.' };
+  const parsed = isBanned ? banInputSchema.safeParse(input) : null;
+  if (parsed && !parsed.success) throw { status: 400, message: parsed.error.issues[0]?.message ?? 'Invalid ban options.' };
+  const options = parsed?.success ? parsed.data : null;
   const user = await runAuditedMutation({
     adminId,
     action: isBanned ? "BAN_USER" : "UNBAN_USER",
     targetType: "User",
   }, async (transaction) => {
+    const current = await transaction.user.findUnique({ where: { id } });
+    if (!current) throw { status: 404, message: 'User not found.' };
+    const now = new Date();
+    if (isAccountBanned(current, now) === isBanned) {
+      throw { status: 409, message: isBanned ? 'This user is already banned.' : 'This user is not currently banned.' };
+    }
+    const expiresAt = options ? banExpiry(options, now) : null;
     const updated = await transaction.user.update({
-      where: { id },
-      data: { isBanned },
+      where: { id, sessionVersion: current.sessionVersion },
+      data: { isBanned, banReason: options?.reason ?? null, banExpiresAt: expiresAt, sessionVersion: { increment: 1 } },
       select: {
         id: true,
         username: true,
@@ -183,16 +207,37 @@ export const updateUserBanStatus = async (id: string, isBanned: boolean, adminId
         role: true,
         joined: true,
         isBanned: true,
+        banReason: true,
+        banExpiresAt: true,
         emailVerified: true,
       },
+    }).catch((error: unknown) => {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+        throw { status: 409, message: 'This account changed during moderation. Refresh and try again.' };
+      }
+      throw error;
     });
+    if (isBanned) {
+      await transaction.token.updateMany({
+        where: { userId: id, type: { in: ['REFRESH', 'PASSWORD_RESET'] }, revokedAt: null },
+        data: { revokedAt: now },
+      });
+    }
     return {
       result: updated,
       targetId: id,
-      details: { targetUsername: updated.username, targetEmail: updated.email },
+      details: {
+        targetUsername: updated.username, targetEmail: updated.email,
+        banType: options?.type ?? (current.banExpiresAt ? 'temporary' : 'indefinite'),
+        reason: options?.reason ?? current.banReason,
+        expiresAt: (expiresAt ?? current.banExpiresAt)?.toISOString() ?? null,
+        ...(options?.type === 'temporary' ? { duration: options.duration, unit: options.unit } : {}),
+        sessionsRevoked: true,
+      },
     };
   });
   invalidateCachedUser(id);
+  notifySessionInvalidated(id);
   return user;
 };
 

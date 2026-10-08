@@ -24,6 +24,8 @@ model User {
   role          Role      @default(contributor)
   joined        DateTime  @default(now())
   isBanned      Boolean   @default(false)
+  banReason     String?   @db.VarChar(500)
+  banExpiresAt  DateTime?
   emailVerified DateTime? @map("email_verified")
   emailVerificationRequired Boolean @default(false) @map("email_verification_required")
   passwordResetRequestedAt DateTime? @map("password_reset_requested_at")

@@ -119,6 +119,10 @@ jobs:
         working-directory: herbalaifrontend
         run: node --test ../scripts/password-settings.test.mjs
 
+      - name: Run custom user ban regressions
+        working-directory: herbalaifrontend
+        run: node --test ../scripts/user-ban.test.mjs
+
       - name: Run authentication feedback regressions
         working-directory: herbalaifrontend
         run: node --test ../scripts/auth-feedback.test.mjs

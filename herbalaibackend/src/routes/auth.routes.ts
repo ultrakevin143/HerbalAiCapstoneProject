@@ -2,7 +2,7 @@ import { Router } from "express";
 import type { Request, Response, NextFunction } from "express";
 import { AuthController } from "../controllers/auth.controller.js";
 import { validateSchema } from "../middlewares/validate.js";
-import { signupSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema, updateProfileSchema, changePasswordSchema, passwordSetupSchema } from "../schema/auth.schema.js";
+import { signupSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema, updateProfileSchema, changePasswordSchema, passwordSetupSchema, banUserSchema } from "../schema/auth.schema.js";
 import { AuthMiddleware, type AuthenticatedRequest } from "../middlewares/auth.middleware.js";
 import { permittedRole } from "../middlewares/role.middleware.js";
 import { Role } from "@prisma/client";
@@ -85,7 +85,7 @@ router.post("/change-password", authMiddleware.execute, passwordSettingsOrigin, 
 router.post("/password-setup", authMiddleware.execute, passwordSettingsOrigin, passwordSettingsLimiter, validateSchema(passwordSetupSchema), authController.requestPasswordSetup);
 
 router.get("/users", authMiddleware.execute, permittedRole([Role.admin]), authController.getAllUsers);
-router.post("/users/:id/ban", authMiddleware.execute, permittedRole([Role.admin]), authController.banUser);
+router.post("/users/:id/ban", authMiddleware.execute, permittedRole([Role.admin]), validateSchema(banUserSchema), authController.banUser);
 router.post("/users/:id/unban", authMiddleware.execute, permittedRole([Role.admin]), authController.unbanUser);
 
 export default router;

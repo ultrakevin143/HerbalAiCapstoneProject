@@ -39,7 +39,7 @@ describe('current database role authorization', () => {
     expect(response.body.role).toBe(Role.admin);
     expect(mocks.findUnique).toHaveBeenCalledWith({
       where: { id: 'user-1' },
-      select: { role: true, isBanned: true },
+      select: { role: true, isBanned: true, banExpiresAt: true },
     });
   });
 

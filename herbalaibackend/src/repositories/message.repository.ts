@@ -1,6 +1,7 @@
 import { prisma } from "../lib/prisma.js";
 import { Prisma } from "@prisma/client";
 import type { MessageCursor } from "../utils/message-cursor.js";
+import { eligibleAccountFilter } from '../lib/user-ban.js';
 
 const missingMessageToNull = (error: unknown): null => {
   if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") return null;
@@ -223,7 +224,7 @@ export const getMessageableUsers = async (currentUserId: string, search = "", li
   return prisma.user.findMany({
     where: {
       id: { not: currentUserId },
-      isBanned: false,
+      AND: [eligibleAccountFilter()],
       ...(search ? { OR: [{ name: { contains: literalSearch, mode: "insensitive" } }, { username: { contains: literalSearch, mode: "insensitive" } }] } : {}),
     },
     select: {
@@ -240,6 +241,6 @@ export const getMessageableUsers = async (currentUserId: string, search = "", li
 
 export const getMessageableUserById = async (currentUserId: string, targetUserId: string) =>
   prisma.user.findFirst({
-    where: { id: targetUserId, NOT: { id: currentUserId }, isBanned: false },
+    where: { id: targetUserId, NOT: { id: currentUserId }, ...eligibleAccountFilter() },
     select: { id: true, name: true, avatar: true, role: true },
   });

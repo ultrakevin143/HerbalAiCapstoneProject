@@ -28,7 +28,7 @@ export class AuthMiddleware {
         return;
       }
       if (session.status === 'banned') {
-        res.status(403).json({ code: 403, status: "error", message: "Your account has been banned." });
+        res.status(403).json({ code: 403, status: "error", message: session.message });
         return;
       }
       authReq.user = session.payload;
