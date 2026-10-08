@@ -230,7 +230,7 @@ export const updateUserBanStatus = async (id: string, isBanned: boolean, adminId
         targetUsername: updated.username, targetEmail: updated.email,
         banType: options?.type ?? (current.banExpiresAt ? 'temporary' : 'indefinite'),
         reason: options?.reason ?? current.banReason,
-        expiresAt: (expiresAt ?? current.banExpiresAt)?.toISOString() ?? null,
+        expiresAt: (isBanned ? expiresAt : current.banExpiresAt)?.toISOString() ?? null,
         ...(options?.type === 'temporary' ? { duration: options.duration, unit: options.unit } : {}),
         sessionsRevoked: true,
       },

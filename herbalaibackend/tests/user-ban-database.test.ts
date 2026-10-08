@@ -95,6 +95,14 @@ describe('temporary/indefinite ban PostgreSQL transactions', () => {
     expect(invalidated).not.toHaveBeenCalled();
   });
 
+  it('does not carry an expired temporary end time into a new indefinite ban audit', async () => {
+    await prisma.user.update({ where: { id: targetId }, data: { isBanned: true, banExpiresAt: new Date(Date.now() - 1000), banReason: 'TEST ONLY expired ban' } });
+    await updateUserBanStatus(targetId, true, adminId, { type: 'indefinite', reason });
+    expect(await prisma.user.findUniqueOrThrow({ where: { id: targetId } })).toMatchObject({ isBanned: true, banExpiresAt: null, banReason: reason });
+    const audit = await prisma.auditLog.findFirstOrThrow({ where: { adminId, targetId, action: 'BAN_USER' } });
+    expect(audit.details).toMatchObject({ banType: 'indefinite', expiresAt: null, reason });
+  });
+
   it('allows only one concurrent ban/audit against the same account version', async () => {
     const outcomes = await Promise.allSettled([
       updateUserBanStatus(targetId, true, adminId, { type: 'indefinite', reason }),

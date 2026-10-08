@@ -83,6 +83,15 @@ describe('transactional user bans', () => {
     mocks.findUnique.mockResolvedValue({ ...current, isBanned: true, banExpiresAt: new Date(0) });
     await updateUserBanStatus(current.id, true, admin, { type: 'indefinite', reason });
     expect(mocks.update).toHaveBeenCalledOnce();
+    expect(mocks.audit.mock.calls[0][0].data.details).toMatchObject({ banType: 'indefinite', expiresAt: null });
+  });
+
+  it('retains the previous temporary expiry only when explicitly unbanning', async () => {
+    const previousExpiry = new Date(Date.now() + 60_000);
+    mocks.findUnique.mockResolvedValue({ ...current, isBanned: true, banExpiresAt: previousExpiry, banReason: reason });
+    await updateUserBanStatus(current.id, false, admin);
+    expect(mocks.audit.mock.calls[0][0].data.details).toMatchObject({ banType: 'temporary', expiresAt: previousExpiry.toISOString(), reason });
+    expect(mocks.update.mock.calls[0][0].data.banExpiresAt).toBeNull();
   });
 
   it('rejects a concurrent version change and writes no audit or session notification', async () => {
