@@ -360,3 +360,70 @@ test('a successful answer commits history and unlocks the composer', async () =>
   assert.equal(fixture.state().sending, false);
   assert.equal(fixture.state().error, null);
 });
+
+let authRedirectSource;
+let authRedirectDependencies;
+const findAuthRedirect = node => {
+  if (ts.isCallExpression(node) && node.expression.getText(pageSyntax) === 'useEffect'
+    && node.arguments[0]?.getText(pageSyntax).includes('/signin?callbackUrl=')) {
+    authRedirectSource = node.arguments[0].getText(pageSyntax);
+    authRedirectDependencies = node.arguments[1]?.getText(pageSyntax);
+  }
+  ts.forEachChild(node, findAuthRedirect);
+};
+findAuthRedirect(pageSyntax);
+assert.ok(authRedirectSource, 'test must exercise the actual ChatContent authentication effect');
+const authRedirectCompiled = ts.transpileModule(`const redirect = ${authRedirectSource}; redirect();`, {
+  compilerOptions: { target: ts.ScriptTarget.ES2022 },
+}).outputText;
+const authRedirectHelpers = {};
+const authRedirectHelperSource = await readFile(new URL('../herbalaifrontend/lib/auth-redirect.ts', import.meta.url), 'utf8');
+new Function('exports', ts.transpileModule(authRedirectHelperSource, {
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+}).outputText)(authRedirectHelpers);
+
+const runChatAuthRedirect = (search = '', state = {}) => {
+  const routes = [];
+  const router = {
+    push: url => routes.push({ method: 'push', url }),
+    replace: url => routes.push({ method: 'replace', url }),
+  };
+  new Function('loading', 'isAuthenticated', 'sessionUnavailable', 'router', 'searchParams', authRedirectCompiled)(
+    state.loading ?? false, state.isAuthenticated ?? false, state.sessionUnavailable ?? false, router, new URLSearchParams(search),
+  );
+  return routes;
+};
+
+for (const query of [
+  'What preparation and safety information is available for Balanay?',
+  'Explain documented uses of Thespesia populnea.',
+  'Compare leaves & seeds: "food use" or treatment? #sources + limits',
+]) {
+  test(`Library-to-AI login preserves the exact query: ${query}`, () => {
+    const search = new URLSearchParams({ q: query }).toString();
+    const routes = runChatAuthRedirect(search);
+    assert.equal(routes.length, 1);
+    assert.equal(routes[0].method, 'replace');
+    const signIn = new URL(routes[0].url, 'https://herbalai.example');
+    assert.equal(signIn.pathname, '/signin');
+    const callback = authRedirectHelpers.safeAuthCallback(signIn.searchParams.get('callbackUrl'));
+    assert.equal(callback, `/chat?${search}`);
+    assert.equal(new URL(callback, signIn.origin).searchParams.get('q'), query);
+  });
+}
+
+test('direct Chat navigation without a query retains its safe plain callback', () => {
+  const routes = runChatAuthRedirect();
+  const callback = new URL(routes[0].url, 'https://herbalai.example').searchParams.get('callbackUrl');
+  assert.equal(authRedirectHelpers.safeAuthCallback(callback), '/chat');
+});
+
+for (const state of [{ loading: true }, { isAuthenticated: true }, { sessionUnavailable: true }]) {
+  test(`Chat guard does not discard context during ${JSON.stringify(state)}`, () => {
+    assert.deepEqual(runChatAuthRedirect('q=TEST-only-herb', state), []);
+  });
+}
+
+test('Chat authentication effect reacts to changed query parameters', () => {
+  assert.match(authRedirectDependencies, /\bsearchParams\b/);
+});

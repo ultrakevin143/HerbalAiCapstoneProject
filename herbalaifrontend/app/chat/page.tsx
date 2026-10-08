@@ -103,9 +103,11 @@ function ChatContent() {
   // Check auth and redirect if not authenticated
   useEffect(() => {
     if (!loading && !isAuthenticated && !sessionUnavailable) {
-      router.push(`/signin?callbackUrl=${encodeURIComponent('/chat')}`);
+      const query = searchParams.toString();
+      const callbackUrl = query ? `/chat?${query}` : '/chat';
+      router.replace(`/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`);
     }
-  }, [loading, isAuthenticated, sessionUnavailable, router]);
+  }, [loading, isAuthenticated, sessionUnavailable, router, searchParams]);
 
   const handleSendQuery = React.useCallback(async (queryText: string) => {
     if (!queryText.trim() || isSending || activeRequestRef.current || !mountedRef.current) return;

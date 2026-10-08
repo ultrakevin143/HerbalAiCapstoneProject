@@ -1,3 +1,4 @@
+import { findMatchingHerbNames } from '../content/regionalCommonNames.js';
 import { prisma } from "../lib/prisma.js";
 import type { Prisma } from "@prisma/client";
 import { TtlCache } from "../lib/ttl-cache.js";
@@ -75,13 +76,18 @@ export const findAllHerbs = async (options: FindHerbsOptions = {}) => {
 
     if (search && search.trim()) {
       const s = search.trim();
-      where.OR = [
+      const matchedNames = findMatchingHerbNames(s);
+      const orConditions: Prisma.HerbWhereInput[] = [
         { localName: { contains: s, mode: 'insensitive' } },
         { cebuanoName: { contains: s, mode: 'insensitive' } },
         { scientificName: { contains: s, mode: 'insensitive' } },
         { medicinalUses: { contains: s, mode: 'insensitive' } },
         { category: { contains: s, mode: 'insensitive' } },
       ];
+      for (const name of matchedNames) {
+        orConditions.push({ localName: { equals: name, mode: 'insensitive' } });
+      }
+      where.OR = orConditions;
     }
 
     const paginationArgs: { take?: number; skip?: number } = {};
