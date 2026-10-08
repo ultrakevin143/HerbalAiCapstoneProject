@@ -1,0 +1,1214 @@
+{
+  "status": "DRAFT_PLAN_NOT_EXECUTABLE",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "evidenceFile": "HERB_SECOND_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+  "auditedAt": "2026-10-06T16:40:07.000Z",
+  "followUpDate": "2026-10-07",
+  "followUpNote": "Fennel's occurrence gap was repaired from Co's Digital Flora's exact cultivated, not naturalized entry. Earlier receipts remain historical; medicinal preparation and variety restrictions are unchanged.",
+  "snapshotCapturedAt": null,
+  "comparisonScope": "NO_PRIVATE_DATABASE_COMPARISON_PERFORMED",
+  "writeAllowed": false,
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "productionWritesPerformed": false,
+  "scope": "Second ten held editorial drafts. Assembled fields are not reviewed medical content, approved photos, import authorization or verified database rows.",
+  "sourceEvidenceFile": "HERB_SECOND_TEN_CONTENT_REVIEW_2026-10-05.json",
+  "sourceReuseNote": "Preparation and existing safety notes retain the 2026-10-05 evidence provenance. New botanical identity/distribution and status observations are separately dated 2026-10-07. No preparation quantities or human doses were invented.",
+  "counts": {
+    "assembledDrafts": 10,
+    "draftsWithAllCoreTextFields": 10,
+    "partialDrafts": 0,
+    "foodPreparationDescriptions": 7,
+    "historicalOrDraftPreparationDescriptions": 3,
+    "medicinalInstructionsCleared": 0,
+    "publicationCleared": 0
+  },
+  "blockers": [
+    "All ten remain DRAFT/UNASSESSED with no reviewer, embedding or publication clearance.",
+    "Fennel's bounded cultivation evidence does not clear a medicinal variety, household instructions or dose.",
+    "Mustasa and Radish accepted-name proposals require reconciliation before import.",
+    "Uncited warnings are editorial limits, not evidence of medical safety.",
+    "No private database target, transaction, rollback, concurrency or fresh photo delivery check occurred."
+  ],
+  "draftRows": [
+    {
+      "candidateId": "research-pardo-014",
+      "batch": 2,
+      "book": {
+        "entry": 14,
+        "heading": "Brassica juncea",
+        "commonNames": "Mostaza, Sp.; Mustard, Eng.",
+        "printedPage": 30,
+        "pdfPage": 36
+      },
+      "identityNotes": {
+        "queueScientificName": "Brassica juncea",
+        "acceptedNameProposal": "× Brassarda juncea",
+        "queueRenamed": false,
+        "identityReview": "PENDING"
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "Reconcile the queue's Brassica juncea with the reviewed modern nothogenus proposal ×Brassarda juncea before import.",
+        "No mustard poultice recipe is supplied in this entry; do not borrow Cleome viscosa instructions."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+      "preparationReview": {
+        "plantPart": "Leaves and seeds",
+        "kind": "FOOD_DESCRIPTION",
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "ledger": "HERB_IDENTITY_MEDIA_FOLLOW_UP_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:08.923Z",
+        "publicationAllowed": false,
+        "freshDeliveryChecked": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-014",
+        "localName": "Mustasa",
+        "scientificName": "Brassica juncea",
+        "sourceScientificName": "Brassica juncea",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical note: the entry compares mustard seeds with other mustards but supplies no independent household treatment recipe.\n\nEvidence limits: This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+        "preparationMethod": "Culinary use, not treatment: mustard leaves are eaten in salads or cooked; seeds are used in curries and pickles. The source does not supply cooking times or medicinal quantities.",
+        "dosage": "No medicinal dose is cleared by this review. Food-processing descriptions and historical reports are not dosing instructions.",
+        "warnings": "No validated medicinal regimen is established by these food-use sources.\n\nReview limit: part-specific medicinal safety remains unapproved; this draft supplies no cleared home-treatment instructions.",
+        "regionFound": "Philippines; Kew lists the proposed accepted hybrid as introduced. Mapping Brassica juncea to × Brassarda juncea remains under review; no province-level range is inferred.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791167109/mustasa_brassarda_juncea_cc0_131251463_swraso.jpg",
+        "imageCreator": "microvipera",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/80098427",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Historical report only. No clinical efficacy, modern safety clearance or human dosage is inferred; each record retains its exact entry and printed page.",
+          "supports": [
+            "medicinalUses"
+          ]
+        },
+        {
+          "id": "mustard-nparks",
+          "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+          "title": "NParks: Growing Five Leafy Vegetables",
+          "url": "https://www.nparks.gov.sg/publications-resources/articles/growing-five-leafy-vegetables",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Only the Chinese Mustard paragraph is used. Boiling, steaming and stir-frying in the preceding Kailan paragraph are not transferred to mustard.",
+          "supports": [
+            "preparationMethod"
+          ]
+        },
+        {
+          "id": "mustasa-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: × Brassarda juncea",
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77354001-1",
+          "reviewedAt": "2026-10-07",
+          "limitation": "Taxonomic identity and the explicitly inspected distribution only; not medicinal efficacy, a safe dose or occurrence in every Philippine province.",
+          "reviewLocator": "Distribution > Introduced into: Philippines.",
+          "supports": [
+            "identity",
+            "regionFound"
+          ]
+        },
+        {
+          "id": "mustasa-kew-synonym",
+          "kind": "BOTANICAL_SYNONYM",
+          "title": "Kew POWO: Brassica × juncea synonym mapping",
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:60442520-2/general-information",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity"
+          ],
+          "limitation": "Supports a held nothogenus mapping proposal, not automatic renaming or medicinal clearance."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-015",
+      "batch": 2,
+      "book": {
+        "entry": 15,
+        "heading": "Raphanus sativus, L.",
+        "commonNames": "Rábano, Sp.; Radish, Eng.",
+        "printedPage": 30,
+        "pdfPage": 36
+      },
+      "identityNotes": {
+        "queueScientificName": "Raphanus sativus",
+        "acceptedNameProposal": "Raphanus raphanistrum subsp. sativus",
+        "queueRenamed": false,
+        "identityReview": "PENDING"
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "Raphanus sativus is treated in the modern GardeningSG page as cultivated Raphanus raphanistrum subsp. sativus; retain the subspecies distinction.",
+        "Do not convert the book's antiscorbutic claim into a medicinal recipe."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+      "preparationReview": {
+        "plantPart": "Cultivated taproot and leafy tops",
+        "kind": "FOOD_DESCRIPTION",
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "DATED_LOCALITY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "ledger": "HERB_IDENTITY_MEDIA_FOLLOW_UP_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:08.241Z",
+        "publicationAllowed": false,
+        "freshDeliveryChecked": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-015",
+        "localName": "Radish",
+        "scientificName": "Raphanus sativus",
+        "sourceScientificName": "Raphanus sativus, L.",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical note: radish is discussed as food with an old antiscorbutic claim; this is not a validated treatment.\n\nEvidence limits: This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+        "preparationMethod": "Culinary use, not treatment: the swollen taproot is peeled, cut into small pieces and cooked in soups or meat dishes. The leafy tops may be stir-fried as a vegetable.",
+        "dosage": "No medicinal dose is cleared by this review. Food-processing descriptions and historical reports are not dosing instructions.",
+        "warnings": "Food preparation is not evidence that radish cures disease.\n\nReview limit: part-specific medicinal safety remains unapproved; this draft supplies no cleared home-treatment instructions.",
+        "regionFound": "Benguet, Philippines; a January 2017 field visit reported cultivated radish as Raphanus raphanistrum subsp. sativus. This is dated locality evidence, not an exhaustive national distribution.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791167109/radish_raphanus_raphanistrum_sativus_cc0_62230932_vvxzcn.jpg",
+        "imageCreator": "leaf0605",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/39240861",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; downloaded source derivative without editing",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Historical report only. No clinical efficacy, modern safety clearance or human dosage is inferred; each record retains its exact entry and printed page.",
+          "supports": [
+            "medicinalUses"
+          ]
+        },
+        {
+          "id": "radish-nparks",
+          "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+          "title": "NParks: Growing Five Root Vegetables",
+          "url": "https://www.nparks.gov.sg/publications-resources/articles/growing-five-root-vegetables",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Only the Radish paragraph is used. The thorough-cooking warning for the later Tapioca paragraph is not misattributed to radish.",
+          "supports": [
+            "preparationMethod"
+          ]
+        },
+        {
+          "id": "radish-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Raphanus raphanistrum subsp. sativus",
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77159305-1",
+          "reviewedAt": "2026-10-07",
+          "limitation": "Taxonomic identity and the explicitly inspected distribution only; not medicinal efficacy, a safe dose or occurrence in every Philippine province.",
+          "reviewLocator": "Accepted-name page; Philippine occurrence is supported separately.",
+          "supports": [
+            "identity"
+          ]
+        },
+        {
+          "id": "radish-kew-synonym",
+          "kind": "BOTANICAL_SYNONYM",
+          "title": "Kew POWO: Raphanus sativus synonym mapping",
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:288491-1",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity"
+          ],
+          "limitation": "Raphanus sativus maps to cultivated R. raphanistrum subsp. sativus; not all wild Raphanus."
+        },
+        {
+          "id": "radish-benguet-field-report",
+          "kind": "PRIMARY_FIELD_REPORT",
+          "title": "Reeder et al. (2017): First report of Turnip yellow mosaic virus in Chinese cabbage and rocket in the Philippines",
+          "url": "https://bsppjournals.onlinelibrary.wiley.com/doi/full/10.5197/j.2044-0588.2017.036.008",
+          "reviewedAt": "2026-10-07",
+          "reviewLocator": "Field visit in January 2017; radish named as Raphanus raphanistrum subsp. sativus.",
+          "supports": [
+            "regionFound"
+          ],
+          "limitation": "Dated locality observation only. Radish samples were negative for TYMV; neither disease-positive radish nor human medical efficacy is claimed."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-020",
+      "batch": 2,
+      "book": {
+        "entry": 20,
+        "heading": "Portulaca oleracea",
+        "commonNames": "Verdolagas, Sp.; Olasiman, Kolasiman, Tag.; Purslane, Eng.",
+        "printedPage": 34,
+        "pdfPage": 40
+      },
+      "identityNotes": {
+        "queueScientificName": "Portulaca oleracea",
+        "acceptedNameProposal": null,
+        "queueRenamed": false,
+        "identityReview": "PENDING"
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "Olasiman here means Portulaca oleracea, not the existing Peperomia pellucida record sometimes called Ulasimang Bato.",
+        "Withhold leaf-juice eyewash and treatment of coughing blood."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+      "preparationReview": {
+        "plantPart": "Leaves, young shoots and flower buds",
+        "kind": "FOOD_DESCRIPTION",
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "ledger": "HERB_SECOND_TEN_PHOTO_REVIEW_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:07.731Z",
+        "publicationAllowed": false,
+        "freshDeliveryChecked": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-020",
+        "localName": "Olasiman",
+        "scientificName": "Portulaca oleracea",
+        "sourceScientificName": "Portulaca oleracea",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical note: the book reports digestive, urinary and external uses; those reports do not establish clinical benefit.\n\nEvidence limits: This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+        "preparationMethod": "Culinary use, not treatment: leaves and young shoots are consumed as vegetables; flower buds are added to salads. The reviewed modern source supplies no medicinal preparation quantities.",
+        "dosage": "No medicinal dose is cleared by this review. Food-processing descriptions and historical reports are not dosing instructions.",
+        "warnings": "The historical eye and bleeding claims must not become self-treatment instructions.\n\nReview limit: part-specific medicinal safety remains unapproved; this draft supplies no cleared home-treatment instructions.",
+        "regionFound": "Philippines; Kew lists this species as introduced. The country listing does not identify every province.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165611/olasiman_portulaca_oleracea_cc0_141904820_sczrqh.jpg",
+        "imageCreator": "lanechaffin",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/86167368",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Historical report only. No clinical efficacy, modern safety clearance or human dosage is inferred; each record retains its exact entry and printed page.",
+          "supports": [
+            "medicinalUses"
+          ]
+        },
+        {
+          "id": "purslane-nparks",
+          "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+          "title": "NParks: Portulaca oleracea",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/3/2359",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Food use of leaves, young shoots and flower buds; its traditional medicinal list is not clinical validation.",
+          "supports": [
+            "preparationMethod"
+          ]
+        },
+        {
+          "id": "olasiman-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Portulaca oleracea",
+          "url": "https://powo.science.kew.org/taxon/323270-2",
+          "reviewedAt": "2026-10-07",
+          "limitation": "Taxonomic identity and the explicitly inspected distribution only; not medicinal efficacy, a safe dose or occurrence in every Philippine province.",
+          "reviewLocator": "Distribution > Introduced into: Philippines.",
+          "supports": [
+            "identity",
+            "regionFound"
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-044",
+      "batch": 2,
+      "book": {
+        "entry": 44,
+        "heading": "Theobroma Cacao",
+        "commonNames": "Cacao.",
+        "printedPage": 55,
+        "pdfPage": 61
+      },
+      "identityNotes": {
+        "queueScientificName": "Theobroma cacao",
+        "acceptedNameProposal": null,
+        "queueRenamed": false,
+        "identityReview": "PENDING"
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "Queue identity retained; modern Philippine occurrence and all-state duplicate checks still required.",
+        "Withhold the book's stomach-dilation and theobromine diuretic claims."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+      "preparationReview": {
+        "plantPart": "Seeds and surrounding fruit pulp",
+        "kind": "FOOD_DESCRIPTION",
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "ledger": "HERB_SECOND_TEN_PHOTO_REVIEW_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:07.914Z",
+        "publicationAllowed": false,
+        "freshDeliveryChecked": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-044",
+        "localName": "Cacao",
+        "scientificName": "Theobroma cacao",
+        "sourceScientificName": "Theobroma Cacao",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical note: cacao is discussed as a food product with pharmacological claims; those claims are not adopted as treatment advice.\n\nEvidence limits: This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+        "preparationMethod": "Food-processing overview, not treatment: seeds undergo fermentation and drying, then roasting, crushing, grinding and pressing to make chocolate products or cocoa butter. The surrounding pulp is eaten or processed into desserts. This is not a validated home fermentation protocol.",
+        "dosage": "No medicinal dose is cleared by this review. Food-processing descriptions and historical reports are not dosing instructions.",
+        "warnings": "No therapeutic dose or condition-specific safety clearance is inferred from chocolate processing.\n\nReview limit: part-specific medicinal safety remains unapproved; this draft supplies no cleared home-treatment instructions.",
+        "regionFound": "Philippines; the Department of Agriculture's 2016–2022 cacao roadmap documents cultivation. This dated agricultural evidence is not a current province-by-province census.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165611/cacao_theobroma_cacao_cc0_627816005_j9hblq.jpg",
+        "imageCreator": "oecophylla",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/344556962",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Historical report only. No clinical efficacy, modern safety clearance or human dosage is inferred; each record retains its exact entry and printed page.",
+          "supports": [
+            "medicinalUses"
+          ]
+        },
+        {
+          "id": "cacao-nparks",
+          "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+          "title": "NParks: Theobroma cacao",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/5/2/5241",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Food-processing overview, not a domestic fermentation safety protocol or therapeutic dose.",
+          "supports": [
+            "preparationMethod"
+          ]
+        },
+        {
+          "id": "cacao-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Theobroma cacao",
+          "url": "https://powo.science.kew.org/taxon/320783-2",
+          "reviewedAt": "2026-10-07",
+          "limitation": "Taxonomic identity and the explicitly inspected distribution only; not medicinal efficacy, a safe dose or occurrence in every Philippine province.",
+          "reviewLocator": "Accepted-name page; Philippine occurrence is supported separately.",
+          "supports": [
+            "identity"
+          ]
+        },
+        {
+          "id": "cacao-da-roadmap",
+          "kind": "GOVERNMENT_AGRICULTURAL_REPORT",
+          "title": "Department of Agriculture: 2016–2022 Philippine Cacao Roadmap",
+          "url": "https://www.da.gov.ph/wp-content/uploads/2018/01/Philippine-Cacao-Industry-Roadmap.pdf",
+          "reviewedAt": "2026-10-07",
+          "reviewLocator": "PDF page 5, printed page 1: Theobroma cacao and cultivar groups grown by Philippine farmers.",
+          "supports": [
+            "regionFound"
+          ],
+          "limitation": "Dated agricultural cultivation evidence, not a contemporary production census or clinical validation. The newer 2023 roadmap could not be read by the web tool because of its size."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-159",
+      "batch": 2,
+      "book": {
+        "entry": 159,
+        "heading": "Sesamum Indicum",
+        "commonNames": "Ajonjoli, Sp.; Lig̃á, Tag.; Log̃á, Vis.; Lag̃is, Pam.; Sesamé, Indo-Eng. (Benné Oil, Til Oil, Jinjili Oil.)",
+        "printedPage": 184,
+        "pdfPage": 190
+      },
+      "identityNotes": {
+        "queueScientificName": "Sesamum indicum",
+        "acceptedNameProposal": null,
+        "queueRenamed": false,
+        "identityReview": "PENDING"
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "No seed or leaf medicinal method is clinically cleared by the reviewed sources.",
+        "Withhold emmenagogue baths and decoctions, purgative doses and castor-oil substitution."
+      ],
+      "uncitedFields": [
+        "dosage"
+      ],
+      "modernEvidenceNote": "This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+      "preparationReview": {
+        "plantPart": "Leaves in the historical external report; seeds for allergen caution",
+        "kind": "HISTORICAL_DESCRIPTION_WITHHELD",
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "ledger": "HERB_SECOND_TEN_PHOTO_REVIEW_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:07.400Z",
+        "publicationAllowed": false,
+        "freshDeliveryChecked": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-159",
+        "localName": "Linga",
+        "scientificName": "Sesamum indicum",
+        "sourceScientificName": "Sesamum Indicum",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical note: sesame leaves and oil appear in external and laxative reports; these reports do not establish safe treatment.\n\nEvidence limits: This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+        "preparationMethod": "Historical description only: the book reports sesame-leaf poultices. This is not recommended as a home treatment; medicinal preparation instructions remain withheld.",
+        "dosage": "No medicinal dose is cleared by this review. Food-processing descriptions and historical reports are not dosing instructions.",
+        "warnings": "Sesame is identified by the FDA as a major food allergen; avoid exposure when allergic. That guidance does not validate leaf treatment.\n\nReview limit: part-specific medicinal safety remains unapproved; this draft supplies no cleared home-treatment instructions.",
+        "regionFound": "Philippines; Kew lists this species as introduced. No province-level range is inferred.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165609/linga_sesamum_indicum_cc0_309170794_rxvny8.jpg",
+        "imageCreator": "michelle_lopez",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/177739221",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Historical report only. No clinical efficacy, modern safety clearance or human dosage is inferred; each record retains its exact entry and printed page.",
+          "supports": [
+            "medicinalUses",
+            "preparationMethod"
+          ]
+        },
+        {
+          "id": "sesame-fda",
+          "kind": "AUTHORITATIVE_SAFETY_GUIDANCE",
+          "title": "FDA: The FASTER Act: Sesame Is the Ninth Major Food Allergen",
+          "url": "https://www.fda.gov/food/food-allergies/faster-act-sesame-ninth-major-food-allergen",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Used for sesame-allergen recognition, not Philippine labelling law or medicinal efficacy.",
+          "supports": [
+            "warnings"
+          ]
+        },
+        {
+          "id": "linga-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Sesamum indicum",
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:675971-1",
+          "reviewedAt": "2026-10-07",
+          "limitation": "Taxonomic identity and the explicitly inspected distribution only; not medicinal efficacy, a safe dose or occurrence in every Philippine province.",
+          "reviewLocator": "Distribution > Introduced into: Philippines.",
+          "supports": [
+            "identity",
+            "regionFound"
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-214",
+      "batch": 2,
+      "book": {
+        "entry": 214,
+        "heading": "Cocos nucifera",
+        "commonNames": "Coco, Sp.-Fil.; Niog, Tag.; Coco-nut Palm, Eng.",
+        "printedPage": 236,
+        "pdfPage": 242
+      },
+      "identityNotes": {
+        "queueScientificName": "Cocos nucifera",
+        "acceptedNameProposal": null,
+        "queueRenamed": false,
+        "identityReview": "PENDING"
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "Queue identity retained; no disease-specific preparation clearance inferred.",
+        "Withhold fermented-sap tuberculosis treatment."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+      "preparationReview": {
+        "plantPart": "Coconut flesh",
+        "kind": "FOOD_DESCRIPTION",
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "ledger": "HERB_SECOND_TEN_PHOTO_REVIEW_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:08.058Z",
+        "publicationAllowed": false,
+        "freshDeliveryChecked": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-214",
+        "localName": "Niog",
+        "scientificName": "Cocos nucifera",
+        "sourceScientificName": "Cocos nucifera",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical note: coconut products have reported traditional uses; the book's tuberculosis-treatment claim is not adopted.\n\nEvidence limits: This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+        "preparationMethod": "Culinary use, not treatment: coconut flesh is shredded for desiccated coconut or squeezed to obtain coconut milk. Coconut milk is an ingredient in curries and desserts; oil is also extracted from the flesh. Coconut milk is not the liquid naturally inside the fruit.",
+        "dosage": "No medicinal dose is cleared by this review. Food-processing descriptions and historical reports are not dosing instructions.",
+        "warnings": "The preparation describes distinct food ingredients, not a medicine.\n\nReview limit: part-specific medicinal safety remains unapproved; this draft supplies no cleared home-treatment instructions.",
+        "regionFound": "Philippines; Kew includes the country in this species' native distribution. This does not locate individual specimens or establish occurrence in every province.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165611/niog_cocos_nucifera_cc0_237055447_qobn7o.jpg",
+        "imageCreator": "georgiasteel",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/138668042",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Historical report only. No clinical efficacy, modern safety clearance or human dosage is inferred; each record retains its exact entry and printed page.",
+          "supports": [
+            "medicinalUses"
+          ]
+        },
+        {
+          "id": "coconut-nparks",
+          "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+          "title": "NParks: Cocos nucifera",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/5/6/5618",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Food ingredients and processing; coconut milk, water and oil are different materials. No disease-treatment claim is adopted.",
+          "supports": [
+            "preparationMethod"
+          ]
+        },
+        {
+          "id": "niog-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Cocos nucifera",
+          "url": "https://powo.science.kew.org/taxon/666160-1",
+          "reviewedAt": "2026-10-07",
+          "limitation": "Taxonomic identity and the explicitly inspected distribution only; not medicinal efficacy, a safe dose or occurrence in every Philippine province.",
+          "reviewLocator": "Distribution > Native to: Philippines.",
+          "supports": [
+            "identity",
+            "regionFound"
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-217",
+      "batch": 2,
+      "book": {
+        "entry": 217,
+        "heading": "Zea Mays",
+        "commonNames": "Maíz, Sp.; Maize, Corn, Eng.",
+        "printedPage": 240,
+        "pdfPage": 246
+      },
+      "identityNotes": {
+        "queueScientificName": "Zea mays",
+        "acceptedNameProposal": null,
+        "queueRenamed": false,
+        "identityReview": "PENDING"
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "Modern evidence is plant-part-specific; the foliage photograph cannot confirm medicinal-grade stigma material.",
+        "Withhold the book's tassel and stalk diuretic recipes; tassels are not corn silk."
+      ],
+      "uncitedFields": [
+        "dosage"
+      ],
+      "modernEvidenceNote": "The saved EMA draft concerns corn silk (stigma), not tassels or stems. The current status page remains draft under discussion; no final monograph or clinically established efficacy is asserted.",
+      "preparationReview": {
+        "plantPart": "Corn silk (stigma), not tassel, grain or stalk",
+        "kind": "DRAFT_TRADITIONAL_DESCRIPTION",
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "ledger": "HERB_IDENTITY_MEDIA_FOLLOW_UP_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:10.487Z",
+        "publicationAllowed": false,
+        "freshDeliveryChecked": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-217",
+        "localName": "Maize",
+        "scientificName": "Zea mays",
+        "sourceScientificName": "Zea Mays",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical note: the book reports tassel and stalk uses. These parts must not be substituted for corn silk.\n\nEvidence limits: The saved EMA draft concerns corn silk (stigma), not tassels or stems. The current status page remains draft under discussion; no final monograph or clinically established efficacy is asserted.",
+        "preparationMethod": "A draft EMA monograph describes cut corn silk as an oral herbal tea prepared by infusion or decoction. It addresses traditional use, not well-established clinical efficacy. No recipe or human dose is cleared here, and the book's tassel preparation is not substituted for corn silk.",
+        "dosage": "No medicinal dose is cleared by this review. Food-processing descriptions and historical reports are not dosing instructions.",
+        "warnings": "The draft does not recommend use below age 12 or during pregnancy/lactation, or when fluid intake must be restricted. Fever, painful urination or blood in urine require medical assessment.\n\nReview limit: part-specific medicinal safety remains unapproved; this draft supplies no cleared home-treatment instructions.",
+        "regionFound": "Philippines; Kew lists Zea mays as introduced. This species-level distribution does not authenticate medicinal corn-silk material.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791167111/maize_zea_mays_cc0_312217428_ouxrur.jpg",
+        "imageCreator": "jlohr3",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/179346421",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; downloaded source derivative without editing",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Historical report only. No clinical efficacy, modern safety clearance or human dosage is inferred; each record retains its exact entry and printed page.",
+          "supports": [
+            "medicinalUses"
+          ]
+        },
+        {
+          "id": "maize-ema-draft",
+          "kind": "DRAFT_REGULATORY_MONOGRAPH",
+          "title": "Draft European Union herbal monograph on Zea mays L., stigma, EMA/HMPC/509424/2023",
+          "url": "https://www.ema.europa.eu/en/documents/herbal-monograph/draft-european-union-herbal-monograph-zea-mays-l-stigma_en.pdf",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Six-page draft, dated 24 September 2025, specifies corn silk (stigma), not tassels, grain or stems; traditional use is not well-established clinical efficacy.",
+          "supports": [
+            "preparationMethod",
+            "warnings"
+          ]
+        },
+        {
+          "id": "maize-ema-status",
+          "kind": "REGULATORY_STATUS",
+          "title": "EMA: Maydis stigma",
+          "url": "https://www.ema.europa.eu/en/medicines/herbal/maydis-stigma",
+          "reviewedAt": "2026-10-05",
+          "limitation": "The observed page still says draft under discussion. A closed consultation is not a final adopted monograph.",
+          "supports": [
+            "preparationMethod"
+          ]
+        },
+        {
+          "id": "maize-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Zea mays",
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:426810-1",
+          "reviewedAt": "2026-10-07",
+          "limitation": "Taxonomic identity and the explicitly inspected distribution only; not medicinal efficacy, a safe dose or occurrence in every Philippine province.",
+          "reviewLocator": "Distribution > Introduced into: Philippines.",
+          "supports": [
+            "identity",
+            "regionFound"
+          ]
+        },
+        {
+          "id": "maize-ema-status-fr",
+          "kind": "REGULATORY_STATUS",
+          "title": "EMA: Maydis stigma — draft status",
+          "url": "https://www.ema.europa.eu/fr/medicines/herbal/maydis-stigma",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "evidenceReview"
+          ],
+          "reviewLocator": "Status: draft under discussion.",
+          "limitation": "A closed consultation is not final adoption. This turn checked status, not a new reading of the draft PDF; its earlier part-specific evidence remains held."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-219",
+      "batch": 2,
+      "book": {
+        "entry": 219,
+        "heading": "Saccharum officinarum",
+        "commonNames": "Cañamiel, Caña de azúcar, Caña dulc, Sp.; Tubo, Tag.; Sugar Cane, Eng.",
+        "printedPage": 241,
+        "pdfPage": 247
+      },
+      "identityNotes": {
+        "queueScientificName": "Saccharum officinarum",
+        "acceptedNameProposal": null,
+        "queueRenamed": false,
+        "identityReview": "PENDING"
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "NParks notes that commercial sugarcane is often a complex hybrid; resolve the photographed specimen's species scope.",
+        "Withhold warm-juice respiratory-treatment claims."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+      "preparationReview": {
+        "plantPart": "Juicy stem (culm)",
+        "kind": "FOOD_DESCRIPTION",
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "ledger": "HERB_SECOND_TEN_PHOTO_REVIEW_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:07.643Z",
+        "publicationAllowed": false,
+        "freshDeliveryChecked": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-219",
+        "localName": "Tubo",
+        "scientificName": "Saccharum officinarum",
+        "sourceScientificName": "Saccharum officinarum",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical note: the book describes cane juice and a respiratory-use claim; the treatment claim is not adopted.\n\nEvidence limits: This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+        "preparationMethod": "Food-processing overview, not treatment: juice is extracted from the soft tissue of sugarcane stems and processed into sugar or syrup. No medicinal heating time, dose or cough treatment is supplied.",
+        "dosage": "No medicinal dose is cleared by this review. Food-processing descriptions and historical reports are not dosing instructions.",
+        "warnings": "Sugar processing does not establish medicinal benefit.\n\nReview limit: part-specific medicinal safety remains unapproved; this draft supplies no cleared home-treatment instructions.",
+        "regionFound": "Philippines; Kew lists Saccharum officinarum as introduced. Commercial sugarcane may be hybrid material, so the distribution does not authenticate the selected photographed crop.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165609/tubo_saccharum_officinarum_cc0_59112165_avwbue.jpg",
+        "imageCreator": "aimnair",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/37303429",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Historical report only. No clinical efficacy, modern safety clearance or human dosage is inferred; each record retains its exact entry and printed page.",
+          "supports": [
+            "medicinalUses"
+          ]
+        },
+        {
+          "id": "sugarcane-nparks",
+          "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+          "title": "NParks: Saccharum officinarum",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/4/2411",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Sugar processing and botanical description; commercially grown sugarcane can be a multi-species hybrid, so this is not specimen authentication.",
+          "supports": [
+            "preparationMethod"
+          ]
+        },
+        {
+          "id": "tubo-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Saccharum officinarum",
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:419977-1",
+          "reviewedAt": "2026-10-07",
+          "limitation": "Taxonomic identity and the explicitly inspected distribution only; not medicinal efficacy, a safe dose or occurrence in every Philippine province.",
+          "reviewLocator": "Distribution > Introduced into: Philippines.",
+          "supports": [
+            "identity",
+            "regionFound"
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-119",
+      "batch": 2,
+      "book": {
+        "entry": 119,
+        "heading": "Fœniculum vulgare",
+        "commonNames": "Anis, Sp.; Fennel, Eng.",
+        "printedPage": 137,
+        "pdfPage": 143
+      },
+      "identityNotes": {
+        "queueScientificName": "Foeniculum vulgare",
+        "acceptedNameProposal": null,
+        "queueRenamed": false,
+        "identityReview": "PENDING"
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "The species-level queue and photograph do not establish the sweet-fennel variety or medicinal fruit quality covered by a monograph.",
+        "Withhold the historical concentrated infusion and daily-volume regimen.",
+        "Philippine cultivation is supported by Co's Digital Flora's exact Foeniculum entry; no province map, naturalization status upgrade or medicinal variety is inferred."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+      "preparationReview": {
+        "plantPart": "Fennel material in a shared historical fennel/coriander discussion",
+        "kind": "HISTORICAL_DESCRIPTION_WITHHELD",
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_CULTIVATION_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "ledger": "HERB_SECOND_TEN_PHOTO_REVIEW_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:07.606Z",
+        "publicationAllowed": false,
+        "freshDeliveryChecked": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-119",
+        "localName": "Fennel",
+        "scientificName": "Foeniculum vulgare",
+        "sourceScientificName": "Fœniculum vulgare",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical note: fennel is discussed alongside coriander as a digestive preparation; this is not modern variety-specific treatment evidence.\n\nEvidence limits: This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+        "preparationMethod": "Historical description only: the shared fennel and coriander passage mentions infusions and other extracts. It does not clear a modern, variety-specific preparation or human dose for this queue record.",
+        "dosage": "No medicinal dose is cleared by this review. Food-processing descriptions and historical reports are not dosing instructions.",
+        "warnings": "Do not transfer a sweet-fennel fruit regimen to unspecified fennel leaves, essential oil or another variety.\n\nReview limit: part-specific medicinal safety remains unapproved; this draft supplies no cleared home-treatment instructions.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165610/fennel_foeniculum_vulgare_cc0_216910898_iqwpoj.jpg",
+        "imageCreator": "vreinkymov",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/127748017",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null,
+        "regionFound": "Philippines; Co's Digital Flora lists Foeniculum vulgare under cultivated, not naturalized. No province-level distribution, wild occurrence or sweet-fennel medicinal variety is established."
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Historical report only. No clinical efficacy, modern safety clearance or human dosage is inferred; each record retains its exact entry and printed page.",
+          "supports": [
+            "medicinalUses",
+            "preparationMethod"
+          ]
+        },
+        {
+          "id": "fennel-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Foeniculum vulgare",
+          "url": "https://powo.science.kew.org/taxon/842680-1",
+          "reviewedAt": "2026-10-07",
+          "limitation": "Taxonomic identity and the explicitly inspected distribution only; not medicinal efficacy, a safe dose or occurrence in every Philippine province.",
+          "reviewLocator": "Distribution inspected; Philippines not listed. This does not establish absence.",
+          "supports": [
+            "identity"
+          ]
+        },
+        {
+          "id": "fennel-cdf",
+          "kind": "BOTANICAL_OCCURRENCE",
+          "title": "Co's Digital Flora: Foeniculum vulgare",
+          "url": "https://www.philippineplants.org/Families/Apiaceae.html",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "regionFound"
+          ],
+          "reviewLocator": "Foeniculum > Cultivated, not naturalized > Foeniculum vulgare.",
+          "limitation": "Bounded Philippine cultivation compilation only, not medicinal safety, province-level abundance or variety-specific identity."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-184",
+      "batch": 2,
+      "book": {
+        "entry": 184,
+        "heading": "Piper nigrum",
+        "commonNames": "Pimienta, Sp.; Paminta, Malisa, Tag.; Black Pepper, Eng.",
+        "printedPage": 206,
+        "pdfPage": 212
+      },
+      "identityNotes": {
+        "queueScientificName": "Piper nigrum",
+        "acceptedNameProposal": null,
+        "queueRenamed": false,
+        "identityReview": "PENDING"
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "Piper nigrum is not Piper betle; do not transfer adjacent betel-leaf instructions.",
+        "Withhold brandy-and-anise malaria treatment and purified-piperine dosing."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+      "preparationReview": {
+        "plantPart": "Fruits (peppercorns)",
+        "kind": "FOOD_DESCRIPTION",
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "ledger": "HERB_SECOND_TEN_PHOTO_REVIEW_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:07.386Z",
+        "publicationAllowed": false,
+        "freshDeliveryChecked": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-184",
+        "localName": "Paminta",
+        "scientificName": "Piper nigrum",
+        "sourceScientificName": "Piper nigrum",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical note: pepper has digestive and fever-treatment reports; these historical claims are not validated recommendations.\n\nEvidence limits: This batch reviewed historical and descriptive botanical/food sources, not a human efficacy trial for this candidate. Lack of a reviewed trial here is not proof that no trial exists.",
+        "preparationMethod": "Culinary use, not treatment: dried pepper fruits are used as food seasoning. NParks describes unripe fruits turning black when dried. No medicinal quantity or malaria regimen is supplied.",
+        "dosage": "No medicinal dose is cleared by this review. Food-processing descriptions and historical reports are not dosing instructions.",
+        "warnings": "Food seasoning does not prove that concentrated pepper products or piperine treat disease.\n\nReview limit: part-specific medicinal safety remains unapproved; this draft supplies no cleared home-treatment instructions.",
+        "regionFound": "Philippines; Kew lists Piper nigrum as introduced. No province-level distribution or medicinal benefit is inferred.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165610/paminta_piper_nigrum_cc0_65746891_rc6xsa.jpg",
+        "imageCreator": "klauswehrlin",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/41443661",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Historical report only. No clinical efficacy, modern safety clearance or human dosage is inferred; each record retains its exact entry and printed page.",
+          "supports": [
+            "medicinalUses"
+          ]
+        },
+        {
+          "id": "pepper-nparks",
+          "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+          "title": "NParks: Piper nigrum",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/5/2/5262",
+          "reviewedAt": "2026-10-05",
+          "limitation": "Dried-fruit food seasoning. Traditional disease claims are not adopted as proven treatment.",
+          "supports": [
+            "preparationMethod"
+          ]
+        },
+        {
+          "id": "paminta-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Piper nigrum",
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:682369-1",
+          "reviewedAt": "2026-10-07",
+          "limitation": "Taxonomic identity and the explicitly inspected distribution only; not medicinal efficacy, a safe dose or occurrence in every Philippine province.",
+          "reviewLocator": "Distribution > Introduced into: Philippines.",
+          "supports": [
+            "identity",
+            "regionFound"
+          ]
+        }
+      ]
+    }
+  ]
+}

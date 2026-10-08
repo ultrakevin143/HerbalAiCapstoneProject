@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "status": "HELD_EXPANSION_RELEASE_PREFLIGHT",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "checkedAt": "2026-10-07T01:25:01.952Z",
+  "checkerExitCode": 2,
+  "counts": {
+    "candidates": 50,
+    "livePublicHerbs": 38,
+    "draftPlansPresent": 50,
+    "partialContentDrafts": 1,
+    "fullContentDrafts": 49,
+    "missingFullContentDrafts": 1,
+    "missingSelectedCovers": 11,
+    "heldSecondaryIdentities": 2,
+    "publicIdentityConflicts": 0,
+    "publicationCleared": 0
+  },
+  "publicationAllowed": false,
+  "writeAllowed": false,
+  "publicCatalogOnly": true
+}

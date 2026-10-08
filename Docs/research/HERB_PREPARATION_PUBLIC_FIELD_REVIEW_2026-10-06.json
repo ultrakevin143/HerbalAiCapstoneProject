@@ -1,0 +1,1993 @@
+{
+  "status": "PUBLIC_FIELD_REVIEW_ONLY_NOT_AN_EXECUTABLE_PLAN",
+  "capturedAt": "2026-10-06T01:45:00.401Z",
+  "liveApi": {
+    "url": "https://herbalaicapstoneproject-staging.up.railway.app/api/herbs?limit=100",
+    "httpStatus": 200,
+    "total": 38,
+    "blankPreparations": 0,
+    "genericPreparations": 20,
+    "allPublishedIdentitiesMatchSql": true
+  },
+  "identitySnapshot": {
+    "path": "Docs/research/NEON_HERB_IDENTITY_SNAPSHOT_2026-10-06.json",
+    "capturedAt": "2026-10-06T01:14:23.988856+00:00",
+    "sha256": "12085571c09683c937b372e7ba4dd182ae1e3617fcf8b5b08e074c2a8b315e04",
+    "counts": {
+      "Herb": 38,
+      "SuggestedHerb": 17,
+      "genericPreparations": 20
+    }
+  },
+  "expansionIdentityComparison": {
+    "candidateCount": 50,
+    "catalogRows": 55,
+    "scope": "ALL_HERB_AND_SUGGESTION_STATES_IDENTITY_ONLY",
+    "queueSha256": "4e40997e8957f5fbd110ee3289bf7ac2fce3b32a1f14b895087dd8f70487263c",
+    "conflicts": [],
+    "aliasSplitting": "Stored cebuanoName split on commas and slashes; retained scientific and sourceScientific names.",
+    "allBotanicalSynonymsReconciled": false,
+    "stagingTransactionCheckPerformed": false
+  },
+  "batch": {
+    "path": "herbalaibackend/content/herbs/expansion-batch-02.json",
+    "sha256": "7bdf4d2c808e9b5d39df37870444f0c68799041a13d7f127be6ce218f02dec32",
+    "recordCount": 20
+  },
+  "summary": {
+    "methodUpdates": 20,
+    "dosageUpdates": 1,
+    "warningUpdates": 4,
+    "sourceAdditions": 22,
+    "unmappedDifferencesRetained": 0,
+    "classes": {
+      "REPORTED_TRADITIONAL_USE_NOT_VALIDATED": 12,
+      "PHARMACOPOEIAL_EXTERNAL_TRADITIONAL_USE": 1,
+      "FOOD_ONLY_DESCRIPTION": 5,
+      "ORAL_PREPARATION_WITHHELD": 2
+    }
+  },
+  "protectedFields": [
+    "id",
+    "localName",
+    "scientificName",
+    "sourceScientificName",
+    "cebuanoName",
+    "category",
+    "medicinalUses",
+    "regionFound",
+    "imageUrl",
+    "imageCreator",
+    "imageSourceUrl",
+    "imageLicense",
+    "imageLicenseUrl",
+    "imageModification",
+    "isDohApproved",
+    "isVerified",
+    "provenance",
+    "publicationStatus",
+    "evidenceClass",
+    "reviewedAt",
+    "reviewedById",
+    "sourceSuggestionId",
+    "createdAt"
+  ],
+  "records": [
+    {
+      "id": "builtin-oregano",
+      "localName": "Oregano",
+      "scientificName": "Coleus amboinicus",
+      "descriptionClass": "REPORTED_TRADITIONAL_USE_NOT_VALIDATED",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "Plant-specific safety, medicine interactions, and use during pregnancy or childhood are not established in this review. Do not use it as a substitute for assessment of persistent cough or breathing difficulty.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Documented traditional preparation: leaves are crushed to express their juice, or made into a leaf infusion. These are reported Philippine practices, not clinically validated instructions. The university source supplies no standardized leaf quantity, water volume or preparation time, so none is invented here. This is Coleus amboinicus, not Mediterranean oregano."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "ust-oregano",
+          "herbId": "builtin-oregano",
+          "title": "Oregano — UST Manila Campus Plant Database",
+          "publisher": "University of Santo Tomas",
+          "url": "https://www.ust.edu.ph/ust-manila-plant-databse/oregano/",
+          "citation": "Rechecked 2026-10-06 through a successful direct HTTP read of the university page: names Coleus amboinicus and reports leaf juice and infusions. It supplies no standardized leaf quantity, infusion time or clinically validated treatment dose. Broader efficacy and postpartum claims are not adopted.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-06T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-oregano",
+        "localName": "Oregano",
+        "scientificName": "Coleus amboinicus",
+        "sourceScientificName": "Plectranthus amboinicus",
+        "cebuanoName": null,
+        "category": "Traditional respiratory use",
+        "medicinalUses": "Philippine university documentation records traditional leaf preparations for cough and digestive discomfort. This is documented traditional use, not clinical proof, and this species is different from Mediterranean oregano (Origanum vulgare).",
+        "regionFound": "Cultivated in Philippine home gardens.",
+        "imageUrl": "/images/herbs/oregano.jpg",
+        "imageCreator": "Greg III Espera",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/114588361",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:35:40.657Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:35:40.721Z"
+      },
+      "protectedPublicValuesSha256": "cc328cea31a3f6795fe732f7348cc871c77f30a48a3a270bb67c68ce9d94c859",
+      "existingPublicSources": [
+        {
+          "id": 108,
+          "herbId": "builtin-oregano",
+          "title": "Oregano — UST Manila Campus Plant Database",
+          "publisher": "University of Santo Tomas",
+          "url": "https://www.ust.edu.ph/ust-manila-plant-databse/oregano/",
+          "citation": "Used for Philippine identity and traditional-use context; not treated as clinical proof.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:35:41.282Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review of reported leaf preparations before offering a home-use recipe or dosage",
+        "Independent safety-source review and sentence-level attribution of existing warnings"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-takip-kohol",
+      "localName": "Takip-kohol",
+      "scientificName": "Centella asiatica",
+      "descriptionClass": "PHARMACOPOEIAL_EXTERNAL_TRADITIONAL_USE",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "No clinically validated home preparation or dose is provided. Mental-health symptoms, infection, diabetes, and wounds require appropriate professional care.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "EMA traditional-use preparation for minor wounds: add 0.6 g of pharmacopoeial comminuted Centella herb to a small amount of boiling water; use the still-warm infusion in an impregnated dressing for external application. The monograph specifies neither water volume nor steeping time. It does not authorize substituting unverified garden plants or drinking the infusion.",
+        "dosage": "Adult/elderly monograph reference: three 0.6 g external applications daily (1.8 g/day), for at most one week; not a personalized treatment recommendation.",
+        "warnings": "External use only. Not recommended under 18, in pregnancy/breastfeeding, or with Centella/Apiaceae allergy. Seek professional care if symptoms persist or worsen. This is not an oral treatment for diabetes, mental-health symptoms or infection."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "ema-centella-2022",
+          "herbId": "builtin-takip-kohol",
+          "title": "European Union herbal monograph on Centella asiatica (L.) Urb., herba — Revision 1",
+          "publisher": "European Medicines Agency",
+          "url": "https://www.ema.europa.eu/en/documents/herbal-monograph/european-union-herbal-monograph-centella-asiatica-l-urb-herba-revision-1_en.pdf",
+          "citation": "Reviewed 2026-10-05: traditional cutaneous use of pharmacopoeial material, not oral treatment.",
+          "supports": [
+            "dosage",
+            "preparationMethod",
+            "warnings"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-takip-kohol",
+        "localName": "Takip-kohol",
+        "scientificName": "Centella asiatica",
+        "sourceScientificName": "Hydrocotyle asiatica",
+        "cebuanoName": null,
+        "category": "Documented traditional use",
+        "medicinalUses": "Philippine research records traditional use for anxiety, depression or neurological concerns, inflammation, infection, and diabetes. These records do not establish clinical effectiveness for those conditions.",
+        "regionFound": "Documented in Philippine medicinal-plant research.",
+        "imageUrl": "/images/herbs/takip-kohol.jpg",
+        "imageCreator": "Greg III Espera",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/57521890",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:35:42.351Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:35:42.353Z"
+      },
+      "protectedPublicValuesSha256": "cae07da027f37583e98d4dd09bcc7e6f8f1aac04e9708ca329356bdab7a3567d",
+      "existingPublicSources": [
+        {
+          "id": 109,
+          "herbId": "builtin-takip-kohol",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:35:42.887Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review of the cutaneous monograph and suitability of pharmacopoeial material before offering practical treatment guidance",
+        "Independent safety review and sentence-level attribution of existing clinical-care warnings"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-mayana",
+      "localName": "Mayana",
+      "scientificName": "Coleus scutellarioides",
+      "descriptionClass": "REPORTED_TRADITIONAL_USE_NOT_VALIDATED",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "No clinically validated preparation or dose is provided. Stop topical use if irritation occurs; significant pain, swelling, or suspected fracture needs medical assessment.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Documented traditional preparation: the La Union study reports leaves pounded into a soft, juicy material for topical use in sprains and bruises. This describes an external leaf poultice, not a clinically validated recipe. No leaf count, duration or treatment dose is established here. It is not an oral root-decoction instruction; raw leaves should not be placed on open wounds."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "la-union-preparations",
+          "herbId": "builtin-mayana",
+          "title": "Ethnomedicinal Knowledge of Plants among the Indigenous Peoples of Santol, La Union, Philippines",
+          "publisher": "Electronic Journal of Biology; Michelle B. Ducusin",
+          "url": "https://ejbio.imedpub.com/ethnomedicinal-knowledge-of-plants-among-the-indigenouspeoples-of-santol-la-union-philippines.php?aid=21461",
+          "citation": "External Mayana leaf poultice and cooked kamote tops reviewed; community-use reports, not clinical treatment trials.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-mayana",
+        "localName": "Mayana",
+        "scientificName": "Coleus scutellarioides",
+        "sourceScientificName": "Coleus blumei",
+        "cebuanoName": null,
+        "category": "Traditional topical use",
+        "medicinalUses": "Philippine research records traditional leaf use for bruises and sprains and reports laboratory antibacterial and antioxidant findings. Laboratory findings are not proof of treatment benefit in people.",
+        "regionFound": "Documented in North Cotabato and widely grown as an ornamental plant.",
+        "imageUrl": "/images/herbs/mayana.jpg",
+        "imageCreator": "Greg III Espera",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/107357746",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:35:43.950Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:35:43.952Z"
+      },
+      "protectedPublicValuesSha256": "52576b1811c97bb4d77d8ea844d0b47c2c3e941f9832626b48df3fc36793c796",
+      "existingPublicSources": [
+        {
+          "id": 110,
+          "herbId": "builtin-mayana",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:35:44.488Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review of the reported leaf poultice and safe topical practice before offering a treatment recipe or dose",
+        "Independent safety-source review and sentence-level attribution of existing warnings"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-okra",
+      "localName": "Okra",
+      "scientificName": "Abelmoschus esculentus",
+      "descriptionClass": "FOOD_ONLY_DESCRIPTION",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "No medicinal dose or home treatment is established. Persistent abdominal pain, diarrhea, bleeding, or urinary symptoms require professional assessment.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Food preparation only: NParks describes young Abelmoschus esculentus fruits eaten fresh or cooked as a vegetable, with mucilage used in soups or stews. No medicinal fruit preparation, dose or cooking duration is supplied. Root-use claims do not establish a fruit remedy."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "nparks-okra-food",
+          "herbId": "builtin-okra",
+          "title": "Abelmoschus esculentus (L.) Moench",
+          "publisher": "National Parks Board, Singapore",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/1/5/1581",
+          "citation": "Fruit food use only; no medicinal recipe inferred from root-use claims.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-okra",
+        "localName": "Okra",
+        "scientificName": "Abelmoschus esculentus",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Traditional use / food plant",
+        "medicinalUses": "Philippine ethnobotanical research records the fruit in traditional use for inflammation, gastric ulcer, diarrhea, and urinary concerns. This documentation does not prove that eating okra treats these conditions.",
+        "regionFound": "Common Philippine food crop; included in a North Cotabato medicinal-plant study.",
+        "imageUrl": "/images/herbs/okra.jpg",
+        "imageCreator": "Greg III Espera",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/114588558",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:35:45.560Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:35:45.574Z"
+      },
+      "protectedPublicValuesSha256": "2eaa9f65f2f9d3790632b8fd93ef295fabae98a8aa93fb1c6306e506ec6f2658",
+      "existingPublicSources": [
+        {
+          "id": 111,
+          "herbId": "builtin-okra",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:35:46.114Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-sibuyas",
+      "localName": "Sibuyas",
+      "scientificName": "Allium cepa",
+      "descriptionClass": "REPORTED_TRADITIONAL_USE_NOT_VALIDATED",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "The cited record concerns leaves and provides no validated medicinal preparation or dose. Severe or persistent abdominal pain requires medical assessment.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Documented traditional preparation: the Loboc study records direct or crushed Allium cepa leaves used externally for respiratory/digestive ailment categories. No application site, quantity or duration is specified, so this is not a complete home instruction. It is not an oral bulb recipe; botanical identification lacked deposited vouchers."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "loboc-preparations-2026",
+          "herbId": "builtin-sibuyas",
+          "title": "Quantitative ethnobotany of medical plants in non-indigenous communities of Loboc, Bohol, Philippines",
+          "publisher": "Ethnobotany Research and Applications; Beloy et al. (2026)",
+          "url": "https://ethnobotanyjournal.org/index.php/era/article/download/7714/2268/75646",
+          "citation": "Publisher PDF web text reviewed. No voucher specimens deposited. Local PDF retrieval returned HTML.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-sibuyas",
+        "localName": "Sibuyas",
+        "scientificName": "Allium cepa",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Traditional use / food plant",
+        "medicinalUses": "Philippine research records onion leaves in traditional use for abdominal pain and reports laboratory antimicrobial and antioxidant properties. These findings do not establish onion as a treatment for infection or abdominal disease.",
+        "regionFound": "Common Philippine food crop; documented in North Cotabato research.",
+        "imageUrl": "/images/herbs/sibuyas.jpeg",
+        "imageCreator": "petitcrabe",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/198413599",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:35:47.180Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:35:47.182Z"
+      },
+      "protectedPublicValuesSha256": "de4d21261cdeb2756af2a483baad22b54a72fbdc2604a24aab58194b70434c5c",
+      "existingPublicSources": [
+        {
+          "id": 112,
+          "herbId": "builtin-sibuyas",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:35:47.714Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-anonas",
+      "localName": "Anonas",
+      "scientificName": "Annona reticulata",
+      "descriptionClass": "ORAL_PREPARATION_WITHHELD",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "No safe home preparation or dose is established. Do not ingest leaves or use them to replace treatment for fever, infection, parasites, or cancer.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Traditional oral preparation withheld: TRAMIL reports a Caribbean Annona reticulata leaf decoction but warns about neurotoxicity associated with prolonged consumption. Its English recipe also contains inconsistent salt units. This does not establish a safe Philippine home recipe. Boiling instructions and treatment quantities are not imported.",
+        "warnings": "Do not use Anonas leaf preparations to replace treatment for infection, fever, parasites or cancer. TRAMIL warns about neurotoxicity associated with prolonged consumption and excludes medicinal use during pregnancy, breastfeeding and in children under twelve. A safe home treatment dose is not established here."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "tramil-anonas",
+          "herbId": "builtin-anonas",
+          "title": "Annona reticulata — Caribbean Herbal Pharmacopoeia",
+          "publisher": "TRAMIL, edition 3",
+          "url": "https://www.tramil.net/en/plant/annona-reticulata",
+          "citation": "Caribbean leaf decoction report and neurotoxicity cautions reviewed. English salt quantity has inconsistent teaspoon/milligram units; measurements are not imported.",
+          "supports": [
+            "preparationMethod",
+            "warnings"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-anonas",
+        "localName": "Anonas",
+        "scientificName": "Annona reticulata",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Documented traditional use",
+        "medicinalUses": "Philippine research records traditional leaf use for abdominal pain, diarrhea, boils, fatigue, fever, and inflammation, alongside laboratory antiparasitic, insecticidal, and anticancer findings. None of these laboratory findings establishes a cancer treatment.",
+        "regionFound": "Familiar Philippine fruit tree; documented in medicinal-plant research.",
+        "imageUrl": "/images/herbs/anonas.jpg",
+        "imageCreator": "Carlos Domínguez-Rodríguez",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/89938675",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:35:48.806Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:35:48.808Z"
+      },
+      "protectedPublicValuesSha256": "c5ebaa41555513727f9e5fe2a465fc62067cc369ff50db6c2b7d4bdf07221465",
+      "existingPublicSources": [
+        {
+          "id": 113,
+          "herbId": "builtin-anonas",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:35:49.374Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Preparation evidence still unresolved: the Caribbean TRAMIL decoction addresses a different indication and includes inconsistent salt units; methanol/animal methods do not establish a Philippine home recipe",
+        "Preparation source is descriptive or safety-limited; no independently validated human treatment recipe or dose is added"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-damong-maria",
+      "localName": "Damong Maria",
+      "scientificName": "Artemisia vulgaris",
+      "descriptionClass": "REPORTED_TRADITIONAL_USE_NOT_VALIDATED",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "No clinically validated preparation or dose is provided. Avoid medicinal use during pregnancy unless specifically cleared by a qualified clinician; persistent cough or diarrhea needs assessment.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Documented traditional preparation: the Ayta study records oral leaf decoction or sap for respiratory complaints. Amounts, water volume and duration are not specified. This is Artemisia vulgaris, not Artemisia absinthium; the report does not establish a safe treatment recipe."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "ayta-preparations-2018",
+          "herbId": "builtin-damong-maria",
+          "title": "Medicinal Plants Used by Ayta Communities in Dinalupihan, Bataan, Philippines",
+          "publisher": "Pharmacognosy Journal; Tantengco et al. (2018)",
+          "url": "https://www.phcogj.com/sites/default/files/PharmacognJ-10-5-859_0.pdf",
+          "citation": "Leaf forms and routes reviewed; descriptive interviews, not human safety or efficacy trials.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-damong-maria",
+        "localName": "Damong Maria",
+        "scientificName": "Artemisia vulgaris",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Documented traditional use",
+        "medicinalUses": "Philippine research records traditional use of the leaves for cough and diarrhea. This is ethnobotanical documentation, not clinical evidence of effectiveness.",
+        "regionFound": "Documented in Philippine medicinal-plant research.",
+        "imageUrl": "/images/herbs/damong-maria.jpg",
+        "imageCreator": "Sandy Wolkenberg",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/34376450",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:35:50.446Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:35:50.450Z"
+      },
+      "protectedPublicValuesSha256": "60ed069c54c44f37a54d8f4abd30d55ba7789f710ac336902da88135eaa1e6c0",
+      "existingPublicSources": [
+        {
+          "id": 114,
+          "herbId": "builtin-damong-maria",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:35:51.009Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-langka",
+      "localName": "Langka",
+      "scientificName": "Artocarpus heterophyllus",
+      "descriptionClass": "REPORTED_TRADITIONAL_USE_NOT_VALIDATED",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "No medicinal preparation or dose is established. Do not replace diabetes care or apply unsterile plant material to open wounds.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Documented traditional preparation: the Cavite survey records crushed Artocarpus heterophyllus leaves used externally for arthritis. This is a community-use description, not a validated treatment or home recipe. Leaf quantity, processing details and application duration are not supplied. Root decoctions and fruit uses are different preparations."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "cavite-preparations-2021",
+          "herbId": "builtin-langka",
+          "title": "The practice of using medicinal plants by local herbalists in Cavite, Philippines",
+          "publisher": "Indian Journal of Traditional Knowledge; Caunca and Balinado (2021)",
+          "url": "https://nopr.niscpr.res.in/bitstream/123456789/57216/3/IJTK%2020%282%29%20335-343.pdf",
+          "citation": "Rechecked 2026-10-06: publisher PDF bytes match the retained original. Methods and visually inspected Table 2 rows 17 (printed page 337) and 50 (page 339) report Langka leaf crushing/external and Mangosteen leaf decoction/internal for reported dengue fever or fever. This is an interview survey, not a clinical trial or validated preparation/dose. The source prints Garcinia x mangostana; no name or plant part is silently substituted.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-06T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-langka",
+        "localName": "Langka",
+        "scientificName": "Artocarpus heterophyllus",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Documented traditional use",
+        "medicinalUses": "Philippine research records traditional use of langka leaves for diabetes, wounds, and abdominal pain. This does not establish effectiveness, and the leaves are not equivalent to eating the fruit.",
+        "regionFound": "Common Philippine fruit tree; documented in North Cotabato research.",
+        "imageUrl": "/images/herbs/langka.jpg",
+        "imageCreator": "Greg III Espera",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/64716716",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:35:52.080Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:35:52.082Z"
+      },
+      "protectedPublicValuesSha256": "8aeeaeb67d3fd65d649c79d621cd1d21c006ecb5bc1545d9bfee9bef620b4763",
+      "existingPublicSources": [
+        {
+          "id": 115,
+          "herbId": "builtin-langka",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:35:52.623Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Exact leaf preparation remains unresolved: reviewed Philippine studies use bark or roots; leaf laboratory ointment extraction is not a home recipe",
+        "Preparation source is descriptive or safety-limited; no independently validated human treatment recipe or dose is added"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-atsuete",
+      "localName": "Atsuete",
+      "scientificName": "Bixa orellana",
+      "descriptionClass": "REPORTED_TRADITIONAL_USE_NOT_VALIDATED",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "The leaves are not interchangeable with culinary seed coloring. No safe medicinal preparation or dose is established; burns and infected wounds require proper care.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Documented traditional preparation: the Ayta study reports leaves and shoots applied externally to the forehead for fever. No processing sequence or duration is specified. This is a report, not validated fever treatment; seed food colouring uses a different part."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "ayta-preparations-2018",
+          "herbId": "builtin-atsuete",
+          "title": "Medicinal Plants Used by Ayta Communities in Dinalupihan, Bataan, Philippines",
+          "publisher": "Pharmacognosy Journal; Tantengco et al. (2018)",
+          "url": "https://www.phcogj.com/sites/default/files/PharmacognJ-10-5-859_0.pdf",
+          "citation": "Leaf forms and routes reviewed; descriptive interviews, not human safety or efficacy trials.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-atsuete",
+        "localName": "Atsuete",
+        "scientificName": "Bixa orellana",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Documented traditional use",
+        "medicinalUses": "Philippine research records traditional leaf use for headache, burns, and wounds and reports laboratory antimicrobial, antifungal, antileishmanial, and antihistamine activity. Laboratory activity does not establish a human treatment.",
+        "regionFound": "Commonly cultivated in the Philippines; documented in North Cotabato research.",
+        "imageUrl": "/images/herbs/atsuete.jpg",
+        "imageCreator": "Vreni Gem O. Caasi",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/43588999",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:35:53.691Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:35:53.693Z"
+      },
+      "protectedPublicValuesSha256": "3b6231bc61df7bba38ad146fe40bc56d40b737464f9f5b9dfde33e63a7d1f136",
+      "existingPublicSources": [
+        {
+          "id": 116,
+          "herbId": "builtin-atsuete",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:35:54.228Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-ylang-ylang",
+      "localName": "Ylang-ylang",
+      "scientificName": "Cananga odorata",
+      "descriptionClass": "REPORTED_TRADITIONAL_USE_NOT_VALIDATED",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "No home preparation or dose is established. Suspected urinary infection, fever, flank pain, pregnancy-related symptoms, or persistent symptoms require medical assessment.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Documented traditional preparation: the Manobo study records an oral bark/leaf decoction for respiratory or stomach complaints. It does not specify a leaf-only recipe, water ratio or boiling duration. Flower oil is a separate preparation, not a substitute for leaves. Reported drinking amounts do not establish a safe dose."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "manobo-preparations-2020",
+          "herbId": "builtin-ylang-ylang",
+          "title": "Quantitative ethnopharmacological documentation and molecular confirmation of medicinal plants used by the Manobo tribe of Agusan del Sur, Philippines",
+          "publisher": "Journal of Ethnobiology and Ethnomedicine; Dapar et al. (2020)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7227330/",
+          "citation": "Europe PMC XML reviewed. Bark/leaf decoction differs from flower oil; interview reports do not prove safe dosing.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-ylang-ylang",
+        "localName": "Ylang-ylang",
+        "scientificName": "Cananga odorata",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Research-stage traditional plant",
+        "medicinalUses": "Philippine research reports leaf use relating to urinary-tract and other microbial infections. This record and laboratory research do not establish that ylang-ylang treats infection in people.",
+        "regionFound": "Cultivated in the Philippines; included in North Cotabato medicinal-plant research.",
+        "imageUrl": "/images/herbs/ylang-ylang.jpg",
+        "imageCreator": "Nielbert Raner",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/284736918",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:35:55.287Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:35:55.289Z"
+      },
+      "protectedPublicValuesSha256": "e7cdb41f89377e04a50517d8169646929ac495373c2df433f314fcf11dd64ae9",
+      "existingPublicSources": [
+        {
+          "id": 117,
+          "herbId": "builtin-ylang-ylang",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:35:55.822Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-suha",
+      "localName": "Suha",
+      "scientificName": "Citrus maxima",
+      "descriptionClass": "REPORTED_TRADITIONAL_USE_NOT_VALIDATED",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "No oral medicinal preparation or dose is supported. Postpartum care and possible infection require professional guidance; avoid applying irritating preparations to broken skin.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Documented traditional preparation: the Ati survey in Antique records boiled Citrus maxima leaves used as an external wash for skin complaints. No leaf quantity, water ratio or duration is supplied. This is not validated treatment or an oral remedy; the separate mixed postpartum preparation is not adopted."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "panay-preparations-2021",
+          "herbId": "builtin-suha",
+          "title": "Medicinal plants used by the indigenous Ati tribe in Tobias Fornier, Antique, Philippines",
+          "publisher": "Biodiversitas; Cordero and Alejandro (2021)",
+          "url": "https://smujo.id/biodiv/article/download/7286/4544",
+          "citation": "Publisher PDF: separate leaf/skin-disease row reports boiled external wash. Mixed postpartum oral/bathing row is not adopted.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-suha",
+        "localName": "Suha",
+        "scientificName": "Citrus maxima",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Documented traditional use",
+        "medicinalUses": "Philippine research records traditional use of suha leaves in postpartum bathing and reports laboratory anticancer findings. This does not establish cancer prevention or treatment, and a postpartum bath is not evidence for internal use.",
+        "regionFound": "Common Philippine citrus tree; documented in North Cotabato research.",
+        "imageUrl": "/images/herbs/suha.jpg",
+        "imageCreator": "Vreni Gem O. Caasi",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/43778195",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:35:56.878Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:35:56.880Z"
+      },
+      "protectedPublicValuesSha256": "470404d64c22c4a8f2896867940a3dc9320c0dc59040791a91609686865c2ff0",
+      "existingPublicSources": [
+        {
+          "id": 118,
+          "herbId": "builtin-suha",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:35:57.412Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Preparation evidence still unresolved: Loboc mixes internal/external and pregnancy categories without an unambiguous leaf-only protocol; no pregnancy or postpartum recipe adopted",
+        "Preparation source is descriptive or safety-limited; no independently validated human treatment recipe or dose is added"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-gabi",
+      "localName": "Gabi",
+      "scientificName": "Colocasia esculenta",
+      "descriptionClass": "FOOD_ONLY_DESCRIPTION",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "Raw or improperly prepared gabi can irritate the mouth and skin. Food preparation is not a medicinal dose, and prescribed blood-pressure treatment should not be replaced.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Food preparation only: NParks describes Colocasia esculenta leaves and petioles cooked as vegetables and warns against eating raw material because of calcium oxalate. No leaf cooking time or medicinal dose is supplied. This is not a preparation for hypertension or itching; the source distinguishes this species from look-alike aroids."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "nparks-gabi-food",
+          "herbId": "builtin-gabi",
+          "title": "Colocasia esculenta (L.) Schott",
+          "publisher": "National Parks Board, Singapore",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/1/8/1835",
+          "citation": "Cooked leaf food use only; no cooking duration or medicinal recipe validated.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-gabi",
+        "localName": "Gabi",
+        "scientificName": "Colocasia esculenta",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Documented traditional use / food plant",
+        "medicinalUses": "Philippine research records traditional leaf use for hypertension and itching and reports laboratory diuretic and antioxidant activity. This does not establish treatment effectiveness.",
+        "regionFound": "Common Philippine food crop; documented in North Cotabato research.",
+        "imageUrl": "/images/herbs/gabi.jpg",
+        "imageCreator": "Vreni Gem O. Caasi",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/265905314",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:35:58.477Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:35:58.478Z"
+      },
+      "protectedPublicValuesSha256": "a9d3203a76b3ffefd70a9504c6040f84e3718bcd468170b45b9f3406bd013efa",
+      "existingPublicSources": [
+        {
+          "id": 119,
+          "herbId": "builtin-gabi",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:35:59.095Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-saluyot",
+      "localName": "Saluyot",
+      "scientificName": "Corchorus aestuans",
+      "descriptionClass": "FOOD_ONLY_DESCRIPTION",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "No medicinal dose is established. Fever, severe pain, significant injury, or persistent constipation requires appropriate assessment.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Food preparation only: the PROSEA account describes Corchorus aestuans leaves cooked as a vegetable, releasing mucilage. No cooking duration or medicinal dose is supplied. This is not a treatment recipe for fever or inflammation; methods for Corchorus olitorius or Corchorus capsularis are not substituted."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "prosea-saluyot-food",
+          "herbId": "builtin-saluyot",
+          "title": "Corchorus aestuans — PROSEA",
+          "publisher": "Plant Resources of South-East Asia; Brink, Jansen and Bosch; reproduced on Pl@ntUse",
+          "url": "https://plantuse.plantnet.org/en/Corchorus_aestuans_(PROSEA)",
+          "citation": "Botanical account reviewed. Cooked leaf use only, not another Corchorus species or the seed medicinal descriptions.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-saluyot",
+        "localName": "Saluyot",
+        "scientificName": "Corchorus aestuans",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Documented traditional use / food plant",
+        "medicinalUses": "Philippine research records traditional leaf use for sprain, inflammation, fever, and constipation. This documentation does not establish a clinically effective treatment.",
+        "regionFound": "Familiar Philippine leafy vegetable; documented in North Cotabato research.",
+        "imageUrl": "/images/herbs/saluyot.jpeg",
+        "imageCreator": "Paolo Co",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/112814009",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:36:00.172Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:36:00.174Z"
+      },
+      "protectedPublicValuesSha256": "da9ac4c7ea452a9b9c59be02c3270a70e9722e48a2eccc38d30dce2f68aeff5b",
+      "existingPublicSources": [
+        {
+          "id": 120,
+          "herbId": "builtin-saluyot",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:36:00.704Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified review of exact-species food preparation versus medicinal claims; the original toxicity paper's use reference studies Corchorus capsularis"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-mabolo",
+      "localName": "Mabolo",
+      "scientificName": "Diospyros blancoi",
+      "descriptionClass": "REPORTED_TRADITIONAL_USE_NOT_VALIDATED",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "No validated home preparation or dose is provided. Do not replace prescribed cardiovascular or diabetes treatment; persistent symptoms need professional assessment.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Documented traditional preparation: the Smithsonian compilation reports a young-leaf decoction under Diospyros discolor, a synonym of Diospyros blancoi. This is a Guianas historical report, not Philippine clinical guidance. No amount, water ratio, duration or explicit administration route is specified; none is invented. It is not validated cardiovascular or diabetes treatment."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "smithsonian-mabolo-2004",
+          "herbId": "builtin-mabolo",
+          "title": "Medicinal Plants of the Guianas (Guyana, Surinam, French Guiana)",
+          "publisher": "Smithsonian Institution; DeFilipps, Maina and Crepin (2004)",
+          "url": "https://naturalhistory.si.edu/media/1868",
+          "citation": "Historical compilation, not Philippine clinical guidance. Young-leaf decoction reported; no standardized recipe or explicitly specified route in that sentence.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-mabolo",
+        "localName": "Mabolo",
+        "scientificName": "Diospyros blancoi",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Documented traditional use",
+        "medicinalUses": "Philippine research records traditional leaf use for several conditions, including colds, diarrhea, hypertension, stomachache, and eczema. Listing these uses does not prove effectiveness for any of them.",
+        "regionFound": "Philippine fruit tree documented in medicinal-plant research.",
+        "imageUrl": "/images/herbs/mabolo.jpeg",
+        "imageCreator": "Beah Vega",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/218944920",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:36:01.769Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:36:01.771Z"
+      },
+      "protectedPublicValuesSha256": "9d8cf5482744d2457a4fdab812287309420433c48f9c05830b78680ea83c0149",
+      "existingPublicSources": [
+        {
+          "id": 121,
+          "herbId": "builtin-mabolo",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:36:02.308Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Preparation evidence still unresolved: available leaf-extract studies use laboratory solvents or animals, not a validated human home preparation",
+        "Preparation source is descriptive or safety-limited; no independently validated human treatment recipe or dose is added"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-mangosteen",
+      "localName": "Mangosteen",
+      "scientificName": "Garcinia mangostana",
+      "descriptionClass": "REPORTED_TRADITIONAL_USE_NOT_VALIDATED",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "The record concerns leaves, not commercial rind supplements or the edible fruit. No medicinal preparation or dose is established.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Documented traditional preparation: the Cavite survey records an oral Garcinia mangostana leaf decoction for fever, including reported dengue use. This is not proof of effectiveness or a dengue treatment recommendation. No leaf quantity, water ratio or boiling duration is supplied. Fruit-rind supplements are not interchangeable.",
+        "warnings": "This record concerns leaves, not fruit-rind supplements. The cited survey reports traditional use; it does not establish effectiveness or a safe treatment dose. Suspected dengue requires medical assessment; do not delay care to try this preparation. Seek immediate medical care for severe abdominal pain, persistent vomiting, bleeding or difficulty breathing."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "cavite-preparations-2021",
+          "herbId": "builtin-mangosteen",
+          "title": "The practice of using medicinal plants by local herbalists in Cavite, Philippines",
+          "publisher": "Indian Journal of Traditional Knowledge; Caunca and Balinado (2021)",
+          "url": "https://nopr.niscpr.res.in/bitstream/123456789/57216/3/IJTK%2020%282%29%20335-343.pdf",
+          "citation": "Rechecked 2026-10-06: publisher PDF bytes match the retained original. Methods and visually inspected Table 2 rows 17 (printed page 337) and 50 (page 339) report Langka leaf crushing/external and Mangosteen leaf decoction/internal for reported dengue fever or fever. This is an interview survey, not a clinical trial or validated preparation/dose. The source prints Garcinia x mangostana; no name or plant part is silently substituted.",
+          "supports": [
+            "preparationMethod",
+            "warnings"
+          ],
+          "accessedAt": "2026-10-06T00:00:00.000Z"
+        },
+        {
+          "sourceKey": "who-dengue-2025",
+          "herbId": "builtin-mangosteen",
+          "title": "Dengue",
+          "publisher": "World Health Organization",
+          "url": "https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue",
+          "citation": "Fact sheet dated 21 August 2025, reviewed 2026-10-06. Early detection and proper medical care lower severe-dengue fatality; severe symptoms require immediate care. Supports medical-assessment and no-delay warnings, not Mangosteen efficacy, preparation or dosage.",
+          "supports": [
+            "warnings"
+          ],
+          "accessedAt": "2026-10-06T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-mangosteen",
+        "localName": "Mangosteen",
+        "scientificName": "Garcinia mangostana",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Research-stage traditional plant",
+        "medicinalUses": "Philippine research records leaf use for cough and reports laboratory neuroprotective and antioxidant activity. These laboratory findings do not establish a treatment for neurologic disease or cough.",
+        "regionFound": "Cultivated and sold in the Philippines; documented in North Cotabato research.",
+        "imageUrl": "/images/herbs/mangosteen.jpg",
+        "imageCreator": "Greg III Espera",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/20252287",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:36:03.373Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:36:03.374Z"
+      },
+      "protectedPublicValuesSha256": "f5e392c6799d1e1af96490a056aa3e436d4d91ae93aeb412aa7eb3fc662d47cc",
+      "existingPublicSources": [
+        {
+          "id": 122,
+          "herbId": "builtin-mangosteen",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:36:03.924Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Leaf preparation remains unresolved: original use reference concerns fruit hulls; fruit-peel recipes and laboratory leaf tinctures cannot be transferred to this leaf record",
+        "Preparation source is descriptive or safety-limited; no independently validated human treatment recipe or dose is added"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-kamote",
+      "localName": "Kamote",
+      "scientificName": "Ipomoea batatas",
+      "descriptionClass": "FOOD_ONLY_DESCRIPTION",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "Cooked leaves may be food, but no medicinal preparation or treatment dose is established. Do not translate laboratory extract findings into home dosing.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Food preparation only: the La Union study records cooked leaf tops eaten as a vegetable. This documents community practice, not treatment of anemia. No cooking duration or medicinal dose is supplied; laboratory antioxidant results do not create a treatment recipe."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "la-union-preparations",
+          "herbId": "builtin-kamote",
+          "title": "Ethnomedicinal Knowledge of Plants among the Indigenous Peoples of Santol, La Union, Philippines",
+          "publisher": "Electronic Journal of Biology; Michelle B. Ducusin",
+          "url": "https://ejbio.imedpub.com/ethnomedicinal-knowledge-of-plants-among-the-indigenouspeoples-of-santol-la-union-philippines.php?aid=21461",
+          "citation": "External Mayana leaf poultice and cooked kamote tops reviewed; community-use reports, not clinical treatment trials.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-kamote",
+        "localName": "Kamote",
+        "scientificName": "Ipomoea batatas",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Food plant / laboratory research",
+        "medicinalUses": "A Philippine study included kamote leaves and reported antioxidant findings from laboratory analysis. This does not establish that kamote leaves prevent or treat a specific disease.",
+        "regionFound": "Common Philippine food crop; documented in North Cotabato research.",
+        "imageUrl": "/images/herbs/kamote.jpg",
+        "imageCreator": "Annika Lindqvist",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/348185465",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:36:04.979Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:36:04.982Z"
+      },
+      "protectedPublicValuesSha256": "b16187e8e709af21ca2ab949b90810643ede44f2b7098000ed7ba10673eae5b0",
+      "existingPublicSources": [
+        {
+          "id": 123,
+          "herbId": "builtin-kamote",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:36:05.513Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-katakataka",
+      "localName": "Katakataka",
+      "scientificName": "Kalanchoe pinnata",
+      "descriptionClass": "REPORTED_TRADITIONAL_USE_NOT_VALIDATED",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "Do not use the plant for snakebite, suspected malaria, fracture, or serious infection. No safe internal preparation or dose is established.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Documented traditional preparation: the Siquijor TKDL record describes pounded Kalanchoe pinnata leaves as an external poultice for boils. This is a community report, not validated treatment or permission for oral use. Its all-ages frequency claim is not adopted as safe dosing; sterility and safe application duration are not established."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "tkdl-katakataka",
+          "herbId": "builtin-katakataka",
+          "title": "Hanlilika or anlilikga or aritana — Kalanchoe pinnata",
+          "publisher": "Philippine Traditional Knowledge Digital Library on Health",
+          "url": "https://tkdlph.piaem.org/index.php/ct-menu-item-3/ct-menu-item-7/7962-hanlilika-or-anlilikga-or-aritana",
+          "citation": "Search-indexed Siquijor record reviewed; direct retrieval failed. Poultice report only; all-ages frequency claim not adopted.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-katakataka",
+        "localName": "Katakataka",
+        "scientificName": "Kalanchoe pinnata",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Documented traditional use",
+        "medicinalUses": "Philippine research records traditional leaf use for feverish colds, whooping cough, wound healing, and other serious conditions. These records do not establish clinical effectiveness or justify self-treatment of malaria, snakebite, or fractures.",
+        "regionFound": "Commonly grown in Philippine gardens; documented in medicinal-plant research.",
+        "imageUrl": "/images/herbs/katakataka.jpg",
+        "imageCreator": "Greg III Espera",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/9368161",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:36:06.571Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:36:06.573Z"
+      },
+      "protectedPublicValuesSha256": "27648920b41617827c520403a58530a3f98baca30f671bbd64ed37ab58f6f518",
+      "existingPublicSources": [
+        {
+          "id": 124,
+          "herbId": "builtin-katakataka",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:36:07.103Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-aratiles",
+      "localName": "Aratiles",
+      "scientificName": "Muntingia calabura",
+      "descriptionClass": "REPORTED_TRADITIONAL_USE_NOT_VALIDATED",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "No validated preparation or dose is provided. Diarrhea with dehydration, blood, fever, or persistent symptoms requires medical care.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Documented traditional preparation: the Ayta study reports an oral decoction of leaves and shoots for diarrhea or stomachache. No leaf-to-water ratio or boiling time is specified. This is reported practice, not validated treatment or a complete home recipe."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "ayta-preparations-2018",
+          "herbId": "builtin-aratiles",
+          "title": "Medicinal Plants Used by Ayta Communities in Dinalupihan, Bataan, Philippines",
+          "publisher": "Pharmacognosy Journal; Tantengco et al. (2018)",
+          "url": "https://www.phcogj.com/sites/default/files/PharmacognJ-10-5-859_0.pdf",
+          "citation": "Leaf forms and routes reviewed; descriptive interviews, not human safety or efficacy trials.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-aratiles",
+        "localName": "Aratiles",
+        "scientificName": "Muntingia calabura",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Documented traditional use",
+        "medicinalUses": "Philippine research records traditional leaf use for loose bowel movement and reports laboratory antibacterial activity. This does not establish a treatment for bacterial infection or diarrhea.",
+        "regionFound": "Widely familiar Philippine roadside and garden tree; documented in North Cotabato research.",
+        "imageUrl": "/images/herbs/aratiles.jpeg",
+        "imageCreator": "Greg III Espera",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/124664844",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:36:08.168Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:36:08.170Z"
+      },
+      "protectedPublicValuesSha256": "4645eca6d45c921743616f5cf1cdb79dc20a57e755f84e7f13acec2785396614",
+      "existingPublicSources": [
+        {
+          "id": 125,
+          "herbId": "builtin-aratiles",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:36:08.742Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-pandan",
+      "localName": "Pandan",
+      "scientificName": "Pandanus amaryllifolius",
+      "descriptionClass": "FOOD_ONLY_DESCRIPTION",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "Culinary aroma use is not a medicinal dose. No clinically validated treatment preparation is provided; persistent fever needs assessment.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Food preparation only: identified Pandanus amaryllifolius leaves are used to flavour rice and other dishes during cooking, or ground for a culinary extract. This explains ordinary food use, not a medicinal tea recipe. The cited source does not establish a preparation or dose for fever, diabetes or cancer; other Pandanus species must not be substituted."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "nnc-pandan-food",
+          "herbId": "builtin-pandan",
+          "title": "Pandan Leaves' Probable Health Benefits",
+          "publisher": "National Nutrition Council, Republic of the Philippines",
+          "url": "https://nnc.gov.ph/mindanao-region/pandan-leaves-probable-health-benefits/",
+          "citation": "Reviewed 2026-10-05: used only for Pandanus amaryllifolius food flavouring/preparation, not the page's anecdotal medicinal claims. Its broad genus-level edibility sentence is not adopted.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-pandan",
+        "localName": "Pandan",
+        "scientificName": "Pandanus amaryllifolius",
+        "sourceScientificName": null,
+        "cebuanoName": null,
+        "category": "Documented traditional use / food plant",
+        "medicinalUses": "Philippine research records traditional leaf use for fever and reports laboratory antibacterial and anticancer activity. These findings do not establish pandan as a treatment for infection, fever, or cancer.",
+        "regionFound": "Common Philippine culinary and garden plant; documented in North Cotabato research.",
+        "imageUrl": "/images/herbs/pandan.jpeg",
+        "imageCreator": "iNaturalist contributor (CC0)",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/161783715",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:36:09.886Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:36:09.888Z"
+      },
+      "protectedPublicValuesSha256": "1ff511dcc6c6fb7fe5ec4fb5f8c57a3c5120d91e7b0b02ca0c3c417745d0ce60",
+      "existingPublicSources": [
+        {
+          "id": 126,
+          "herbId": "builtin-pandan",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:36:10.412Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "A medicinal preparation and dose still require a separate authoritative source and qualified review; food flavouring is not treatment guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    },
+    {
+      "id": "builtin-makabuhay",
+      "localName": "Makabuhay",
+      "scientificName": "Tinospora crispa",
+      "descriptionClass": "ORAL_PREPARATION_WITHHELD",
+      "originalPublicFields": {
+        "preparationMethod": "No clinically validated home preparation is provided in this entry.",
+        "dosage": "No verified human treatment dose is supplied.",
+        "warnings": "No safe home preparation or dose is established. Do not use it to self-treat malaria, serious infection, fertility concerns, or persistent gastrointestinal symptoms.",
+        "updatedAt": "2026-09-17T02:35:39.970Z"
+      },
+      "proposedPublicFields": {
+        "preparationMethod": "Traditional oral preparation withheld: human case reports linked identified Tinospora crispa ingestion to toxic hepatitis, including aqueous extracts of fresh stems, not only powdered products. No safe home stem preparation or dose is established here. Traditional-use reports cannot resolve that safety gap; this entry does not provide boiling or drinking instructions.",
+        "warnings": "No safe home preparation or dose is established. Do not use it to self-treat malaria, serious infection, fertility concerns, or persistent gastrointestinal symptoms. A human case report documented toxic hepatitis after ingestion of identified Tinospora crispa; this does not determine a safe dose or the frequency of injury."
+      },
+      "sourceAdditions": [
+        {
+          "sourceKey": "tinospora-hepatitis-2014",
+          "herbId": "builtin-makabuhay",
+          "title": "Toxic hepatitis induced by a herbal medicine: Tinospora crispa",
+          "publisher": "Phytomedicine; Langrand et al. (2014)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/24867504/",
+          "citation": "Human case abstract reviewed; material was botanically and chromatographically identified. No safe threshold established.",
+          "supports": [
+            "preparationMethod",
+            "warnings"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        },
+        {
+          "sourceKey": "tinospora-hepatitis-2018",
+          "herbId": "builtin-makabuhay",
+          "title": "Clerodane furanoditerpenoids as the probable cause of toxic hepatitis induced by Tinospora crispa",
+          "publisher": "Scientific Reports; Cachet et al. (2018)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30202067/",
+          "citation": "Reviewed 2026-10-05: human injury followed aqueous extracts of fresh stems, not just powdered tablets. Species identification used a chemical marker. The abstract does not establish a safe preparation, dose or injury frequency. No offending preparation recipe is imported.",
+          "supports": [
+            "preparationMethod"
+          ],
+          "accessedAt": "2026-10-05T00:00:00.000Z"
+        }
+      ],
+      "protectedPublicValues": {
+        "id": "builtin-makabuhay",
+        "localName": "Makabuhay",
+        "scientificName": "Tinospora crispa",
+        "sourceScientificName": "Tinospora rumphii",
+        "cebuanoName": null,
+        "category": "Documented traditional use",
+        "medicinalUses": "Philippine research records traditional stem use for wounds, skin disease, fever, diarrhea, stomachache, and other conditions. These records do not establish clinical effectiveness, and the study's laboratory toxicity assay cannot define a safe human dose.",
+        "regionFound": "Documented in Philippine medicinal-plant research.",
+        "imageUrl": "/images/herbs/makabuhay.jpg",
+        "imageCreator": "Greg III Espera",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/10065485",
+        "imageLicense": "CC BY 4.0",
+        "imageLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "imageModification": "No source-file edits; responsively cropped by the interface.",
+        "isDohApproved": false,
+        "isVerified": true,
+        "provenance": "BUILT_IN",
+        "publicationStatus": "PUBLISHED",
+        "evidenceClass": "DOCUMENTED_TRADITIONAL_USE",
+        "reviewedAt": "2026-09-17T02:36:11.477Z",
+        "reviewedById": null,
+        "sourceSuggestionId": null,
+        "createdAt": "2026-09-17T02:36:11.483Z"
+      },
+      "protectedPublicValuesSha256": "df67e65687fcd7be6ef4b76d297c9fc8fee8d3cf42ee231aefe84d6b89da45f1",
+      "existingPublicSources": [
+        {
+          "id": 127,
+          "herbId": "builtin-makabuhay",
+          "title": "Tinospora crispa (L.) Hook.f. & Thomson",
+          "publisher": "Royal Botanic Gardens, Kew — Plants of the World Online",
+          "url": "https://powo.science.kew.org/taxon/581600-1",
+          "citation": "Confirms Tinospora crispa as the accepted name, Tinospora rumphii as a synonym, Philippine native distribution, and makabuhay as a Tagalog common name.",
+          "supports": [
+            "identity"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:36:12.018Z"
+        },
+        {
+          "id": 128,
+          "herbId": "builtin-makabuhay",
+          "title": "Comparative toxicity, phytochemistry, and use of 53 Philippine medicinal plants",
+          "publisher": "Toxicology Reports; Ateneo de Manila University and University of Southern Mindanao authors",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+          "citation": "Table 1, study scope, methods, and limitations reviewed through Europe PMC full-text XML. Plants were collected in North Cotabato. Traditional-use records and brine-shrimp testing do not establish human clinical efficacy or a safe dose.",
+          "supports": [
+            "evidenceReview",
+            "identity",
+            "localNames",
+            "medicinalUses",
+            "philippineRelevance"
+          ],
+          "publishedAt": null,
+          "accessedAt": "2026-09-17T00:00:00.000Z",
+          "createdAt": "2026-09-17T02:36:12.018Z"
+        }
+      ],
+      "unmappedDifferences": [],
+      "retainedReviewGaps": [
+        "Qualified health-professional review before adding any preparation or dosage guidance",
+        "Independent safety-source review and sentence-level attribution of existing warnings",
+        "Qualified preparation and safety review before offering a treatment recipe; new source does not establish clinical efficacy or safe dosing",
+        "Independent attribution review of the remaining pre-existing warnings"
+      ],
+      "missingPrivateBackupFields": [
+        "embedding"
+      ]
+    }
+  ],
+  "writesPerformed": 0,
+  "credentialsRecorded": false,
+  "publicationAllowed": false,
+  "applyAllowed": false,
+  "remainingGates": [
+    "Broader independent content/safety review; the Mangosteen warning mapping and two source transport gaps are resolved locally, not blanket clinical clearance.",
+    "Fresh complete database/embedding/source recovery backup outside Git and a separately reviewed executable plan.",
+    "Regenerate actual accepted-field embeddings; fail closed if provider generation fails.",
+    "Separately authorized guarded application by an active reviewer; no bootstrap/importer substitute.",
+    "Post-application live Library, sources, image preservation, cache refresh and Dr. Ai retrieval checks.",
+    "Separate fifty-candidate method/taxonomy/media/staging/publication gates."
+  ],
+  "limitations": [
+    "Public API omits embedding; no embedding value is invented and this review is deliberately rejected by the executable plan schema.",
+    "Point-in-time recorded-name duplicate comparison is not transaction race prevention or exhaustive taxonomy reconciliation.",
+    "The targeted source-resolution follow-up reread UST, the Cavite methods/table and WHO guidance. This is not fresh independent verification of every other citation."
+  ],
+  "sourceRechecks": {
+    "checkedAt": "2026-10-06T01:24:34Z",
+    "scope": "TARGETED_PRIMARY_SOURCE_RECHECK_NOT_ALL_CITATIONS",
+    "observations": [
+      {
+        "sourceKey": "ema-centella-2022",
+        "url": "https://www.ema.europa.eu/en/documents/herbal-monograph/european-union-herbal-monograph-centella-asiatica-l-urb-herba-revision-1_en.pdf",
+        "result": "RETRIEVED",
+        "reviewedSections": "Sections 2, 4.1-4.6, pages 4-6",
+        "finding": "The proposal retains the pharmacopoeial-quality external-use restriction and adult posology. Traditional-use classification is not well-established clinical efficacy or permission to substitute garden plants."
+      },
+      {
+        "sourceKey": "tinospora-hepatitis-2018",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/30202067/",
+        "result": "RETRIEVED",
+        "reviewedSections": "Title and abstract",
+        "finding": "The abstract describes toxic hepatitis following fresh-stem aqueous extracts with chemical species identification. Retain the oral-preparation hold; this case does not establish a safe dose or incidence."
+      },
+      {
+        "sourceKey": "tramil-anonas",
+        "url": "https://www.tramil.net/en/plant/annona-reticulata",
+        "result": "RETRIEVED",
+        "reviewedSections": "Preparation, recommendations and toxicity",
+        "finding": "The page records a leaf decoction, prolonged-use neurological concerns and pregnancy, breastfeeding and child exclusions. Its English salt-unit inconsistency remains unresolved; no recipe or corrected unit is imported."
+      },
+      {
+        "sourceKey": "ust-oregano",
+        "url": "https://www.ust.edu.ph/ust-manila-plant-databse/oregano/",
+        "result": "CURRENT_WEB_TOOL_RETRIEVAL_FAILED",
+        "finding": "The tool returned Internal Error. This is not proof that the source is offline or that the prior source review is false; independent fresh verification remains pending."
+      },
+      {
+        "sourceKey": "cavite-preparations-2021",
+        "url": "https://nopr.niscpr.res.in/bitstream/123456789/57216/3/IJTK%2020%282%29%20335-343.pdf",
+        "result": "CURRENT_WEB_TOOL_RETRIEVAL_FAILED",
+        "finding": "The tool returned Internal Error. Do not label this a broken public link or fresh full-text verification."
+      },
+      {
+        "sourceKey": "who-dengue-follow-up-not-adopted",
+        "url": "https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue",
+        "result": "RETRIEVED_FOLLOW_UP_LEAD_NOT_IMPORTED",
+        "finding": "Official dengue guidance is available as a candidate safety citation. No source or warning mapping was changed in the canonical batch by this read-only review."
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "PREP_REVIEW_UNMAPPED_MANGOSTEEN_WARNING",
+      "type": "EDITORIAL_RELEASE_HOLD",
+      "herbId": "builtin-mangosteen",
+      "finding": "Mangosteen warning support now maps the exact-species interview survey separately from official WHO medical-care guidance. WHO is warning-only support, not preparation, efficacy or dosage evidence.",
+      "nextAction": "Revalidate this changed local batch, then review the fresh full private recovery/embedding plan; not applied live.",
+      "status": "RESOLVED_IN_LOCAL_PROPOSAL"
+    },
+    {
+      "id": "PREP_REVIEW_TARGETED_SOURCE_RETRIEVAL",
+      "type": "FRESH_VERIFICATION_PENDING",
+      "sourceKeys": [
+        "ust-oregano",
+        "cavite-preparations-2021"
+      ],
+      "finding": "Both exact source URLs returned HTTP 200. UST species/juice/infusion text was read; publisher PDF bytes match the retained nine-page PDF whose relevant methods and Table 2 rows were reread/visually inspected. Earlier web-tool failures are retained as history, not current source outages.",
+      "nextAction": "Keep source attribution and limited study scope; broader independent content/safety review still applies.",
+      "status": "RESOLVED_BY_DIRECT_HTTP_AND_SOURCE_REVIEW"
+    },
+    {
+      "id": "LEGACY_APPROVED_SUGGESTION_3",
+      "type": "PRE_EXISTING_DATA_REVIEW_OUTSIDE_UPDATE",
+      "recordType": "SuggestedHerb",
+      "recordId": "3",
+      "finding": "The identity snapshot retains the legacy Approved awdsawd/awds suggestion; no matching published Herb identity appears. This is not a newly created duplicate or a reason to delete the audit record.",
+      "nextAction": "Leave untouched in this preparation update and review legacy moderation history separately."
+    }
+  ],
+  "revision": 2,
+  "revisionHistory": [
+    {
+      "revision": 1,
+      "capturedAt": "2026-10-06T01:23:53.919Z",
+      "reviewSha256": "2cc6b41f138d9405ed813da7c2d1f75ae858e7d6291f1e62b75a7bce4cb59ef8",
+      "batchSha256": "3f7f630ae39162076edd3ba69ec2913c5684bbc4372c8adb5ae9480782041169",
+      "summary": {
+        "methodUpdates": 20,
+        "dosageUpdates": 1,
+        "warningUpdates": 3,
+        "sourceAdditions": 21,
+        "unmappedDifferencesRetained": 1,
+        "classes": {
+          "REPORTED_TRADITIONAL_USE_NOT_VALIDATED": 12,
+          "PHARMACOPOEIAL_EXTERNAL_TRADITIONAL_USE": 1,
+          "FOOD_ONLY_DESCRIPTION": 5,
+          "ORAL_PREPARATION_WITHHELD": 2
+        }
+      },
+      "findings": [
+        {
+          "id": "PREP_REVIEW_UNMAPPED_MANGOSTEEN_WARNING",
+          "type": "EDITORIAL_RELEASE_HOLD",
+          "herbId": "builtin-mangosteen",
+          "finding": "The proposed stronger warning differs from live but has no warning source mapping. The updater correctly excludes it; do not imply the proposed warning would be deployed.",
+          "nextAction": "Independently review and map support for each changed warning claim, or explicitly approve preservation of the existing warning. Rebuild and test a fresh reviewed plan afterward."
+        },
+        {
+          "id": "PREP_REVIEW_TARGETED_SOURCE_RETRIEVAL",
+          "type": "FRESH_VERIFICATION_PENDING",
+          "sourceKeys": [
+            "ust-oregano",
+            "cavite-preparations-2021"
+          ],
+          "finding": "Two targeted source reads could not be completed with the web tool this turn; source outage is not established.",
+          "nextAction": "Reopen the exact primary pages or independently verify previously retained original source bytes before editorial clearance."
+        },
+        {
+          "id": "LEGACY_APPROVED_SUGGESTION_3",
+          "type": "PRE_EXISTING_DATA_REVIEW_OUTSIDE_UPDATE",
+          "recordType": "SuggestedHerb",
+          "recordId": "3",
+          "finding": "The identity snapshot retains the legacy Approved awdsawd/awds suggestion; no matching published Herb identity appears. This is not a newly created duplicate or a reason to delete the audit record.",
+          "nextAction": "Leave untouched in this preparation update and review legacy moderation history separately."
+        }
+      ]
+    }
+  ],
+  "sourceResolution": {
+    "checkedAt": "2026-10-06T01:45:00.401Z",
+    "evidencePath": "Docs/research/HERB_PREPARATION_SOURCE_RESOLUTION_2026-10-06.json",
+    "directHttpSources": [
+      {
+        "sourceKey": "ust-oregano",
+        "url": "https://www.ust.edu.ph/ust-manila-plant-databse/oregano/",
+        "finalUrl": "https://www.ust.edu.ph/ust-manila-plant-databse/oregano/",
+        "httpStatus": 200,
+        "contentType": "text/html; charset=UTF-8",
+        "byteLength": 243830,
+        "sha256": "cdd90ddf8a87b9bc9cdd6bc1fce0230b7efd7da240f0beaa69a867c19457750b",
+        "capturedAt": "2026-10-06T01:43:52.911Z"
+      },
+      {
+        "sourceKey": "cavite-preparations-2021",
+        "url": "https://nopr.niscpr.res.in/bitstream/123456789/57216/3/IJTK%2020%282%29%20335-343.pdf",
+        "finalUrl": "https://nopr.niscpr.res.in/bitstream/123456789/57216/3/IJTK%2020%282%29%20335-343.pdf",
+        "httpStatus": 200,
+        "contentType": "application/pdf",
+        "byteLength": 538761,
+        "sha256": "4d3872b8d67196da53882d22fd8a799a53d9b201068543e22981fdc74beeb511",
+        "capturedAt": "2026-10-06T01:43:54.492Z"
+      }
+    ],
+    "caviteRetainedOriginalMatchesDownloadedBytes": true,
+    "cavitePdfPages": 9,
+    "caviteVisuallyReviewedPrintedPages": [
+      337,
+      339
+    ],
+    "whoWarningSource": {
+      "sourceKey": "who-dengue-2025",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue",
+      "reviewedSections": [
+        "Key facts",
+        "Symptoms",
+        "Diagnostics and treatment"
+      ],
+      "supports": [
+        "warnings"
+      ],
+      "clinicalHerbEfficacyEstablished": false
+    },
+    "liveContentChanged": false
+  }
+}

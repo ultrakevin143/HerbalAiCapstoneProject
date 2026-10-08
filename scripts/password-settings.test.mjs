@@ -310,6 +310,26 @@ test('setup sends no user-selected target and retains the existing session', asy
   assert.equal(instance.closed(), 0);
 });
 
+for (const [status, message] of [
+  [503, 'We could not send your password link. Please try again later.'],
+  [429, 'You can request one password link per hour. Check your email and Spam folder for the existing link, or wait before requesting another.'],
+]) {
+  test(`authenticated link HTTP ${status} renders an action-local alert without success or logout`, async () => {
+    const instance = fixture({}, async () => { throw { response: { status, data: { message } } }; });
+    await instance.link();
+    const feedback = find(instance.render(), element => element.props.id === 'password-link-feedback');
+    assert.equal(feedback.props.role, 'alert');
+    assert.equal(feedback.props.children, message);
+    assert.equal(instance.state[6], null);
+    assert.equal(instance.state[4], null);
+    assert.equal(instance.lock.current, false);
+    assert.deepEqual(instance.events, []);
+    assert.equal(instance.closed(), 0);
+    assert.equal(instance.state[0], 'TEST-original-password');
+    assert.doesNotMatch(renderToStaticMarkup(instance.render()), /Password link requested\./);
+  });
+}
+
 test('setup fallback requests checking inbox without claiming mail delivery was proven', async () => {
   const instance = fixture({}, async () => ({ data: {} }));
   await instance.link();

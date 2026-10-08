@@ -58,3 +58,52 @@ Next requires exact selective commit/push authorization for only codex/mvp-accep
 ## Subsequent CI-only authorization
 
 The user approved the exact forty-nine-file commit/push to codex/mvp-acceptance-ci. Immediately before execution, local HEAD and remote main, codex/readability-accessibility and codex/mvp-acceptance-ci were rechecked at e51942c35c573438c09a91104a40d4951f36fa50, and the index was empty. Production remains outside this authorization. Actual push and CI results must be recorded separately; approval itself is not a test pass.
+
+## Executed CI-only publication and acceptance
+
+Published commit e6b774a39d56d6116da26350f87c4483e92d8cd3, "Fix MVP recovery boundaries and complete CI regression coverage", only to codex/mvp-acceptance-ci. The commit contains exactly the forty-nine approved paths. SHA-256 comparisons confirmed all eight excluded dirty documents unchanged; none were committed. No force push, main update, production-branch update, provider setting change or live write occurred.
+
+Before publication, a fresh local backend run passed 759 cases in sixty non-DB files with explicit dummy loopback database settings and external mail suppressed. Backend lint/typecheck/build and frontend lint/typecheck passed. Prior fresh native run passed 312 cases. Local database exclusions were NOT copied to CI.
+
+Actual GitHub run: [37113901921](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37113901921), push-triggered for the exact e6b774a commit. Both jobs completed successfully. Downloaded job logs were examined in memory; raw logs were not added to the repository.
+
+| Executed CI item | Observed outcome |
+| --- | --- |
+| Backend job 111176874679 | SUCCESS; lint and source typecheck passed; isolated PostgreSQL migrations successfully applied. |
+| Full backend Vitest | 872 passed in 77 files; zero failed. Includes every one of the seventeen previously locally excluded database suites. |
+| Frontend job 111176874643 | SUCCESS; lint/typecheck, all eleven native commands covering twelve scripts, dependency installation and Next build passed. |
+| Native CI cases | 312 passed; zero failed/skipped. Deployment flow uses shadowed commands, not a real deployment. |
+| Frontend CI build | Compiled successfully; 22/22 static pages generated. Its loopback API build setting is a CI fixture, not a deployable production artifact. |
+| Combined CI cases | 1184 passed: 872 backend + 312 native. Do not add local/baseline reruns to this total. |
+| Vercel commit status | SUCCESS preview for e6b774a; [preview deployment status](https://vercel.com/kevinmercado987-gmailcoms-projects/herbal-ai-staging/ZsqejuyyY8dSZg9aTyDEmM4Ab1qi). Not a production promotion or authenticated runtime acceptance. |
+
+### Previously excluded database suites now observed passing in CI
+
+| File under herbalaibackend/tests | Cases passed |
+| --- | --- |
+| account-recovery.test.ts | 9 |
+| auth.test.ts | 4 |
+| chat.test.ts | 4 |
+| audited-mutations.test.ts | 5 |
+| herb-governance.test.ts | 2 |
+| knowledge-authenticated-flow.test.ts | 2 |
+| forum-moderation-flow.test.ts | 5 |
+| herb-catalog-remediation.test.ts | 4 |
+| profile.test.ts | 4 |
+| review-publication-transaction.test.ts | 1 |
+| herbs.test.ts | 8 |
+| message-authenticated-flow.test.ts | 10 |
+| password-settings-database.test.ts | 6 |
+| suggestion-validation.test.ts | 13 |
+| system-features.test.ts | 21 |
+| session-rotation.test.ts | 2 |
+| herb-comments-database.test.ts | 13 |
+| Total | 113 |
+
+The thirteen Library database cases include actual SQL reaction serialization/count persistence, publication/parent locking, moderation audit atomicity and reply retention. The earlier local-unexecuted status is historical; this isolated CI gate is now passed for e6b774a. It does not prove every production/network/device scenario.
+
+### Production preservation and remaining work
+
+After the push and CI completion, remote main and codex/readability-accessibility still returned e51942c35c573438c09a91104a40d4951f36fa50. Refreshed Vercel overview still shows production Ready on e51942c and the production-watched branch unchanged. Railway still shows the existing "Harden sign-in signup and verification feedback" deployment ACTIVE / successful and its service Online. Safe frontend and backend health reads both returned HTTP 200. These validate the unchanged release's availability, not the unpublished runtime repairs.
+
+At that CI-only checkpoint, production approval and live acceptance remained pending. They are superseded by the subsequent approved production release recorded in PRODUCTION_MVP_RELEASE_2026-10-03.md: main/deployment refs now match e6b774a, both resulting CI runs succeeded, both providers deployed successfully and bounded authenticated acceptance progressed. That report distinguishes observed passes from remaining manual/live gates. Physical-device reports remain self-reports; participant UAT remains deferred, not invented. These outcome appendices are local follow-ups, not another automatic push; include them in a later reviewed documentation update.

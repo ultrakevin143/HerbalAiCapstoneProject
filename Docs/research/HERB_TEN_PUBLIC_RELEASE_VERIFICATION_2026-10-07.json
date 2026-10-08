@@ -1,0 +1,134 @@
+{
+  "status": "TEN_NEW_HERBS_LIVE_VERIFIED",
+  "checkedAt": "2026-10-07T03:07:47.925Z",
+  "target": {
+    "host": "ep-icy-sound-aqfe958d.c-8.us-east-1.aws.neon.tech",
+    "database": "neondb"
+  },
+  "publicHerbs": 48,
+  "newPublished": 10,
+  "newDrafts": 40,
+  "newPreparationDescriptions": 50,
+  "newCovers": 41,
+  "publicBlankPreparations": [],
+  "publicCatalogHttpStatus": 200,
+  "publicCatalogCount": 48,
+  "heldDraftHttpStatus": 404,
+  "audits": [
+    {
+      "action": "INDEX_EDUCATIONAL_HERB",
+      "count": 10
+    },
+    {
+      "action": "PUBLISH_EDUCATIONAL_HERB",
+      "count": 10
+    },
+    {
+      "action": "STAGE_HERB_DRAFT",
+      "count": 10
+    }
+  ],
+  "details": [
+    {
+      "id": "builtin-expansion-03-pardo-098",
+      "name": "Duhat",
+      "httpStatus": 200,
+      "sourceCount": 4,
+      "preparationPreserved": true,
+      "comparisonPassed": true,
+      "vectorDimensions": 768
+    },
+    {
+      "id": "builtin-expansion-03-pardo-088",
+      "name": "Sampalok",
+      "httpStatus": 200,
+      "sourceCount": 4,
+      "preparationPreserved": true,
+      "comparisonPassed": true,
+      "vectorDimensions": 768
+    },
+    {
+      "id": "builtin-expansion-03-pardo-005",
+      "name": "Atis",
+      "httpStatus": 200,
+      "sourceCount": 5,
+      "preparationPreserved": true,
+      "comparisonPassed": true,
+      "vectorDimensions": 768
+    },
+    {
+      "id": "builtin-expansion-03-pardo-094",
+      "name": "Talisay",
+      "httpStatus": 200,
+      "sourceCount": 7,
+      "preparationPreserved": true,
+      "comparisonPassed": true,
+      "vectorDimensions": 768
+    },
+    {
+      "id": "builtin-expansion-03-pardo-077",
+      "name": "Butterfly pea",
+      "httpStatus": 200,
+      "sourceCount": 3,
+      "preparationPreserved": true,
+      "comparisonPassed": true,
+      "vectorDimensions": 768
+    },
+    {
+      "id": "builtin-expansion-03-pardo-069",
+      "name": "Mangga",
+      "httpStatus": 200,
+      "sourceCount": 3,
+      "preparationPreserved": true,
+      "comparisonPassed": true,
+      "vectorDimensions": 768
+    },
+    {
+      "id": "builtin-expansion-03-pardo-063",
+      "name": "Santol",
+      "httpStatus": 200,
+      "sourceCount": 4,
+      "preparationPreserved": true,
+      "comparisonPassed": true,
+      "vectorDimensions": 768
+    },
+    {
+      "id": "builtin-expansion-03-pardo-104",
+      "name": "Papaya",
+      "httpStatus": 200,
+      "sourceCount": 4,
+      "preparationPreserved": true,
+      "comparisonPassed": true,
+      "vectorDimensions": 768
+    },
+    {
+      "id": "builtin-expansion-03-pardo-102",
+      "name": "Granada",
+      "httpStatus": 200,
+      "sourceCount": 4,
+      "preparationPreserved": true,
+      "comparisonPassed": true,
+      "vectorDimensions": 768
+    },
+    {
+      "id": "builtin-expansion-03-pardo-137",
+      "name": "Chico",
+      "httpStatus": 200,
+      "sourceCount": 3,
+      "preparationPreserved": true,
+      "comparisonPassed": true,
+      "vectorDimensions": 768
+    }
+  ],
+  "browserObserved": {
+    "authenticated": false,
+    "search": "Duhat",
+    "found": 1,
+    "preparationAndDoseBoundaryVisible": true,
+    "screenshot": "herbalaibackend/tmp/duhat-live-preparation-2026-10-07.jpg",
+    "liveAuthenticatedChatTest": "PENDING_NO_CONNECTED_SIGNED_IN_SESSION"
+  },
+  "clinicalValidation": false,
+  "medicinalInstructionsCleared": false,
+  "failures": []
+}

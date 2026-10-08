@@ -1,0 +1,23 @@
+# Preparation release execution plan — 6 October 2026
+
+## Scope and current evidence
+
+Update only the twenty existing generic-preparation records using the reviewed canonical batch `7bdf4d2c808e9b5d39df37870444f0c68799041a13d7f127be6ce218f02dec32`. Proposed changes: twenty bounded preparation descriptions, one sourced dosage change, four sourced warning changes and 22 source additions. This is not approval of twenty safe medicinal recipes. Do not stage or publish the separate fifty-candidate expansion.
+
+The complete original recovery files and both strict review plans are saved outside Git. Twenty genuine `gemini-embedding-2` vectors are saved outside Git with exact current-text digests. The fresh 10:24:08 AM database capture was validated at 10:27:45 AM Manila: all original digests unchanged, 38 public identities matched and the exact administrator was active. This freshness observation expires; never advance the capture timestamp without another database read.
+
+## Ordered work
+
+1. **Completed — verify runtime connection.** The intended Neon connection was read privately and its existing role/password matched the existing local credential through an ephemeral one-way comparison. The actual provider host/database, not the unrelated local host, were used in process memory only. No credential or environment file was saved; TLS verification remained enabled.
+2. **Completed — current read-only preflight.** The guarded helper took a new consistent snapshot at `2026-10-06T02:44:37.316Z`. All 38 public identities and all twenty complete original digests matched; the exact existing reviewer was an active, unbanned administrator. The new exclusive recovery plan is outside Git.
+3. **Completed — final review.** All proposed changes/source additions matched the earlier review, the current batch digest matched, and all twenty genuine vectors matched their exact current text. The saved plan round trip passed. Backend build and 182 focused tests passed before application; no fake vectors or database-test results were substituted.
+4. **Completed — bounded atomic update.** The existing guarded serializable updater committed twenty existing-record updates, 22 source additions and twenty audit records. Full-original compare-and-swap, active reviewer, target, freshness and vector guards were retained. No bootstrap, new herb publication, identity/media edit or transaction replay occurred.
+5. **Completed — reconcile persistence.** A second read-only consistent transaction verified every changed field, protected field, original source, added source and actual vector. All twenty audit records matched; the catalog and all-state count stayed at 38, with no exact normalized scientific-name duplicate group. The initial checker's timestamp interpretation was corrected after confirming the column type and database timezone; the database transaction was not rerun.
+6. **Completed with a live follow-up — verify live behavior.** All twenty public details/list preparations, citations and image URLs passed. The ordinary catalog also refreshed without restart and contains 38 nonblank preparation fields with no former generic baseline. Eight actual Dr. Ai checks covered local/scientific names, withheld oral recipes, food-only scope, dengue precautions, external pharmacopoeial scope and pediatric withholding. One Centella preparation answer incorrectly omitted recorded frequency/duration; the contrasting explicit-frequency answer confirmed those data exist. The focused context repair is local only, with 216 combined regressions passing; the live code defect remains pending deployment/retest.
+7. **Completed — compile outcome.** Actual receipts, the verifier correction, live outcomes, screenshots, reproduced AI issue and the next selective release are recorded in `Docs/testing/HERB_PREPARATION_LIVE_RELEASE_2026-10-06.md`. Backups/real vectors remain outside Git. Unrelated changes were preserved; no commit, push, provider-variable edit or app deployment occurred. The one-line code repair and tests must be separately reviewed before publication.
+
+## Stop conditions
+
+Wrong/unconfirmed target; unavailable matching credentials; stale plan; inactive reviewer; changed original row/source; unmapped changed field; altered vector input; missing/invalid vector; SQL error; ambiguous commit; or live post-check mismatch. Obtaining a backup or checking reviewer role alone is not clinical review approval.
+
+At plan creation, no live record has been changed. Full local PostgreSQL suites cannot run because the isolated runtime is unavailable; earlier real SQL CI evidence is historical and must not be relabeled a new run. Current local source/tests and all untracked release research remain uncommitted.

@@ -1,0 +1,41 @@
+{
+  "reviewedAt": "2026-10-05",
+  "status": "READ_ONLY_PROVIDER_TARGET_EVIDENCE_NOT_IMPORTABLE",
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "writesPerformed": 0,
+  "railway": {
+    "projectId": "49a41584-6098-4e37-8431-1d749a52947f",
+    "environmentId": "5b714e12-a15a-4441-b976-835f3a1e5f31",
+    "environmentName": "staging",
+    "serviceId": "b40dce3f-1530-47a5-a4c3-d281b0907a71",
+    "serviceName": "HerbalAiCapstoneProject",
+    "publicBackendHost": "herbalaicapstoneproject-staging.up.railway.app",
+    "configuredDatabaseHost": "ep-icy-sound-aqfe958d-pooler.c-8.us-east-1.aws.neon.tech",
+    "configuredDatabaseName": "neondb",
+    "credentialsRecorded": false,
+    "variableChanged": false,
+    "variableValueRehidden": true
+  },
+  "neon": {
+    "projectId": "falling-block-62836604",
+    "branchId": "br-still-waterfall-aqtagztm",
+    "branchName": "pre-railway-deploy-2026-09-20",
+    "computeEndpointId": "ep-icy-sound-aqfe958d",
+    "database": "neondb",
+    "queryMode": "SELECT_ONLY",
+    "capturedAt": "2026-10-05T05:10:31.250447+00:00",
+    "herbRows": 38,
+    "publishedRows": 38,
+    "suggestionRows": 17,
+    "identityFingerprint": "1b28accaa3735ee9f233c40498d3563d"
+  },
+  "configuredTargetMatchesNeonBranch": true,
+  "limitations": [
+    "Read-only configuration and branch-endpoint comparison. No credential was copied into Git, a local environment or this report.",
+    "The count query is not a fresh all-state row-level duplicate comparison and does not test concurrent staging or rollback.",
+    "The existing local ep-purple-frog connection is a different endpoint and remains unsuitable for this release.",
+    "The Railway project description says isolated and not connected to Neon; that description contradicts the actual configured database host and must not be used as target evidence.",
+    "Existing first-ten plans and historical snapshots are unchanged; regenerate any executable candidate manifest only after its full content and SQL-safety gates pass."
+  ]
+}

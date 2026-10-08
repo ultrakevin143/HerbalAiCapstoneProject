@@ -62,7 +62,9 @@ beforeEach(() => {
 describe('Password settings service with real bcrypt', () => {
   it('verifies the current password, hashes the replacement and invalidates only after commit', async () => {
     await expect(changePassword(user.id, 4, oldPassword, newPassword)).resolves.toHaveProperty('message');
-    const [id, expectedHash, version, replacement] = mocks.replacePassword.mock.calls[0];
+    const write = mocks.replacePassword.mock.calls[0];
+    expect(write).toBeDefined();
+    const [id, expectedHash, version, replacement] = write!;
     expect([id, expectedHash, version]).toEqual([user.id, passwordHash, 4]);
     expect(replacement).not.toBe(newPassword);
     expect(await comparePassword(newPassword, replacement)).toBe(true);
@@ -110,11 +112,36 @@ describe('Password settings service with real bcrypt', () => {
     await requestPasswordSetup(user.id);
     expect(mocks.findUserById).toHaveBeenCalledWith(user.id);
     expect(mocks.sendMail).toHaveBeenCalledWith(expect.objectContaining({ to: user.email }));
-    const [, requestedAt, cooldownStart] = mocks.claimPasswordResetRequest.mock.calls[0];
+    const claim = mocks.claimPasswordResetRequest.mock.calls[0];
+    expect(claim).toBeDefined();
+    const [, requestedAt, cooldownStart] = claim!;
     expect(requestedAt.getTime() - cooldownStart.getTime()).toBe(3_600_000);
     mocks.claimPasswordResetRequest.mockResolvedValueOnce(false);
-    await requestPasswordSetup(user.id);
+    await expect(requestPasswordSetup(user.id)).rejects.toMatchObject({ status: 429 });
     expect(mocks.sendMail).toHaveBeenCalledOnce();
+  });
+
+  it.each([
+    new Error('Gmail authorization failed (HTTP 400).'),
+    new Error('TEST provider timeout'),
+    { suppressed: true },
+  ])('does not claim an authenticated password link was sent after delivery failure (%s)', async delivery => {
+    if (delivery instanceof Error) mocks.sendMail.mockRejectedValueOnce(delivery);
+    else mocks.sendMail.mockResolvedValueOnce(delivery);
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      await expect(requestPasswordSetup(user.id)).rejects.toMatchObject({
+        status: 503,
+        message: 'We could not send your password link. Please try again later.',
+      });
+      expect(mocks.revokeToken).toHaveBeenCalledWith('test-reset-record');
+      expect(mocks.releasePasswordResetRequest).toHaveBeenCalledOnce();
+      expect(mocks.revokeOtherUserTokensByType).not.toHaveBeenCalled();
+      expect(mocks.replacePassword).not.toHaveBeenCalled();
+      expect(mocks.notifySessionInvalidated).not.toHaveBeenCalled();
+    } finally {
+      log.mockRestore();
+    }
   });
 
   it.each([null, { ...user, isBanned: true }])('does not email absent or banned accounts (%s)', async account => {
@@ -134,7 +161,9 @@ describe('Password settings service with real bcrypt', () => {
     mocks.findActiveTokenByValue.mockResolvedValueOnce({ id: 'reset-record', userId: user.id, user });
     await expect(resetPassword('TEST-reset-link', newPassword)).resolves.toHaveProperty('message');
     expect(mocks.redeemAccountToken).toHaveBeenCalledWith(expect.objectContaining({ id: 'reset-record', userId: user.id, type: 'PASSWORD_RESET' }));
-    expect(await comparePassword(newPassword, mocks.redeemAccountToken.mock.calls[0][0].passwordHash)).toBe(true);
+    const redemption = mocks.redeemAccountToken.mock.calls[0];
+    expect(redemption).toBeDefined();
+    expect(await comparePassword(newPassword, redemption![0].passwordHash)).toBe(true);
   });
 
   it('rejects missing or concurrently consumed reset links', async () => {
@@ -200,6 +229,32 @@ describe('Protected HTTP endpoints and request validation', () => {
     const response = await authenticated('password-setup').send({});
     expect(response.status).toBe(200);
     expect(response.body.message).toContain('Spam');
+    expect(response.body.message).not.toContain('If an account');
+  });
+
+  it('returns HTTP 503 for failed authenticated delivery without provider details or cookie changes', async () => {
+    mocks.sendMail.mockRejectedValueOnce(new Error('Gmail authorization failed (HTTP 400).'));
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      const response = await authenticated('password-setup').send({});
+      expect(response.status).toBe(503);
+      expect(response.body.message).toBe('We could not send your password link. Please try again later.');
+      expect(response.headers['set-cookie']).toBeUndefined();
+      expect(mocks.replacePassword).not.toHaveBeenCalled();
+      expect(mocks.notifySessionInvalidated).not.toHaveBeenCalled();
+    } finally {
+      log.mockRestore();
+    }
+  });
+
+  it('returns HTTP 429 for an authenticated cooldown without sending a replacement link', async () => {
+    mocks.claimPasswordResetRequest.mockResolvedValueOnce(false);
+    const response = await authenticated('password-setup').send({});
+    expect(response.status).toBe(429);
+    expect(response.body.message).toContain('one password link per hour');
+    expect(mocks.createToken).not.toHaveBeenCalled();
+    expect(mocks.sendMail).not.toHaveBeenCalled();
+    expect(mocks.revokeToken).not.toHaveBeenCalled();
   });
 
   it('limits the combined settings endpoints per authenticated account, not shared IP', async () => {

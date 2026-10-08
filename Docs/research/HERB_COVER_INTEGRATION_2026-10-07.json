@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "status": "MEDIA_FOLLOW_UP_NOT_IMPORTABLE",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "evidenceFile": "HERB_COVER_INTEGRATION_2026-10-07.json",
+  "mediaReviewFile": "HERB_REPLACEMENT_MEDIA_REVIEW_2026-10-07.json",
+  "historicalAuditFile": "HERB_FIFTY_LIVE_RELEASE_AUDIT_2026-10-06.json",
+  "integratedAt": "2026-10-07T00:29:28Z",
+  "writeAllowed": false,
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "productionWritesPerformed": false,
+  "selections": [
+    {
+      "candidateId": "research-pardo-030",
+      "photoId": 39272553,
+      "assetId": "b0bbf0b928535fc6a4ea3b19bd13d787",
+      "cloudinaryUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791331844/abutilon_indicum_cc0_39272553_m6ztvo.jpg",
+      "sha256": "01bcbc4bdd507e7bbe3f2038cc4abdfcb9762076c2e2cd3ed79859f23107da5d"
+    },
+    {
+      "candidateId": "research-pardo-138",
+      "photoId": 338480147,
+      "assetId": "3cc848ddc7bda9fc13d8080b14a41e85",
+      "cloudinaryUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/kabiki_mimusops_elengi_cc0_338480147_a2wtdy.jpg",
+      "sha256": "66e0ce14c49d5a187292d3332e01b6c100bfd06d7270e94abe0e50169c6ff525"
+    }
+  ],
+  "limitations": [
+    "Links the two checked upload receipts to held drafts; neither historical audit nor upload receipt is rewritten.",
+    "No fresh remote fetch, botanical clearance, medical safety approval, database import or publication is implied."
+  ]
+}

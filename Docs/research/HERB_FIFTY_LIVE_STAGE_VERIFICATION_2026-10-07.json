@@ -1,0 +1,26 @@
+{
+  "status": "LIVE_DRAFT_STAGE_VERIFIED",
+  "checkedAt": "2026-10-07T02:43:55.327Z",
+  "target": {
+    "host": "ep-icy-sound-aqfe958d.c-8.us-east-1.aws.neon.tech",
+    "database": "neondb"
+  },
+  "planSha256": "bd47dbc24515ad9b052e544a774fe063b05218b29bb183985241f772f8a91f64",
+  "drafts": 50,
+  "sources": 193,
+  "stagingAudits": 50,
+  "preparationDescriptions": 50,
+  "selectedCovers": 41,
+  "unexpectedlyPublished": 0,
+  "unexpectedlyEmbedded": 0,
+  "existingHerbsRetained": 38,
+  "publicCatalogHttpStatus": 200,
+  "publicCatalogCount": 38,
+  "draftPublicDetailHttpStatus": 404,
+  "failures": [],
+  "stagedAt": "2026-10-07T02:41:32.762Z",
+  "existingRecordsUpdated": 0,
+  "publicationAllowed": false,
+  "embeddingsGenerated": 0,
+  "verificationScope": "Compared every proposed herb field, source text/support tags and staging audit against the reviewed plan; checked retained identities and public API isolation."
+}

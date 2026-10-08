@@ -72,3 +72,11 @@ The connected inventory showed only Mercado Chrome with unrelated personal tabs 
 ## Live-focused release follow-up
 
 The user subsequently requested fixing and checking MVP issues live. The reviewed production batch is now authorized for selective publication. A fresh run again passed all 243 native cases, frontend lint, TypeScript checking and the production build before staging. The earlier local-only status above is the historical audit observation, not a claim that those fixtures tested live delivery. Publish only the reviewed authentication files, their CI regression step and these reports; preserve unrelated dirty evidence. Record actual isolated CI, hosting and live results after they occur, not before.
+
+## Published release and observed live follow-up
+
+The preceding authorized-but-pending status is superseded by release `e51942c35c573438c09a91104a40d4951f36fa50`. Isolated CI `37085413839`, main CI `37085565646` and deployment-branch CI `37085565417` completed successfully. GitHub reported Vercel and Railway success for that exact SHA. Main and the deployment branch were promoted atomically after isolated validation; the seven unrelated dirty evidence reports were not staged.
+
+Live missing-token and one synthetic invalid-token verification checks displayed their recovery messages/forms without a render crash. Sign In and Sign Up rendered correctly. These read/negative checks did not create or verify a real account, send email, or submit a password. The malformed-response defects remain established by the controlled regressions; production was not deliberately made to return malformed payloads.
+
+`LIVE_MVP_ACCEPTANCE_2026-10-03.md` records the subsequent actual contributor/admin suggestion revision/resubmission/rejection cycle, matching audit records, healthy cited AI completion, bidirectional Messenger delivery/edit, persisted Community comment, catalog boundary and contributor access denial. No additional functional failure was reproduced in those bounded checks. Read its explicit limits before claiming full MVP acceptance. This appended evidence remains local for a reviewed documentation follow-up.

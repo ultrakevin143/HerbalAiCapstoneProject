@@ -1,8 +1,8 @@
 # Combined release proposal — 3 October 2026
 
-## Status: CI-branch publication authorized; production publication not authorized
+## Status: CI passed; approved production release deployed; bounded live acceptance in progress
 
-The user explicitly approved committing and pushing only this reviewed forty-nine-path bundle to codex/mvp-acceptance-ci for isolated PostgreSQL CI. This authorization does not cover main, codex/readability-accessibility, a production deployment, provider variables/settings or excluded files. The preceding proposal text records the original review; execution results will be distinguished from planned steps.
+The user first approved only this reviewed forty-nine-path bundle to codex/mvp-acceptance-ci. After isolated CI passed, the user approved proceeding with the exact production release. Main and codex/readability-accessibility were atomically fast-forwarded to e6b774a39d56d6116da26350f87c4483e92d8cd3; both providers and both resulting CI runs succeeded. See PRODUCTION_MVP_RELEASE_2026-10-03.md for current observed acceptance and open gates. Provider variables/settings and excluded files were not changed. The proposal/baseline sections below are historical review evidence, not the current remote state.
 
 The user requested accumulating the repairs and auditing unrelated root material before a later combined push. This is the exact candidate path list, not permission to stage/commit/push. The release checkout is C:/Users/Hp/.codex/worktrees/selective-release-check/CAPSTONE PROJECT on codex/mvp-acceptance-ci, based on e51942c35c573438c09a91104a40d4951f36fa50. Remote main and codex/readability-accessibility match that baseline. The Desktop checkout is 45 commits behind this baseline and contains unrelated/private/local-only material; do not publish from it or copy its complete working tree.
 
@@ -106,11 +106,11 @@ Also exclude all unrelated Desktop diffs/untracked material, private/personal me
 | --- | --- |
 | Local functional regressions | Latest prior executed combined run: 759 non-DB backend cases in 60 files and 311 native cases in twelve scripts, zero failed. Total 1070, excluding repeated focused/baseline runs. The subsequent CI-only preflight freshly passed all 312 native cases, including one new coverage assertion; backend cases were not rerun in that preflight. |
 | Source validation | Both applications previously passed lint/typecheck/build for their edited batches; latest backend batch also passed standalone typecheck/build. Generated frontend build uses a process-local loopback API and must not be deployed/copied. |
-| SQL acceptance | OPEN. Seventeen DB-dependent files, including thirteen prepared Library SQL cases, unexecuted locally. No Docker/PostgreSQL command available on PATH. Mocked transaction/role predicates do not close this gate. |
+| SQL acceptance | PASSED in actual isolated GitHub CI for e6b774a: all seventeen formerly locally excluded files (113 cases) passed, including thirteen Library SQL cases. They remain unexecuted on this laptop; no live database was used. See the subsequent outcome appendix in CI_RELEASE_PREFLIGHT_2026-10-03.md. |
 | Root/media review | Fifty public image routes returned successful image responses; all 37 current catalog image paths map locally. Four QA screenshots need personal-detail redaction; six legacy images are candidates, not approved deletions. |
 | Secret-pattern check | 35 source/test/CI files and ten preceding new reports scanned with bounded patterns. One intentional synthetic error-redaction fixture matched a database URL. No provider/private-key/live-reset-token match observed. Not a comprehensive history/privacy certification. |
-| Remote baseline | main/deployment branch e51942c. Unpublished fixes not live-tested. |
-| Staging/release | HOLD. Index empty; no commit/push/provider change in this review. |
+| Remote baseline | main, production-watched branch and CI branch now resolve to e6b774a after approved atomic fast-forward. e51942c remains the historical rollback baseline. |
+| Staging/release | Exactly 49 reviewed paths released after full isolated CI passed (1184 cases). Both provider deployments and the resulting main/deployment CI runs succeeded. Bounded live recovery, suggestion revision/rejection, audit, notification and Library reads passed; remaining gates are recorded in PRODUCTION_MVP_RELEASE_2026-10-03.md. Follow-up evidence remains local; no extra automatic documentation push or provider setting change. |
 
 ## Proposed release order — requires explicit authorization
 

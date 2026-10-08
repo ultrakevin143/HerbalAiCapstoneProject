@@ -86,6 +86,17 @@ describe('existing-record preparation update boundaries', () => {
     expect(preparationEmbeddingText(oregano)).toContain(oregano.changes.preparationMethod);
   });
 
+  it('includes the sourced Mangosteen warning while keeping WHO support separate from preparation and dosage', () => {
+    const mangosteen = plan().records.find(record => record.before.id === 'builtin-mangosteen')!;
+    expect(mangosteen.changes.warnings).toContain('Seek immediate medical care');
+    expect(mangosteen.changes).not.toHaveProperty('dosage');
+    expect(mangosteen.sourceAdditions.find(source => source.url.includes('who.int'))?.supports).toEqual(['warnings']);
+    expect(mangosteen.sourceAdditions.find(source => source.url.includes('nopr.niscpr.res.in'))?.supports).toEqual(['preparationMethod', 'warnings']);
+    expect(preparationEmbeddingText(mangosteen)).toContain(mangosteen.changes.warnings);
+    expect(mangosteen.before.imageUrl).toBe('/images/qa-preserve.jpg');
+    expect(mangosteen.before.reviewedById).toBe('existing-reviewer');
+  });
+
   it('refuses missing, duplicate, unpublished, contributor or already-edited records', () => {
     expect(() => buildPreparationPlan(batch, snapshots().slice(1), target, now)).toThrow(/exactly/);
     expect(() => buildPreparationPlan(batch, [...snapshots().slice(1), snapshots()[1]], target, now)).toThrow();
@@ -120,10 +131,11 @@ describe('existing-record preparation update boundaries', () => {
     expect(() => assertPreparationTarget(redirected, target)).toThrow();
   });
 
-  it.each(['host', 'hostaddr', 'port', 'database', 'dbname', 'options', 'statement_timeout', 'query_timeout', 'connectionTimeoutMillis'])
-    ('refuses query-string overrides of release identity or execution settings: %s', parameter => {
-      expect(() => assertPreparationTarget(`postgresql://localhost/herbalai_test?${parameter}=0`, target)).toThrow();
-    });
+  it.each([
+    'host', 'hostaddr', 'port', 'database', 'dbname', 'options', 'statement_timeout', 'query_timeout', 'connectionTimeoutMillis',
+  ])('refuses query-string overrides of release identity or execution settings: %s', parameter => {
+    expect(() => assertPreparationTarget(`postgresql://localhost/herbalai_test?${parameter}=0`, target)).toThrow();
+  });
 
   it('refuses duplicate TLS options and fragments but accepts the normal Neon TLS parameters', () => {
     expect(() => assertPreparationTarget(`${connectionUrl}?sslmode=require&channel_binding=require`, target)).not.toThrow();

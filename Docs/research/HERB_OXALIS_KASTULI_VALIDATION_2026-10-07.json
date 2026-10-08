@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "status": "OXALIS_KASTULI_DESCRIPTIONS_VALIDATED_RELEASE_HELD",
+  "checkedAt": "2026-10-07T01:06:36Z",
+  "branch": "codex/mvp-acceptance-ci",
+  "gitHead": "741167b",
+  "gitWhitespaceCheckExitCode": 0,
+  "localReceiptValidation": {
+    "filesChecked": 6,
+    "jsonFilesParsed": 4,
+    "trailingWhitespace": false,
+    "finalNewlines": true,
+    "sourceBindingsChecked": 2
+  },
+  "databaseToolAvailability": {
+    "docker": false,
+    "psql": false,
+    "postgres": false
+  },
+  "testSuite": {
+    "command": "npx vitest run tests/herb-oxalis-kastuli-follow-up.test.ts tests/herb-santan-kabiki-follow-up.test.ts tests/herb-balibago-tkdl-follow-up.test.ts tests/herb-expansion-media-follow-up.test.ts tests/herb-expansion-release-preflight.test.ts tests/herb-third-ten-field-drafts.test.ts tests/herb-fourth-ten-field-drafts.test.ts tests/herb-fifth-ten-field-drafts.test.ts tests/herb-expansion-review.test.ts tests/herb-expansion-staging-plan.test.ts tests/herb-expansion-field-research.test.ts tests/herb-expansion-occurrence-research.test.ts tests/herb-first-ten-content-review.test.ts tests/herb-first-ten-preparation-supplement.test.ts tests/herb-second-ten-content-review.test.ts tests/herb-second-ten-photo-review.test.ts tests/herb-identity-media-follow-up.test.ts tests/herb-fifty-live-release-audit.test.ts tests/stuartxchange-preparation-review.test.ts tests/herb-third-ten-preparation-review.test.ts tests/herb-fourth-ten-preparation-review.test.ts tests/herb-fifth-ten-preparation-review.test.ts tests/herb-cover-replacement-research.test.ts tests/herb-preparation-public-review.test.ts tests/herb-preparation-rag.test.ts tests/herb-preparation-review.test.ts tests/herb-preparation-update.test.ts tests/built-in-herb-fields.test.ts tests/herb-preparation-ci.test.ts tests/herb-preparation-isolated-runner.test.ts tests/herb-taxonomic-identity.test.ts tests/herb-remaining-photo-leads.test.ts tests/herb-remaining-thirty-intake.test.ts tests/herb-remaining-thirty-visual-review.test.ts tests/herb-seventeen-media-delivery.test.ts tests/talisay-preparation-follow-up.test.ts tests/herb-provider-target-follow-up.test.ts",
+    "files": 37,
+    "passed": 609,
+    "failed": 0,
+    "exitCode": 0,
+    "newFollowUpTests": 17
+  },
+  "backendTypecheck": {
+    "command": "npx tsc --noEmit",
+    "exitCode": 0
+  },
+  "strictChangedTestsTypecheck": {
+    "command": "npx tsc --noEmit --target esnext --module nodenext --moduleResolution nodenext --strict --exactOptionalPropertyTypes --noUncheckedIndexedAccess --skipLibCheck tests/herb-oxalis-kastuli-follow-up.test.ts tests/herb-fifth-ten-field-drafts.test.ts tests/herb-santan-kabiki-follow-up.test.ts tests/herb-balibago-tkdl-follow-up.test.ts tests/herb-expansion-media-follow-up.test.ts",
+    "exitCode": 0
+  },
+  "targetedLint": {
+    "command": "npx eslint tests/herb-oxalis-kastuli-follow-up.test.ts tests/herb-fifth-ten-field-drafts.test.ts tests/herb-santan-kabiki-follow-up.test.ts tests/herb-balibago-tkdl-follow-up.test.ts tests/herb-expansion-media-follow-up.test.ts",
+    "exitCode": 0
+  },
+  "publicPreflight": {
+    "receiptFile": "HERB_OXALIS_KASTULI_PUBLIC_PREFLIGHT_2026-10-07.json",
+    "checkedAt": "2026-10-07T01:06:28.364Z",
+    "checkerExitCode": 2,
+    "counts": {
+      "candidates": 50,
+      "livePublicHerbs": 38,
+      "draftPlansPresent": 50,
+      "partialContentDrafts": 1,
+      "fullContentDrafts": 49,
+      "missingFullContentDrafts": 1,
+      "missingSelectedCovers": 11,
+      "heldSecondaryIdentities": 2,
+      "publicIdentityConflicts": 0,
+      "publicationCleared": 0
+    }
+  },
+  "sourceFollowUpFile": "HERB_OXALIS_KASTULI_PREPARATION_FOLLOW_UP_2026-10-07.json",
+  "sourceRetrievals": [
+    {
+      "sourceId": "masters-2021-oxalis-food-processing",
+      "checkedAt": "2026-10-07T01:02:00.107Z",
+      "httpStatus": 200,
+      "rawOriginResponseObtained": true,
+      "reviewChannel": "BOUNDED_ORIGIN_XML_AND_PUBLISHER_TEXT",
+      "rawCopyCommitted": false
+    },
+    {
+      "sourceId": "gul-2011-kastuli-laboratory",
+      "checkedAt": "2026-10-07T01:01:17.937Z",
+      "httpStatus": 200,
+      "rawOriginResponseObtained": true,
+      "reviewChannel": "BOUNDED_ORIGIN_XML_AND_PUBLISHER_TEXT",
+      "rawCopyCommitted": false
+    }
+  ],
+  "sourceHashes": [
+    {
+      "id": "masters-2021-oxalis-food-processing",
+      "bytes": 176752,
+      "sha256": "6f11fb3480b2b03f046aee6402087e19b9d3f63bde1cd4c271444ef938c63cb1"
+    },
+    {
+      "id": "gul-2011-kastuli-laboratory",
+      "bytes": 132600,
+      "sha256": "4f20b529e4ffdc2a2b1a90c25b87d8a313ae1b2328a701f2381ccba6f1db2c8a"
+    }
+  ],
+  "historicalPreparationReceipt": {
+    "file": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+    "unchanged": true,
+    "sha256": "dd92ef08037f6961fe2e19459555fe5d18f23ad0e3f83af8f388f582f81f3d6e"
+  },
+  "repairedValidationIssue": "The first new test schema required kind on every older citation; one pre-existing fifth-ten source lacks that optional metadata. The generic existing-citation schema now permits absence while both new follow-up sources still require kind. Exact-species, source-ownership, quarantine and medicinal-clearance guards remain unchanged; the final broad run passed.",
+  "remainingPartialDraft": {
+    "name": "Lokoloko",
+    "field": "regionFound",
+    "identityMappingHeld": true,
+    "absenceClaimed": false
+  },
+  "pendingProvenanceIssue": {
+    "affectedDrafts": 17,
+    "issue": "Rights phrase 'no rights reserved' is stored as imageCreator.",
+    "repairedInThisBatch": false
+  },
+  "productionWrites": 0,
+  "cloudinaryUploads": 0,
+  "aiProviderRequests": 0,
+  "gitCommits": 0,
+  "gitPushes": 0,
+  "limitations": [
+    "49 descriptive core-field drafts does not mean 49 safe medicinal recipes or complete beginner guides.",
+    "Oxalis has a non-Philippine ethnobotanical parboiling description without validated oxalate controls or a safe serving; public source-reuse review remains pending.",
+    "Kastuli has an in vitro laboratory description, not a human dose or a coffee-flavouring process.",
+    "The latest public GET covers 38 live herbs and stored-name conflicts only, not all-state transactional duplicate clearance.",
+    "Eleven covers, botanical/content/category and genuine human review remain unresolved.",
+    "No real isolated PostgreSQL import/rollback/concurrency validation or full live MVP acceptance was performed."
+  ]
+}

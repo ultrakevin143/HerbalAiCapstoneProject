@@ -4,7 +4,7 @@
 
 The user approved the recommendation to retain Google sign-in and optional email/password sign-in, while clarifying the difference between a Google password and a Herbal-Ai password. This batch does not convert Google-linked accounts into provider-only accounts, remove recovery, infer a login provider from a username, or add provider metadata or a database migration.
 
-The baseline checkout is release b7913bcbb009b06ad28b4830631aae580fb44a20 in the selective-release-check worktree. Existing uncommitted testing reports and the separate dirty Desktop checkout are preserved. This batch has not been committed, pushed or deployed.
+The baseline checkout is release b7913bcbb009b06ad28b4830631aae580fb44a20 in the selective-release-check worktree. Existing uncommitted testing reports and the separate dirty Desktop checkout are preserved. At the initial local review, this batch had not been committed, pushed or deployed; subsequent release evidence is recorded below.
 
 ## Changed interaction path
 
@@ -39,3 +39,17 @@ No claim is made that every OAuth website supports this flow. Supporting both me
 ## Publication authorization
 
 The user subsequently requested publication so they can audit the live interface manually. Only this seven-file wording/test/report batch is approved for release. The release process first pushes the existing isolated CI branch, waits for the backend and frontend checks, then fast-forwards main and the existing deployment branch if they still share the reviewed baseline. Deployment results and post-release browser checks are recorded separately after they are observed. No private password entry or new mail request is necessary merely to publish the copy.
+
+## Observed release and live checks
+
+The seven-file batch was committed as 0ba39ea568b19c6016b77dace9273ed353e1bb15. Isolated branch CI [36893383221](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/36893383221) passed before atomic fast-forward publication to main and codex/readability-accessibility. Job logs confirmed 523 backend tests across 67 files and 124 frontend cases. The subsequent [main CI](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/36893734455) and [deployment-branch CI](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/36893734005) also passed. Remote branch hashes were checked against the exact release SHA.
+
+Vercel and Railway reported successful deployments for this commit. The anonymous Railway /api/health request returned HTTP 200. A public HTTP request to the live /forgot-password page returned the updated heading, and a connected Chrome tab subsequently rendered the same updated heading, explanatory text and Email a Password Link control. That tab initially showed the old copy while deployment was settling; no cache purge or service-worker modification was performed.
+
+The live /reset-password page without a token rendered Set Your Herbal-Ai Password, the Google-password explanation, minimum-length and sign-out consequences, plus the existing missing-token error. Both password inputs and Save Herbal-Ai Password were disabled. No token, credential or reset POST was supplied for this read-only check.
+
+A temporary 390-by-844 Chrome viewport showed the recovery heading wrapping within its card, readable explanatory paragraphs and the email action without horizontal overflow: document width 375, viewport width 390. The override was restored. This is browser emulation, not physical-device evidence.
+
+A new live library tab restored the existing Mercado Kevin contributor session and 37 published herbs. Account settings displayed the new Herbal-Ai password and Create or reset your Herbal-Ai password headings with the intended conditional explanations. No form was submitted; settings was closed without changes. Desktop recovery-page proof is saved outside Git as oauth-password-copy-live-20261002.png in the task visualization directory.
+
+These post-release observations are currently saved locally rather than triggering an additional documentation-only production redeploy. No fresh email delivery, private password change, or used-link redemption was attempted in this wording-release check. The user can now perform the requested manual live audit.

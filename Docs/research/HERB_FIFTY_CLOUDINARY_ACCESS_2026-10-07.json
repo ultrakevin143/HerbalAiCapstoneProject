@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-10-06T17:52:34Z",
+  "status": "EXISTING_SESSION_RESTORED",
+  "cloudName": "dclqw6at7",
+  "consoleProductEnvironmentId": "c-c49564872bd6ca2dad4e3a222f4ebd",
+  "displayedTotalAssets": 58,
+  "method": "Existing Google-linked Cloudinary sign-in; Google explicitly displayed signing back in. No new OAuth scopes, account, credential, upload, deletion or Cloudinary setting change.",
+  "credentialsRecorded": false,
+  "apiSecretsRead": false,
+  "newUploads": 0,
+  "selectedMissingCovers": 13,
+  "limitation": "58 visible assets is the dashboard total, not proof that 50 approved herb covers exist. Replacement candidates still need exact-species, per-photo permission, quality and ownership review."
+}

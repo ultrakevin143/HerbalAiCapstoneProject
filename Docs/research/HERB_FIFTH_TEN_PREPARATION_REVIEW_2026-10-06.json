@@ -1,0 +1,528 @@
+{
+  "schemaVersion": 1,
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "reviewedAt": "2026-10-06",
+  "status": "PREPARATION_RESEARCH_NOT_IMPORTABLE",
+  "batch": 5,
+  "productionWritesPerformed": false,
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "counts": {
+    "records": 10,
+    "foodPreparationDescriptions": 2,
+    "foodDescriptionsHeld": 2,
+    "reportedFoodUseDescriptionsHeld": 2,
+    "traditionalDescriptionsHeld": 1,
+    "laboratoryDescriptionsHeld": 2,
+    "methodsNotEstablished": 1,
+    "quarantinedSources": 1,
+    "fullySpecifiedHouseholdRecipes": 0,
+    "medicinalInstructionsCleared": 0,
+    "remainingCandidatesWithoutThisPreparationReview": 0
+  },
+  "publicationBlockers": [
+    "Fresh all-state duplicate check against the confirmed live Neon target",
+    "Species, plant-part and cultivar-specific content and safety review",
+    "Media clearance for candidates still on image hold",
+    "Isolated PostgreSQL staging and rollback validation"
+  ],
+  "sources": [
+    {
+      "id": "nparks-kamias-food",
+      "scientificName": "Averrhoa bilimbi",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION_HELD",
+      "title": "NParks: Averrhoa bilimbi",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/7/2735",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewCoverage": "SPECIES_HEADING_AND_RELISH_FOOD_PARAGRAPH",
+      "limitation": "Relish use is reported without proportions or processing controls. It does not establish safe juice consumption or resolve oxalate toxicity.",
+      "sourceStatus": "REVIEWED_RESEARCH_ONLY"
+    },
+    {
+      "id": "nair-2014-bilimbi-safety",
+      "scientificName": "Averrhoa bilimbi",
+      "kind": "PRIMARY_HUMAN_ADVERSE_EVENT_REPORT",
+      "title": "Nair et al. (2014): Acute Oxalate Nephropathy following Ingestion of Averrhoa bilimbi Juice",
+      "url": "https://doi.org/10.1155/2014/240936",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC4065667/fullTextXML",
+      "supports": [
+        "warnings"
+      ],
+      "reviewCoverage": "FULL_TEXT_XML_ABSTRACT_AND_COOKING_UNCERTAINTY_PARAGRAPH",
+      "downloadBytes": 40809,
+      "downloadSha256": "b42e69c7ccf0cb72aa60a78e1672f0854d4f548b156bf4609e4639e8b01f89f7",
+      "limitation": "Two adverse-event cases do not establish a safe amount. The authors explicitly leave cooking's effect on nephrotoxicity unresolved.",
+      "sourceStatus": "REVIEWED_RESEARCH_ONLY"
+    },
+    {
+      "id": "nparks-balimbing-food",
+      "scientificName": "Averrhoa carambola",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION_HELD",
+      "title": "NParks: Averrhoa carambola",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/7/2736",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewCoverage": "SPECIES_HEADING_AND_FRUIT_FOOD_PARAGRAPH",
+      "limitation": "Salad and preserve use is descriptive, not a validated cooking protocol. Juice, laxative and medicinal claims are excluded.",
+      "sourceStatus": "REVIEWED_RESEARCH_ONLY"
+    },
+    {
+      "id": "barman-2016-starfruit-safety",
+      "scientificName": "Averrhoa carambola",
+      "kind": "PRIMARY_HUMAN_ADVERSE_EVENT_REPORT",
+      "title": "Barman et al. (2016): Acute kidney injury associated with ingestion of star fruit: Acute oxalate nephropathy",
+      "url": "https://doi.org/10.4103/0971-4065.175978",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5131384/fullTextXML",
+      "supports": [
+        "warnings"
+      ],
+      "reviewCoverage": "FULL_TEXT_XML_ABSTRACT_AND_CASE_REPORT",
+      "downloadBytes": 29376,
+      "downloadSha256": "f25958bbf879590a35c87f2d9387001af68d289e118a96507eb9d8b877dc311d",
+      "limitation": "An adverse-event series is not a safe-serving trial. Food-use reporting cannot be treated as renal safety or medicinal benefit.",
+      "sourceStatus": "REVIEWED_RESEARCH_ONLY"
+    },
+    {
+      "id": "nparks-cashew-apple-food",
+      "scientificName": "Anacardium occidentale",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks: Anacardium occidentale",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/7/2709",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewCoverage": "SPECIES_HEADING_AND_CASHEW_APPLE_FOOD_PARAGRAPH",
+      "limitation": "Only the fleshy cashew apple is described here. No validated nut-shell removal, roasting control, fermentation or therapeutic recipe is supplied.",
+      "sourceStatus": "REVIEWED_RESEARCH_ONLY"
+    },
+    {
+      "id": "prosea-noni-traditional",
+      "scientificName": "Morinda citrifolia",
+      "kind": "AUTHORITATIVE_TRADITIONAL_REPORT_HELD",
+      "title": "PROSEA: Morinda citrifolia, record 2778",
+      "url": "https://prosea.prota4u.org/view.aspx?id=2778",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewCoverage": "EXACT_SPECIES_USES_SECTION_THAI_UNRIPE_FRUIT_REPORT",
+      "limitation": "A reported traditional preparation is not a clinical trial or safety clearance. The vague food-use word prepared supplies no fermentation or cooking protocol.",
+      "sourceStatus": "REVIEWED_RESEARCH_ONLY"
+    },
+    {
+      "id": "nccih-noni-safety",
+      "scientificName": "Morinda citrifolia",
+      "kind": "AUTHORITATIVE_HEALTH_SAFETY_SUMMARY",
+      "title": "NCCIH: Noni (February 2025)",
+      "url": "https://www.nccih.nih.gov/health/noni",
+      "supports": [
+        "warnings"
+      ],
+      "reviewCoverage": "LATIN_NAME_HUMAN_EVIDENCE_AND_SAFETY_SECTIONS",
+      "limitation": "Limited human evidence; liver-injury reports do not prove causation. Potassium, medication and pregnancy/breastfeeding cautions must not become a safe-dose recommendation.",
+      "sourceStatus": "REVIEWED_RESEARCH_ONLY"
+    },
+    {
+      "id": "prosea-oxalis-food-safety",
+      "scientificName": "Oxalis corniculata",
+      "kind": "AUTHORITATIVE_FOOD_USE_AND_TOXICITY_REPORT",
+      "title": "Chung (1999), PROSEA: Oxalis corniculata, record 86",
+      "url": "https://prosea.prota4u.org/view.aspx?id=86",
+      "supports": [
+        "foodUse",
+        "warnings"
+      ],
+      "reviewCoverage": "EXACT_SPECIES_USES_AND_OXALATE_PROPERTIES_PARAGRAPHS",
+      "limitation": "Reported small-amount seasoning does not specify a safe amount or cooking method. The source warns of toxicity at larger exposures.",
+      "sourceStatus": "REVIEWED_RESEARCH_ONLY"
+    },
+    {
+      "id": "nvbt-bitter-orange-food",
+      "scientificName": "Citrus aurantium",
+      "sourceTaxon": "Citrus × aurantium",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "Dutch Botanical Gardens Association: Bitter Orange or Seville Orange",
+      "url": "https://www.botanischetuinen.nl/en/plant_en/2621/bitter-orange-or-seville-orange",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewCoverage": "BOTANICAL_HEADING_AND_MARMALADE_FOOD_USE_PARAGRAPHS",
+      "limitation": "Marmalade use supplies no recipe ratio, boiling duration or canning validation. Hybrid notation must be reconciled separately; adjacent oil and medicinal claims are not adopted.",
+      "sourceStatus": "REVIEWED_RESEARCH_ONLY"
+    },
+    {
+      "id": "nccih-bitter-orange-safety",
+      "scientificName": "Citrus aurantium",
+      "kind": "AUTHORITATIVE_HEALTH_SAFETY_SUMMARY",
+      "title": "NCCIH: Bitter Orange",
+      "url": "https://www.nccih.nih.gov/health/bitter-orange",
+      "supports": [
+        "warnings"
+      ],
+      "reviewCoverage": "LATIN_NAME_AND_FOOD_VERSUS_SUPPLEMENT_SAFETY_SECTIONS",
+      "limitation": "Ordinary food use is not concentrated-extract safety. Cardiovascular event reports often involve mixed products; causation is uncertain, and medication/pregnancy cautions remain.",
+      "sourceStatus": "REVIEWED_RESEARCH_ONLY"
+    },
+    {
+      "id": "krisanapun-2011-abutilon-extraction",
+      "scientificName": "Abutilon indicum",
+      "kind": "PRIMARY_LABORATORY_EXTRACTION_STUDY_HELD",
+      "title": "Krisanapun et al. (2011): Antidiabetic Activities of Abutilon indicum (L.) Sweet Are Mediated by Enhancement of Adipocyte Differentiation and Activation of the GLUT1 Promoter",
+      "url": "https://doi.org/10.1093/ecam/neq004",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3094712/fullTextXML",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewCoverage": "FULL_TEXT_XML_SECTION_2_1_PLANT_MATERIAL",
+      "downloadBytes": 96609,
+      "downloadSha256": "16349ea50258af582df422186eb1c58e6dbbe37c4b9c2e495951e8f901200977",
+      "limitation": "A combined leaf/twig/root extract, freeze-drying and butanol fractionation used in preclinical experiments do not establish a household diabetes remedy.",
+      "sourceStatus": "REVIEWED_RESEARCH_ONLY"
+    },
+    {
+      "id": "prosea-kastuli-food-use",
+      "scientificName": "Abelmoschus moschatus",
+      "sourceSynonymsReviewed": [
+        "Hibiscus abelmoschus"
+      ],
+      "kind": "AUTHORITATIVE_REPORTED_FOOD_USE_HELD",
+      "title": "PROSEA: Abelmoschus moschatus, record 76",
+      "url": "https://prosea.prota4u.org/view.aspx?id=76",
+      "supports": [
+        "foodUse"
+      ],
+      "reviewCoverage": "EXACT_SPECIES_SYNONYM_AND_SEED_COFFEE_FLAVOURING_PARAGRAPH",
+      "limitation": "Reported seed flavouring gives no seed processing, food-grade controls or amount. Industrial oil/additive concentrations and historical regulatory claims are not household instructions.",
+      "sourceStatus": "REVIEWED_RESEARCH_ONLY"
+    },
+    {
+      "id": "checkouri-2020-ayapana-extraction",
+      "scientificName": "Ayapana triplinervis",
+      "kind": "PRIMARY_LABORATORY_AQUEOUS_EXTRACTION_STUDY_HELD",
+      "title": "Checkouri et al. (2020): Evaluation of Polyphenol Content and Antioxidant Capacity of Aqueous Extracts from Eight Medicinal Plants from Reunion Island",
+      "url": "https://doi.org/10.3390/antiox9100959",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7650546/fullTextXML",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewCoverage": "FULL_TEXT_XML_RAW_MATERIAL_IDENTITY_TABLE_AND_INFUSIONS_DECOCTIONS",
+      "downloadBytes": 206185,
+      "downloadSha256": "dfae2b7bafd78459dd2852a76cdf356fd7e6c6b2cb8cd3e3b3fbbf35d0576289",
+      "limitation": "Analytical infusions/decoctions of industrial dehydrated mash tested in vitro are not validated human tea doses, clinical efficacy or newborn/child safety.",
+      "sourceStatus": "REVIEWED_RESEARCH_ONLY"
+    }
+  ],
+  "rejectedSources": [
+    {
+      "id": "magnolia-metadata-quarantine",
+      "scientificName": "Magnolia champaca",
+      "sourceStatus": "QUARANTINED_METADATA_MISMATCH",
+      "supports": [
+        "researchGap"
+      ],
+      "title": "Hasan et al.: Unveiling the therapeutic potential: Evaluation of anti-inflammatory and antineoplastic activity of Magnolia champaca Linn’s stem bark isolate through molecular docking insights",
+      "url": "https://doi.org/10.1016/j.heliyon.2023.e22972",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10758728/fullTextXML",
+      "downloadBytes": 139173,
+      "downloadSha256": "cbde97aa534578b30a44076d654257469a9355873187bd365c99ca2c4b82298e",
+      "reviewCoverage": "FULL_TEXT_XML_METADATA_AND_METHOD_SECTION",
+      "reason": "The XML contains a retraction-forward pointer, but its linked PMC article has a different title and DOI. Retraction status of this Magnolia paper is not confirmed. Quarantined rather than adopted.",
+      "claimedRelatedPmcId": "PMC11923187",
+      "linkedArticle": {
+        "title": "Retraction Note: Anti-proliferative and immunomodulatory potencies of cinnamon oil on Ehrlich ascites carcinoma bearing mice",
+        "doi": "10.1038/s41598-025-94143-6",
+        "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11923187/fullTextXML",
+        "downloadBytes": 8489,
+        "downloadSha256": "acc659e2875a9c8bcfe911a8dadcb5ed1b7db6b634a9d3f640f15365c33d6b83",
+        "matchesOriginalArticle": false
+      },
+      "crossrefCheck": {
+        "url": "https://api.crossref.org/works/10.1016%2Fj.heliyon.2023.e22972",
+        "originalDoi": "10.1016/j.heliyon.2023.e22972",
+        "relationEntriesReturned": 0,
+        "limitation": "An empty relation list does not prove the paper has not been retracted."
+      }
+    }
+  ],
+  "records": [
+    {
+      "candidateId": "research-pardo-047",
+      "localName": "Kamias",
+      "scientificName": "Averrhoa bilimbi",
+      "bookEntry": 47,
+      "printedPage": 60,
+      "pdfPage": 66,
+      "historicalHeading": "Averrhoa Bilimbi",
+      "preparationPart": "Fruit; no juice regimen",
+      "preparationKind": "FOOD_DESCRIPTION_HELD",
+      "preparationDescription": "NParks reports green Averrhoa bilimbi fruit made into a relish in Suriname, without a full processing method. A human case report documents oxalate kidney injury after fruit juice and leaves cooking's effect on toxicity unresolved. This held food description is not treatment guidance.",
+      "preparationSourceIds": [
+        "nparks-kamias-food"
+      ],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [],
+      "safetySourceIds": [
+        "nair-2014-bilimbi-safety"
+      ],
+      "reviewGaps": [
+        "No concentrated juice, empty-stomach regimen or claim that cooking removes nephrotoxicity is cleared.",
+        "A safe quantity or validated relish protocol remains missing; kidney-risk review is required."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-048",
+      "localName": "Balimbing",
+      "scientificName": "Averrhoa carambola",
+      "bookEntry": 48,
+      "printedPage": 60,
+      "pdfPage": 66,
+      "historicalHeading": "Averrhoa Carambola",
+      "preparationPart": "Fruit; juice and medicinal regimens excluded",
+      "preparationKind": "FOOD_DESCRIPTION_HELD",
+      "preparationDescription": "NParks describes Averrhoa carambola fruit in salads and preserves. A primary case series records oxalate-associated acute kidney injury after starfruit intake. The food description remains held for renal safety review and is not treatment guidance.",
+      "preparationSourceIds": [
+        "nparks-balimbing-food"
+      ],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [],
+      "safetySourceIds": [
+        "barman-2016-starfruit-safety"
+      ],
+      "reviewGaps": [
+        "No safe serving amount or processing-based detoxification is inferred.",
+        "Do not present fruit or juice as a diabetes or kidney treatment; retain renal-risk review."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-070",
+      "localName": "Kasuy",
+      "scientificName": "Anacardium occidentale",
+      "bookEntry": 70,
+      "printedPage": 84,
+      "pdfPage": 90,
+      "historicalHeading": "Anacardium occidentale",
+      "preparationPart": "Fleshy cashew apple, not nut shell or seed oil",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationDescription": "NParks describes the fleshy Anacardium occidentale cashew apple eaten fresh, included in fruit salads or preserved as jam. This does not supply nut-shell processing, roasting, fermentation or oil instructions. The culinary description is not treatment guidance.",
+      "preparationSourceIds": [
+        "nparks-cashew-apple-food"
+      ],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [],
+      "safetySourceIds": [],
+      "reviewGaps": [
+        "Keep cashew apple distinct from the true nut, shell liquid, seed coats and bark.",
+        "Food allergy and part-specific safety review remain required; no full jam or canning protocol is supplied."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-126",
+      "localName": "Bankundo",
+      "scientificName": "Morinda citrifolia",
+      "bookEntry": 126,
+      "printedPage": 148,
+      "pdfPage": 154,
+      "historicalHeading": "Morinda citrifolia",
+      "preparationPart": "Unripe fruit in a reported Thai traditional preparation",
+      "preparationKind": "TRADITIONAL_DESCRIPTION_HELD",
+      "preparationDescription": "PROSEA reports a Thai traditional infusion or decoction using dried, thinly sliced unripe Morinda citrifolia fruit. This is a traditional-use description, not treatment guidance or clinical approval. Potassium, medication and liver-report uncertainties remain attached.",
+      "preparationSourceIds": [
+        "prosea-noni-traditional"
+      ],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [],
+      "safetySourceIds": [
+        "nccih-noni-safety"
+      ],
+      "reviewGaps": [
+        "Do not convert the report into a treatment recommendation or a home fermentation/juice regimen.",
+        "NCCIH reports limited human evidence, uncertain causation of reported liver injury and potassium/medication cautions.",
+        "Pregnancy and breastfeeding safety are insufficiently known; no human dosage is added."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-045",
+      "localName": "Oxalis corniculata",
+      "scientificName": "Oxalis corniculata",
+      "bookEntry": 45,
+      "printedPage": 58,
+      "pdfPage": 64,
+      "historicalHeading": "Oxalis corniculata",
+      "preparationPart": "Leaves in reported seasoning use; no validated amount",
+      "preparationKind": "REPORTED_FOOD_USE_DESCRIPTION_HELD",
+      "preparationDescription": "PROSEA reports Oxalis corniculata leaves added to food as seasoning and warns that larger amounts can be toxic due to oxalates. It gives no safe amount or cooking controls. This held food-use report is not treatment guidance.",
+      "preparationSourceIds": [],
+      "foodUseSourceIds": [
+        "prosea-oxalis-food-safety"
+      ],
+      "gapSourceIds": [],
+      "safetySourceIds": [
+        "prosea-oxalis-food-safety"
+      ],
+      "reviewGaps": [
+        "Do not infer that boiling makes this plant safe or invent a daily serving.",
+        "No poisoning antidote, wound preparation, emmenagogue or renal treatment is cleared.",
+        "Do not substitute Oxalis corymbosa, other sorrels or similar-looking plants."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-054",
+      "localName": "Kahel",
+      "scientificName": "Citrus aurantium",
+      "bookEntry": 54,
+      "printedPage": 66,
+      "pdfPage": 72,
+      "historicalHeading": "Citrus Bigaradia",
+      "preparationPart": "Bitter-orange fruit for marmalade, not concentrated extract or essential oil",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationDescription": "The Dutch Botanical Gardens Association describes bitter-orange fruit used to make marmalade. No sugar ratio, boiling duration or canning process is supplied. This food description is not treatment guidance and must not be extended to concentrated supplements or essential oil ingestion.",
+      "preparationSourceIds": [
+        "nvbt-bitter-orange-food"
+      ],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [],
+      "safetySourceIds": [
+        "nccih-bitter-orange-safety"
+      ],
+      "reviewGaps": [
+        "Preserve the queue identity; reconcile the source's Citrus × aurantium hybrid notation before staging.",
+        "Ordinary food reporting does not clear p-synephrine supplements or weight-loss use.",
+        "NCCIH notes uncertain cardiovascular findings and medication/pregnancy cautions; no causal claim is inferred from multi-ingredient event reports."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-003",
+      "localName": "Tsampaka",
+      "scientificName": "Magnolia champaca",
+      "bookEntry": 3,
+      "printedPage": 19,
+      "pdfPage": 25,
+      "historicalHeading": "Michelia Champaca, L.",
+      "preparationPart": "No preparation adopted",
+      "preparationKind": "METHOD_NOT_ESTABLISHED",
+      "preparationDescription": "The retrieved Magnolia champaca study has inconsistent retraction-link metadata: its linked notice concerns a different paper. The source is quarantined and no method is adopted. This unresolved research gap is not treatment guidance and is not a confirmed retraction finding.",
+      "preparationSourceIds": [],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [
+        "magnolia-metadata-quarantine"
+      ],
+      "safetySourceIds": [],
+      "reviewGaps": [
+        "Confirm the original paper's correction/retraction status through the publisher or find an independently reliable exact-species source.",
+        "Do not turn solvent-extracted bark or ornamental flower fragrance into a home tea.",
+        "Preserve the Michelia champaca historical heading without substituting Magnolia officinalis or Magnolia grandiflora."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-030",
+      "localName": "Abutilon indicum",
+      "scientificName": "Abutilon indicum",
+      "bookEntry": 30,
+      "printedPage": 43,
+      "pdfPage": 49,
+      "historicalHeading": "Abutilon Indicum",
+      "preparationPart": "Combined leaves, twigs and roots in a laboratory extract",
+      "preparationKind": "LABORATORY_DESCRIPTION_HELD",
+      "preparationDescription": "A primary Abutilon indicum study dried and powdered combined leaves, twigs and roots, boiled the material in distilled water, freeze-dried the extract and prepared solvent fractions for preclinical experiments. This laboratory description is not a home recipe or treatment.",
+      "preparationSourceIds": [
+        "krisanapun-2011-abutilon-extraction"
+      ],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [],
+      "safetySourceIds": [],
+      "reviewGaps": [
+        "Retain the combined plant parts; do not relabel the method as leaf-only tea.",
+        "Animal, tissue and cell-model findings do not establish human diabetes efficacy, dose or safety.",
+        "No household solvent fractionation or freeze-drying instructions are supplied."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-032",
+      "localName": "Kastuli",
+      "scientificName": "Abelmoschus moschatus",
+      "bookEntry": 32,
+      "printedPage": 45,
+      "pdfPage": 51,
+      "historicalHeading": "Hibiscus Abelmoschus, L.",
+      "preparationPart": "Seed in reported coffee flavouring; essential oil excluded",
+      "preparationKind": "REPORTED_FOOD_USE_DESCRIPTION_HELD",
+      "preparationDescription": "PROSEA reports Abelmoschus moschatus seeds used to flavour coffee, without specifying processing or a food-grade quantity. This is a reported food use, not a complete recipe or treatment guidance. Oil, perfume, incense and tobacco preparation are excluded.",
+      "preparationSourceIds": [],
+      "foodUseSourceIds": [
+        "prosea-kastuli-food-use"
+      ],
+      "gapSourceIds": [],
+      "safetySourceIds": [],
+      "reviewGaps": [
+        "Do not convert industrial essential-oil concentrations or historical regulatory claims into safe household dosing.",
+        "Do not borrow okra (Abelmoschus esculentus) or other Abelmoschus species' cooking instructions.",
+        "Plant-part, subspecies and food-grade sourcing require review before publication."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-130",
+      "localName": "Ayapana",
+      "scientificName": "Ayapana triplinervis",
+      "bookEntry": 130,
+      "printedPage": 149,
+      "pdfPage": 155,
+      "historicalHeading": "Eupatorium Ayapana",
+      "preparationPart": "Industrial dehydrated leaf/stem mash in analytical tea bags",
+      "preparationKind": "LABORATORY_DESCRIPTION_HELD",
+      "preparationDescription": "A primary analytical study included Ayapana triplinervis industrial leaf/stem mash, prepared water infusions and decoctions, removed the tea bags and froze the samples for chemical and cell testing. This laboratory description is not a home recipe or treatment.",
+      "preparationSourceIds": [
+        "checkouri-2020-ayapana-extraction"
+      ],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [],
+      "safetySourceIds": [],
+      "reviewGaps": [
+        "In vitro antioxidant results do not prove clinical benefit or a human dose.",
+        "No newborn feeding, children's regimen, pregnancy guidance or essential-oil ingestion is cleared.",
+        "Preserve the exact species rather than transferring recipes from the other seven plants in the study."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    }
+  ]
+}

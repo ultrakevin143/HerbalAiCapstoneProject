@@ -1,0 +1,1101 @@
+{
+  "schemaVersion": 1,
+  "batchId": "pardo-fifty-research-2026-10-04",
+  "preparedAt": "2026-10-04",
+  "status": "RESEARCH_QUEUE",
+  "taxonomyChecklist": "7ddf754f-d193-4cc9-b351-99906754a03b",
+  "historicalSource": {
+    "title": "The Medicinal Plants of the Philippines (1901), T. H. Pardo de Tavera; translated and revised by Jerome B. Thomas, Jr.",
+    "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+    "pdfSha256": "d0f8a1fec9514578deddf99bbc1c0e8b5e01153df0ebf24aa4745a103cb6adb3"
+  },
+  "selectionNote": "Fifty provisional candidates from the 143 name-matched entries absent from the 38-record public baseline, not the fifty unresolved historical identities. Five batches of ten prioritize familiar plants and avoid several obvious high-hazard entries. Selection does not imply safety or medical efficacy. Proposed display names and synonym mappings remain subject to manual review; no record is cleared against the full database.",
+  "candidates": [
+    {
+      "id": "research-pardo-098",
+      "batch": 1,
+      "proposedLocalName": "Duhat",
+      "scientificName": "Syzygium cumini",
+      "acceptedTaxonKey": "545XT",
+      "scientificSynonyms": [
+        "Eugenia jambolana"
+      ],
+      "localAliases": [
+        "Lomboy"
+      ],
+      "book": {
+        "entry": 98,
+        "heading": "Eugenia Jambolana",
+        "commonNames": "Lomboy, Duhat, Duat, Tag., Pam., Vis.; Jambul or Black Plum, Indo-Eng.",
+        "printedPage": 114,
+        "pdfPage": 120
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Eugenia+jambolana&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-088",
+      "batch": 1,
+      "proposedLocalName": "Sampalok",
+      "scientificName": "Tamarindus indica",
+      "acceptedTaxonKey": "54M92",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 88,
+        "heading": "Tamarindus Indica",
+        "commonNames": "Tamarindo, Sp.; Sampalok, Tag., Pam., Bik.; Sambak, Sumalagi, Kamalagi, Vis.; Tamarind, Eng.",
+        "printedPage": 104,
+        "pdfPage": 110
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Tamarindus+indica&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-005",
+      "batch": 1,
+      "proposedLocalName": "Atis",
+      "scientificName": "Annona squamosa",
+      "acceptedTaxonKey": "674D7",
+      "scientificSynonyms": [
+        "Anona squamosa"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 5,
+        "heading": "Anona squamosa",
+        "commonNames": "Ates, Tag.; Custard Apple, Eng.",
+        "printedPage": 20,
+        "pdfPage": 26
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Anona+squamosa&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-094",
+      "batch": 1,
+      "proposedLocalName": "Talisay",
+      "scientificName": "Terminalia catappa",
+      "acceptedTaxonKey": "55G3X",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 94,
+        "heading": "Terminalia Catappa",
+        "commonNames": "Talisay, Tag.; Almendro, Sp.-Fil.; Talisay, Banilak, Nato, Hitam, Vis.; Kalisay, Pam.; Lugo, Pandan, Iloc.; Indian Almond, Indo-Eng.",
+        "printedPage": 110,
+        "pdfPage": 116
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Terminalia+catappa&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-077",
+      "batch": 1,
+      "proposedLocalName": "Butterfly pea",
+      "scientificName": "Clitoria ternatea",
+      "acceptedTaxonKey": "W9KM",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 77,
+        "heading": "Clitoria ternatea,",
+        "commonNames": "Kolokantig̃, Pakingag̃, Tag.; Kolokatig̃, Vis.; Butterfly-pea, Eng.",
+        "printedPage": 92,
+        "pdfPage": 98
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Clitoria+ternatea&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-069",
+      "batch": 1,
+      "proposedLocalName": "Mangga",
+      "scientificName": "Mangifera indica",
+      "acceptedTaxonKey": "72SKV",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 69,
+        "heading": "Mangifera Indica",
+        "commonNames": "Manga.",
+        "printedPage": 82,
+        "pdfPage": 88
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Mangifera+indica&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-063",
+      "batch": 1,
+      "proposedLocalName": "Santol",
+      "scientificName": "Sandoricum koetjape",
+      "acceptedTaxonKey": "6XHL9",
+      "scientificSynonyms": [
+        "Sandoricum indicum"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 63,
+        "heading": "Sandoricum Indicum",
+        "commonNames": "Santol, Tag.",
+        "printedPage": 77,
+        "pdfPage": 83
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Sandoricum+indicum&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-104",
+      "batch": 1,
+      "proposedLocalName": "Papaya",
+      "scientificName": "Carica papaya",
+      "acceptedTaxonKey": "RCZK",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 104,
+        "heading": "Carica Papaya",
+        "commonNames": "Papaya, in many Phil. dialects; Papaya, Papaw, Eng.",
+        "printedPage": 123,
+        "pdfPage": 129
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Carica+papaya&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-102",
+      "batch": 1,
+      "proposedLocalName": "Granada",
+      "scientificName": "Punica granatum",
+      "acceptedTaxonKey": "4QHX8",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 102,
+        "heading": "Punica Granatum",
+        "commonNames": "Granada, Sp. and Fil. dialects; Pomegranate, Eng.",
+        "printedPage": 120,
+        "pdfPage": 126
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Punica+granatum&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-137",
+      "batch": 1,
+      "proposedLocalName": "Chico",
+      "scientificName": "Manilkara zapota",
+      "acceptedTaxonKey": "736JM",
+      "scientificSynonyms": [
+        "Achras sapota"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 137,
+        "heading": "Achras Sapota",
+        "commonNames": "Chico, Sp.-Fil.; Tsiku, Tag.",
+        "printedPage": 156,
+        "pdfPage": 162
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Achras+sapota&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-014",
+      "batch": 2,
+      "proposedLocalName": "Mustasa",
+      "scientificName": "Brassica juncea",
+      "acceptedTaxonKey": "N7ZK",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 14,
+        "heading": "Brassica juncea",
+        "commonNames": "Mostaza, Sp.; Mustard, Eng.",
+        "printedPage": 30,
+        "pdfPage": 36
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Brassica+juncea&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-015",
+      "batch": 2,
+      "proposedLocalName": "Radish",
+      "scientificName": "Raphanus sativus",
+      "acceptedTaxonKey": "4RJXT",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 15,
+        "heading": "Raphanus sativus, L.",
+        "commonNames": "Rábano, Sp.; Radish, Eng.",
+        "printedPage": 30,
+        "pdfPage": 36
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Raphanus+sativus&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-020",
+      "batch": 2,
+      "proposedLocalName": "Olasiman",
+      "scientificName": "Portulaca oleracea",
+      "acceptedTaxonKey": "4M2DF",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 20,
+        "heading": "Portulaca oleracea",
+        "commonNames": "Verdolagas, Sp.; Olasiman, Kolasiman, Tag.; Purslane, Eng.",
+        "printedPage": 34,
+        "pdfPage": 40
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Portulaca+oleracea&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-044",
+      "batch": 2,
+      "proposedLocalName": "Cacao",
+      "scientificName": "Theobroma cacao",
+      "acceptedTaxonKey": "56BND",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 44,
+        "heading": "Theobroma Cacao",
+        "commonNames": "Cacao.",
+        "printedPage": 55,
+        "pdfPage": 61
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Theobroma+cacao&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-159",
+      "batch": 2,
+      "proposedLocalName": "Linga",
+      "scientificName": "Sesamum indicum",
+      "acceptedTaxonKey": "4WYTB",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 159,
+        "heading": "Sesamum Indicum",
+        "commonNames": "Ajonjoli, Sp.; Lig̃á, Tag.; Log̃á, Vis.; Lag̃is, Pam.; Sesamé, Indo-Eng. (Benné Oil, Til Oil, Jinjili Oil.)",
+        "printedPage": 184,
+        "pdfPage": 190
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Sesamum+indicum&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-214",
+      "batch": 2,
+      "proposedLocalName": "Niog",
+      "scientificName": "Cocos nucifera",
+      "acceptedTaxonKey": "WP6H",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 214,
+        "heading": "Cocos nucifera",
+        "commonNames": "Coco, Sp.-Fil.; Niog, Tag.; Coco-nut Palm, Eng.",
+        "printedPage": 236,
+        "pdfPage": 242
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Cocos+nucifera&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-217",
+      "batch": 2,
+      "proposedLocalName": "Maize",
+      "scientificName": "Zea mays",
+      "acceptedTaxonKey": "5CXX5",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 217,
+        "heading": "Zea Mays",
+        "commonNames": "Maíz, Sp.; Maize, Corn, Eng.",
+        "printedPage": 240,
+        "pdfPage": 246
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Zea+mays&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-219",
+      "batch": 2,
+      "proposedLocalName": "Tubo",
+      "scientificName": "Saccharum officinarum",
+      "acceptedTaxonKey": "4TWQL",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 219,
+        "heading": "Saccharum officinarum",
+        "commonNames": "Cañamiel, Caña de azúcar, Caña dulc, Sp.; Tubo, Tag.; Sugar Cane, Eng.",
+        "printedPage": 241,
+        "pdfPage": 247
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Saccharum+officinarum&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-119",
+      "batch": 2,
+      "proposedLocalName": "Fennel",
+      "scientificName": "Foeniculum vulgare",
+      "acceptedTaxonKey": "6JBPX",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 119,
+        "heading": "Fœniculum vulgare",
+        "commonNames": "Anis, Sp.; Fennel, Eng.",
+        "printedPage": 137,
+        "pdfPage": 143
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Foeniculum+vulgare&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-184",
+      "batch": 2,
+      "proposedLocalName": "Paminta",
+      "scientificName": "Piper nigrum",
+      "acceptedTaxonKey": "4J4Z3",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 184,
+        "heading": "Piper nigrum",
+        "commonNames": "Pimienta, Sp.; Paminta, Malisa, Tag.; Black Pepper, Eng.",
+        "printedPage": 206,
+        "pdfPage": 212
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Piper+nigrum&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-170",
+      "batch": 3,
+      "proposedLocalName": "Solasi",
+      "scientificName": "Ocimum basilicum",
+      "acceptedTaxonKey": "48GBK",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 170,
+        "heading": "Ocimum basilicum",
+        "commonNames": "Solasi, Tag., Pam.; Bonak, Vis.; Sweet Basil, Eng.",
+        "printedPage": 195,
+        "pdfPage": 201
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Ocimum+basilicum&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-171",
+      "batch": 3,
+      "proposedLocalName": "Lokoloko",
+      "scientificName": "Ocimum gratissimum",
+      "acceptedTaxonKey": "6SG7Q",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 171,
+        "heading": "Ocimum gratissimum",
+        "commonNames": "Lokoloko, Tag., Pam.; Kolonkogon, Vis.",
+        "printedPage": 195,
+        "pdfPage": 201
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Ocimum+gratissimum&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-172",
+      "batch": 3,
+      "proposedLocalName": "Balanay",
+      "scientificName": "Ocimum tenuiflorum",
+      "acceptedTaxonKey": "48GKB",
+      "scientificSynonyms": [
+        "Ocimum sanctum"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 172,
+        "heading": "Ocimum sanctum",
+        "commonNames": "Balanay, Tag.; Sacred Basil, Eng.",
+        "printedPage": 195,
+        "pdfPage": 201
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Ocimum+sanctum&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-174",
+      "batch": 3,
+      "proposedLocalName": "Romero",
+      "scientificName": "Salvia rosmarinus",
+      "acceptedTaxonKey": "8X58V",
+      "scientificSynonyms": [
+        "Rosmarinus officinalis"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 174,
+        "heading": "Rosmarinus officinalis",
+        "commonNames": "Romero, Sp.; Rosemary, Eng.",
+        "printedPage": 197,
+        "pdfPage": 203
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Rosmarinus+officinalis&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-073",
+      "batch": 3,
+      "proposedLocalName": "Katuray",
+      "scientificName": "Sesbania grandiflora",
+      "acceptedTaxonKey": "9DM67",
+      "scientificSynonyms": [
+        "Agati grandiflora"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 73,
+        "heading": "Agati grandiflora",
+        "commonNames": "Katuray, Tag.",
+        "printedPage": 88,
+        "pdfPage": 94
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Agati+grandiflora&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-089",
+      "batch": 3,
+      "proposedLocalName": "Alibangbang",
+      "scientificName": "Piliostigma malabaricum",
+      "acceptedTaxonKey": "4HTR9",
+      "scientificSynonyms": [
+        "Bauhinia malabarica"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 89,
+        "heading": "Bauhinia malabarica",
+        "commonNames": "Alibag̃bag̃, Tag., Vis., Pam.",
+        "printedPage": 105,
+        "pdfPage": 111
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Bauhinia+malabarica&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-091",
+      "batch": 3,
+      "proposedLocalName": "Kupang",
+      "scientificName": "Parkia timoriana",
+      "acceptedTaxonKey": "4DN66",
+      "scientificSynonyms": [
+        "Parkia roxburghii"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 91,
+        "heading": "Parkia Roxburghii",
+        "commonNames": "Kopag̃, Tag.",
+        "printedPage": 107,
+        "pdfPage": 113
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Parkia+roxburghii&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-215",
+      "batch": 3,
+      "proposedLocalName": "Nipa",
+      "scientificName": "Nypa fruticans",
+      "acceptedTaxonKey": "487CM",
+      "scientificSynonyms": [
+        "Nipa fruticans"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 215,
+        "heading": "Nipa fruticans",
+        "commonNames": "Nipa, Sp.-Fil.; Sasa, Tag.",
+        "printedPage": 238,
+        "pdfPage": 244
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Nipa+fruticans&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-108",
+      "batch": 3,
+      "proposedLocalName": "Bottle gourd",
+      "scientificName": "Lagenaria siceraria",
+      "acceptedTaxonKey": "3RWFV",
+      "scientificSynonyms": [
+        "Lagenaria vulgaris"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 108,
+        "heading": "Lagenaria vulgaris",
+        "commonNames": "Common Gourd, Bottle Gourd, Calabash, Eng.",
+        "printedPage": 129,
+        "pdfPage": 135
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Lagenaria+vulgaris&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-112",
+      "batch": 3,
+      "proposedLocalName": "Luffa aegyptiaca",
+      "scientificName": "Luffa aegyptiaca",
+      "acceptedTaxonKey": "3WDJN",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 112,
+        "heading": "Luffa Ægyptiaca",
+        "commonNames": "Probably bears the same names as the Trichosanthes.",
+        "printedPage": 131,
+        "pdfPage": 137
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Luffa+%C3%A6gyptiaca&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-124",
+      "batch": 4,
+      "proposedLocalName": "Santan",
+      "scientificName": "Ixora coccinea",
+      "acceptedTaxonKey": "3QGXQ",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 124,
+        "heading": "Ixora coccinea",
+        "commonNames": "Santan, Tag.",
+        "printedPage": 143,
+        "pdfPage": 149
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Ixora+coccinea&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-139",
+      "batch": 4,
+      "proposedLocalName": "Sampaguita",
+      "scientificName": "Jasminum sambac",
+      "acceptedTaxonKey": "3QMQN",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 139,
+        "heading": "Jasminum Sambac",
+        "commonNames": "Sampaga, Tag.; Sampaguitas, Sp.-Fil.; Arabian Jasmin, Eng.",
+        "printedPage": 158,
+        "pdfPage": 164
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Jasminum+sambac&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-138",
+      "batch": 4,
+      "proposedLocalName": "Kabiki",
+      "scientificName": "Mimusops elengi",
+      "acceptedTaxonKey": "43HW2",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 138,
+        "heading": "Mimusops Elengi",
+        "commonNames": "Kabiki, Tag.",
+        "printedPage": 157,
+        "pdfPage": 163
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Mimusops+elengi&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-033",
+      "batch": 4,
+      "proposedLocalName": "Balibago",
+      "scientificName": "Hibiscus tiliaceus",
+      "acceptedTaxonKey": "VLWHK",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 33,
+        "heading": "Hibiscus tiliaceus, L.",
+        "commonNames": "Balibago, Tag., Pam.; Malabago, Vis.",
+        "printedPage": 46,
+        "pdfPage": 52
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Hibiscus+tiliaceus&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-035",
+      "batch": 4,
+      "proposedLocalName": "Thespesia populnea",
+      "scientificName": "Thespesia populnea",
+      "acceptedTaxonKey": "56FSM",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 35,
+        "heading": "Thespesia populnea",
+        "commonNames": "Babuy or Bobuy gubat, Tag.; Bulakan, Vis.",
+        "printedPage": 47,
+        "pdfPage": 53
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Thespesia+populnea&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-038",
+      "batch": 4,
+      "proposedLocalName": "Doldol",
+      "scientificName": "Ceiba pentandra",
+      "acceptedTaxonKey": "S2C6",
+      "scientificSynonyms": [
+        "Eriodendron anfractuosum"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 38,
+        "heading": "Eriodendron anfractuosum",
+        "commonNames": "Boboy, Tag.; Doldol, Vis.; Bulak kastila, Pam.",
+        "printedPage": 50,
+        "pdfPage": 56
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Eriodendron+anfractuosum&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-039",
+      "batch": 4,
+      "proposedLocalName": "Kalumpang",
+      "scientificName": "Sterculia foetida",
+      "acceptedTaxonKey": "52DD9",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 39,
+        "heading": "Sterculia fœtida",
+        "commonNames": "Kalumpag̃, Tag.; Bag̃ar, Iloc.",
+        "printedPage": 51,
+        "pdfPage": 57
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Sterculia+foetida&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-067",
+      "batch": 4,
+      "proposedLocalName": "Manzanitas",
+      "scientificName": "Ziziphus mauritiana",
+      "acceptedTaxonKey": "5D5ZY",
+      "scientificSynonyms": [
+        "Zizyphus jujuba"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 67,
+        "heading": "Zizyphus Jujuba, Lam.",
+        "commonNames": "Manzanitas, Sp.-Fil.; Jujube Fruit, Eng.",
+        "printedPage": 81,
+        "pdfPage": 87
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Zizyphus+jujuba&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-079",
+      "batch": 4,
+      "proposedLocalName": "Asana",
+      "scientificName": "Pterocarpus indicus",
+      "acceptedTaxonKey": "4PVJ6",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 79,
+        "heading": "2. P. Indicus,",
+        "commonNames": "Asana, Tag.; Naga, Vis.",
+        "printedPage": 93,
+        "pdfPage": 99
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Pterocarpus+indicus&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-125",
+      "batch": 4,
+      "proposedLocalName": "Coffee",
+      "scientificName": "Coffea arabica",
+      "acceptedTaxonKey": "WVWV",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 125,
+        "heading": "Coffea Arabica",
+        "commonNames": "Cafe, Sp.; Coffee, Eng.",
+        "printedPage": 144,
+        "pdfPage": 150
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Coffea+arabica&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-047",
+      "batch": 5,
+      "proposedLocalName": "Kamias",
+      "scientificName": "Averrhoa bilimbi",
+      "acceptedTaxonKey": "K326",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 47,
+        "heading": "Averrhoa Bilimbi",
+        "commonNames": "Kamias, Kalamias, Tag.; Kilingiwa, Vis.; Pias, Iloc.",
+        "printedPage": 60,
+        "pdfPage": 66
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Averrhoa+bilimbi&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-048",
+      "batch": 5,
+      "proposedLocalName": "Balimbing",
+      "scientificName": "Averrhoa carambola",
+      "acceptedTaxonKey": "K327",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 48,
+        "heading": "Averrhoa Carambola",
+        "commonNames": "Bilimbin, Balimbin, Tag.",
+        "printedPage": 60,
+        "pdfPage": 66
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Averrhoa+carambola&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-070",
+      "batch": 5,
+      "proposedLocalName": "Kasuy",
+      "scientificName": "Anacardium occidentale",
+      "acceptedTaxonKey": "DB6H",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 70,
+        "heading": "Anacardium occidentale",
+        "commonNames": "Kasuy, Tag.; Caskew Nut, Eng.",
+        "printedPage": 84,
+        "pdfPage": 90
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Anacardium+occidentale&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-126",
+      "batch": 5,
+      "proposedLocalName": "Bankundo",
+      "scientificName": "Morinda citrifolia",
+      "acceptedTaxonKey": "44DHL",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 126,
+        "heading": "Morinda citrifolia",
+        "commonNames": "Bankundo, Pankundo, Bag̃kuro, Nino, Kulit, Tumbog̃aso, Lino, Mambog, Takpus, Tag. and Vis.; Taliantar, Pam.; Apalot, Iloc.; Indian Mulberry, Indo-Eng.",
+        "printedPage": 148,
+        "pdfPage": 154
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Morinda+citrifolia&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-045",
+      "batch": 5,
+      "proposedLocalName": "Oxalis corniculata",
+      "scientificName": "Oxalis corniculata",
+      "acceptedTaxonKey": "75F72",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 45,
+        "heading": "Oxalis corniculata",
+        "commonNames": "Taig̃an dogá, Susokayoli, Tag.; Darasig, Vis.; Malabalugbug dagis, Ayo, Kongi, Yayo, Pam.; Indian Sorrel, Eng.",
+        "printedPage": 58,
+        "pdfPage": 64
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Oxalis+corniculata&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-054",
+      "batch": 5,
+      "proposedLocalName": "Kahel",
+      "scientificName": "Citrus aurantium",
+      "acceptedTaxonKey": "VMN6",
+      "scientificSynonyms": [
+        "Citrus bigaradia"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 54,
+        "heading": "Citrus Bigaradia",
+        "commonNames": "Naranjas del país, Sp.; Kahel, Kahil, Tag.; Native Orange, Eng.",
+        "printedPage": 66,
+        "pdfPage": 72
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Citrus+bigaradia&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-003",
+      "batch": 5,
+      "proposedLocalName": "Tsampaka",
+      "scientificName": "Magnolia champaca",
+      "acceptedTaxonKey": "3XH7J",
+      "scientificSynonyms": [
+        "Michelia champaca"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 3,
+        "heading": "Michelia Champaca, L.",
+        "commonNames": "Tsampaka, Sampaka, Tag.; Champaca, Fil.-Span.",
+        "printedPage": 19,
+        "pdfPage": 25
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Michelia+champaca&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-030",
+      "batch": 5,
+      "proposedLocalName": "Abutilon indicum",
+      "scientificName": "Abutilon indicum",
+      "acceptedTaxonKey": "8N57",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "book": {
+        "entry": 30,
+        "heading": "Abutilon Indicum",
+        "commonNames": "Kuakuakohan, Gilig̃-gilig̃an, Tag.; Tabig̃, Malis, Dulupag, Pilis, Vis.; Malvas de Castilla, Sp.-Fil.",
+        "printedPage": 43,
+        "pdfPage": 49
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Abutilon+indicum&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-032",
+      "batch": 5,
+      "proposedLocalName": "Kastuli",
+      "scientificName": "Abelmoschus moschatus",
+      "acceptedTaxonKey": "8K24",
+      "scientificSynonyms": [
+        "Hibiscus abelmoschus"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 32,
+        "heading": "Hibiscus Abelmoschus, L.",
+        "commonNames": "Kastuli, Kastio, Kastiogan, Dalupan, Tag.; Marikum, Dukum, Marukum, Marapoto, Vis.;2 Marsh Mallow, Eng.",
+        "printedPage": 45,
+        "pdfPage": 51
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Hibiscus+abelmoschus&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    },
+    {
+      "id": "research-pardo-130",
+      "batch": 5,
+      "proposedLocalName": "Ayapana",
+      "scientificName": "Ayapana triplinervis",
+      "acceptedTaxonKey": "LVYTG",
+      "scientificSynonyms": [
+        "Eupatorium ayapana"
+      ],
+      "localAliases": [],
+      "book": {
+        "entry": 130,
+        "heading": "Eupatorium Ayapana",
+        "commonNames": "Aya-pana, Sp.; Ayapana, Apana, Tag.; Ayapan, Indo-Eng.",
+        "printedPage": 149,
+        "pdfPage": 155
+      },
+      "taxonomyUrl": "https://api.gbif.org/v2/species/match?scientificName=Eupatorium+ayapana&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+      "identityReview": "PENDING",
+      "medicalReview": "PENDING",
+      "safetyNote": "Research candidate only. Verify historical species identity, Philippine occurrence, local names, plant parts, contraindications and modern evidence; food or ornamental use does not establish medicinal safety.",
+      "photo": null
+    }
+  ]
+}

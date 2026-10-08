@@ -143,3 +143,13 @@ The next focused gate is controlled browser session-outage/retry recovery, previ
 ## Refresh-owner cancellation repaired locally
 
 The preceding owner-path candidate is superseded by `REFRESH_OWNER_CANCELLATION_2026-10-01.md`: delayed owner cancellation was reproduced and repaired while preserving refresh for remaining callers. The combined frontend suite passes 85 cases, including native HTTP owner cancellation and remaining-caller recovery. Both cancellation repairs remain uncommitted and unpushed. Review, isolated CI, authorized release, and the blocked browser outage/retry check remain the next gates; no new live acceptance result is inferred from local regressions.
+
+## Cancellation combined review and isolated CI passed
+
+The preceding uncommitted status is superseded by reviewed CI-only commit `f3ec55af291f72f929e556cd9b82ef3598d09b50` on `codex/mvp-acceptance-ci`. Run `36859603474` passed 481 isolated backend tests, 85 frontend regressions, lint/typechecks, and the frontend build. Main and the deployment branch remain at `b95122a3a1bf486bd0f86e903f1a01c02808d788`. Consult the owner-cancellation report for actual job counts and review safeguards. The next gate is an authorized release of the exact tested commit followed by authenticated live checks. Controlled browser outage/retry remains separately blocked; prior healthy live checks do not validate the unpublished repair.
+
+## Cancellation release and protected-form recovery observed
+
+The preceding CI-only status is superseded by the authorized release of that exact commit to main and the deployment branch. Main CI `36860420196`, deployment CI `36860419767`, and Vercel/Railway statuses passed. Contributor Suggestions and administrator statistics restored after reload; rejected-list pagination and read-only audit access passed. Messenger retrieved and displayed the existing test history. No new functional failure was observed.
+
+The local preview remains policy-blocked, but the two protected forms' browser connection-failure/retry behavior is now observed safely on the published app: an isolated test tab blocked only its own session-check request, retained each route, and restored its contributor/form via Try again after the block was removed. This is not an induced production outage or a forced token-refresh timeout. Read `REFRESH_OWNER_CANCELLATION_2026-10-01.md` for exact evidence, screenshots, network-trace limits, and cleanup. Native/CI regressions remain the evidence for canceling callers waiting on a stalled shared refresh. Fresh account/email/password cycles, historical old-password rejection, genuine human tab resume, provider/query termination, and participant acceptance retain their distinct boundaries.

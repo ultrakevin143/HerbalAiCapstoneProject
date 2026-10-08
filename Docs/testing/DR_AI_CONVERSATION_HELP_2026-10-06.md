@@ -4,7 +4,7 @@
 
 The user reported that the child-related Lagundi conversation repeated a refusal instead of providing useful help. They then requested a different conversation and limited live requests to avoid exhausting Gemini quota.
 
-This repair is local and uncommitted. No Git push, provider deployment, database update, credential change, new herb publication, or frontend styling change was performed. The live checks below describe the existing deployment, not the repaired code.
+Current runtime release: **`741167b1b403a9d3ff8efa954233543151e13bb4`**, published to the existing deployment branch after both candidate CI gates passed. The final release section records the new live acceptance checks. Earlier sections preserve the initial local-only review and pre-release observations; they are not claims that the repair was already live at those earlier checkpoints. No live database mutation, credential change, new herb publication or frontend styling edit was part of this release.
 
 Reviewed production-code scope: `herbalaibackend/src/services/ai/chat/ask-ai-service.ts`, `herbalaibackend/src/services/ai/chat/conversation-context.ts` and `herbalaibackend/src/controllers/chat.controller.ts`. Regression suites: `herbalaibackend/tests/pediatric-conversation-help.test.ts` and `herbalaibackend/tests/chat-conversation-history.test.ts`. Unrelated working-tree changes were preserved.
 
@@ -116,3 +116,50 @@ Pre-push review confirmed:
 - CI uses an isolated GitHub Actions PostgreSQL/pgvector service. No live Neon test database, environment-variable change, migration change or new herb publication is part of this release.
 
 CI results, release identifiers and live observations will be recorded only after they are available. Production publication is conditional on successful checks for this exact candidate.
+
+## Published release and observed acceptance — 2026-10-06
+
+### Exact release and CI gates
+
+The reviewed six-file bundle was committed as **`741167b1b403a9d3ff8efa954233543151e13bb4`** (`Preserve Dr Ai conversation context and stream recovery`). Only the reviewed three production files, two regression files and the preflight report were committed.
+
+- Candidate general CI [37481501933](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37481501933): **success**, including backend lint/typecheck/full isolated Vitest and frontend lint/typecheck/build/recovery checks.
+- Dedicated PostgreSQL gate [37481502041](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37481502041): **success** for the same SHA. The Actions PostgreSQL service is an isolated fixture, not live Neon.
+- After both gates passed, the deployment branch was rechecked at the expected previous SHA and advanced by ordinary non-forced push to the exact candidate. Deployment-branch general CI [37481917644](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37481917644) also completed **success**.
+- `codex/mvp-acceptance-ci` and `codex/readability-accessibility` resolve to `741167b`; `main` was deliberately left unchanged at `95cf807`. This release did not merge the unrelated working-tree backlog into main.
+
+The complete native-database CI gate now passed for the reviewed candidate; the earlier 20-file exclusion caveat applies to the local non-database runs only. The visible job logs were virtualized, and the unauthenticated raw-log download was unavailable, so no unobserved total native CI test count is claimed. The recorded 1,228/21 counts above remain the observed clean local counts.
+
+### Provider verification
+
+- [Vercel deployment DR4RHEBZWfSc5TJPJGEeVSSpvuB7](https://vercel.com/kevinmercado987-gmailcoms-projects/herbal-ai-staging/DR4RHEBZWfSc5TJPJGEeVSSpvuB7) visibly showed **Ready**, **Production**, the current `herbalaiph.vercel.app` domain, deployment branch and exact `741167b` commit. This was not a preview being mistaken for production. GitHub's matching provider status reported success at **22:47:53 Asia/Manila**.
+- [Railway deployment a51a8705-542e-47a7-962d-decd96093d6c](https://railway.com/project/49a41584-6098-4e37-8431-1d749a52947f/service/b40dce3f-1530-47a5-a4c3-d281b0907a71?id=a51a8705-542e-47a7-962d-decd96093d6c&environmentId=5b714e12-a15a-4441-b976-835f3a1e5f31) visibly showed **Active**, **Deployment successful**, the exact commit and existing branch/backend root. The matching provider status reported success at **22:48:51 Asia/Manila**.
+- A fresh `/api/health` returned success after rollout. The public catalog returned success and **38 records**, unchanged from the pre-release check. Health alone is not counted as full workflow validation.
+- No provider variable, database connection, migration, domain, account role or credential was changed. No herb record, suggestion or comment was created or deleted.
+
+### Small live acceptance conversation
+
+The existing signed-in Mercado Chrome session was used. Exactly **four spaced prompts** were submitted in one new Sambong conversation; there was no live load test or deliberate provider outage.
+
+1. `Educational QA: what botanical identity and reference titles does the Library record for Sambong for a 6-year-old? Do not provide preparation or dose instructions.` The completed answer supplied `Blumea balsamifera`, the PITAHC reference title, a Sambong source chip and useful next steps while withholding child preparation/dose instructions.
+2. `Which references document it? Please keep this to botanical identity and source titles, without a recipe or dose.` The completed answer retained Sambong, acknowledged the earlier child context and supplied the same recorded identity/reference facts. The introductory wording differed from the first reply.
+3. `For a separate adult educational question, what preparation is documented for a 24-year-old using Sambong? Keep source limitations; do not invent amounts, steps, timing, or a dose.` A generated, referenced adult answer completed instead of incorrectly retaining the child refusal. Its displayed preparation actions and general frequency matched the public Sambong record; child ingredient tables were not repeated. This is comparison with repository wording, not a new clinical validation of that source.
+4. `What is its scientific name, and which references are recorded? No recipe or dose.` The generated follow-up retained Sambong and answered with `Blumea balsamifera` and the PITAHC reference rather than repeating the child-use refusal or introducing a different plant.
+
+The composer became enabled after each reply. No live quota error, blank success or indefinitely loading response was observed. The first two replies follow the deterministic pediatric branch; only the two adult-topic replies require generation in the reviewed code. No server-side Gemini quota counter was inspected, so the observation does not establish unlimited quota.
+
+The latest Sambong source chip opened the correct Library detail modal (`h-25e54a1f7aaba3fc`), with the same identity, preparation and reference entry. Reloading that Library page retained the signed-in Mercado Kevin account and reopened the detail entry. The tab's captured error-log query returned an empty list; this is scoped browser evidence, not proof that all users or all pages are error-free.
+
+### Evidence, limits and study handoff
+
+Evidence is saved outside Git in `C:\Users\Hp\.codex\tmp\dr-ai-release-20261006`: candidate/deployment CI status JSON, provider status JSON, the visible Vercel/Railway release snapshots, the four-question transcript, `live-ai-acceptance.png`, the public Sambong record and the citation/refresh snapshot. An attempted final GitHub DOM export timed out after the other evidence files were saved; the independent CI API results and observed job success were already recorded. This was an evidence-export limitation, not a reproduced application failure.
+
+No new functional blocker was observed in these release checks. Partial-stream errors, empty generation and long-history limits remain verified by local/CI regression tests, not induced production failures. This focused acceptance does not substitute for unperformed manual password, physical-device or participant checks elsewhere in the project.
+
+Operational notes that should not be hidden:
+
+- The successful CI job still displays an Actions runtime-deprecation warning and an upcoming `ubuntu-latest` image-change notice. These are maintenance notices, not failed checks or application errors; workflow upgrades were kept out of this focused release.
+- Railway's visible account notice showed **12 days or $4.12 left** during inspection. Confirm sufficient hosting allowance before the defense/demo; no payment or plan change was made, and that displayed value is not a guarantee of remaining service lifetime.
+- Keep the tested runtime release stable while studying. Unrelated auth/mail/frontend edits and the unpublished fifty-herb expansion remain separate, unreviewed release work rather than being silently included here.
+
+The runtime is pinned to the tested commit. These final observed-result notes are saved locally after publication; they do not trigger a second report-only production deployment. Passing the documented gates reduces risk but is not a guarantee that software, provider quota or connectivity can never fail.

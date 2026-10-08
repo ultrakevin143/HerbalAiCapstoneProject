@@ -230,9 +230,15 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Navigation Dropdown */}
+        {/* Mobile Navigation Floating Overlay (prevents layout shift / pushing content) */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden mt-3 max-h-[calc(100dvh-5.5rem)] overflow-y-auto border-t border-black/10 pt-3 pb-2 dark:border-line animate-in fade-in slide-in-from-top-2 duration-200">
+          <>
+            <div
+              className="fixed inset-0 top-[56px] z-40 bg-black/50 backdrop-blur-sm lg:hidden animate-in fade-in duration-200"
+              onClick={() => setIsMobileMenuOpen(false)}
+              aria-hidden="true"
+            />
+            <div className="absolute top-full left-0 right-0 z-50 lg:hidden max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-b border-line bg-panel/95 backdrop-blur-xl px-4 py-4 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="mb-3 flex items-center justify-between rounded-xl border border-line bg-panel px-3 py-2">
               <span className="text-sm font-bold text-ink">Display preferences</span>
               <DisplayPreferences
@@ -325,6 +331,7 @@ export default function Navbar() {
               )}
             </div>
           </div>
+          </>
         )}
       </nav>
 

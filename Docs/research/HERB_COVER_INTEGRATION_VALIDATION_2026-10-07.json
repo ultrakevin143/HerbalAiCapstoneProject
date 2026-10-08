@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "status": "MEDIA_FOLLOW_UP_VALIDATED_RELEASE_HELD",
+  "checkedAt": "2026-10-07T00:35:28Z",
+  "branch": "codex/mvp-acceptance-ci",
+  "gitHead": "741167b",
+  "suites": [
+    {
+      "command": "npx vitest run tests/herb-expansion-media-follow-up.test.ts tests/herb-expansion-release-preflight.test.ts tests/herb-third-ten-field-drafts.test.ts tests/herb-fourth-ten-field-drafts.test.ts tests/herb-fifth-ten-field-drafts.test.ts tests/herb-expansion-review.test.ts tests/herb-expansion-staging-plan.test.ts tests/herb-expansion-field-research.test.ts tests/herb-expansion-occurrence-research.test.ts tests/herb-first-ten-content-review.test.ts tests/herb-first-ten-preparation-supplement.test.ts tests/herb-second-ten-content-review.test.ts tests/herb-second-ten-photo-review.test.ts tests/herb-identity-media-follow-up.test.ts tests/herb-fifty-live-release-audit.test.ts tests/stuartxchange-preparation-review.test.ts tests/herb-third-ten-preparation-review.test.ts tests/herb-fourth-ten-preparation-review.test.ts tests/herb-fifth-ten-preparation-review.test.ts tests/herb-cover-replacement-research.test.ts tests/herb-preparation-public-review.test.ts tests/herb-preparation-rag.test.ts tests/herb-preparation-review.test.ts tests/herb-preparation-update.test.ts tests/built-in-herb-fields.test.ts tests/herb-preparation-ci.test.ts tests/herb-preparation-isolated-runner.test.ts tests/herb-taxonomic-identity.test.ts tests/herb-remaining-photo-leads.test.ts tests/herb-remaining-thirty-intake.test.ts tests/herb-remaining-thirty-visual-review.test.ts tests/herb-seventeen-media-delivery.test.ts tests/talisay-preparation-follow-up.test.ts tests/herb-provider-target-follow-up.test.ts",
+      "files": 34,
+      "passed": 566,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "command": "npx vitest run tests/herb-expansion-media-follow-up.test.ts",
+      "files": 1,
+      "passed": 46,
+      "failed": 0,
+      "exitCode": 0,
+      "repeatNotAdditionalDistinctTests": true
+    }
+  ],
+  "distinctTestFiles": 34,
+  "distinctPassingTests": 566,
+  "backendTypecheck": {
+    "command": "npx tsc --noEmit",
+    "exitCode": 0
+  },
+  "strictTypecheck": {
+    "command": "npx tsc --noEmit --target esnext --module nodenext --moduleResolution nodenext --strict --exactOptionalPropertyTypes --noUncheckedIndexedAccess --skipLibCheck prisma/check-herb-expansion-release.ts prisma/find-herb-cover-replacements.ts tests/herb-expansion-media-follow-up.test.ts tests/herb-fourth-ten-field-drafts.test.ts tests/herb-fifth-ten-field-drafts.test.ts",
+    "exitCode": 0
+  },
+  "targetedLint": {
+    "command": "npx eslint src/content/herb-expansion-media-follow-up.ts src/content/herb-expansion-release-preflight.ts prisma/check-herb-expansion-release.ts prisma/find-herb-cover-replacements.ts tests/herb-expansion-media-follow-up.test.ts tests/herb-fourth-ten-field-drafts.test.ts tests/herb-fifth-ten-field-drafts.test.ts",
+    "exitCode": 0
+  },
+  "gitWhitespaceCheckExitCode": 0,
+  "localReceiptValidation": { "filesChecked": 14, "jsonFilesParsed": 5, "trailingWhitespace": false, "finalNewlines": true },
+  "publicPreflight": {
+    "receiptFile": "HERB_COVER_INTEGRATION_PUBLIC_PREFLIGHT_2026-10-07.json",
+    "checkedAt": "2026-10-07T00:32:29.467Z",
+    "checkerConfirmation": {
+      "checkedAt": "2026-10-07T00:32:57.768Z",
+      "checkerExitCode": 2,
+      "countsMatched": true,
+      "stderr": ""
+    },
+    "counts": {
+      "candidates": 50,
+      "livePublicHerbs": 38,
+      "draftPlansPresent": 50,
+      "partialContentDrafts": 6,
+      "fullContentDrafts": 44,
+      "missingFullContentDrafts": 6,
+      "missingSelectedCovers": 11,
+      "heldSecondaryIdentities": 2,
+      "publicIdentityConflicts": 0,
+      "publicationCleared": 0
+    }
+  },
+  "historicalReceiptsUnchanged": [
+    {
+      "file": "HERB_FIFTY_LIVE_RELEASE_AUDIT_2026-10-06.json",
+      "sha256": "c2b7074642d05aa44282517e8b0dd89fdfc9ddff3d0801a56d86136a1ae7954b"
+    },
+    {
+      "file": "HERB_REPLACEMENT_MEDIA_REVIEW_2026-10-07.json",
+      "sha256": "6d082f6b35ca710bbc5b28c878b3597ec3f598142930283445cff8598b38caf3"
+    }
+  ],
+  "isolatedDatabaseExecutables": {
+    "docker": false,
+    "psql": false,
+    "postgres": false
+  },
+  "productionWrites": 0,
+  "cloudinaryUploadsThisBatch": 0,
+  "aiProviderRequests": 0,
+  "gitCommits": 0,
+  "gitPushes": 0,
+  "limitations": [
+    "Targeted unit/contract and mocked RAG suites are not a real PostgreSQL import/rollback/concurrency run or full live MVP acceptance.",
+    "No expert botanical/medical reviewer, preparation-dose clearance or publication was granted.",
+    "Historical receipt assertions normalize checkout line endings; neither receipt was edited.",
+    "Initial strict typing errors in the new helper were repaired before final type checks. Full-output shell capture propagated exit 1; direct child-process capture confirmed intentional checker exit 2."
+  ]
+}

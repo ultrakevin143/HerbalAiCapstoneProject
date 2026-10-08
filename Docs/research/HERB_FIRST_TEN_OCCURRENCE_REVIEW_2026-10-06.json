@@ -1,0 +1,314 @@
+{
+  "schemaVersion": 1,
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "reviewedAt": "2026-10-06",
+  "status": "OCCURRENCE_REVIEW_NOT_IMPORTABLE",
+  "publicationAllowed": false,
+  "stagingAllowed": false,
+  "productionWritesPerformed": false,
+  "scope": "First ten candidates only. Bounded Philippine occurrence prose for a future draft, not clinical clearance, an exhaustive distribution map or import authorization.",
+  "sources": [
+    {
+      "id": "duhat-kew-occurrence",
+      "kind": "BOTANICAL_OCCURRENCE",
+      "title": "Kew POWO: Syzygium cumini distribution",
+      "url": "https://powo.science.kew.org/taxon/601603-1",
+      "limitation": "Country-level botanical distribution only; not evidence of native status, occurrence in every province or medicinal safety.",
+      "supports": [
+        "regionFound"
+      ],
+      "reviewedAt": "2026-10-06",
+      "reviewLocator": "Distribution > Introduced into: Philippines.",
+      "accessNote": "Kew species page and its distribution section inspected through web browsing.",
+      "claims": [
+        {
+          "scientificName": "Syzygium cumini",
+          "geographicScope": "COUNTRY_ONLY",
+          "regionFound": "Philippines; Kew lists this species as introduced. The reviewed country-level listing does not establish a province-by-province range."
+        }
+      ]
+    },
+    {
+      "id": "tamarind-denr",
+      "kind": "BOTANICAL_OCCURRENCE",
+      "title": "DENR Philippine Guidebook on Plant Species Suitable for Urban Greening: Sampaloc",
+      "url": "https://forestry.denr.gov.ph/fmb_web/wp-content/uploads/2023/06/Philippine-Guidebook-on-Plant-Species-Suitable-for-Urban-Greening-EBOOK_compressed.pdf",
+      "limitation": "Philippine naturalization description, not a complete geographic inventory or proof of efficacy.",
+      "supports": [
+        "regionFound"
+      ],
+      "reviewedAt": "2026-10-06",
+      "reviewLocator": "Printed page 55, Sampaloc / Tamarindus indica: Non-Native; Philippine naturalization described.",
+      "accessNote": "Primary DENR PDF entry obtained through the web search index; direct PDF fetch failed in this follow-up. The earlier preparation review inspected printed page 55. No new PDF visual inspection is claimed.",
+      "claims": [
+        {
+          "scientificName": "Tamarindus indica",
+          "geographicScope": "COUNTRY_ONLY",
+          "regionFound": "Philippines; DENR describes Sampalok as non-native and naturalized, including areas without human settlement. Specific provincial locations were not established in this review."
+        }
+      ]
+    },
+    {
+      "id": "atis-cdf-occurrence",
+      "kind": "BOTANICAL_OCCURRENCE",
+      "title": "Co's Digital Flora of the Philippines: Annonaceae, Annona squamosa",
+      "url": "https://www.philippineplants.org/Families/Annonaceae.html",
+      "limitation": "The reviewed entry explicitly records Palawan; do not borrow other Annona species' provincial lists or infer an exhaustive range.",
+      "supports": [
+        "regionFound"
+      ],
+      "reviewedAt": "2026-10-06",
+      "reviewLocator": "Annona (Not native), species 3: Annona squamosa; PALAWAN; Naturalized. Section edited 7 August 2025.",
+      "accessNote": "Exact species entry inspected through web browsing.",
+      "claims": [
+        {
+          "scientificName": "Annona squamosa",
+          "geographicScope": "SPECIFIC_LOCALITY",
+          "regionFound": "Palawan, Philippines; Co's Digital Flora lists Annona squamosa there as naturalized. This is a documented locality, not a claim that the species is absent elsewhere."
+        }
+      ]
+    },
+    {
+      "id": "talisay-kew-occurrence",
+      "kind": "BOTANICAL_OCCURRENCE",
+      "title": "Kew POWO: Terminalia catappa distribution",
+      "url": "https://powo.science.kew.org/taxon/171034-1",
+      "limitation": "Country-level native-range record only; not a nationwide locality survey or evidence of safe medicinal bark use.",
+      "supports": [
+        "regionFound"
+      ],
+      "reviewedAt": "2026-10-06",
+      "reviewLocator": "Distribution > Native to: Philippines.",
+      "accessNote": "Kew species page and its distribution section inspected through web browsing.",
+      "claims": [
+        {
+          "scientificName": "Terminalia catappa",
+          "geographicScope": "COUNTRY_ONLY",
+          "regionFound": "Philippines; Kew includes the country in this species' native range. Specific provincial locations were not established in this review."
+        }
+      ]
+    },
+    {
+      "id": "clitoria-kew-occurrence",
+      "kind": "BOTANICAL_OCCURRENCE",
+      "title": "Kew POWO: Clitoria ternatea distribution",
+      "url": "https://powo.science.kew.org/taxon/486606-1",
+      "limitation": "Country-level botanical distribution only; not proof of Philippine native status or safety of medicinal roots and seeds.",
+      "supports": [
+        "regionFound"
+      ],
+      "reviewedAt": "2026-10-06",
+      "reviewLocator": "Distribution > Introduced into: Philippines.",
+      "accessNote": "Kew species page and its distribution section inspected through web browsing.",
+      "claims": [
+        {
+          "scientificName": "Clitoria ternatea",
+          "geographicScope": "COUNTRY_ONLY",
+          "regionFound": "Philippines; Kew lists this species as introduced. The reviewed country-level listing does not establish a province-by-province range."
+        }
+      ]
+    },
+    {
+      "id": "dapar-2020",
+      "kind": "PHILIPPINE_ETHNOBOTANY",
+      "title": "Dapar et al. (2020): medicinal plants documented by the Agusan Manobo in Agusan del Sur",
+      "url": "https://doi.org/10.1186/s13002-020-00363-7",
+      "limitation": "Voucher-linked study-area documentation, not clinical validation, proof of native status, or a species-specific occurrence record for each of the three sites.",
+      "supports": [
+        "regionFound"
+      ],
+      "reviewedAt": "2026-10-06",
+      "reviewLocator": "Study area and fieldwork sections; Table 4 rows 4 (Mangga, USTH 015591), 40 (Kapayas laki, USTH 015668) and 80 (Santol, USTH 015624).",
+      "accessNote": "Publisher study-area text inspected through web browsing; exact Table 4 species/voucher rows retrieved read-only from the publisher HTML. No plant-specific collection municipality was inferred from pooled data.",
+      "claims": [
+        {
+          "scientificName": "Mangifera indica",
+          "geographicScope": "STUDY_AREA",
+          "regionFound": "Agusan del Sur, Philippines; documented in the Agusan Manobo study covering Bayugan, Esperanza and Sibagat. The pooled species table does not establish occurrence at every study site or elsewhere in the country."
+        },
+        {
+          "scientificName": "Sandoricum koetjape",
+          "geographicScope": "STUDY_AREA",
+          "regionFound": "Agusan del Sur, Philippines; documented in the Agusan Manobo study covering Bayugan, Esperanza and Sibagat. The pooled species table does not establish occurrence at every study site or elsewhere in the country."
+        },
+        {
+          "scientificName": "Carica papaya",
+          "geographicScope": "STUDY_AREA",
+          "regionFound": "Agusan del Sur, Philippines; documented in the Agusan Manobo study covering Bayugan, Esperanza and Sibagat. The pooled species table does not establish occurrence at every study site or elsewhere in the country."
+        }
+      ]
+    },
+    {
+      "id": "pomegranate-makiling-flora",
+      "kind": "BOTANICAL_OCCURRENCE",
+      "title": "Vascular Flora of Mount Makiling and Vicinity: Punicaceae, Punica granatum",
+      "url": "https://nast.dost.gov.ph/images/pdf%20files/Publications/Other%20Publications%20of%20NAST/Vascular%20Flora%20of%20Mount%20Makiling%20and%20Vicinity/115%20Punicaceae.pdf",
+      "limitation": "Local cultivated record; do not attach the preceding species' stream/forest distribution to Punica granatum.",
+      "supports": [
+        "regionFound"
+      ],
+      "reviewedAt": "2026-10-06",
+      "reviewLocator": "Printed page 523: Punica granatum, commercial nurseries at Los Baños, Laguna; exsiccatae Gates CA 1954 and Lugod CA 7027 (CAHP). The preceding Loktob paragraph is not this species.",
+      "accessNote": "Exact primary NAST-hosted PDF species entry obtained through the web search index. Direct fetch and screenshot timed out; no new full-PDF visual inspection is claimed.",
+      "claims": [
+        {
+          "scientificName": "Punica granatum",
+          "geographicScope": "SPECIFIC_LOCALITY",
+          "regionFound": "Los Baños, Laguna, Philippines; the Mount Makiling flora records Punica granatum cultivated in commercial nurseries there. This is cultivation evidence, not a claim of native or nationwide wild distribution."
+        }
+      ]
+    },
+    {
+      "id": "chico-ust",
+      "kind": "BOTANICAL_OCCURRENCE",
+      "title": "University of Santo Tomas Manila Campus Plant Database: Chico",
+      "url": "https://www.ust.edu.ph/ust-manila-plant-databse/chico/",
+      "limitation": "Institutional cultivation description only; a campus-database heading is not proof of a geolocated wild specimen or native Philippine status.",
+      "supports": [
+        "regionFound"
+      ],
+      "reviewedAt": "2026-10-06",
+      "reviewLocator": "Chico / Manilkara zapota (L.) P.Royen, Facts: Philippine cultivation description.",
+      "accessNote": "Primary university page obtained through web search after direct open returned an error. No campus specimen coordinates or inventory count were verified.",
+      "claims": [
+        {
+          "scientificName": "Manilkara zapota",
+          "geographicScope": "COUNTRY_ONLY",
+          "regionFound": "Philippines; the UST plant database describes Chico as grown in the country. Its general cultivation description does not establish specific provinces or a wild range."
+        }
+      ]
+    }
+  ],
+  "records": [
+    {
+      "candidateId": "research-pardo-098",
+      "localName": "Duhat",
+      "scientificName": "Syzygium cumini",
+      "bookEntry": 98,
+      "printedPage": 114,
+      "proposedRegionFound": "Philippines; Kew lists this species as introduced. The reviewed country-level listing does not establish a province-by-province range.",
+      "geographicScope": "COUNTRY_ONLY",
+      "occurrenceSourceIds": [
+        "duhat-kew-occurrence"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-088",
+      "localName": "Sampalok",
+      "scientificName": "Tamarindus indica",
+      "bookEntry": 88,
+      "printedPage": 104,
+      "proposedRegionFound": "Philippines; DENR describes Sampalok as non-native and naturalized, including areas without human settlement. Specific provincial locations were not established in this review.",
+      "geographicScope": "COUNTRY_ONLY",
+      "occurrenceSourceIds": [
+        "tamarind-denr"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-005",
+      "localName": "Atis",
+      "scientificName": "Annona squamosa",
+      "bookEntry": 5,
+      "printedPage": 20,
+      "proposedRegionFound": "Palawan, Philippines; Co's Digital Flora lists Annona squamosa there as naturalized. This is a documented locality, not a claim that the species is absent elsewhere.",
+      "geographicScope": "SPECIFIC_LOCALITY",
+      "occurrenceSourceIds": [
+        "atis-cdf-occurrence"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-094",
+      "localName": "Talisay",
+      "scientificName": "Terminalia catappa",
+      "bookEntry": 94,
+      "printedPage": 110,
+      "proposedRegionFound": "Philippines; Kew includes the country in this species' native range. Specific provincial locations were not established in this review.",
+      "geographicScope": "COUNTRY_ONLY",
+      "occurrenceSourceIds": [
+        "talisay-kew-occurrence"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-077",
+      "localName": "Butterfly pea",
+      "scientificName": "Clitoria ternatea",
+      "bookEntry": 77,
+      "printedPage": 92,
+      "proposedRegionFound": "Philippines; Kew lists this species as introduced. The reviewed country-level listing does not establish a province-by-province range.",
+      "geographicScope": "COUNTRY_ONLY",
+      "occurrenceSourceIds": [
+        "clitoria-kew-occurrence"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-069",
+      "localName": "Mangga",
+      "scientificName": "Mangifera indica",
+      "bookEntry": 69,
+      "printedPage": 82,
+      "proposedRegionFound": "Agusan del Sur, Philippines; documented in the Agusan Manobo study covering Bayugan, Esperanza and Sibagat. The pooled species table does not establish occurrence at every study site or elsewhere in the country.",
+      "geographicScope": "STUDY_AREA",
+      "occurrenceSourceIds": [
+        "dapar-2020"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-063",
+      "localName": "Santol",
+      "scientificName": "Sandoricum koetjape",
+      "bookEntry": 63,
+      "printedPage": 77,
+      "proposedRegionFound": "Agusan del Sur, Philippines; documented in the Agusan Manobo study covering Bayugan, Esperanza and Sibagat. The pooled species table does not establish occurrence at every study site or elsewhere in the country.",
+      "geographicScope": "STUDY_AREA",
+      "occurrenceSourceIds": [
+        "dapar-2020"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-104",
+      "localName": "Papaya",
+      "scientificName": "Carica papaya",
+      "bookEntry": 104,
+      "printedPage": 123,
+      "proposedRegionFound": "Agusan del Sur, Philippines; documented in the Agusan Manobo study covering Bayugan, Esperanza and Sibagat. The pooled species table does not establish occurrence at every study site or elsewhere in the country.",
+      "geographicScope": "STUDY_AREA",
+      "occurrenceSourceIds": [
+        "dapar-2020"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-102",
+      "localName": "Granada",
+      "scientificName": "Punica granatum",
+      "bookEntry": 102,
+      "printedPage": 120,
+      "proposedRegionFound": "Los Baños, Laguna, Philippines; the Mount Makiling flora records Punica granatum cultivated in commercial nurseries there. This is cultivation evidence, not a claim of native or nationwide wild distribution.",
+      "geographicScope": "SPECIFIC_LOCALITY",
+      "occurrenceSourceIds": [
+        "pomegranate-makiling-flora"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-137",
+      "localName": "Chico",
+      "scientificName": "Manilkara zapota",
+      "bookEntry": 137,
+      "printedPage": 156,
+      "proposedRegionFound": "Philippines; the UST plant database describes Chico as grown in the country. Its general cultivation description does not establish specific provinces or a wild range.",
+      "geographicScope": "COUNTRY_ONLY",
+      "occurrenceSourceIds": [
+        "chico-ust"
+      ],
+      "publicationAllowed": false
+    }
+  ]
+}

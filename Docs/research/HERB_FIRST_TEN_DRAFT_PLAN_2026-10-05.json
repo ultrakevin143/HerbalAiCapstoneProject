@@ -1,0 +1,768 @@
+{
+  "status": "DRAFT_PLAN_NOT_EXECUTABLE",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "auditedAt": "2026-10-05T01:23:06.155Z",
+  "snapshotCapturedAt": "2026-10-05T01:13:24.305Z",
+  "comparisonScope": "ALL_HERB_AND_SUGGESTION_STATES",
+  "target": {
+    "projectId": "falling-block-62836604",
+    "branchId": "br-still-waterfall-aqtagztm",
+    "database": "neondb"
+  },
+  "writeAllowed": false,
+  "publicationAllowed": false,
+  "comparedHerbs": 38,
+  "comparedSuggestions": 17,
+  "conflicts": [],
+  "blockers": [
+    "Isolated database staging, rollback and concurrent-write tests have not been run; this planner cannot write to a database.",
+    "A future writer must re-read all identities inside its transaction and prevent competing Herb/SuggestedHerb writes. A saved snapshot is not a concurrency guarantee.",
+    "The selected Neon branch has not been independently matched to Railway's configured database target."
+  ],
+  "draftRows": [
+    {
+      "candidateId": "research-pardo-098",
+      "identityNotes": {
+        "acceptedTaxonKey": "545XT",
+        "scientificSynonyms": [
+          "Eugenia jambolana"
+        ],
+        "localAliases": [
+          "Lomboy"
+        ],
+        "taxonomyUrl": "https://powo.science.kew.org/taxon/601603-1",
+        "checklistMatchUrl": "https://api.gbif.org/v2/species/match?scientificName=Eugenia+jambolana&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+        "philippineOccurrence": "INTRODUCED_LISTED_BY_KEW"
+      },
+      "reviewGaps": [
+        "Plant-part-specific medical review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation"
+      ],
+      "uncitedFields": [],
+      "modernEvidenceNote": "In a 27-person, 28-day randomized trial, the studied leaf tea did not reduce fasting glucose. This result must not be extrapolated to every plant part.",
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-098",
+        "localName": "Duhat",
+        "scientificName": "Syzygium cumini",
+        "sourceScientificName": "Eugenia Jambolana",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical text records digestive uses and a seed-related diabetes claim. These reports do not establish a treatment benefit.",
+        "preparationMethod": "No medicinal preparation instructions cleared in this review.",
+        "dosage": "No validated medicinal dose established in the reviewed sources.",
+        "warnings": "Do not present this plant as a replacement for prescribed diabetes care. Medicinal doses for other parts are not established by the reviewed sources.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/duhat_syzygium_cumini_cc0_607793783_kbwizf.jpg",
+        "imageCreator": "damienxw",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/334663067",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; downloaded large derivative without editing",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "limitation": "Historical descriptions and treatment claims; not modern clinical validation. Entry and page are recorded separately for each plant.",
+          "supports": [
+            "medicinalUses"
+          ]
+        },
+        {
+          "id": "duhat-leaf-trial",
+          "kind": "HUMAN_TRIAL",
+          "title": "The efficacy of folk medicines in the management of type 2 diabetes mellitus: results of a randomized controlled trial of Syzygium cumini",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/16476114/",
+          "limitation": "Small, short trial of leaf tea; not evidence about every plant part or formulation.",
+          "supports": [
+            "evidenceReview",
+            "warnings"
+          ]
+        },
+        {
+          "id": "duhat-nparks",
+          "kind": "BOTANICAL_DESCRIPTION",
+          "title": "NParks Flora & Fauna Web: Syzygium cumini",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/3/1/3158",
+          "limitation": "Used for visible botanical features, not proof of medicinal efficacy, a safe dose or the photographed plant's Philippine origin.",
+          "supports": [
+            "imageIdentity"
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-088",
+      "identityNotes": {
+        "acceptedTaxonKey": "54M92",
+        "scientificSynonyms": [],
+        "localAliases": [],
+        "taxonomyUrl": "https://powo.science.kew.org/taxon/520167-1",
+        "checklistMatchUrl": "https://api.gbif.org/v2/species/match?scientificName=Tamarindus+indica&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+        "philippineOccurrence": "NON_NATIVE_NATURALIZED_DENR"
+      },
+      "reviewGaps": [
+        "Plant-part-specific medical review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation"
+      ],
+      "uncitedFields": [],
+      "modernEvidenceNote": "No human efficacy study was reviewed for this candidate in this batch.",
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-088",
+        "localName": "Sampalok",
+        "scientificName": "Tamarindus indica",
+        "sourceScientificName": "Tamarindus Indica",
+        "category": "Uncategorized",
+        "medicinalUses": "The book describes fruit-pulp use as a mild laxative and refreshment. This historical report is not a validated treatment recommendation.",
+        "preparationMethod": "No medicinal preparation instructions cleared in this review.",
+        "dosage": "No validated medicinal dose established in the reviewed sources.",
+        "warnings": "Food use does not establish the safety of medicinal leaf preparations. Do not reproduce the historical convulsion-related bath instructions as treatment advice.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791161286/sampalok_tamarindus_indica_cc0_580527782_yfyfsb.jpg",
+        "imageCreator": "lynnharper",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/321030761",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; downloaded large derivative without editing",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "limitation": "Historical descriptions and treatment claims; not modern clinical validation. Entry and page are recorded separately for each plant.",
+          "supports": [
+            "medicinalUses",
+            "warnings"
+          ]
+        },
+        {
+          "id": "tamarind-nparks",
+          "kind": "BOTANICAL_DESCRIPTION",
+          "title": "NParks Flora & Fauna Web: Tamarindus indica",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/3/1/3174",
+          "limitation": "Used here for pod and leaflet identification. Singapore occurrence is not evidence of Philippine occurrence.",
+          "supports": [
+            "imageIdentity"
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-005",
+      "identityNotes": {
+        "acceptedTaxonKey": "674D7",
+        "scientificSynonyms": [
+          "Anona squamosa"
+        ],
+        "localAliases": [],
+        "taxonomyUrl": "https://powo.science.kew.org/taxon/72319-1",
+        "checklistMatchUrl": "https://api.gbif.org/v2/species/match?scientificName=Anona+squamosa&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+        "philippineOccurrence": "LOCAL_FLORA_LISTED"
+      },
+      "reviewGaps": [
+        "Plant-part-specific medical review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation"
+      ],
+      "uncitedFields": [],
+      "modernEvidenceNote": "The reviewed human case series concerns injury, not medicinal efficacy. No therapeutic human dose was cleared.",
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-005",
+        "localName": "Atis",
+        "scientificName": "Annona squamosa",
+        "sourceScientificName": "Anona squamosa",
+        "category": "Uncategorized",
+        "medicinalUses": "The book records astringent uses and a seed preparation for scalp parasites. The seed recipe is withheld because human injury has been reported.",
+        "preparationMethod": "No medicinal preparation instructions cleared in this review.",
+        "dosage": "No validated medicinal dose established in the reviewed sources.",
+        "warnings": "Seed paste or powder exposure can injure the eyes. Do not recommend the historical scalp or eye-adjacent recipe.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/atis_annona_squamosa_cc0_96588239_kud7zl.jpg",
+        "imageCreator": "bird_biochemist",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/60405094",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; downloaded large derivative without editing",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "limitation": "Historical descriptions and treatment claims; not modern clinical validation. Entry and page are recorded separately for each plant.",
+          "supports": [
+            "medicinalUses"
+          ]
+        },
+        {
+          "id": "atis-eye-injury",
+          "kind": "HUMAN_SAFETY_REPORT",
+          "title": "Annona squamosa seed exposure: ocular toxicity case-series evidence",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5056555/",
+          "limitation": "Human injury reports, not a therapeutic efficacy study. The PMC page was unavailable to the browsing tool on 2026-10-05.",
+          "supports": [
+            "evidenceReview",
+            "warnings"
+          ]
+        },
+        {
+          "id": "atis-nparks",
+          "kind": "BOTANICAL_DESCRIPTION",
+          "title": "NParks Flora & Fauna Web: Annona squamosa",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/7/2713",
+          "limitation": "Used for visible botanical features, not proof of medicinal efficacy, a safe dose or the photographed plant's Philippine origin.",
+          "supports": [
+            "imageIdentity"
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-094",
+      "identityNotes": {
+        "acceptedTaxonKey": "55G3X",
+        "scientificSynonyms": [],
+        "localAliases": [],
+        "taxonomyUrl": "https://powo.science.kew.org/taxon/171034-1",
+        "checklistMatchUrl": "https://api.gbif.org/v2/species/match?scientificName=Terminalia+catappa&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+        "philippineOccurrence": "NATIVE_LISTED_BY_KEW"
+      },
+      "reviewGaps": [
+        "Plant-part-specific medical review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation",
+        "No plant-part-specific safety source reviewed; warnings are an unresolved review note, not a cited safety finding."
+      ],
+      "uncitedFields": [
+        "warnings"
+      ],
+      "modernEvidenceNote": "No human efficacy study was reviewed for this candidate in this batch.",
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-094",
+        "localName": "Talisay",
+        "scientificName": "Terminalia catappa",
+        "sourceScientificName": "Terminalia Catappa",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical text describes bark as an astringent for digestive complaints and external applications. This is historical documentation, not clinical validation.",
+        "preparationMethod": "No medicinal preparation instructions cleared in this review.",
+        "dosage": "No validated medicinal dose established in the reviewed sources.",
+        "warnings": "A safe human medicinal dose and contraindications for bark preparations remain unresolved in this review.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/talisay_terminalia_catappa_cc0_264306526_mi6yke.jpg",
+        "imageCreator": "stekkelpak",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/153059089",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; downloaded large derivative without editing",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "limitation": "Historical descriptions and treatment claims; not modern clinical validation. Entry and page are recorded separately for each plant.",
+          "supports": [
+            "medicinalUses"
+          ]
+        },
+        {
+          "id": "talisay-npdc",
+          "kind": "BOTANICAL_DESCRIPTION",
+          "title": "National Parks Development Committee: Talisay",
+          "url": "https://npdc.gov.ph/inventory-of-trees/2023/03/03/talisay/",
+          "limitation": "Used for visible botanical features, not proof of medicinal efficacy, a safe dose or the photographed plant's Philippine origin.",
+          "supports": [
+            "imageIdentity"
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-077",
+      "identityNotes": {
+        "acceptedTaxonKey": "W9KM",
+        "scientificSynonyms": [],
+        "localAliases": [],
+        "taxonomyUrl": "https://powo.science.kew.org/taxon/486606-1",
+        "checklistMatchUrl": "https://api.gbif.org/v2/species/match?scientificName=Clitoria+ternatea&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+        "philippineOccurrence": "INTRODUCED_LISTED_BY_KEW"
+      },
+      "reviewGaps": [
+        "Plant-part-specific medical review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation"
+      ],
+      "uncitedFields": [],
+      "modernEvidenceNote": "No human efficacy study was reviewed for this candidate in this batch.",
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-077",
+        "localName": "Butterfly pea",
+        "scientificName": "Clitoria ternatea",
+        "sourceScientificName": "Clitoria ternatea,",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical entry discusses root and seed preparations and describes strong purgative effects. It does not validate modern flower-tea treatment claims.",
+        "preparationMethod": "No medicinal preparation instructions cleared in this review.",
+        "dosage": "No validated medicinal dose established in the reviewed sources.",
+        "warnings": "Withhold the root-extract and seed-purgative instructions. Food-colouring descriptions for flowers do not establish medicinal safety for roots or seeds.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791161285/butterfly_pea_clitoria_ternatea_cc0_173979709_bih8jo.jpg",
+        "imageCreator": "leaf0605",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/103883242",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; downloaded large derivative without editing",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "limitation": "Historical descriptions and treatment claims; not modern clinical validation. Entry and page are recorded separately for each plant.",
+          "supports": [
+            "medicinalUses",
+            "warnings"
+          ]
+        },
+        {
+          "id": "butterfly-nparks",
+          "kind": "BOTANICAL_DESCRIPTION",
+          "title": "NParks Flora & Fauna Web: Clitoria ternatea",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/1/3/1372",
+          "limitation": "Used here for flower and leaflet identification, not independent clinical validation or Philippine-native status.",
+          "supports": [
+            "imageIdentity"
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-069",
+      "identityNotes": {
+        "acceptedTaxonKey": "72SKV",
+        "scientificSynonyms": [],
+        "localAliases": [],
+        "taxonomyUrl": "https://powo.science.kew.org/taxon/69913-1",
+        "checklistMatchUrl": "https://api.gbif.org/v2/species/match?scientificName=Mangifera+indica&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+        "philippineOccurrence": "INTRODUCED_LISTED_BY_KEW"
+      },
+      "reviewGaps": [
+        "Plant-part-specific medical and topical-safety review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation"
+      ],
+      "uncitedFields": [],
+      "modernEvidenceNote": "The inspected Philippine study documents use and plant identity, not treatment outcomes or a validated human dose.",
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-069",
+        "localName": "Mangga",
+        "scientificName": "Mangifera indica",
+        "sourceScientificName": "Mangifera Indica",
+        "category": "Uncategorized",
+        "medicinalUses": "Manobo informants reported digestive uses of fruit and bark, and respiratory uses of leaves. These community reports are not proof of clinical benefit.",
+        "preparationMethod": "No medicinal preparation instructions cleared in this review.",
+        "dosage": "No validated medicinal dose established in the reviewed sources.",
+        "warnings": "Do not reproduce the historical opium mixtures or burning-leaf inhalation advice. Review skin-exposure safety separately before publishing topical uses.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/mangga_mangifera_indica_cc0_619870559_gydcw5.jpg",
+        "imageCreator": "stekkelpak",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/340611161",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; downloaded large derivative without editing",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "dapar-2020",
+          "kind": "PHILIPPINE_ETHNOBOTANY",
+          "title": "Quantitative ethnopharmacological documentation and molecular confirmation of medicinal plants used by the Manobo tribe of Agusan del Sur, Philippines",
+          "url": "https://doi.org/10.1186/s13002-020-00363-7",
+          "limitation": "Table 4 community reports, including continuation rows. Agreement among informants is not a clinical success rate; reported absence of adverse effects is not proof of safety.",
+          "supports": [
+            "medicinalUses",
+            "evidenceReview"
+          ]
+        },
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "limitation": "Historical descriptions and treatment claims; not modern clinical validation. Entry and page are recorded separately for each plant.",
+          "supports": [
+            "warnings"
+          ]
+        },
+        {
+          "id": "mango-nparks",
+          "kind": "BOTANICAL_DESCRIPTION",
+          "title": "NParks Flora & Fauna Web: Mangifera indica",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/3/0/3013",
+          "limitation": "Used for visible botanical features, not proof of medicinal efficacy, a safe dose or the photographed plant's Philippine origin.",
+          "supports": [
+            "imageIdentity"
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-063",
+      "identityNotes": {
+        "acceptedTaxonKey": "6XHL9",
+        "scientificSynonyms": [
+          "Sandoricum indicum"
+        ],
+        "localAliases": [],
+        "taxonomyUrl": "https://powo.science.kew.org/taxon/579210-1",
+        "checklistMatchUrl": "https://api.gbif.org/v2/species/match?scientificName=Sandoricum+indicum&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+        "philippineOccurrence": "NATIVE_LISTED_BY_KEW"
+      },
+      "reviewGaps": [
+        "Plant-part-specific medical review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation"
+      ],
+      "uncitedFields": [],
+      "modernEvidenceNote": "Community documentation does not establish clinical efficacy. A separate Philippine report describes intestinal injury associated with seeds.",
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-063",
+        "localName": "Santol",
+        "scientificName": "Sandoricum koetjape",
+        "sourceScientificName": "Sandoricum Indicum",
+        "category": "Uncategorized",
+        "medicinalUses": "The Philippine ethnobotanical table records bark, mesocarp and leaf uses for digestive complaints and other conditions. These are reported practices, not prescribed treatments.",
+        "preparationMethod": "No medicinal preparation instructions cleared in this review.",
+        "dosage": "No validated medicinal dose established in the reviewed sources.",
+        "warnings": "Do not recommend swallowing santol seeds; the reviewed case report documents intestinal injury. This case does not measure population risk.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/santol_sandoricum_koetjape_cc0_474259100_wyp3hf.jpg",
+        "imageCreator": "damienxw",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/263943253",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; downloaded large derivative without editing",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "dapar-2020",
+          "kind": "PHILIPPINE_ETHNOBOTANY",
+          "title": "Quantitative ethnopharmacological documentation and molecular confirmation of medicinal plants used by the Manobo tribe of Agusan del Sur, Philippines",
+          "url": "https://doi.org/10.1186/s13002-020-00363-7",
+          "limitation": "Table 4 community reports, including continuation rows. Agreement among informants is not a clinical success rate; reported absence of adverse effects is not proof of safety.",
+          "supports": [
+            "medicinalUses",
+            "evidenceReview"
+          ]
+        },
+        {
+          "id": "santol-seed-injury",
+          "kind": "HUMAN_SAFETY_REPORT",
+          "title": "Incarcerated inguinal hernia with terminal ileal perforation from santol seeds",
+          "url": "https://www.herdin.ph/index.php/partner/journal?cid=7017&view=research",
+          "limitation": "Philippine case report; not an estimate of risk for all consumers. The URL timed out on 2026-10-05.",
+          "supports": [
+            "evidenceReview",
+            "warnings"
+          ]
+        },
+        {
+          "id": "santol-nparks",
+          "kind": "BOTANICAL_DESCRIPTION",
+          "title": "NParks Flora & Fauna Web: Sandoricum koetjape",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/3/1/3109",
+          "limitation": "Used for visible botanical features, not proof of medicinal efficacy, a safe dose or the photographed plant's Philippine origin.",
+          "supports": [
+            "imageIdentity"
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-104",
+      "identityNotes": {
+        "acceptedTaxonKey": "RCZK",
+        "scientificSynonyms": [],
+        "localAliases": [],
+        "taxonomyUrl": "https://powo.science.kew.org/taxon/30011248-2",
+        "checklistMatchUrl": "https://api.gbif.org/v2/species/match?scientificName=Carica+papaya&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+        "philippineOccurrence": "PHILIPPINE_STUDY_VOUCHER"
+      },
+      "reviewGaps": [
+        "Plant-part-specific medical and pregnancy-safety review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation"
+      ],
+      "uncitedFields": [],
+      "modernEvidenceNote": "Papaya latex produced contractions in rat uterine tissue experiments. This is a preclinical warning signal, not a demonstrated human pregnancy outcome.",
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-104",
+        "localName": "Papaya",
+        "scientificName": "Carica papaya",
+        "sourceScientificName": "Carica Papaya",
+        "category": "Uncategorized",
+        "medicinalUses": "Philippine community reports include digestive uses of fruit and medicinal uses of leaves and roots. Leaf-use reports for dengue are not clinical proof of a dengue treatment.",
+        "preparationMethod": "No medicinal preparation instructions cleared in this review.",
+        "dosage": "No validated medicinal dose established in the reviewed sources.",
+        "warnings": "Do not equate ripe-fruit food use with medicinal latex safety. Withhold latex worm-treatment recipes, particularly child-directed instructions; human medicinal and pregnancy safety remains unresolved.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/papaya_carica_papaya_cc0_174095229_m1upal.jpg",
+        "imageCreator": "jeanpaulboerekamps",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/103941457",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; downloaded large derivative without editing",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "dapar-2020",
+          "kind": "PHILIPPINE_ETHNOBOTANY",
+          "title": "Quantitative ethnopharmacological documentation and molecular confirmation of medicinal plants used by the Manobo tribe of Agusan del Sur, Philippines",
+          "url": "https://doi.org/10.1186/s13002-020-00363-7",
+          "limitation": "Table 4 community reports, including continuation rows. Agreement among informants is not a clinical success rate; reported absence of adverse effects is not proof of safety.",
+          "supports": [
+            "medicinalUses"
+          ]
+        },
+        {
+          "id": "papaya-latex-rat",
+          "kind": "PRECLINICAL_SAFETY",
+          "title": "Effect of papaya latex extract on gravid and non-gravid rat uterine preparations in vitro",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/10837984/",
+          "limitation": "Rat tissue experiment, not a human pregnancy trial or a validated human medicinal dose.",
+          "supports": [
+            "evidenceReview",
+            "warnings"
+          ]
+        },
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "limitation": "Historical descriptions and treatment claims; not modern clinical validation. Entry and page are recorded separately for each plant.",
+          "supports": [
+            "warnings"
+          ]
+        },
+        {
+          "id": "papaya-nparks",
+          "kind": "BOTANICAL_DESCRIPTION",
+          "title": "NParks Flora & Fauna Web: Carica papaya",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/7/2785",
+          "limitation": "Used for visible botanical features, not proof of medicinal efficacy, a safe dose or the photographed plant's Philippine origin.",
+          "supports": [
+            "imageIdentity"
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-102",
+      "identityNotes": {
+        "acceptedTaxonKey": "4QHX8",
+        "scientificSynonyms": [],
+        "localAliases": [],
+        "taxonomyUrl": "https://powo.science.kew.org/taxon/554129-1",
+        "checklistMatchUrl": "https://api.gbif.org/v2/species/match?scientificName=Punica+granatum&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+        "philippineOccurrence": "INTRODUCED_CULTIVATED_LOCAL_FLORA"
+      },
+      "reviewGaps": [
+        "Plant-part-specific medical review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation"
+      ],
+      "uncitedFields": [],
+      "modernEvidenceNote": "NCCIH reports limited human research for some pomegranate products. That evidence does not establish the book's worm-treatment regimen.",
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-102",
+        "localName": "Granada",
+        "scientificName": "Punica granatum",
+        "sourceScientificName": "Punica Granatum",
+        "category": "Uncategorized",
+        "medicinalUses": "The book describes root-bark treatment of intestinal worms. That historical regimen is withheld; juice research cannot validate root-bark treatment.",
+        "preparationMethod": "No medicinal preparation instructions cleared in this review.",
+        "dosage": "No validated medicinal dose established in the reviewed sources.",
+        "warnings": "Root, stem and peel may be harmful in large amounts. Safety information for non-juice preparations during pregnancy and breastfeeding is limited.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162655/granada_punica_granatum_cc0_245176628_tuduoh.jpg",
+        "imageCreator": "conhawn",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/142967563",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; downloaded large derivative without editing",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "limitation": "Historical descriptions and treatment claims; not modern clinical validation. Entry and page are recorded separately for each plant.",
+          "supports": [
+            "medicinalUses"
+          ]
+        },
+        {
+          "id": "pomegranate-nccih",
+          "kind": "AUTHORITATIVE_SAFETY_GUIDANCE",
+          "title": "Pomegranate: Usefulness and Safety",
+          "url": "https://www.nccih.nih.gov/health/pomegranate",
+          "limitation": "Distinguishes juice from root, stem, peel and other preparations; preliminary evidence does not validate historical root-bark worm treatment.",
+          "supports": [
+            "evidenceReview",
+            "warnings"
+          ]
+        },
+        {
+          "id": "pomegranate-nparks",
+          "kind": "BOTANICAL_DESCRIPTION",
+          "title": "NParks Flora & Fauna Web: Punica granatum",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/3/2378",
+          "limitation": "Used for visible botanical features, not proof of medicinal efficacy, a safe dose or the photographed plant's Philippine origin.",
+          "supports": [
+            "imageIdentity"
+          ]
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-137",
+      "identityNotes": {
+        "acceptedTaxonKey": "736JM",
+        "scientificSynonyms": [
+          "Achras sapota"
+        ],
+        "localAliases": [],
+        "taxonomyUrl": "https://powo.science.kew.org/taxon/152641-2",
+        "checklistMatchUrl": "https://api.gbif.org/v2/species/match?scientificName=Achras+sapota&kingdom=Plantae&checklistKey=7ddf754f-d193-4cc9-b351-99906754a03b",
+        "philippineOccurrence": "LOCAL_UNIVERSITY_PLANT_DATABASE"
+      },
+      "reviewGaps": [
+        "Modern seed and bark safety evidence",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation"
+      ],
+      "uncitedFields": [],
+      "modernEvidenceNote": "No human efficacy or modern seed-safety study was reviewed for this candidate in this batch.",
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-137",
+        "localName": "Chico",
+        "scientificName": "Manilkara zapota",
+        "sourceScientificName": "Achras Sapota",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical entry describes seed and bark uses. It also raises a seed-related chemical safety concern; that passage is not a modern toxicology assessment.",
+        "preparationMethod": "No medicinal preparation instructions cleared in this review.",
+        "dosage": "No validated medicinal dose established in the reviewed sources.",
+        "warnings": "Withhold medicinal seed and bark use. NParks flags irritating sap and toxicity from seed ingestion; its numerical seed warning is not a safe-consumption threshold or a validated medicinal dose. Historical recipes must not be presented as current treatment advice.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162654/chico_manilkara_zapota_cc0_342658687_xfu2yk.jpg",
+        "imageCreator": "adithyan_a_saj",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/194868037",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; downloaded large derivative without editing",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "limitation": "Historical descriptions and treatment claims; not modern clinical validation. Entry and page are recorded separately for each plant.",
+          "supports": [
+            "medicinalUses",
+            "warnings"
+          ]
+        },
+        {
+          "id": "chico-nparks",
+          "kind": "BOTANICAL_DESCRIPTION",
+          "title": "NParks Flora & Fauna Web: Manilkara zapota",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/3/0/3014",
+          "limitation": "Used for visible botanical features, not proof of medicinal efficacy, a safe dose or the photographed plant's Philippine origin.",
+          "supports": [
+            "warnings",
+            "imageIdentity"
+          ]
+        }
+      ]
+    }
+  ]
+}

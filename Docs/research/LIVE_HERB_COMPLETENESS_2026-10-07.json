@@ -1,0 +1,1117 @@
+{
+  "schemaVersion": 1,
+  "reportDate": "2026-10-07",
+  "timezone": "Asia/Manila",
+  "publicApiReadAt": "2026-10-06T15:56:38.049Z",
+  "publicEndpoint": "https://herbalaicapstoneproject-staging.up.railway.app/api/herbs?limit=100",
+  "scope": "Read-only public catalog completeness audit, not clinical validation or private-database reconciliation.",
+  "validation": {
+    "localAuditConsistencyAssertions": "PASS",
+    "automatedTestCommand": "npm test -- tests/herb-preparation-public-review.test.ts tests/herb-preparation-rag.test.ts",
+    "automatedTestFilesPassed": 2,
+    "automatedTestsPassed": 75,
+    "automatedTestExitCode": 0,
+    "whitespaceDiagnostics": "None; normal LF-to-CRLF warnings only",
+    "liveAiRetrievalTested": false,
+    "editorialGapsResolved": false
+  },
+  "productionWrites": 0,
+  "aiProviderCalls": 0,
+  "counts": {
+    "publicHerbs": 38,
+    "nonblankCoreFields": 38,
+    "preparationTextPresent": 38,
+    "preparationSourceTagPresent": 38,
+    "withReferences": 38,
+    "imagePresent": 37,
+    "imagesHttp200": 37,
+    "blankCebuanoName": 24,
+    "reviewDatePresent": 38,
+    "reviewerIdAbsentInPublicResponse": 37,
+    "exactRepeatedSourceUrlsWithinOneHerb": 1,
+    "exactRepeatedStoredScientificNames": 0
+  },
+  "sourceTagGaps": {
+    "identity": 3,
+    "medicinalUses": 1,
+    "preparationMethod": 0,
+    "dosage": 26,
+    "warnings": 28,
+    "regionFound": 28
+  },
+  "interpretation": {
+    "nonblankFields": "Presence alone does not establish sufficient evidence, accurate translation, safe home preparation or completed human review.",
+    "sourceTagGaps": "Missing exact supports tags are metadata review leads, not proof of absent evidence. Existing traditionalUse, philippineRelevance or limitations tags may cover narrower statements.",
+    "dosage": "Explicitly unavailable human dosage must remain unavailable. Never invent numeric doses to close a completeness metric.",
+    "images": "HTTP HEAD success establishes delivery only, not fresh visual species identification or licensing verification.",
+    "review": "reviewedAt/isVerified are not proof of a traceable named human content review."
+  },
+  "preparationClasses": {
+    "OFFICIAL_DIRECTORY_DESCRIPTION": 10,
+    "HOME_PREPARATION_WITHHELD": 3,
+    "REPORTED_TRADITIONAL_PRACTICE_NOT_COMPLETE_RECIPE": 13,
+    "FOOD_ONLY_DESCRIPTION": 5,
+    "STUDY_FORMULATION_NOT_HOME_RECIPE": 6,
+    "EXTERNAL_MONOGRAPH_LIMITED_DESCRIPTION": 1
+  },
+  "browserObserved": {
+    "catalogCount": 38,
+    "details": [
+      "Kalingag",
+      "Indian Heliotrope"
+    ],
+    "kalingagReferencesExpanded": 2,
+    "kalingagImage": "Placeholder; no stored image",
+    "indianHeliotropePreparation": "No clinically validated preparation; not recommended for preparation/consumption",
+    "all38DetailDialogsInspected": false
+  },
+  "imageDelivery": [
+    {
+      "name": "Akapulko",
+      "url": "https://herbalaiph.vercel.app/images/herbs/akapulko.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Anonas",
+      "url": "https://herbalaiph.vercel.app/images/herbs/anonas.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Ampalaya",
+      "url": "https://herbalaiph.vercel.app/images/herbs/ampalaya.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Atsuete",
+      "url": "https://herbalaiph.vercel.app/images/herbs/atsuete.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Bawang",
+      "url": "https://herbalaiph.vercel.app/images/herbs/bawang.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Aratiles",
+      "url": "https://herbalaiph.vercel.app/images/herbs/aratiles.jpeg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Bayabas",
+      "url": "https://herbalaiph.vercel.app/images/herbs/bayabas.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Damong Maria",
+      "url": "https://herbalaiph.vercel.app/images/herbs/damong-maria.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Gabi",
+      "url": "https://herbalaiph.vercel.app/images/herbs/gabi.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Gumamela",
+      "url": "https://herbalaiph.vercel.app/images/herbs/gumamela.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Indian Heliotrope",
+      "url": "https://herbalaiph.vercel.app/images/herbs/indian-heliotrope.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Kamote",
+      "url": "https://herbalaiph.vercel.app/images/herbs/kamote.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Katakataka",
+      "url": "https://herbalaiph.vercel.app/images/herbs/katakataka.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Lagundi",
+      "url": "https://herbalaiph.vercel.app/images/herbs/lagundi.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Langka",
+      "url": "https://herbalaiph.vercel.app/images/herbs/langka.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Luya",
+      "url": "https://herbalaiph.vercel.app/images/herbs/luya.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Mabolo",
+      "url": "https://herbalaiph.vercel.app/images/herbs/mabolo.jpeg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Makabuhay",
+      "url": "https://herbalaiph.vercel.app/images/herbs/makabuhay.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Malunggay",
+      "url": "https://herbalaiph.vercel.app/images/herbs/malunggay.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Luyang dilaw",
+      "url": "https://herbalaiph.vercel.app/images/herbs/luyang-dilaw.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Mangosteen",
+      "url": "https://herbalaiph.vercel.app/images/herbs/mangosteen.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Mayana",
+      "url": "https://herbalaiph.vercel.app/images/herbs/mayana.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Niyog-niyogan",
+      "url": "https://herbalaiph.vercel.app/images/herbs/niyog-niyogan.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Okra",
+      "url": "https://herbalaiph.vercel.app/images/herbs/okra.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Oregano",
+      "url": "https://herbalaiph.vercel.app/images/herbs/oregano.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Pandan",
+      "url": "https://herbalaiph.vercel.app/images/herbs/pandan.jpeg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Sabila",
+      "url": "https://herbalaiph.vercel.app/images/herbs/sabila.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Sambong",
+      "url": "https://herbalaiph.vercel.app/images/herbs/sambong.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Saluyot",
+      "url": "https://herbalaiph.vercel.app/images/herbs/saluyot.jpeg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Sibuyas",
+      "url": "https://herbalaiph.vercel.app/images/herbs/sibuyas.jpeg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Suha",
+      "url": "https://herbalaiph.vercel.app/images/herbs/suha.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Takip-kohol",
+      "url": "https://herbalaiph.vercel.app/images/herbs/takip-kohol.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Tanglad",
+      "url": "https://herbalaiph.vercel.app/images/herbs/tanglad.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Tsaang Gubat",
+      "url": "https://herbalaiph.vercel.app/images/herbs/tsaang-gubat.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Ulasimang Bato",
+      "url": "https://herbalaiph.vercel.app/images/herbs/ulasimang-bato.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "name": "Yerba Buena",
+      "url": "https://herbalaiph.vercel.app/images/herbs/yerba-buena.png",
+      "status": 200,
+      "contentType": "image/png"
+    },
+    {
+      "name": "Ylang-ylang",
+      "url": "https://herbalaiph.vercel.app/images/herbs/ylang-ylang.jpg",
+      "status": 200,
+      "contentType": "image/jpeg"
+    }
+  ],
+  "records": [
+    {
+      "id": "82dde18f-a83d-41f6-ac4a-7c3eac3ecdc9",
+      "localName": "Akapulko",
+      "scientificName": "Senna alata",
+      "preparationClass": "OFFICIAL_DIRECTORY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": "Katanda / Palochina",
+      "sourceCount": 1,
+      "missingExactSupportTags": [
+        "warnings"
+      ],
+      "image": "/images/herbs/akapulko.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pitahc.gov.ph/herbs-directory/"
+      ]
+    },
+    {
+      "id": "h-1e7cceafb1033a17",
+      "localName": "Ampalaya",
+      "scientificName": "Momordica charantia",
+      "preparationClass": "OFFICIAL_DIRECTORY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": "Paliya",
+      "sourceCount": 1,
+      "missingExactSupportTags": [
+        "warnings"
+      ],
+      "image": "/images/herbs/ampalaya.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pitahc.gov.ph/herbs-directory/"
+      ]
+    },
+    {
+      "id": "builtin-anonas",
+      "localName": "Anonas",
+      "scientificName": "Annona reticulata",
+      "preparationClass": "HOME_PREPARATION_WITHHELD",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "regionFound"
+      ],
+      "image": "/images/herbs/anonas.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://www.tramil.net/en/plant/annona-reticulata"
+      ]
+    },
+    {
+      "id": "builtin-aratiles",
+      "localName": "Aratiles",
+      "scientificName": "Muntingia calabura",
+      "preparationClass": "REPORTED_TRADITIONAL_PRACTICE_NOT_COMPLETE_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/aratiles.jpeg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://www.phcogj.com/sites/default/files/PharmacognJ-10-5-859_0.pdf"
+      ]
+    },
+    {
+      "id": "builtin-atsuete",
+      "localName": "Atsuete",
+      "scientificName": "Bixa orellana",
+      "preparationClass": "REPORTED_TRADITIONAL_PRACTICE_NOT_COMPLETE_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/atsuete.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://www.phcogj.com/sites/default/files/PharmacognJ-10-5-859_0.pdf"
+      ]
+    },
+    {
+      "id": "72f25ea8-36b5-4c6c-805e-42186e39bfaa",
+      "localName": "Bawang",
+      "scientificName": "Allium sativum",
+      "preparationClass": "OFFICIAL_DIRECTORY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": "Ahos",
+      "sourceCount": 1,
+      "missingExactSupportTags": [
+        "warnings"
+      ],
+      "image": "/images/herbs/bawang.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pitahc.gov.ph/herbs-directory/"
+      ]
+    },
+    {
+      "id": "h-792d71c0eccb0cfc",
+      "localName": "Bayabas",
+      "scientificName": "Psidium guajava",
+      "preparationClass": "OFFICIAL_DIRECTORY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": "Bayabas",
+      "sourceCount": 1,
+      "missingExactSupportTags": [
+        "warnings"
+      ],
+      "image": "/images/herbs/bayabas.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pitahc.gov.ph/herbs-directory/"
+      ]
+    },
+    {
+      "id": "builtin-damong-maria",
+      "localName": "Damong Maria",
+      "scientificName": "Artemisia vulgaris",
+      "preparationClass": "REPORTED_TRADITIONAL_PRACTICE_NOT_COMPLETE_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/damong-maria.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://www.phcogj.com/sites/default/files/PharmacognJ-10-5-859_0.pdf"
+      ]
+    },
+    {
+      "id": "builtin-gabi",
+      "localName": "Gabi",
+      "scientificName": "Colocasia esculenta",
+      "preparationClass": "FOOD_ONLY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/gabi.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://www.nparks.gov.sg/florafaunaweb/flora/1/8/1835"
+      ]
+    },
+    {
+      "id": "h-c132f53f302dc204",
+      "localName": "Gumamela",
+      "scientificName": "Hibiscus rosa-sinensis",
+      "preparationClass": "STUDY_FORMULATION_NOT_HOME_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": "Antolanga",
+      "sourceCount": 1,
+      "missingExactSupportTags": [
+        "identity",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/gumamela.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pubmed.ncbi.nlm.nih.gov/31298659/"
+      ]
+    },
+    {
+      "id": "h-a2eb84453b7dc7d0",
+      "localName": "Indian Heliotrope",
+      "scientificName": "Heliotropium indicum",
+      "preparationClass": "HOME_PREPARATION_WITHHELD",
+      "blankCoreFields": [],
+      "cebuanoName": "Buntot-leon / Higad-higaran / Hinlalayon / Pengñga-pengñga / Ikog-ikog-sang-kuti / Kambra-kambra / Punta elefante / Ikoi-pusa / Makabra ",
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "identity",
+        "medicinalUses",
+        "dosage",
+        "regionFound"
+      ],
+      "image": "/images/herbs/indian-heliotrope.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://www.who.int/news-room/fact-sheets/detail/natural-toxins-in-food",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8187075/"
+      ]
+    },
+    {
+      "id": "h-84ec276856199592",
+      "localName": "Kalingag",
+      "scientificName": "Cinnamomum mercadoi",
+      "preparationClass": "REPORTED_TRADITIONAL_PRACTICE_NOT_COMPLETE_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": "Kaningag / Philippine cinnamon",
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "regionFound"
+      ],
+      "image": null,
+      "imageAttributionFieldsPresent": false,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": true,
+      "sourceUrls": [
+        "https://doi.org/10.1186/s13002-020-00363-7",
+        "https://www.herdin.ph/index.php?cid=51004&view=research"
+      ]
+    },
+    {
+      "id": "builtin-kamote",
+      "localName": "Kamote",
+      "scientificName": "Ipomoea batatas",
+      "preparationClass": "FOOD_ONLY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/kamote.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://ejbio.imedpub.com/ethnomedicinal-knowledge-of-plants-among-the-indigenouspeoples-of-santol-la-union-philippines.php?aid=21461"
+      ]
+    },
+    {
+      "id": "builtin-katakataka",
+      "localName": "Katakataka",
+      "scientificName": "Kalanchoe pinnata",
+      "preparationClass": "REPORTED_TRADITIONAL_PRACTICE_NOT_COMPLETE_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/katakataka.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://tkdlph.piaem.org/index.php/ct-menu-item-3/ct-menu-item-7/7962-hanlilika-or-anlilikga-or-aritana"
+      ]
+    },
+    {
+      "id": "h-b608b956c6101d4e",
+      "localName": "Lagundi",
+      "scientificName": "Vitex negundo",
+      "preparationClass": "OFFICIAL_DIRECTORY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": "Dangla / Lagundi",
+      "sourceCount": 1,
+      "missingExactSupportTags": [
+        "warnings"
+      ],
+      "image": "/images/herbs/lagundi.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pitahc.gov.ph/herbs-directory/"
+      ]
+    },
+    {
+      "id": "builtin-langka",
+      "localName": "Langka",
+      "scientificName": "Artocarpus heterophyllus",
+      "preparationClass": "REPORTED_TRADITIONAL_PRACTICE_NOT_COMPLETE_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/langka.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://nopr.niscpr.res.in/bitstream/123456789/57216/3/IJTK%2020%282%29%20335-343.pdf"
+      ]
+    },
+    {
+      "id": "builtin-luya",
+      "localName": "Luya",
+      "scientificName": "Zingiber officinale",
+      "preparationClass": "STUDY_FORMULATION_NOT_HOME_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 4,
+      "missingExactSupportTags": [
+        "dosage",
+        "regionFound"
+      ],
+      "image": "/images/herbs/luya.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://powo.science.kew.org/taxon/798372-1",
+        "https://www.ust.edu.ph/ust-manila-plant-databse/luya/",
+        "https://pubmed.ncbi.nlm.nih.gov/11275030/",
+        "https://www.nccih.nih.gov/health/ginger"
+      ]
+    },
+    {
+      "id": "builtin-luyang-dilaw",
+      "localName": "Luyang dilaw",
+      "scientificName": "Curcuma longa",
+      "preparationClass": "STUDY_FORMULATION_NOT_HOME_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 4,
+      "missingExactSupportTags": [
+        "dosage",
+        "regionFound"
+      ],
+      "image": "/images/herbs/luyang-dilaw.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://powo.science.kew.org/taxon/796451-1",
+        "https://www.ust.edu.ph/ust-manila-plant-databse/luyang-dilaw/",
+        "https://pubmed.ncbi.nlm.nih.gov/32926799/",
+        "https://www.nccih.nih.gov/health/turmeric"
+      ]
+    },
+    {
+      "id": "builtin-mabolo",
+      "localName": "Mabolo",
+      "scientificName": "Diospyros blancoi",
+      "preparationClass": "REPORTED_TRADITIONAL_PRACTICE_NOT_COMPLETE_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/mabolo.jpeg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://naturalhistory.si.edu/media/1868"
+      ]
+    },
+    {
+      "id": "builtin-makabuhay",
+      "localName": "Makabuhay",
+      "scientificName": "Tinospora crispa",
+      "preparationClass": "HOME_PREPARATION_WITHHELD",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 4,
+      "missingExactSupportTags": [
+        "dosage",
+        "regionFound"
+      ],
+      "image": "/images/herbs/makabuhay.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://powo.science.kew.org/taxon/581600-1",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://pubmed.ncbi.nlm.nih.gov/24867504/",
+        "https://pubmed.ncbi.nlm.nih.gov/30202067/"
+      ]
+    },
+    {
+      "id": "builtin-malunggay",
+      "localName": "Malunggay",
+      "scientificName": "Moringa oleifera",
+      "preparationClass": "STUDY_FORMULATION_NOT_HOME_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 4,
+      "missingExactSupportTags": [
+        "dosage",
+        "regionFound"
+      ],
+      "image": "/images/herbs/malunggay.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://powo.science.kew.org/taxon/584736-1",
+        "https://www.ust.edu.ph/ust-manila-plant-databse/malunggay/",
+        "https://www.ncbi.nlm.nih.gov/books/NBK501899/",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC9684698/"
+      ]
+    },
+    {
+      "id": "builtin-mangosteen",
+      "localName": "Mangosteen",
+      "scientificName": "Garcinia mangostana",
+      "preparationClass": "REPORTED_TRADITIONAL_PRACTICE_NOT_COMPLETE_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 3,
+      "missingExactSupportTags": [
+        "dosage",
+        "regionFound"
+      ],
+      "image": "/images/herbs/mangosteen.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://nopr.niscpr.res.in/bitstream/123456789/57216/3/IJTK%2020%282%29%20335-343.pdf",
+        "https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue"
+      ]
+    },
+    {
+      "id": "builtin-mayana",
+      "localName": "Mayana",
+      "scientificName": "Coleus scutellarioides",
+      "preparationClass": "REPORTED_TRADITIONAL_PRACTICE_NOT_COMPLETE_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/mayana.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://ejbio.imedpub.com/ethnomedicinal-knowledge-of-plants-among-the-indigenouspeoples-of-santol-la-union-philippines.php?aid=21461",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/"
+      ]
+    },
+    {
+      "id": "04d52d3b-b738-4ede-8275-46ba18758ac6",
+      "localName": "Niyog-niyogan",
+      "scientificName": "Combretum indicum",
+      "preparationClass": "OFFICIAL_DIRECTORY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": "Balitadham / Tartaraok",
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "warnings"
+      ],
+      "image": "/images/herbs/niyog-niyogan.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pitahc.gov.ph/herbs-directory/",
+        "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:170880-1"
+      ]
+    },
+    {
+      "id": "builtin-okra",
+      "localName": "Okra",
+      "scientificName": "Abelmoschus esculentus",
+      "preparationClass": "FOOD_ONLY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/okra.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://www.nparks.gov.sg/florafaunaweb/flora/1/5/1581",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/"
+      ]
+    },
+    {
+      "id": "builtin-oregano",
+      "localName": "Oregano",
+      "scientificName": "Coleus amboinicus",
+      "preparationClass": "REPORTED_TRADITIONAL_PRACTICE_NOT_COMPLETE_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/oregano.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://www.ust.edu.ph/ust-manila-plant-databse/oregano/",
+        "https://www.ust.edu.ph/ust-manila-plant-databse/oregano/"
+      ]
+    },
+    {
+      "id": "builtin-pandan",
+      "localName": "Pandan",
+      "scientificName": "Pandanus amaryllifolius",
+      "preparationClass": "FOOD_ONLY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/pandan.jpeg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://nnc.gov.ph/mindanao-region/pandan-leaves-probable-health-benefits/"
+      ]
+    },
+    {
+      "id": "builtin-sabila",
+      "localName": "Sabila",
+      "scientificName": "Aloe vera",
+      "preparationClass": "STUDY_FORMULATION_NOT_HOME_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 4,
+      "missingExactSupportTags": [
+        "dosage",
+        "regionFound"
+      ],
+      "image": "/images/herbs/sabila.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://powo.science.kew.org/taxon/530017-1",
+        "https://www.ust.edu.ph/ust-manila-plant-databse/sabila/",
+        "https://pubmed.ncbi.nlm.nih.gov/23336746/",
+        "https://www.nccih.nih.gov/health/aloe-vera"
+      ]
+    },
+    {
+      "id": "builtin-saluyot",
+      "localName": "Saluyot",
+      "scientificName": "Corchorus aestuans",
+      "preparationClass": "FOOD_ONLY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/saluyot.jpeg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://plantuse.plantnet.org/en/Corchorus_aestuans_(PROSEA)"
+      ]
+    },
+    {
+      "id": "h-25e54a1f7aaba3fc",
+      "localName": "Sambong",
+      "scientificName": "Blumea balsamifera",
+      "preparationClass": "OFFICIAL_DIRECTORY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": "Alibhon / Gabuen",
+      "sourceCount": 1,
+      "missingExactSupportTags": [
+        "warnings"
+      ],
+      "image": "/images/herbs/sambong.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pitahc.gov.ph/herbs-directory/"
+      ]
+    },
+    {
+      "id": "builtin-sibuyas",
+      "localName": "Sibuyas",
+      "scientificName": "Allium cepa",
+      "preparationClass": "REPORTED_TRADITIONAL_PRACTICE_NOT_COMPLETE_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/sibuyas.jpeg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://ethnobotanyjournal.org/index.php/era/article/download/7714/2268/75646",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/"
+      ]
+    },
+    {
+      "id": "builtin-suha",
+      "localName": "Suha",
+      "scientificName": "Citrus maxima",
+      "preparationClass": "REPORTED_TRADITIONAL_PRACTICE_NOT_COMPLETE_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/suha.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://smujo.id/biodiv/article/download/7286/4544"
+      ]
+    },
+    {
+      "id": "builtin-takip-kohol",
+      "localName": "Takip-kohol",
+      "scientificName": "Centella asiatica",
+      "preparationClass": "EXTERNAL_MONOGRAPH_LIMITED_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "regionFound"
+      ],
+      "image": "/images/herbs/takip-kohol.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://www.ema.europa.eu/en/documents/herbal-monograph/european-union-herbal-monograph-centella-asiatica-l-urb-herba-revision-1_en.pdf",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/"
+      ]
+    },
+    {
+      "id": "h-33500111229eaede",
+      "localName": "Tanglad",
+      "scientificName": "Cymbopogon citratus",
+      "preparationClass": "STUDY_FORMULATION_NOT_HOME_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": "Lemongrass, Tanglad, Balioko, Bawing, Sai / Salai",
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "identity",
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/tanglad.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC3754369/",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC10892616/"
+      ]
+    },
+    {
+      "id": "h-cbfe9c04f7d24456",
+      "localName": "Tsaang Gubat",
+      "scientificName": "Ehretia microphylla",
+      "preparationClass": "OFFICIAL_DIRECTORY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": "Kagidkid / Putputai",
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "warnings"
+      ],
+      "image": "/images/herbs/tsaang-gubat.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pitahc.gov.ph/herbs-directory/",
+        "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:113775-1"
+      ]
+    },
+    {
+      "id": "da83efd3-0a97-43de-a81b-c16068f1112a",
+      "localName": "Ulasimang Bato",
+      "scientificName": "Peperomia pellucida",
+      "preparationClass": "OFFICIAL_DIRECTORY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": "Sinaw-sinaw / Pansit-pansitan",
+      "sourceCount": 1,
+      "missingExactSupportTags": [
+        "warnings"
+      ],
+      "image": "/images/herbs/ulasimang-bato.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pitahc.gov.ph/herbs-directory/"
+      ]
+    },
+    {
+      "id": "h-4daf09c5a0b641ba",
+      "localName": "Yerba Buena",
+      "scientificName": "Mentha × villosa",
+      "preparationClass": "OFFICIAL_DIRECTORY_DESCRIPTION",
+      "blankCoreFields": [],
+      "cebuanoName": "Hilbas / Herba Buena",
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "warnings"
+      ],
+      "image": "/images/herbs/yerba-buena.png",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pitahc.gov.ph/herbs-directory/",
+        "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:60476613-2"
+      ]
+    },
+    {
+      "id": "builtin-ylang-ylang",
+      "localName": "Ylang-ylang",
+      "scientificName": "Cananga odorata",
+      "preparationClass": "REPORTED_TRADITIONAL_PRACTICE_NOT_COMPLETE_RECIPE",
+      "blankCoreFields": [],
+      "cebuanoName": null,
+      "sourceCount": 2,
+      "missingExactSupportTags": [
+        "dosage",
+        "warnings",
+        "regionFound"
+      ],
+      "image": "/images/herbs/ylang-ylang.jpg",
+      "imageAttributionFieldsPresent": true,
+      "reviewDatePresent": true,
+      "reviewerIdPresent": false,
+      "sourceUrls": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC8685920/",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC7227330/"
+      ]
+    }
+  ],
+  "expansion": {
+    "newHerbsPublishedThisAudit": 0,
+    "requestedFifty": "Separate held research queue; public count remains 38. Preparation descriptions are not reviewed import manifests."
+  },
+  "nextActions": [
+    "Review ambiguous shared aliases and preserve exact taxa before adding regional names.",
+    "Review individual source support for identity, warnings, dose limitations and occurrence; do not blanket-retag.",
+    "Merge Oregano's duplicate reference only through a reviewed, backed-up source-specific change.",
+    "Obtain a taxon-confirmed licensed Kalingag cover.",
+    "Record genuine review provenance; do not fabricate reviewer IDs.",
+    "Keep unavailable methods/doses explicit; do not turn food use or studies into home remedies."
+  ]
+}

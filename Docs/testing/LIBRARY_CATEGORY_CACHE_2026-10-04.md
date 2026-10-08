@@ -58,3 +58,40 @@ Documentation: this report and the Library source-audit update. Earlier mail/pas
 | Patched live category normalization | Not tested: the repair is not published. |
 
 The 129-case count is the final unique passing run for this non-mail batch, not combined with earlier mail/password tests, the intermediate 127-case run, baseline failures or past release CI. There is one reproduced and repaired application issue, plus a redundant-cache-entry inefficiency closed by the same normalization. No UI redesign or new medicinal guidance was introduced.
+
+## Authorized release and live validation — 4 October 2026
+
+The user authorized the five-file CI-first release. Commit `95cf80761106f95ea4faaca0437fb4ddc348896f` contains only the Library repository repair, its new cache regression file, the suggestion-reference regression additions and the two Library reports. Mail/password changes, historical dirty reports, local fixtures and credentials were excluded. The initial sections above describe the pre-release investigation; this appendix supersedes their pending SQL/publication status.
+
+Before committing, the nine-file 129-case run, backend lint and build passed again. A focused credential-pattern scan found no matches in the five release files; this is not a comprehensive secret audit of the unrelated working tree. The Git index was checked against the exact approved file list, and the staged whitespace check passed.
+
+[Isolated CI run 37198444984](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37198444984) completed successfully for the exact release SHA before production promotion. Its disposable pgvector/PostgreSQL 16 database applied all 21 migrations successfully. All 78 backend files passed, totaling 922 tests. The twelve frontend/native test commands passed 332 tests with zero failures, followed by frontend typecheck, lint and a successful 22-page production build. There are 1,254 unique tests in this CI run; the separate 129-case local subset is not added to that number.
+
+The passing commit was promoted with a non-force atomic push to `main` and `codex/readability-accessibility`. Remote verification showed both branches and `codex/mvp-acceptance-ci` at the exact release SHA. The subsequent [main run 37198604033](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37198604033) and [deployment-branch run 37198604021](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37198604021) also completed successfully.
+
+Railway deployment `699716eb-913c-4790-ae31-ca511c9a47e6` became Active, displayed Deployment successful, linked to the exact GitHub commit and passed its `/api/health` deployment healthcheck. Vercel deployment `GzG1HDd1M1pPBxvnkfuBCuVuctx4` displayed Ready, Production, the same commit and the public `herbalaiph.vercel.app` domain. No provider variables, database connection targets or hosting plans were changed.
+
+### Live HTTP checks
+
+Eighteen read-only requests/assertions completed successfully at 19:26:44 Philippine time. The normalization sequence was sent only after the patched Railway deployment was confirmed active.
+
+| Check | Observed result |
+| --- | --- |
+| Blank-category first request, then ordinary catalog, through Railway and the Vercel API proxy | Both returned the same 38 record IDs and totals. |
+| Padded, uppercase All through both routes | Matched the ordinary catalog IDs and total. |
+| Padded Digestive first request, then canonical Digestive through both routes | Returned nonempty matching Digestive IDs/totals, with no other category. |
+| Padded All with DOH filter through both routes | Nonempty result containing only DOH-listed, verified, PUBLISHED records. |
+| Backend health | 200. |
+| Repeated category and repeated search parameters | 400 for each request. |
+| Nonexistent herb detail | 404. |
+| Anonymous Suggestions and audit-log APIs | 401 for each request. |
+
+### Live browser checks and limits
+
+Mercado Chrome restored the existing Mercado Kevin contributor session. Library showed 38 records; selecting Digestive produced one Kalingag record and its detail dialog opened with the existing educational limitation text and two references. Returning to All restored 38 records. Reload retained the signed-in account and populated catalog. The protected Suggestions page opened and My Submissions loaded six existing records without changing any submission or publishing content. The previously recorded legacy `awdsawd` approval remains a separate provenance follow-up, not a new public Library record.
+
+Screenshot saved outside Git: `C:/Users/Hp/.codex/visualizations/2026/09/09/01a08515-decf-7f51-9c41-87d224cf7dc4/library-95cf807-live-20261004.jpg`.
+
+No new failure was reproduced in this bounded release smoke test. Gina/admin Chrome was not connected during this run, so no new authenticated admin write, moderation/audit event or two-account Messenger test is claimed. Mail work remains excluded as requested. The remaining 28 source records and additional warning attribution still require the documented content review. Physical-device and real-participant checks retain their previous evidence limits; browser checks are not a replacement for them.
+
+The five-file release, including the pre-release reports, is already pushed. This post-release evidence appendix is saved locally after validation and is not part of deployed commit `95cf807`; unrelated working-tree changes remain untouched.

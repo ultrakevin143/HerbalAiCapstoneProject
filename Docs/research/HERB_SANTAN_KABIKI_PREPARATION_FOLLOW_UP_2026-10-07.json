@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "status": "PREPARATION_FOLLOW_UP_NOT_IMPORTABLE",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "reviewedAt": "2026-10-07",
+  "writeAllowed": false,
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "productionWritesPerformed": false,
+  "priorEvidenceFile": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+  "sources": [
+    {
+      "id": "stuart-santan-root-description",
+      "scientificName": "Ixora coccinea",
+      "taxonScope": "EXACT_SPECIES",
+      "kind": "SECONDARY_TRADITIONAL_DESCRIPTION_HELD",
+      "sourceStatus": "DOCUMENTED_TRADITIONAL_DESCRIPTION_PENDING_PRIMARY_AND_SAFETY_REVIEW",
+      "title": "StuartXchange: Santan / Ixora coccinea",
+      "url": "https://www.stuartxchange.org/Santan",
+      "reviewedAt": "2026-10-07",
+      "reviewCoverage": "SPECIES_HEADING_SHARED_NAME_WARNING_AND_PHILIPPINE_ROOT_DECOCTION_PARAGRAPH",
+      "reviewLocators": [
+        "Ixora coccinea species heading",
+        "Quisumbing shared Santan names note",
+        "Uses > Folkloric > Philippine root decoction"
+      ],
+      "supports": [
+        "preparationMethod"
+      ],
+      "downloadBytes": 96560,
+      "downloadSha256": "acc96d15bb3bb7a490a735935736e4eabafb9e47a171425bb537603f35e4a47a",
+      "limitation": "Secondary folklore compilation, not a primary clinical study or safe recipe. Shared Santan names do not identify a cultivar; the genus-only flower-tempura lead remains excluded. No human dose, child use or therapeutic efficacy is established."
+    },
+    {
+      "id": "gupta-jain-kabiki-laboratory",
+      "scientificName": "Mimusops elengi",
+      "taxonScope": "EXACT_SPECIES",
+      "kind": "PRIMARY_LABORATORY_EXTRACTION_STUDY_HELD",
+      "sourceStatus": "AUTHENTICATED_ANIMAL_STUDY_NOT_HUMAN_GUIDANCE",
+      "title": "Gupta and Jain (2011): Investigation of wound healing activity of methanolic extract of stem bark of Mimusops elengi Linn",
+      "url": "https://doi.org/10.4314/ajtcam.v8i2.63197",
+      "retrievalUrl": "https://journals.athmsi.org/index.php/ajtcam/article/download/1216/643/2836",
+      "pmid": "22238490",
+      "pmcid": "PMC3252694",
+      "reviewedAt": "2026-10-07",
+      "reviewCoverage": "PUBLISHER_PDF_PRINTED_PAGES_98_99_METHODS_VISUALLY_INSPECTED",
+      "reviewLocators": [
+        "Material and Methods > Plant material",
+        "Extraction and preparation of formulation",
+        "Animals"
+      ],
+      "voucher": "NBRI/CIF/Re./08/2008/32",
+      "experimentalModel": "Albino mice",
+      "supports": [
+        "preparationMethod"
+      ],
+      "downloadBytes": 295452,
+      "downloadSha256": "779aef574132783d643bc4a07bdb960f36d09779a4cbc823fbc262225108749f",
+      "limitation": "Methanol Soxhlet bark extraction and mouse wound experiments are laboratory descriptions only. No human wound remedy, solvent substitution, raw fruit serving process, clinical efficacy or safe dose is adopted."
+    },
+    {
+      "id": "stuart-kabiki-merged-taxa-gap",
+      "kind": "MERGED_HISTORICAL_TAXA_RESEARCH_GAP",
+      "sourceStatus": "QUARANTINED_MERGED_TAXA",
+      "title": "StuartXchange Kabiki: explicit Kabiki/Bansalagin merger warning",
+      "url": "https://www.stuartxchange.org/Kabiki",
+      "reviewedAt": "2026-10-07",
+      "reviewCoverage": "HISTORICAL_KABIKI_BANSALAGIN_MERGER_NOTE",
+      "supports": [
+        "researchGap"
+      ],
+      "downloadBytes": 93955,
+      "downloadSha256": "5e8ce4a8d6435ed5742898a42fa5816895ba4c1cccf3c0325adf106585458810",
+      "limitation": "The page explicitly combines historically separate Kabiki and Bansalagin names, folklore and studies. Its merged remedies and aliases are not adopted as exact-species evidence; this is not a modern synonym determination."
+    }
+  ],
+  "retrievals": [
+    {
+      "sourceId": "stuart-santan-root-description",
+      "checkedAt": "2026-10-07T00:48:30.736Z",
+      "httpStatus": 200,
+      "contentType": "text/html",
+      "rawOriginResponseObtained": true,
+      "rawCopyCommitted": false
+    },
+    {
+      "sourceId": "stuart-kabiki-merged-taxa-gap",
+      "checkedAt": "2026-10-07T00:48:39.351Z",
+      "httpStatus": 200,
+      "contentType": "text/html",
+      "rawOriginResponseObtained": true,
+      "rawCopyCommitted": false
+    },
+    {
+      "sourceId": "gupta-jain-kabiki-laboratory",
+      "checkedAt": "2026-10-07T00:52:03.131Z",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "rawOriginResponseObtained": true,
+      "pdfPagesReviewed": [
+        1,
+        2
+      ],
+      "printedPagesReviewed": [
+        98,
+        99
+      ],
+      "rawCopyCommitted": false,
+      "visualReview": "Local Poppler-rendered PNGs read after web screenshots timed out. Rendering warned about Symbol/ArialUnicode fonts; reviewed method text and voucher remained legible. Other PDF pages were not visually checked."
+    }
+  ],
+  "failedRetrievals": [
+    {
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3252694/fullTextXML",
+      "checkedAt": "2026-10-07T00:48:43.506Z",
+      "status": "HTTP_500_NOT_FULL_TEXT_VALIDATION"
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3252694/",
+      "status": "CAPTCHA_NO_FRESH_FULL_TEXT_VALIDATION"
+    },
+    {
+      "url": "https://journals.athmsi.org/index.php/ajtcam/article/download/1216/643/2836",
+      "status": "WEB_SCREENSHOT_TIMEOUT_RAW_ORIGIN_AND_LOCAL_RENDER_USED_INSTEAD"
+    }
+  ],
+  "proposals": [
+    {
+      "candidateId": "research-pardo-124",
+      "localName": "Santan",
+      "scientificName": "Ixora coccinea",
+      "preparationKind": "TRADITIONAL_DESCRIPTION_HELD",
+      "preparationPart": "Roots; not flowers, nectar or an unspecified Ixora cultivar",
+      "preparationDescription": "StuartXchange's Ixora coccinea entry reports Philippine traditional use of a root decoction in accounts concerning nausea, hiccups and appetite loss. This secondary folklore description is not a safe home recipe or treatment. No quantities, preparation times, medicinal dose, child-use guidance or clinical efficacy are established by this account.",
+      "preparationSourceIds": [
+        "stuart-santan-root-description"
+      ],
+      "methodEstablishedInReview": true,
+      "foodProcessingEstablished": false,
+      "medicinalInstructionsCleared": false,
+      "beginnerStepsCleared": false,
+      "preparationInstructions": null,
+      "dosage": null,
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-138",
+      "localName": "Kabiki",
+      "scientificName": "Mimusops elengi",
+      "preparationKind": "LABORATORY_DESCRIPTION_HELD",
+      "preparationPart": "Authenticated stem bark; not fruit flesh, seeds or leaves",
+      "preparationDescription": "Gupta and Jain's authenticated Mimusops elengi stem-bark study shade-dried and powdered the bark, extracted it with methanol in a Soxhlet apparatus, removed solvent under reduced pressure and incorporated the extract into an ointment base for mouse wound experiments. This laboratory description is not a home recipe or treatment and does not establish a safe human wound-care preparation or dose.",
+      "preparationSourceIds": [
+        "gupta-jain-kabiki-laboratory"
+      ],
+      "methodEstablishedInReview": true,
+      "foodProcessingEstablished": false,
+      "medicinalInstructionsCleared": false,
+      "beginnerStepsCleared": false,
+      "preparationInstructions": null,
+      "dosage": null,
+      "publicationAllowed": false
+    }
+  ],
+  "excludedFromAdoption": [
+    "Experimental extraction quantities, concentrations, duration, treatment frequency and animal wound-induction procedures",
+    "Transferring animal findings into human wound care or replacing methanol with a household solvent",
+    "Santan infant baths, eye drops, cancer preparations and cultivar-ambiguous flower foods",
+    "Merged Kabiki/Bansalagin folklore and aliases as exact-species methods",
+    "Reclassifying unspecified Bisayan names as Cebuano",
+    "Human efficacy, dosage, clinical review or publication clearance"
+  ],
+  "remainingGaps": [
+    "Santan's exact-cultivar food preparation and primary traditional source verification remain unresolved.",
+    "Kabiki fruit-processing and human bark-use safety remain unresolved despite the laboratory description.",
+    "Balibago leaf-food processing and human bark-use safety remain unresolved.",
+    "Content/category/botanical review, eleven covers, transactional duplicates, backup and isolated PostgreSQL import/rollback/concurrency validation remain pending."
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "reportDate": "2026-10-07",
+  "timezone": "Asia/Manila",
+  "status": "LOCAL_AND_READ_ONLY_CHECKS_PASSED_PRODUCTION_HELD",
+  "gitHead": "741167b",
+  "branch": "codex/mvp-acceptance-ci",
+  "workingTreeCommitPerformed": false,
+  "suites": [
+    {
+      "scope": "Focused expansion and evidence",
+      "command": "npx vitest run tests/herb-expansion-release-preflight.test.ts tests/herb-third-ten-field-drafts.test.ts tests/herb-fourth-ten-field-drafts.test.ts tests/herb-fifth-ten-field-drafts.test.ts tests/herb-expansion-review.test.ts tests/herb-expansion-staging-plan.test.ts tests/herb-expansion-field-research.test.ts tests/herb-expansion-occurrence-research.test.ts tests/herb-first-ten-content-review.test.ts tests/herb-first-ten-preparation-supplement.test.ts tests/herb-second-ten-content-review.test.ts tests/herb-second-ten-photo-review.test.ts tests/herb-identity-media-follow-up.test.ts tests/herb-fifty-live-release-audit.test.ts tests/stuartxchange-preparation-review.test.ts tests/herb-third-ten-preparation-review.test.ts tests/herb-fourth-ten-preparation-review.test.ts tests/herb-fifth-ten-preparation-review.test.ts",
+      "files": 18,
+      "passed": 253,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "scope": "Adjacent preparation, mocked RAG, media and isolated-runner unit contracts",
+      "command": "npx vitest run tests/herb-preparation-public-review.test.ts tests/herb-preparation-rag.test.ts tests/herb-preparation-review.test.ts tests/herb-preparation-update.test.ts tests/built-in-herb-fields.test.ts tests/herb-preparation-ci.test.ts tests/herb-preparation-isolated-runner.test.ts tests/herb-taxonomic-identity.test.ts tests/herb-remaining-photo-leads.test.ts tests/herb-remaining-thirty-intake.test.ts tests/herb-remaining-thirty-visual-review.test.ts tests/herb-seventeen-media-delivery.test.ts tests/talisay-preparation-follow-up.test.ts tests/herb-provider-target-follow-up.test.ts",
+      "files": 14,
+      "passed": 239,
+      "failed": 0,
+      "exitCode": 0
+    }
+  ],
+  "distinctTestFiles": 32,
+  "distinctPassingTests": 492,
+  "backendTypecheck": {
+    "command": "npx tsc --noEmit",
+    "exitCode": 0
+  },
+  "strictCliAndTestsTypecheck": {
+    "exitCode": 0,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "targetedLint": {
+    "exitCode": 0,
+    "files": [
+      "src/content/herb-expansion-staging-plan.ts",
+      "src/content/herb-expansion-release-preflight.ts",
+      "tests/herb-expansion-staging-plan.test.ts",
+      "tests/herb-expansion-release-preflight.test.ts",
+      "tests/herb-third-ten-field-drafts.test.ts",
+      "tests/herb-fourth-ten-field-drafts.test.ts",
+      "tests/herb-fifth-ten-field-drafts.test.ts"
+    ]
+  },
+  "savedPlanReproducibility": {
+    "initialFailureObserved": true,
+    "repair": "Explicit scoped botanical heading review in the owning ledger and read-only generator; generated Kew metadata reconciled. Existing deep-equality test retained.",
+    "finalPassed": true
+  },
+  "receiptConsistencyAssertions": {
+    "passed": true,
+    "checked": [
+      "50 unique queue/receipt candidate IDs",
+      "55 all-state identity rows accounted for",
+      "37 unique media IDs owned by selected covers",
+      "HTTP 200, full decode, saved SHA-256 equality",
+      "license/visual clearance stays false",
+      "no private recovery backup claimed",
+      "all report flags remain non-publication",
+      "JSON parsing and trailing whitespace"
+    ]
+  },
+  "publicPreflight": {
+    "checkedAt": "2026-10-06T17:50:22.847Z",
+    "checkerExitCode": 2,
+    "status": "HELD_EXPANSION_RELEASE_PREFLIGHT",
+    "publicCatalogRecords": 38
+  },
+  "productionWrites": 0,
+  "cloudinaryUploads": 0,
+  "aiProviderCalls": 0,
+  "commits": 0,
+  "pushes": 0,
+  "notProven": [
+    "Isolated PostgreSQL import, rollback and concurrent duplicate protection",
+    "New fifty published or embedded",
+    "Fresh license or botanical photo approval",
+    "Human clinical/plant-part review or complete safe beginner recipes",
+    "New full browser acceptance, physical-device or participant UAT"
+  ],
+  "earlierReportsPreserved": true
+}

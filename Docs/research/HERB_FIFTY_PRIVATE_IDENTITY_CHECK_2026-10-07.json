@@ -1,0 +1,488 @@
+{
+  "schemaVersion": 1,
+  "reportDate": "2026-10-07",
+  "timezone": "Asia/Manila",
+  "status": "POINT_IN_TIME_READ_ONLY_IDENTITY_COMPARISON_NOT_IMPORT_CLEARANCE",
+  "capturedAt": "2026-10-06T17:29:09.488887+00:00",
+  "scope": "ALL_HERB_AND_SUGGESTION_STATES_IDENTITY_ONLY",
+  "database": "neondb",
+  "snapshot": "477189:477189:",
+  "target": {
+    "neonProjectId": "falling-block-62836604",
+    "neonBranchId": "br-still-waterfall-aqtagztm",
+    "neonBranchName": "pre-railway-deploy-2026-09-20",
+    "computeId": "ep-icy-sound-aqfe958d",
+    "railwayEnvironment": "staging",
+    "railwayService": "HerbalAiCapstoneProject",
+    "railwayPooledHost": "ep-icy-sound-aqfe958d-pooler.c-8.us-east-1.aws.neon.tech",
+    "railwayTargetIndependentlyMatched": true,
+    "credentialsRecorded": false,
+    "railwayValuesRemasked": true,
+    "defaultProductionBranchQueried": false
+  },
+  "method": "One SELECT-only identity query in a new Neon SQL editor tab. Parsed the displayed single JSON result; checked 55 unique record keys and compared all 50 queue identities, supplied scientific synonyms, local names, supplied aliases, stored cebuanoName aliases and planned IDs in browser JavaScript.",
+  "counts": {
+    "Herb": 38,
+    "SuggestedHerb": 17,
+    "publicHerbs": 38,
+    "rowsRead": 55,
+    "candidatesCompared": 50,
+    "recordedNameConflicts": 0
+  },
+  "states": {
+    "Herb:PUBLISHED": 38,
+    "SuggestedHerb:Approved": 2,
+    "SuggestedHerb:Rejected": 15
+  },
+  "candidateResults": [
+    {
+      "candidateId": "research-pardo-098",
+      "localName": "Duhat",
+      "scientificName": "Syzygium cumini",
+      "scientificSynonyms": [
+        "Eugenia jambolana"
+      ],
+      "localAliases": [
+        "Lomboy"
+      ],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-088",
+      "localName": "Sampalok",
+      "scientificName": "Tamarindus indica",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-005",
+      "localName": "Atis",
+      "scientificName": "Annona squamosa",
+      "scientificSynonyms": [
+        "Anona squamosa"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-094",
+      "localName": "Talisay",
+      "scientificName": "Terminalia catappa",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-077",
+      "localName": "Butterfly pea",
+      "scientificName": "Clitoria ternatea",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-069",
+      "localName": "Mangga",
+      "scientificName": "Mangifera indica",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-063",
+      "localName": "Santol",
+      "scientificName": "Sandoricum koetjape",
+      "scientificSynonyms": [
+        "Sandoricum indicum"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-104",
+      "localName": "Papaya",
+      "scientificName": "Carica papaya",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-102",
+      "localName": "Granada",
+      "scientificName": "Punica granatum",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-137",
+      "localName": "Chico",
+      "scientificName": "Manilkara zapota",
+      "scientificSynonyms": [
+        "Achras sapota"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-014",
+      "localName": "Mustasa",
+      "scientificName": "Brassica juncea",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-015",
+      "localName": "Radish",
+      "scientificName": "Raphanus sativus",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-020",
+      "localName": "Olasiman",
+      "scientificName": "Portulaca oleracea",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-044",
+      "localName": "Cacao",
+      "scientificName": "Theobroma cacao",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-159",
+      "localName": "Linga",
+      "scientificName": "Sesamum indicum",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-214",
+      "localName": "Niog",
+      "scientificName": "Cocos nucifera",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-217",
+      "localName": "Maize",
+      "scientificName": "Zea mays",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-219",
+      "localName": "Tubo",
+      "scientificName": "Saccharum officinarum",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-119",
+      "localName": "Fennel",
+      "scientificName": "Foeniculum vulgare",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-184",
+      "localName": "Paminta",
+      "scientificName": "Piper nigrum",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-170",
+      "localName": "Solasi",
+      "scientificName": "Ocimum basilicum",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-171",
+      "localName": "Lokoloko",
+      "scientificName": "Ocimum gratissimum",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-172",
+      "localName": "Balanay",
+      "scientificName": "Ocimum tenuiflorum",
+      "scientificSynonyms": [
+        "Ocimum sanctum"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-174",
+      "localName": "Romero",
+      "scientificName": "Salvia rosmarinus",
+      "scientificSynonyms": [
+        "Rosmarinus officinalis"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-073",
+      "localName": "Katuray",
+      "scientificName": "Sesbania grandiflora",
+      "scientificSynonyms": [
+        "Agati grandiflora"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-089",
+      "localName": "Alibangbang",
+      "scientificName": "Piliostigma malabaricum",
+      "scientificSynonyms": [
+        "Bauhinia malabarica"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-091",
+      "localName": "Kupang",
+      "scientificName": "Parkia timoriana",
+      "scientificSynonyms": [
+        "Parkia roxburghii"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-215",
+      "localName": "Nipa",
+      "scientificName": "Nypa fruticans",
+      "scientificSynonyms": [
+        "Nipa fruticans"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-108",
+      "localName": "Bottle gourd",
+      "scientificName": "Lagenaria siceraria",
+      "scientificSynonyms": [
+        "Lagenaria vulgaris"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-112",
+      "localName": "Luffa aegyptiaca",
+      "scientificName": "Luffa aegyptiaca",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-124",
+      "localName": "Santan",
+      "scientificName": "Ixora coccinea",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-139",
+      "localName": "Sampaguita",
+      "scientificName": "Jasminum sambac",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-138",
+      "localName": "Kabiki",
+      "scientificName": "Mimusops elengi",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-033",
+      "localName": "Balibago",
+      "scientificName": "Hibiscus tiliaceus",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-035",
+      "localName": "Thespesia populnea",
+      "scientificName": "Thespesia populnea",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-038",
+      "localName": "Doldol",
+      "scientificName": "Ceiba pentandra",
+      "scientificSynonyms": [
+        "Eriodendron anfractuosum"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-039",
+      "localName": "Kalumpang",
+      "scientificName": "Sterculia foetida",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-067",
+      "localName": "Manzanitas",
+      "scientificName": "Ziziphus mauritiana",
+      "scientificSynonyms": [
+        "Zizyphus jujuba"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-079",
+      "localName": "Asana",
+      "scientificName": "Pterocarpus indicus",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-125",
+      "localName": "Coffee",
+      "scientificName": "Coffea arabica",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-047",
+      "localName": "Kamias",
+      "scientificName": "Averrhoa bilimbi",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-048",
+      "localName": "Balimbing",
+      "scientificName": "Averrhoa carambola",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-070",
+      "localName": "Kasuy",
+      "scientificName": "Anacardium occidentale",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-126",
+      "localName": "Bankundo",
+      "scientificName": "Morinda citrifolia",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-045",
+      "localName": "Oxalis corniculata",
+      "scientificName": "Oxalis corniculata",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-054",
+      "localName": "Kahel",
+      "scientificName": "Citrus aurantium",
+      "scientificSynonyms": [
+        "Citrus bigaradia"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-003",
+      "localName": "Tsampaka",
+      "scientificName": "Magnolia champaca",
+      "scientificSynonyms": [
+        "Michelia champaca"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-030",
+      "localName": "Abutilon indicum",
+      "scientificName": "Abutilon indicum",
+      "scientificSynonyms": [],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-032",
+      "localName": "Kastuli",
+      "scientificName": "Abelmoschus moschatus",
+      "scientificSynonyms": [
+        "Hibiscus abelmoschus"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    },
+    {
+      "candidateId": "research-pardo-130",
+      "localName": "Ayapana",
+      "scientificName": "Ayapana triplinervis",
+      "scientificSynonyms": [
+        "Eupatorium ayapana"
+      ],
+      "localAliases": [],
+      "matchedRecordIds": []
+    }
+  ],
+  "productionWritesPerformed": false,
+  "publicationAllowed": false,
+  "rawIdentityRowsExported": false,
+  "fullRecoveryBackup": false,
+  "concurrentDuplicateProtectionProven": false,
+  "exhaustiveBotanicalSynonymReview": false,
+  "limitations": [
+    "Point-in-time recorded-name comparison only. A future writer must repeat the all-state check inside a guarded transaction.",
+    "No User, password, reset-token or verification-token query. No credential copied into Git or chat.",
+    "Default Neon branch is not the Railway service target. The independently matched branch is recorded above.",
+    "This receipt records the observed comparison, not an exported raw identity snapshot or a recoverable database backup.",
+    "Author-qualified, hybrid and source/photo taxon mappings still require review; canonical name matching does not resolve those distinctions."
+  ]
+}

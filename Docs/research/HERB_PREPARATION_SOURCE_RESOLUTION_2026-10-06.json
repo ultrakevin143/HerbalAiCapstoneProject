@@ -1,0 +1,179 @@
+{
+  "status": "LOCAL_SOURCE_ATTRIBUTION_RESOLVED_NOT_LIVE_APPLIED",
+  "checkedAt": "2026-10-06T01:45:00.401Z",
+  "scope": "Existing twenty-record preparation batch; not fifty-new-herb publication",
+  "originalPublicReviewSha256": "2cc6b41f138d9405ed813da7c2d1f75ae858e7d6291f1e62b75a7bce4cb59ef8",
+  "batchBeforeSha256": "3f7f630ae39162076edd3ba69ec2913c5684bbc4372c8adb5ae9480782041169",
+  "batchAfterSha256": "7bdf4d2c808e9b5d39df37870444f0c68799041a13d7f127be6ce218f02dec32",
+  "recoveredSources": [
+    {
+      "sourceKey": "ust-oregano",
+      "url": "https://www.ust.edu.ph/ust-manila-plant-databse/oregano/",
+      "finalUrl": "https://www.ust.edu.ph/ust-manila-plant-databse/oregano/",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "byteLength": 243830,
+      "sha256": "cdd90ddf8a87b9bc9cdd6bc1fce0230b7efd7da240f0beaa69a867c19457750b",
+      "capturedAt": "2026-10-06T01:43:52.911Z",
+      "rawEvidenceFile": "C:\\Users\\Hp\\.codex\\visualizations\\2026\\09\\09\\01a08515-decf-7f51-9c41-87d224cf7dc4\\tmp\\preparation-source-resolution-H1BB1H\\oregano.html",
+      "reviewedContent": "Exact Coleus amboinicus page; leaf juice and infusion paragraph, no standardized recipe imported.",
+      "limitations": "University educational botanical account, not a clinical trial or treatment-dose approval."
+    },
+    {
+      "sourceKey": "cavite-preparations-2021",
+      "url": "https://nopr.niscpr.res.in/bitstream/123456789/57216/3/IJTK%2020%282%29%20335-343.pdf",
+      "finalUrl": "https://nopr.niscpr.res.in/bitstream/123456789/57216/3/IJTK%2020%282%29%20335-343.pdf",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "byteLength": 538761,
+      "sha256": "4d3872b8d67196da53882d22fd8a799a53d9b201068543e22981fdc74beeb511",
+      "capturedAt": "2026-10-06T01:43:54.492Z",
+      "rawEvidenceFile": "C:\\Users\\Hp\\.codex\\visualizations\\2026\\09\\09\\01a08515-decf-7f51-9c41-87d224cf7dc4\\tmp\\preparation-source-resolution-H1BB1H\\cavite-2021.pdf",
+      "reviewedContent": "Title, survey methodology and Table 2 rows 17/50; printed pages 337/339 visually inspected.",
+      "limitations": "Interview survey; no proof of efficacy or a standardized safe recipe. Source prints Garcinia x mangostana."
+    }
+  ],
+  "whoSource": {
+    "sourceKey": "who-dengue-2025",
+    "url": "https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue",
+    "reviewedSections": [
+      "Key facts",
+      "Symptoms",
+      "Diagnostics and treatment"
+    ],
+    "supports": [
+      "warnings"
+    ],
+    "clinicalHerbEfficacyEstablished": false
+  },
+  "changes": [
+    {
+      "path": "sources.ust-oregano",
+      "action": "Updated actual retrieval note/access date without changing its URL or preparation."
+    },
+    {
+      "path": "sources.cavite-preparations-2021",
+      "action": "Corrected citation title to the publisher's actual title and documented successful fresh byte match, survey scope and exact table rows."
+    },
+    {
+      "path": "sources.who-dengue-2025",
+      "action": "Added reviewed official warning-only support; not mapped to preparation, human dose or herb efficacy."
+    },
+    {
+      "path": "herbs.builtin-mangosteen.warnings",
+      "action": "Reworded the local warning to separate survey limits from official care guidance; no medicinal dose or new preparation quantity."
+    },
+    {
+      "path": "herbs.builtin-mangosteen.fieldSources.warnings",
+      "action": "Mapped the changed warning to the Cavite survey and WHO care guidance; previously empty mapping meant this field was excluded."
+    }
+  ],
+  "publicFieldReview": {
+    "revision": 2,
+    "path": "Docs/research/HERB_PREPARATION_PUBLIC_FIELD_REVIEW_2026-10-06.json",
+    "capturedAt": "2026-10-06T01:45:00.401Z",
+    "livePublishedCount": 38,
+    "liveGenericPreparations": 20,
+    "summary": {
+      "methodUpdates": 20,
+      "dosageUpdates": 1,
+      "warningUpdates": 4,
+      "sourceAdditions": 22,
+      "unmappedDifferencesRetained": 0,
+      "classes": {
+        "REPORTED_TRADITIONAL_USE_NOT_VALIDATED": 12,
+        "PHARMACOPOEIAL_EXTERNAL_TRADITIONAL_USE": 1,
+        "FOOD_ONLY_DESCRIPTION": 5,
+        "ORAL_PREPARATION_WITHHELD": 2
+      }
+    }
+  },
+  "protectedState": {
+    "canonicalStatus": "DRAFT",
+    "reviewerAssigned": false,
+    "publicationPromoted": false,
+    "newPlantIds": 0,
+    "preparationTextChanged": false,
+    "dosageChanged": false,
+    "imageChanged": false
+  },
+  "productionWritesPerformed": false,
+  "embeddingGenerated": false,
+  "credentialsRecorded": false,
+  "commitPerformed": false,
+  "pushPerformed": false,
+  "applyAllowed": false,
+  "remainingGates": [
+    "Broader independent content/safety review; the Mangosteen warning mapping and two source transport gaps are resolved locally, not blanket clinical clearance.",
+    "Fresh complete database/embedding/source recovery backup outside Git and a separately reviewed executable plan.",
+    "Regenerate actual accepted-field embeddings; fail closed if provider generation fails.",
+    "Separately authorized guarded application by an active reviewer; no bootstrap/importer substitute.",
+    "Post-application live Library, sources, image preservation, cache refresh and Dr. Ai retrieval checks.",
+    "Separate fifty-candidate method/taxonomy/media/staging/publication gates."
+  ],
+  "validationStatus": "PASSED_LOCAL_FOCUSED_AND_BOUNDED_NON_DATABASE_SUITE",
+  "validation": {
+    "focused": {
+      "testsPassed": 196,
+      "filesPassed": 7,
+      "durationSeconds": 8.3
+    },
+    "finalSourceDateRegression": {
+      "testsPassed": 9,
+      "filesPassed": 1,
+      "durationSeconds": 1.14
+    },
+    "broadBoundedRun": {
+      "testsPassed": 1234,
+      "filesPassed": 88,
+      "durationSeconds": 135.11,
+      "maxWorkers": 2,
+      "databaseSuitesExcluded": 18
+    },
+    "initialDefaultParallelRun": {
+      "testsPassed": 1230,
+      "testsFailed": 4,
+      "filesPassed": 84,
+      "filesFailed": 4,
+      "durationSeconds": 86.12,
+      "failures": [
+        {
+          "suite": "built-in-herb-fields",
+          "resolution": "Corrected obsolete October 5 expectation for the freshly reviewed October 6 sources; retained older actual dates for unchanged sources."
+        },
+        {
+          "suite": "herb-preparation-isolated-runner",
+          "resolution": "Passed original checks in the isolated and bounded-worker runs; no timeout raised or connection guard weakened."
+        },
+        {
+          "suite": "startup-config",
+          "resolution": "Passed original occupied-port check in the isolated and bounded-worker runs; no backend behavior changed."
+        },
+        {
+          "suite": "chat-cancellation",
+          "resolution": "Passed unchanged in the bounded-worker full run. The initial default-worker run raced its 90ms timeout; load-sensitive harness behavior is recorded, not counted as a proven production outage."
+        }
+      ]
+    },
+    "strictTestTypecheckPassed": true,
+    "explicitChangedTestLintPassed": true,
+    "backendBuildPassed": true,
+    "backendSourceLintPassed": true,
+    "remoteCiRerun": false,
+    "realPostgreSqlRunThisContinuation": false,
+    "liveAiRetrievalRun": false,
+    "finalPublicCatalog": {
+      "checkedAt": "2026-10-06T01:54:47.483Z",
+      "httpStatus": 200,
+      "published": 38,
+      "genericPreparations": 20,
+      "allPublishedIdentitiesMatchSql": true,
+      "writesPerformed": 0
+    },
+    "limits": {
+      "checkedRemainingPrimaryPercent": 23,
+      "userPauseThresholdRemainingPercent": 1,
+      "thresholdReached": false
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "status": "PREPARATION_FOLLOW_UP_NOT_IMPORTABLE",
+  "reviewedAt": "2026-10-07",
+  "productionWritesPerformed": false,
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "priorEvidenceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+  "synonymBinding": {
+    "acceptedScientificName": "Magnolia champaca",
+    "sourceScientificName": "Michelia champaca",
+    "sourceUrl": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:554657-1",
+    "relationship": "HOMOTYPIC_SYNONYM",
+    "reviewedAt": "2026-10-07",
+    "queueRenamed": false
+  },
+  "source": {
+    "id": "champaca-flower-bud-rat-study",
+    "scientificName": "Magnolia champaca",
+    "sourceScientificName": "Michelia champaca",
+    "kind": "PRIMARY_PRECLINICAL_STUDY",
+    "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+    "title": "Antidiabetic activity of flower buds of  Michelia champaca  Linn",
+    "url": "https://doi.org/10.4103/0253-7613.45151",
+    "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3025142/fullTextXML",
+    "downloadBytes": 65983,
+    "downloadSha256": "1fc7475b7952c47028fde11f93ed106f8b477ffab5f0ea738b0357fa7512eb74",
+    "reviewCoverage": "FULL_TEXT_METHOD_SECTIONS_READ",
+    "reviewLocators": [
+      "Plant material",
+      "Preparation of extracts",
+      "Animals and treatment"
+    ],
+    "reviewedAt": "2026-10-07",
+    "supports": [
+      "preparationMethod"
+    ],
+    "plantPart": "Flower buds",
+    "voucher": "BRNCP/M/003/2006",
+    "limitation": "Laboratory flower-bud extraction and rat experiments only. Not a stem-bark method, human diabetes treatment, safe dose or beginner home recipe."
+  },
+  "proposal": {
+    "candidateId": "research-pardo-003",
+    "localName": "Tsampaka",
+    "scientificName": "Magnolia champaca",
+    "preparationKind": "LABORATORY_DESCRIPTION_HELD",
+    "preparationPart": "Flower buds; not stem bark, leaves or fragrance oil",
+    "methodEstablishedInReview": true,
+    "preparationDescription": "An independent study of Michelia champaca (Magnolia champaca) dried and powdered flower buds, compared solvent extracts with a separate boiled-water extract, and vacuum-concentrated the extracts for Wistar-rat experiments. This laboratory description is not a home recipe or treatment and supplies no validated human diabetes dose. The quarantined stem-bark source is not used; its unresolved metadata is not a confirmed retraction finding.",
+    "preparationSourceIds": [
+      "champaca-flower-bud-rat-study"
+    ],
+    "medicinalInstructionsCleared": false,
+    "beginnerStepsCleared": false,
+    "preparationInstructions": null,
+    "dosage": null,
+    "publicationAllowed": false
+  },
+  "quarantine": {
+    "sourceId": "magnolia-metadata-quarantine",
+    "unchanged": true,
+    "supports": [
+      "researchGap"
+    ],
+    "retractionStatusConfirmed": false,
+    "independentStudyDoesNotResolveNoticeMismatch": true
+  },
+  "reviewGaps": [
+    "Human plant-part safety and clinical efficacy remain uncleared.",
+    "No household quantities, boiling duration, daily frequency or medicinal dose is derived from laboratory/rat parameters.",
+    "Category, genuine reviewer, import/rollback/concurrency and final source/photo clearance remain pending."
+  ]
+}

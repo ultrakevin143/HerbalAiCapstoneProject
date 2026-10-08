@@ -4,6 +4,10 @@ Status: Phase 2 findings; no production herb records changed
 Snapshot date: 2026-09-12  
 Records reviewed: 14 live Herb records and 10 built-in seed definitions
 
+## Historical snapshot — not the current catalog
+
+The findings below describe 12 September 2026 and are retained as original audit evidence. They do not describe the current live publication status. The later `20260913093000_restore_evidence_supported_herbs` migration restored Gumamela, Indian Heliotrope and Tanglad with research/limitation wording and references. On 4 October the public API returned 38 records, including those three. See [the current source-scope review](testing/LIBRARY_SOURCE_AUDIT_2026-10-04.md) for observed live content and unresolved attribution work. Restoration is not a clinical endorsement or proof that every source field has complete coverage.
+
 ## Executive finding
 
 The current Library should be corrected before adding 20 more records. Of 14 live records, none has stored citation or image-license metadata. One official herb is duplicated under two names with the wrong taxon, one official record has inconsistent badge and claim data, and several dosage or preparation statements do not match the current PITAHC directory. Three non-official records contain prescriptive claims without retained sources.

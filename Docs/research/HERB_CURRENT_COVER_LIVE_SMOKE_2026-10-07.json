@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "status": "PUBLIC_LIBRARY_SMOKE_CHECKED_NOT_FULL_MVP",
+  "checkedAt": "2026-10-07T01:25:39Z",
+  "catalog": {
+    "checkedAt": "2026-10-07T01:20:21.223Z",
+    "httpStatus": 200,
+    "total": 38,
+    "distinctIds": 38,
+    "nonblankPreparation": 38,
+    "missingCoreFields": [],
+    "missingImages": [
+      {
+        "id": "h-84ec276856199592",
+        "name": "Kalingag"
+      }
+    ]
+  },
+  "browser": {
+    "url": "https://herbalaiph.vercel.app/library",
+    "accountMode": "PUBLIC_GUEST",
+    "searchKalingag": {
+      "matchingHerbs": 1,
+      "detailOpened": true,
+      "preparationTextPresent": true,
+      "sourceReferenceLinksVisible": 2,
+      "warningTextPresent": true
+    },
+    "unmatchedSearch": {
+      "count": 0,
+      "emptyState": "No herbs match these filters"
+    },
+    "pagination": {
+      "next": "Page 2 of 4",
+      "previous": "Page 1 of 4"
+    },
+    "viewports": [
+      {
+        "width": 375,
+        "height": 812,
+        "dialogLeft": 19,
+        "dialogRight": 356,
+        "dialogWidth": 337,
+        "dialogClientWidth": 325,
+        "dialogScrollWidth": 325,
+        "pageWidth": 375
+      },
+      {
+        "width": 1280,
+        "height": 800,
+        "dialogLeft": 192,
+        "dialogRight": 1088,
+        "dialogWidth": 896,
+        "dialogClientWidth": 884,
+        "dialogScrollWidth": 884
+      }
+    ],
+    "viewportReset": true,
+    "consoleErrorsObserved": 0,
+    "consoleWarningsObserved": 0
+  },
+  "limitations": [
+    "One detail dialog checked, not all 38 dialogs or all features.",
+    "No authenticated/admin/write flow or live AI provider call in this batch.",
+    "Preparation field presence is not validated medicinal efficacy or a complete safe home recipe.",
+    "Missing Kalingag cover remains unresolved; its fallback is visible.",
+    "Browser viewport emulation is not a new physical-device test."
+  ],
+  "productionWrites": 0,
+  "aiProviderRequests": 0
+}

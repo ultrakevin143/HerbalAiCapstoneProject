@@ -1,0 +1,893 @@
+{
+  "preparedAt": "2026-10-05",
+  "status": "PRELIMINARY_VISUAL_REVIEW_NOT_IMPORTABLE",
+  "intakeFile": "Docs/research/HERB_REMAINING_THIRTY_DOWNLOAD_INTAKE_2026-10-05.json",
+  "uploadAllowed": false,
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "counts": {
+    "candidates": 30,
+    "downloadedCandidates": 26,
+    "photos": 51,
+    "visuallyInspected": 50,
+    "sizeRejectedNotViewed": 1,
+    "provisionalCoverCandidates": 17,
+    "needsReplacementOrMissing": 13,
+    "newUploads": 0
+  },
+  "limitations": [
+    "Contact sheets show the intact frame reduced for review, without retouching or species replacement. Source originals remain unchanged outside Git.",
+    "Provisional covers are not expert specimen authentication, content clearance or upload permission. Recheck primary botanical identity, exact observation taxon/rank, individual CC0 permission and source integrity immediately before any upload.",
+    "Kamias original-size inspection is complete: the fruit and flowers are soft, so the candidate needs a sharper replacement cover. Historic author/variety mappings and medicinal content remain separate gates.",
+    "No browser upload succeeded; Cloudinary page control timed out. No Neon writes, new publication, commit or push occurred in this review."
+  ],
+  "candidates": [
+    {
+      "candidateId": "research-pardo-170",
+      "scientificName": "Ocimum basilicum",
+      "localName": "Solasi",
+      "selectedPhotoId": 110372081,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "White bilabiate flower macro is clear; companion shows leaves/racemes. Historical Ocimum author/synonym mapping still needs independent modern reconciliation.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-171",
+      "scientificName": "Ocimum gratissimum",
+      "localName": "Lokoloko",
+      "selectedPhotoId": null,
+      "status": "REPLACEMENT_COVER_NEEDED",
+      "observed": "Flower close-up includes a large hand and the whole plant is cluttered with damaged foliage. Seek a cleaner flowering cover.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-172",
+      "scientificName": "Ocimum tenuiflorum",
+      "localName": "Balanay",
+      "selectedPhotoId": 346048247,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Purple stems, opposite toothed leaves and flower/fruit racemes are visible. Cultivar and species discrimination are limited; the leaf-only companion is not an independent identification.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-174",
+      "scientificName": "Salvia rosmarinus",
+      "localName": "Romero",
+      "selectedPhotoId": 179113899,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Clear pale-violet bilabiate flowers with narrow revolute-looking foliage. Species metadata/synonym and permissions must be rechecked before upload.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-073",
+      "scientificName": "Sesbania grandiflora",
+      "localName": "Katuray",
+      "selectedPhotoId": 212462413,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Living pinnate foliage and large pendulous white pea-shaped flowers visible; wider companion is cluttered.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+        "https://www.nparks.gov.sg/publications-resources/articles/new-greens-for-your-plate"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-089",
+      "scientificName": "Piliostigma malabaricum",
+      "localName": "Alibangbang",
+      "selectedPhotoId": null,
+      "status": "NO_DOWNLOADED_LEAD",
+      "observed": "No downloaded licensed candidate available.",
+      "comparisonSourceUrls": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-091",
+      "scientificName": "Parkia timoriana",
+      "localName": "Kupang",
+      "selectedPhotoId": null,
+      "status": "NO_DOWNLOADED_LEAD",
+      "observed": "No downloaded licensed candidate available.",
+      "comparisonSourceUrls": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-215",
+      "scientificName": "Nypa fruticans",
+      "localName": "Nipa",
+      "selectedPhotoId": null,
+      "status": "REPLACEMENT_COVER_NEEDED",
+      "observed": "Both pictures show a detached, dark, weathered beach-drift propagule, not a clear living palm. Reject as catalog cover.",
+      "comparisonSourceUrls": [
+        "https://www.nparks.gov.sg/florafaunaweb/flora/2/6/2658"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-108",
+      "scientificName": "Lagenaria siceraria",
+      "localName": "Bottle gourd",
+      "selectedPhotoId": null,
+      "status": "REPLACEMENT_COVER_NEEDED",
+      "observed": "Mixed tangled vines and broad leaves, without a diagnostic white blossom or bottle-shaped fruit. Do not choose a similar-looking cucurbit solely from its API label.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-112",
+      "scientificName": "Luffa aegyptiaca",
+      "localName": "Luffa aegyptiaca",
+      "selectedPhotoId": 457593750,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Clear yellow flower, tendrils and rough palmately lobed leaves. No mature smooth fruit is shown; cannot independently exclude related gourds from this picture alone.",
+      "comparisonSourceUrls": [
+        "https://www.nparks.gov.sg/florafaunaweb/flora/4/8/4848"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-124",
+      "scientificName": "Ixora coccinea",
+      "localName": "Santan",
+      "selectedPhotoId": 263717811,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Clear terminal red cluster with four-lobed flowers. Species-level discrimination from other cultivated Ixora is limited.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-139",
+      "scientificName": "Jasminum sambac",
+      "localName": "Sampaguita",
+      "selectedPhotoId": 385822470,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Clear white multi-lobed flowers/bud and simple entire oval leaves. Cultivated double-flower form not inferred as a medicinal formulation.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-138",
+      "scientificName": "Mimusops elengi",
+      "localName": "Kabiki",
+      "selectedPhotoId": null,
+      "status": "REPLACEMENT_COVER_NEEDED",
+      "observed": "Glossy oblong leaves are visible but no diagnostic star-shaped flower or ripe fruit. Seek a more informative species-correct cover.",
+      "comparisonSourceUrls": [
+        "https://www.nparks.gov.sg/florafaunaweb/flora/3/0/3030"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-033",
+      "scientificName": "Hibiscus tiliaceus",
+      "localName": "Balibago",
+      "selectedPhotoId": null,
+      "status": "REPLACEMENT_COVER_NEEDED",
+      "observed": "One picture is a fallen, aging flower; the other is strongly backlit with a partially hidden bloom. Need a clearer living flower/leaf cover, especially to distinguish Thespesia.",
+      "comparisonSourceUrls": [
+        "https://www.nparks.gov.sg/florafaunaweb/flora/2/9/2954"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-035",
+      "scientificName": "Thespesia populnea",
+      "localName": "Thespesia populnea",
+      "selectedPhotoId": 195224484,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Living yellow flower, smooth heart-shaped entire leaves and cup-like calyx visible; do not substitute the related Hibiscus record.",
+      "comparisonSourceUrls": [
+        "https://www.nparks.gov.sg/florafaunaweb/flora/3/1/3190"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-038",
+      "scientificName": "Ceiba pentandra",
+      "localName": "Doldol",
+      "selectedPhotoId": 32279278,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Clear whole-tree silhouette, large trunk and tiered horizontal branches. Distant foliage/fruit is not a diagnostic specimen view.",
+      "comparisonSourceUrls": [
+        "https://heritagetrees.nparks.gov.sg/heritagetrees/ht-2007-152/",
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-039",
+      "scientificName": "Sterculia foetida",
+      "localName": "Kalumpang",
+      "selectedPhotoId": 633583068,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Clear reddish radiating woody follicles and palmate leaflets. The alternate view is dark/backlit. No food-safety inference is made.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-067",
+      "scientificName": "Ziziphus mauritiana",
+      "localName": "Manzanitas",
+      "selectedPhotoId": 252869971,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Round green fruits, small leaves and visible basal veins. Some insect damage; the historical Jujuba author/name distinction remains a content identity gate.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-079",
+      "scientificName": "Pterocarpus indicus",
+      "localName": "Asana",
+      "selectedPhotoId": null,
+      "status": "REPLACEMENT_COVER_NEEDED",
+      "observed": "One picture is mainly an obstructed roadside canopy with utility wires; the other shows fallen winged fruits on paving. Seek a clean living leaf/flower/fruit view.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-125",
+      "scientificName": "Coffea arabica",
+      "localName": "Coffee",
+      "selectedPhotoId": 473238470,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Glossy opposite oval leaves with undulate margins visible. No coffee cherries or diagnostic flowers; use only as a foliage cover after identity recheck.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-047",
+      "scientificName": "Averrhoa bilimbi",
+      "localName": "Kamias",
+      "selectedPhotoId": null,
+      "status": "REPLACEMENT_COVER_NEEDED",
+      "observed": "Original-size image viewed separately. Oblong green fruits and reddish flowers are consistent with the botanical description but visibly soft; seek a sharper cover rather than sharpening or upscaling this file.",
+      "comparisonSourceUrls": [
+        "https://ntbg.org/database/plants/detail/averrhoa-bilimbi"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-048",
+      "scientificName": "Averrhoa carambola",
+      "localName": "Balimbing",
+      "selectedPhotoId": 99204713,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Clear pink/mauve flowers and compound-leaf context. No star-shaped fruit; not a cultivar or food-safety determination.",
+      "comparisonSourceUrls": [
+        "https://nt.gov.au/environment/home-gardens/growing-vegetables-at-home/carambola-starfruit"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-070",
+      "scientificName": "Anacardium occidentale",
+      "localName": "Kasuy",
+      "selectedPhotoId": 217472168,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Clear intact yellow cashew apple with a hanging kidney-shaped nut. No shell-processing or ingestion advice inferred.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-126",
+      "scientificName": "Morinda citrifolia",
+      "localName": "Bankundo",
+      "selectedPhotoId": 105341351,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Clear pale composite fruit with repeated circular eyes and broad leaf context. Historical bracteata variety-to-species mapping remains unresolved for content.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-045",
+      "scientificName": "Oxalis corniculata",
+      "localName": "Oxalis corniculata",
+      "selectedPhotoId": 533454766,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Yellow five-petalled flowers and small trifoliate heart-shaped leaflets; the alternate view has conspicuous white litter.",
+      "comparisonSourceUrls": [
+        "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:177893-2/general-information",
+        "https://www.nparks.gov.sg/florafaunaweb/resource/-/media/ffw/general/field-guides/a-field-guide-to-plants-of-singapore---common-wildflowers.pdf"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-054",
+      "scientificName": "Citrus aurantium",
+      "localName": "Kahel",
+      "selectedPhotoId": null,
+      "status": "NO_DOWNLOADED_LEAD",
+      "observed": "No downloaded licensed candidate; exact historical bitter-orange crop concept is still on hold.",
+      "comparisonSourceUrls": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-003",
+      "scientificName": "Magnolia champaca",
+      "localName": "Tsampaka",
+      "selectedPhotoId": 208651812,
+      "status": "PROVISIONAL_COVER_PENDING_FINAL_CHECKS",
+      "observed": "Clear yellow/orange narrow floral segments with large simple leaf context. The alternate hand-held fruiting twig is supporting only.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-030",
+      "scientificName": "Abutilon indicum",
+      "localName": "Abutilon indicum",
+      "selectedPhotoId": null,
+      "status": "REPLACEMENT_COVER_NEEDED",
+      "observed": "One image is an extreme stamen macro lacking whole-flower/leaf context; the other is a crowded distant shrub. Need a clearer diagnostic cover.",
+      "comparisonSourceUrls": [
+        "https://www.nparks.gov.sg/florafaunaweb/flora/1/5/1582"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-032",
+      "scientificName": "Abelmoschus moschatus",
+      "localName": "Kastuli",
+      "selectedPhotoId": null,
+      "status": "REPLACEMENT_COVER_NEEDED",
+      "observed": "Dry hairy seed pod and unopened bud show only limited characters. Seek a clear mature flower and foliage to distinguish other Abelmoschus.",
+      "comparisonSourceUrls": [
+        "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm"
+      ],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-130",
+      "scientificName": "Ayapana triplinervis",
+      "localName": "Ayapana",
+      "selectedPhotoId": null,
+      "status": "NO_DOWNLOADED_LEAD",
+      "observed": "No downloaded licensed candidate available.",
+      "comparisonSourceUrls": [],
+      "publicationAllowed": false
+    }
+  ],
+  "photos": [
+    {
+      "photoId": 110372081,
+      "candidateId": "research-pardo-170",
+      "sourceSha256": "70612a44c305991a438b8b46b5ce86470e0b587dc57b83a55aa6a311aedc87df",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "White bilabiate flower macro is clear; companion shows leaves/racemes. Historical Ocimum author/synonym mapping still needs independent modern reconciliation.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 110372064,
+      "candidateId": "research-pardo-170",
+      "sourceSha256": "98fbd733f399b7a21dc9d9e83c0f5764fa3abb4c8ad83915ebc0ba881518bf1e",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Whole basil is cluttered; retained for leaf/raceme context.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 673123594,
+      "candidateId": "research-pardo-171",
+      "sourceSha256": "1be7a770fb1aa2e9f88fecaf6c433416a7a95a2557a26cefc3afc1864b07ad7d",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Hand dominates lower foreground; not a cover selection.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 673123615,
+      "candidateId": "research-pardo-171",
+      "sourceSha256": "9ef3ec7d3ef4cf26e4e0c692cff19fca127db039d1768733230cceffb94d5789",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Cluttered flowering plant with damaged foliage; seek clearer alternative.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 451100124,
+      "candidateId": "research-pardo-172",
+      "sourceSha256": "8b08c788293c29ec89d5070273e9da14de6965979348ff39a9d2e814f833564d",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Sharp leaves only, insufficient independent species discrimination.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 346048247,
+      "candidateId": "research-pardo-172",
+      "sourceSha256": "43c0d6264b06b801a619f44feb2e412851dd535a5607c615a6a3b16cbdae6a56",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Purple stems, opposite toothed leaves and flower/fruit racemes are visible. Cultivar and species discrimination are limited; the leaf-only companion is not an independent identification.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 179113899,
+      "candidateId": "research-pardo-174",
+      "sourceSha256": "f0c2c9e9af9c9e958b507636c6a58dc39568408cf27f769290bb9809b7fbdadc",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Clear pale-violet bilabiate flowers with narrow revolute-looking foliage. Species metadata/synonym and permissions must be rechecked before upload.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 228850213,
+      "candidateId": "research-pardo-174",
+      "sourceSha256": "b91531c97412233dff3f418acb68d3c5bd8535d32ebdedba03d73773f11599ee",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Sharp rosemary foliage; flower close-up preferred.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 212462413,
+      "candidateId": "research-pardo-073",
+      "sourceSha256": "1f7dcae1ec6be4cd6d456057bc806311c6ac6bc41ba2156e971e855e5c7a9b12",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Living pinnate foliage and large pendulous white pea-shaped flowers visible; wider companion is cluttered.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 212462427,
+      "candidateId": "research-pardo-073",
+      "sourceSha256": "c6e7a2ddd04d152078217c7fcf8bf2908dfea62656ef7bb5434132f9ab4fffe5",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Distant tree among mixed vegetation.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 241764014,
+      "candidateId": "research-pardo-215",
+      "sourceSha256": "8e187368def53df934387e039e5fc34057bbcf1e4e8204747faa97ead1f2a6da",
+      "visuallyInspected": true,
+      "status": "REJECTED_AS_COVER",
+      "observed": "Weathered detached beach propagule; not living palm cover.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 241764024,
+      "candidateId": "research-pardo-215",
+      "sourceSha256": "7b45ea0c029c2b6f94a557c4ebe716872c8350c7eb6ac3abe6c67fefbf28228a",
+      "visuallyInspected": true,
+      "status": "REJECTED_AS_COVER",
+      "observed": "Same weathered detached beach propagule, alternate angle.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 632518858,
+      "candidateId": "research-pardo-108",
+      "sourceSha256": "88b6acfc1aaab836387d34482509e5df33da7673143a982752dc0491203ba47e",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Mixed vines, no diagnostic blossom/fruit.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 632518874,
+      "candidateId": "research-pardo-108",
+      "sourceSha256": "79f804cb63330c0d80c8ab4c9b67fb9d951d662c660a15e3bad2451e0fd2d576",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Mixed vines and shallow-focus stems; no diagnostic blossom/fruit.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 484568573,
+      "candidateId": "research-pardo-112",
+      "sourceSha256": "ef6e13e578b5a51d7303e2d311b6c79e2cc118458aa46c172203bff033239e10",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Foliage-only view with damage, flowering companion preferred.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 457593750,
+      "candidateId": "research-pardo-112",
+      "sourceSha256": "8f97359fc7489a20b6c8335e0d8c9500cff9d96739038669689f8fa188269f32",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Clear yellow flower, tendrils and rough palmately lobed leaves. No mature smooth fruit is shown; cannot independently exclude related gourds from this picture alone.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 263717811,
+      "candidateId": "research-pardo-124",
+      "sourceSha256": "e3cfa9a9f074b82d22cd0c17f7913cc8c218069c07ccbca3a5849360a23cc31f",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Clear terminal red cluster with four-lobed flowers. Species-level discrimination from other cultivated Ixora is limited.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 649032108,
+      "candidateId": "research-pardo-124",
+      "sourceSha256": "16d9b1dacaf8c32a2068da119e8f40f8d85dab0f6de0844c202df6ee234665a5",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Fruit/leaf view; red flower cluster clearer for cover.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 385822470,
+      "candidateId": "research-pardo-139",
+      "sourceSha256": "c64ebe62b78f28e677044384fa5ce6aabec9cf3e2eeaab3cd7db20bcd5e2780a",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Clear white multi-lobed flowers/bud and simple entire oval leaves. Cultivated double-flower form not inferred as a medicinal formulation.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 604127007,
+      "candidateId": "research-pardo-138",
+      "sourceSha256": "b9c4dea7ab3f89b6beaa5f689dea3f4575c04b9cb761200d0410725aee2c209a",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Generic glossy foliage, no star-like blossom or ripe fruit.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 604127030,
+      "candidateId": "research-pardo-138",
+      "sourceSha256": "86abae759a12431e6ecf80d25d02d18aa172a15b3691cae7500b43928f6ace18",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Wider same generic foliage and background.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 462592755,
+      "candidateId": "research-pardo-033",
+      "sourceSha256": "645cd4e2489b201faca086557b4df84c9c0baaca9a2dc969a31185d870554a4d",
+      "visuallyInspected": true,
+      "status": "REJECTED_AS_COVER",
+      "observed": "Fallen aging flower on mud, not living plant cover.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 462592765,
+      "candidateId": "research-pardo-033",
+      "sourceSha256": "f49f767264569ddd36bfbeb6b9b162cdf5228b8580d14c935e63eaf7b41a4629",
+      "visuallyInspected": true,
+      "status": "REJECTED_AS_COVER",
+      "observed": "Strong backlight and partially hidden bloom.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 32279278,
+      "candidateId": "research-pardo-038",
+      "sourceSha256": "e06412a4078953ad7edc3a4c545072ae3dc383286c8e855e6fc9d802c25cea29",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Clear whole-tree silhouette, large trunk and tiered horizontal branches. Distant foliage/fruit is not a diagnostic specimen view.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 205006804,
+      "candidateId": "research-pardo-038",
+      "sourceSha256": "a0a759cb759aaebff77c3732d353edc1f0c61e55c4e66ec1b7c802e4148f542d",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Whole tree, less distinct tiered silhouette than chosen companion.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 633583068,
+      "candidateId": "research-pardo-039",
+      "sourceSha256": "377356f2aa5366e694db864a75ec15a4f764bb1193aea320f2431bc30dd3705a",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Clear reddish radiating woody follicles and palmate leaflets. The alternate view is dark/backlit. No food-safety inference is made.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 278778277,
+      "candidateId": "research-pardo-039",
+      "sourceSha256": "f10cc2538ecbe2618721818bdaf4a37e5f7aff4096f9714ee1a159df89576c40",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Pod/foliage backlit and dark.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 252869971,
+      "candidateId": "research-pardo-067",
+      "sourceSha256": "abf13b826fe2ecb47ecf8106aa3a20ac26370a3582d062a42c9e9090984aac10",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Round green fruits, small leaves and visible basal veins. Some insect damage; the historical Jujuba author/name distinction remains a content identity gate.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 252870017,
+      "candidateId": "research-pardo-067",
+      "sourceSha256": "358d8b115a5dc267cb1667c888cf0df9530d01241935671eca272850d30c1286",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Bark alone is not a useful cover or independent species confirmation.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 511293438,
+      "candidateId": "research-pardo-079",
+      "sourceSha256": "9bfb6f3804ca21ee5b3feff6d6892390fcf431b2e7638f3721eb2bbd0c041139",
+      "visuallyInspected": true,
+      "status": "REJECTED_AS_COVER",
+      "observed": "Utility wires and street clutter obscure canopy, no useful close diagnostic characters.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 24222154,
+      "candidateId": "research-pardo-079",
+      "sourceSha256": "f0608e37818e5cadf92b79d748dd67f0592f1813a4458f9c14edbe204c525180",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Fallen winged fruits on pavement, supporting identification context only.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 480261781,
+      "candidateId": "research-pardo-125",
+      "sourceSha256": "db3435d3ada2d6ef220c3af8eac47fe9839d417be9199d831e7f3c55296ac829",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Damaged leaves; clearer companion foliage preferred.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 473238470,
+      "candidateId": "research-pardo-125",
+      "sourceSha256": "5247651aee6a970b21dbaaf6ffe8f6e3379cb94652ffe1153d7aa1b2403bf803",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Glossy opposite oval leaves with undulate margins visible. No coffee cherries or diagnostic flowers; use only as a foliage cover after identity recheck.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 65749923,
+      "candidateId": "research-pardo-047",
+      "sourceSha256": "a7a82aa91d0e9ee2b5b4c44b739d429fce6465af0b31052da2856f4ef0bb4a69",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Original-size image viewed separately. Oblong green fruits and reddish flowers are consistent with the botanical description but visibly soft; seek a sharper cover rather than sharpening or upscaling this file.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 65749908,
+      "candidateId": "research-pardo-047",
+      "sourceSha256": "440fa1c9954f95f365bbaa5f67386b576249d1d6f03905f8387c02d482382004",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Whole tree and pinnate foliage; fruit close-up preferred if source sharpness passes.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 99204713,
+      "candidateId": "research-pardo-048",
+      "sourceSha256": "1c48a0fc3760963c8fdf8349c3de5b7ca01f97ff051f231fce89d6b848de9743",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Clear pink/mauve flowers and compound-leaf context. No star-shaped fruit; not a cultivar or food-safety determination.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 99204761,
+      "candidateId": "research-pardo-048",
+      "sourceSha256": "af578b4bb0e47df48821e21ad0197cb629bbd04f8538a1568975a5a72bdf7a57",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Leaves only; flowering companion preferred.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 217472125,
+      "candidateId": "research-pardo-070",
+      "sourceSha256": "56065ad1fbc8fbf45af5ef7bfcd29b6d92d5b3250a51e028a326c12105c78ead",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "One fruit damaged; intact companion preferred.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 217472168,
+      "candidateId": "research-pardo-070",
+      "sourceSha256": "c2ca4cf856e19f5b6319f68e323c9aea5f4dcfa3b0e7df26a393fcb73825f04e",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Clear intact yellow cashew apple with a hanging kidney-shaped nut. No shell-processing or ingestion advice inferred.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 533454766,
+      "candidateId": "research-pardo-045",
+      "sourceSha256": "b9125ef89539d8cf5eeca10ce4b0b4d51cc59b6bd4ae9cabaffa595406967255",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Yellow five-petalled flowers and small trifoliate heart-shaped leaflets; the alternate view has conspicuous white litter.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 486844955,
+      "candidateId": "research-pardo-045",
+      "sourceSha256": "49b149699c2b885dd001cfcab56efcfa90a723267edf788c1aeda5057f80e87f",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Prominent white litter behind purple-leaved plant.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 208651812,
+      "candidateId": "research-pardo-003",
+      "sourceSha256": "fd3a60e0c4671172de262a292d8d6290680fcf0ae7f38ff03965a750457111cf",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Clear yellow/orange narrow floral segments with large simple leaf context. The alternate hand-held fruiting twig is supporting only.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 560034416,
+      "candidateId": "research-pardo-003",
+      "sourceSha256": "76e835a72516ce6827900feaa109e5fecd26f841a1995c06ea4d49494583bc13",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Hand-held fruiting twig, limited cover context.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 39272647,
+      "candidateId": "research-pardo-030",
+      "sourceSha256": "bad13d3d268c0d200aca5e9e20744f6f105cca6ffb070b507d3f5231f4eb0505",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Extreme stamen macro with no whole flower or leaf context.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 39272529,
+      "candidateId": "research-pardo-030",
+      "sourceSha256": "3b9fafd2cd037c53a6f7c124ab61d69a5b72b9368a18a249ff91d75149c27d99",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Crowded distant shrub with small flowers.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 447385234,
+      "candidateId": "research-pardo-032",
+      "sourceSha256": "c952ae7ecf994c56077c1cec796e57fc1d98a66e0d88edb45364526fbc168eff",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Dry seed pod, no living flower/leaf context.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 447252259,
+      "candidateId": "research-pardo-032",
+      "sourceSha256": "c3719dad31daa802d70e931fc79b28a861ef7b62a3d8fd2537aa85efc1bd5131",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Unopened bud and partial foliage only.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 195224484,
+      "candidateId": "research-pardo-035",
+      "sourceSha256": "8e29121711c1cc2d1f34826edd8eb14d37da34ae0ae7b28d851fa6e48ffdc059",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Living yellow flower, smooth heart-shaped entire leaves and cup-like calyx visible; do not substitute the related Hibiscus record.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 211848399,
+      "candidateId": "research-pardo-035",
+      "sourceSha256": null,
+      "visuallyInspected": false,
+      "status": "NOT_VIEWED_SIZE_REJECTED",
+      "observed": "Failed size gate; image was not visually inspected.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 105341351,
+      "candidateId": "research-pardo-126",
+      "sourceSha256": "31ef5a1922186e02ed3a5c48e0d923edb9a814b3e5a63bd5e8405c5b46396479",
+      "visuallyInspected": true,
+      "status": "PROVISIONAL_COVER",
+      "observed": "Clear pale composite fruit with repeated circular eyes and broad leaf context. Historical bracteata variety-to-species mapping remains unresolved for content.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    },
+    {
+      "photoId": 105341367,
+      "candidateId": "research-pardo-126",
+      "sourceSha256": "4162629cd525a48be37972ffa98ee7aea9ae491d75d6dfd1ad29c3985a9eb348",
+      "visuallyInspected": true,
+      "status": "SUPPORTING_ONLY",
+      "observed": "Green composite fruit/white floral structures; ripe fruit companion selected.",
+      "cloudinaryUrl": null,
+      "uploadAllowed": false
+    }
+  ]
+}

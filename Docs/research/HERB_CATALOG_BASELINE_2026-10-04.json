@@ -1,0 +1,329 @@
+{
+  "auditDate": "2026-10-04",
+  "sourceUrl": "https://herbalaiph.vercel.app/api/herbs?limit=100",
+  "scope": "PUBLISHED and isVerified=true only; NOT the entire database",
+  "total": 38,
+  "herbs": [
+    {
+      "id": "82dde18f-a83d-41f6-ac4a-7c3eac3ecdc9",
+      "localName": "Akapulko",
+      "scientificName": "Senna alata",
+      "sourceScientificName": "Senna alata",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "h-1e7cceafb1033a17",
+      "localName": "Ampalaya",
+      "scientificName": "Momordica charantia",
+      "sourceScientificName": "Momordica charantia",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-anonas",
+      "localName": "Anonas",
+      "scientificName": "Annona reticulata",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-aratiles",
+      "localName": "Aratiles",
+      "scientificName": "Muntingia calabura",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-atsuete",
+      "localName": "Atsuete",
+      "scientificName": "Bixa orellana",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "72f25ea8-36b5-4c6c-805e-42186e39bfaa",
+      "localName": "Bawang",
+      "scientificName": "Allium sativum",
+      "sourceScientificName": "Allium sativum",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "h-792d71c0eccb0cfc",
+      "localName": "Bayabas",
+      "scientificName": "Psidium guajava",
+      "sourceScientificName": "Psidium guajava",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-damong-maria",
+      "localName": "Damong Maria",
+      "scientificName": "Artemisia vulgaris",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-gabi",
+      "localName": "Gabi",
+      "scientificName": "Colocasia esculenta",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "h-c132f53f302dc204",
+      "localName": "Gumamela",
+      "scientificName": "Hibiscus rosa-sinensis",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "h-a2eb84453b7dc7d0",
+      "localName": "Indian Heliotrope",
+      "scientificName": "Heliotropium indicum",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "h-84ec276856199592",
+      "localName": "Kalingag",
+      "scientificName": "Cinnamomum mercadoi",
+      "sourceScientificName": "Cinnamomum mercadoi",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-kamote",
+      "localName": "Kamote",
+      "scientificName": "Ipomoea batatas",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-katakataka",
+      "localName": "Katakataka",
+      "scientificName": "Kalanchoe pinnata",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "h-b608b956c6101d4e",
+      "localName": "Lagundi",
+      "scientificName": "Vitex negundo",
+      "sourceScientificName": "Vitex negundo",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-langka",
+      "localName": "Langka",
+      "scientificName": "Artocarpus heterophyllus",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-luya",
+      "localName": "Luya",
+      "scientificName": "Zingiber officinale",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-luyang-dilaw",
+      "localName": "Luyang dilaw",
+      "scientificName": "Curcuma longa",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-mabolo",
+      "localName": "Mabolo",
+      "scientificName": "Diospyros blancoi",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-makabuhay",
+      "localName": "Makabuhay",
+      "scientificName": "Tinospora crispa",
+      "sourceScientificName": "Tinospora rumphii",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-malunggay",
+      "localName": "Malunggay",
+      "scientificName": "Moringa oleifera",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-mangosteen",
+      "localName": "Mangosteen",
+      "scientificName": "Garcinia mangostana",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-mayana",
+      "localName": "Mayana",
+      "scientificName": "Coleus scutellarioides",
+      "sourceScientificName": "Coleus blumei",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "04d52d3b-b738-4ede-8275-46ba18758ac6",
+      "localName": "Niyog-niyogan",
+      "scientificName": "Combretum indicum",
+      "sourceScientificName": "Quisqualis indica",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-okra",
+      "localName": "Okra",
+      "scientificName": "Abelmoschus esculentus",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-oregano",
+      "localName": "Oregano",
+      "scientificName": "Coleus amboinicus",
+      "sourceScientificName": "Plectranthus amboinicus",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-pandan",
+      "localName": "Pandan",
+      "scientificName": "Pandanus amaryllifolius",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-sabila",
+      "localName": "Sabila",
+      "scientificName": "Aloe vera",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-saluyot",
+      "localName": "Saluyot",
+      "scientificName": "Corchorus aestuans",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "h-25e54a1f7aaba3fc",
+      "localName": "Sambong",
+      "scientificName": "Blumea balsamifera",
+      "sourceScientificName": "Blumea balsamifera",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-sibuyas",
+      "localName": "Sibuyas",
+      "scientificName": "Allium cepa",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-suha",
+      "localName": "Suha",
+      "scientificName": "Citrus maxima",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-takip-kohol",
+      "localName": "Takip-kohol",
+      "scientificName": "Centella asiatica",
+      "sourceScientificName": "Hydrocotyle asiatica",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "h-33500111229eaede",
+      "localName": "Tanglad",
+      "scientificName": "Cymbopogon citratus",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "h-cbfe9c04f7d24456",
+      "localName": "Tsaang Gubat",
+      "scientificName": "Ehretia microphylla",
+      "sourceScientificName": "Carmona retusa",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "da83efd3-0a97-43de-a81b-c16068f1112a",
+      "localName": "Ulasimang Bato",
+      "scientificName": "Peperomia pellucida",
+      "sourceScientificName": "Peperomia pellucida",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "h-4daf09c5a0b641ba",
+      "localName": "Yerba Buena",
+      "scientificName": "Mentha × villosa",
+      "sourceScientificName": "Mentha cordifolia",
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    },
+    {
+      "id": "builtin-ylang-ylang",
+      "localName": "Ylang-ylang",
+      "scientificName": "Cananga odorata",
+      "sourceScientificName": null,
+      "publicationStatus": "PUBLISHED",
+      "isVerified": true
+    }
+  ],
+  "reviewedLocalManifests": [
+    "herbalaibackend/content/herbs/expansion-batch-01.json",
+    "herbalaibackend/content/herbs/expansion-batch-02.json"
+  ],
+  "localManifestDistinctSpecies": 24,
+  "sourcePdfSha256": "d0f8a1fec9514578deddf99bbc1c0e8b5e01153df0ebf24aa4745a103cb6adb3",
+  "taxonomyChecklistKey": "7ddf754f-d193-4cc9-b351-99906754a03b",
+  "taxonomyService": "GBIF v2 species match against Catalogue of Life Extended Release",
+  "decisionCounts": {
+    "CANDIDATE_ABSENT_PUBLIC_CATALOG": 143,
+    "HOLD_IDENTITY": 50,
+    "EXISTING_PUBLIC_HERB": 22,
+    "BOOK_SYNONYM_NOT_EXTRA_HERB": 1,
+    "BOOK_VARIETY_NOT_EXTRA_HERB": 4
+  },
+  "candidateMeaning": "Distinct name-resolved species absent from the public snapshot. Not a medically reviewed or import-ready count.",
+  "localManifestSpeciesNotInPublicSnapshot": []
+}

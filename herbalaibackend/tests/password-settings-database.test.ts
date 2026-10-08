@@ -19,7 +19,7 @@ import app from '../src/app.js';
 import { prisma, closeDatabasePool } from '../src/lib/prisma.js';
 import { hashPassword, comparePassword } from '../src/utils/password.js';
 import { googleLogin } from '../src/services/auth.service.js';
-import * as userRepo from '../src/repositories/user.repository.js';
+import * as passwordUtils from '../src/utils/password.js';
 import { onSessionInvalidated } from '../src/lib/session-invalidation.js';
 import { ENV } from '../src/config/env.js';
 
@@ -106,7 +106,7 @@ describe('Password settings with isolated PostgreSQL and intercepted Google/mail
     expect(mocks.sendMail).toHaveBeenLastCalledWith(expect.objectContaining({ to: email }));
     const reset = await prisma.token.findFirstOrThrow({ where: { userId: original.id, type: 'PASSWORD_RESET', revokedAt: null } });
     expect(mocks.sendMail.mock.calls.at(-1)?.[0].html).toContain('/reset-password?token=' + reset.token);
-    expect((await protectedPost('password-setup', googleSession.accessToken, {})).status).toBe(200);
+    expect((await protectedPost('password-setup', googleSession.accessToken, {})).status).toBe(429);
     expect((await request(app).post('/api/auth/forgot-password').send({ email })).status).toBe(200);
     expect(mocks.sendMail.mock.calls.length).toBe(before + 1);
     const chosen = password + '-google';
@@ -125,6 +125,25 @@ describe('Password settings with isolated PostgreSQL and intercepted Google/mail
     expect((await login(email, chosen + '-changed')).status).toBe(200);
   }, 40_000);
 
+  it('reports a failed settings email, retires its token and releases the cooldown without revoking login', async () => {
+    const user = await createAccount();
+    const session = await login(user.email, password);
+    expect(session.status).toBe(200);
+    mocks.sendMail.mockRejectedValueOnce(new Error('TEST Gmail authorization failure'));
+    const response = await protectedPost('password-setup', session.body.data.accessToken, {});
+    expect(response.status).toBe(503);
+    expect(response.body.message).toBe('We could not send your password link. Please try again later.');
+    const failedToken = await prisma.token.findFirstOrThrow({ where: { userId: user.id, type: 'PASSWORD_RESET' } });
+    expect(failedToken.revokedAt).not.toBeNull();
+    const unchanged = await prisma.user.findUniqueOrThrow({ where: { id: user.id } });
+    expect(unchanged.passwordResetRequestedAt).toBeNull();
+    expect(unchanged.password).toBe(user.password);
+    expect(unchanged.sessionVersion).toBe(user.sessionVersion);
+    expect((await request(app).get('/api/auth/me').set('Authorization', 'Bearer ' + session.body.data.accessToken)).status).toBe(200);
+    expect((await protectedPost('password-setup', session.body.data.accessToken, {})).status).toBe(200);
+    expect(await prisma.token.count({ where: { userId: user.id, type: 'PASSWORD_RESET', revokedAt: null } })).toBe(1);
+  });
+
   it('does not consume a reset link when the replacement is the current password', async () => {
     const user = await createAccount();
     const reset = await prisma.token.create({
@@ -140,14 +159,16 @@ describe('Password settings with isolated PostgreSQL and intercepted Google/mail
   it('allows only one winner when two password changes read the same credentials', async () => {
     const user = await createAccount();
     const session = await login(user.email, password);
-    const lookup = userRepo.findPasswordCredentials;
+    const compare = passwordUtils.comparePassword;
     let arrivals = 0;
     let release!: () => void;
     const barrier = new Promise<void>(resolve => { release = resolve; });
-    const spy = vi.spyOn(userRepo, 'findPasswordCredentials').mockImplementation(async id => {
-      const result = await lookup(id);
-      if (++arrivals === 2) release();
-      await barrier;
+    const spy = vi.spyOn(passwordUtils, 'comparePassword').mockImplementation(async (candidate, hash) => {
+      const result = await compare(candidate, hash);
+      if (candidate === password) {
+        if (++arrivals === 2) release();
+        await barrier;
+      }
       return result;
     });
     try {

@@ -1,0 +1,259 @@
+{
+  "schemaVersion": 1,
+  "status": "REPLACEMENT_MEDIA_UPLOADED_NOT_PUBLISHED",
+  "reviewedAt": "2026-10-07",
+  "publicationAllowed": false,
+  "neonWrites": 0,
+  "cloudinaryUploads": 2,
+  "gitCommits": 0,
+  "gitPushes": 0,
+  "sourceLeadFile": "HERB_REPLACEMENT_PHOTO_LEADS_2026-10-07.json",
+  "initialFailedAttemptFile": "HERB_REPLACEMENT_PHOTO_DOWNLOAD_ATTEMPT_2026-10-07.json",
+  "counts": {
+    "savedPhotoLeads": 27,
+    "successfullyDecodedAfterBoundedRetry": 7,
+    "visuallyReviewedOriginals": 7,
+    "coverQualityPassed": 2,
+    "coversHeldOrRejected": 5,
+    "uploadedAndByteMatched": 2,
+    "originalSelectedCovers": 37,
+    "totalUploadedCoverCandidates": 39,
+    "withoutUploadedCoverCandidate": 11,
+    "selectedCoverHoldsInHistoricalPreflight": 13,
+    "originalPreflightHoldsResolvedByManifestIntegration": 0
+  },
+  "uploads": [
+    {
+      "candidateId": "research-pardo-030",
+      "localName": "Abutilon indicum",
+      "scientificName": "Abutilon indicum",
+      "sourceReview": {
+        "checkedAt": "2026-10-07T00:09:48.610Z",
+        "httpStatus": 200,
+        "quality": "research",
+        "taxonId": 157844,
+        "scientificName": "Abutilon indicum",
+        "rank": "species",
+        "photoId": 39272553,
+        "observationId": 25362732,
+        "assetUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/39272553/large.jpeg",
+        "licenseCode": "cc0",
+        "sourceObserver": "leaf0605",
+        "creatorIndependentlyConfirmed": false
+      },
+      "visualReview": {
+        "status": "COVER_QUALITY_PASSED_BOTANICAL_REVIEW_PENDING",
+        "reason": "Original view shows a living yellow flower, green leaves and seed capsules in focus against a separated background. Slight bright-petal clipping and dried capsules are disclosed. Visual appearance alone is not expert specimen authentication.",
+        "imageRetouched": false,
+        "syntheticImage": false,
+        "publicationAllowed": false
+      },
+      "cloudinary": {
+        "checkedAt": "2026-10-07T00:12:43.867Z",
+        "url": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791331844/abutilon_indicum_cc0_39272553_m6ztvo.jpg",
+        "publicId": "abutilon_indicum_cc0_39272553_m6ztvo",
+        "assetId": "b0bbf0b928535fc6a4ea3b19bd13d787",
+        "cloudName": "dclqw6at7",
+        "httpStatus": 200,
+        "contentType": "image/jpeg",
+        "bytes": 319323,
+        "width": 1024,
+        "height": 768,
+        "format": "jpeg",
+        "sha256": "01bcbc4bdd507e7bbe3f2038cc4abdfcb9762076c2e2cd3ed79859f23107da5d",
+        "sourceSha256": "01bcbc4bdd507e7bbe3f2038cc4abdfcb9762076c2e2cd3ed79859f23107da5d",
+        "sourceCopyMatches": true,
+        "deliveryBytesMatch": true,
+        "fullDecodePassed": true
+      },
+      "botanicalClearance": false,
+      "medicinalInstructionsCleared": false,
+      "publicationAllowed": false,
+      "selectedInDraftPlan": false,
+      "imageCreator": null,
+      "imageCreatorNote": "The API attribution phrase 'no rights reserved' is not a creator's name. A public observation username is recorded separately and not asserted to be the photographer.",
+      "imageModification": "None; uploaded unchanged checked source bytes"
+    },
+    {
+      "candidateId": "research-pardo-138",
+      "localName": "Kabiki",
+      "scientificName": "Mimusops elengi",
+      "sourceReview": {
+        "checkedAt": "2026-10-07T00:16:44.051Z",
+        "httpStatus": 200,
+        "quality": "research",
+        "taxonId": 347424,
+        "scientificName": "Mimusops elengi",
+        "rank": "species",
+        "photoId": 338480147,
+        "observationId": 192768898,
+        "assetUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/338480147/large.jpg",
+        "licenseCode": "cc0",
+        "sourceObserver": "zinnia",
+        "creatorIndependentlyConfirmed": false
+      },
+      "visualReview": {
+        "status": "COVER_QUALITY_PASSED_BOTANICAL_REVIEW_PENDING",
+        "reason": "Attached green fruits and glossy living leaves are visible. Backlighting, soft fruit detail and road/water background are disclosed. This is an educational view, not expert specimen authentication or edible-fruit guidance.",
+        "imageRetouched": false,
+        "syntheticImage": false,
+        "publicationAllowed": false
+      },
+      "cloudinary": {
+        "checkedAt": "2026-10-07T00:19:18.762Z",
+        "url": "https://res.cloudinary.com/dclqw6at7/image/upload/kabiki_mimusops_elengi_cc0_338480147_a2wtdy.jpg",
+        "httpStatus": 200,
+        "contentType": "image/jpeg",
+        "bytes": 417554,
+        "width": 768,
+        "height": 1024,
+        "format": "jpeg",
+        "sha256": "66e0ce14c49d5a187292d3332e01b6c100bfd06d7270e94abe0e50169c6ff525",
+        "sourceSha256": "66e0ce14c49d5a187292d3332e01b6c100bfd06d7270e94abe0e50169c6ff525",
+        "sourceCopyMatches": true,
+        "deliveryBytesMatch": true,
+        "fullDecodePassed": true,
+        "publicId": "kabiki_mimusops_elengi_cc0_338480147_a2wtdy",
+        "assetId": "3cc848ddc7bda9fc13d8080b14a41e85",
+        "cloudName": "dclqw6at7",
+        "versionedUrlObserved": false
+      },
+      "botanicalClearance": false,
+      "medicinalInstructionsCleared": false,
+      "publicationAllowed": false,
+      "selectedInDraftPlan": false,
+      "imageCreator": null,
+      "imageCreatorNote": "The API attribution phrase 'no rights reserved' is not a creator's name. A public observation username is recorded separately and not asserted to be the photographer.",
+      "imageModification": "None; uploaded unchanged checked source bytes"
+    }
+  ],
+  "heldOrRejected": [
+    {
+      "photoId": 100389937,
+      "status": "HELD_NOT_A_LIBRARY_COVER",
+      "reason": "Soft macro flower only; no leaf/whole-plant context. Insufficient beginner identification view."
+    },
+    {
+      "photoId": 57573044,
+      "status": "REJECTED_FOR_COVER",
+      "reason": "Tourist/boat scene; foreground hat and people obscure specimen. No upload."
+    },
+    {
+      "photoId": 24222119,
+      "status": "REJECTED_FOR_COVER",
+      "reason": "Soft leaf detail and cluttered mixed canopy; nondiagnostic cover. No upload."
+    },
+    {
+      "photoId": 241763194,
+      "status": "HELD_NOT_A_LIBRARY_COVER",
+      "reason": "Detached dark palm-like fruit on sand; no leaves or attached fruit cluster. Exact specimen cannot be established visually."
+    },
+    {
+      "photoId": 632518906,
+      "status": "REJECTED_FOR_COVER",
+      "reason": "Blown-out white flower, hand in foreground and clutter; no recognizable bottle-gourd fruit. No upload."
+    }
+  ],
+  "decodedOriginals": [
+    {
+      "candidateId": "research-pardo-171",
+      "photoId": 100389937,
+      "observationId": 62635096,
+      "httpStatus": 200,
+      "bytes": 403381,
+      "width": 1024,
+      "height": 768,
+      "sha256": "81a6693f59b19fa4df71c2e8f8b509249a3ab9c6ceb23afecc656ff5122ac635",
+      "fullDecodePassed": true,
+      "sizeGatePassed": true,
+      "localFile": "replacement-100389937.jpg"
+    },
+    {
+      "candidateId": "research-pardo-215",
+      "photoId": 57573044,
+      "observationId": 36422269,
+      "httpStatus": 200,
+      "bytes": 173021,
+      "width": 1024,
+      "height": 768,
+      "sha256": "9b5d7f9c9763e3cacac67a2177bd07f765c9b0afe39cac26427cad8697666bdb",
+      "fullDecodePassed": true,
+      "sizeGatePassed": true,
+      "localFile": "replacement-57573044.jpg"
+    },
+    {
+      "candidateId": "research-pardo-079",
+      "photoId": 24222119,
+      "observationId": 16157538,
+      "httpStatus": 200,
+      "bytes": 462377,
+      "width": 768,
+      "height": 1024,
+      "sha256": "381c06f5bf2ab25b5813d7e8a8d05e6d5d04a332bee99d63bf821f561ed0ec2b",
+      "fullDecodePassed": true,
+      "sizeGatePassed": true,
+      "localFile": "replacement-24222119.jpg"
+    },
+    {
+      "candidateId": "research-pardo-030",
+      "photoId": 39272553,
+      "observationId": 25362732,
+      "httpStatus": 200,
+      "bytes": 319323,
+      "width": 1024,
+      "height": 768,
+      "sha256": "01bcbc4bdd507e7bbe3f2038cc4abdfcb9762076c2e2cd3ed79859f23107da5d",
+      "fullDecodePassed": true,
+      "sizeGatePassed": true,
+      "localFile": "replacement-39272553.jpg"
+    },
+    {
+      "candidateId": "research-pardo-215",
+      "photoId": 241763194,
+      "observationId": 141163577,
+      "httpStatus": 200,
+      "bytes": 276128,
+      "width": 1024,
+      "height": 768,
+      "sha256": "32012328c562f2eadb61c652c017e2861f52dc0f8c65b42bb43b0ab705acd2fa",
+      "fullDecodePassed": true,
+      "sizeGatePassed": true,
+      "localFile": "replacement-241763194.jpg"
+    },
+    {
+      "candidateId": "research-pardo-108",
+      "photoId": 632518906,
+      "observationId": 346949665,
+      "httpStatus": 200,
+      "bytes": 655102,
+      "width": 768,
+      "height": 1024,
+      "sha256": "8fc78d1ad71870a680c8d71f685abf2ac0954a46f576ded76f9312e49ad871e6",
+      "fullDecodePassed": true,
+      "sizeGatePassed": true,
+      "localFile": "replacement-632518906.jpg"
+    },
+    {
+      "candidateId": "research-pardo-138",
+      "photoId": 338480147,
+      "observationId": 192768898,
+      "httpStatus": 200,
+      "bytes": 417554,
+      "width": 768,
+      "height": 1024,
+      "sha256": "66e0ce14c49d5a187292d3332e01b6c100bfd06d7270e94abe0e50169c6ff525",
+      "fullDecodePassed": true,
+      "sizeGatePassed": true,
+      "localFile": "replacement-338480147.jpg"
+    }
+  ],
+  "limitations": [
+    "Seven original photos were decoded and visually inspected, not all 27 leads.",
+    "Two media uploads are not Neon herb records, a Library release, clinician review or expert specimen authentication.",
+    "Historical selected-cover audit and field plans remain unchanged for these two covers. A guarded ownership-bound media integration is still required.",
+    "The earlier 37 cover delivery checks remain separately dated evidence; this run freshly rechecked only the two uploads.",
+    "Eleven candidates still lack an available uploaded cover. Search limits do not prove that no qualifying photograph exists.",
+    "All rejected/held and partial-download files must remain excluded from upload/import. No image was synthesized, sharpened or retouched."
+  ],
+  "screenshotArtifact": "cloudinary-herb-cover-upload-proof.jpg"
+}

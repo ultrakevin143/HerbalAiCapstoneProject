@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "status": "PREPARATION_FOLLOW_UP_NOT_IMPORTABLE",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "reviewedAt": "2026-10-07",
+  "writeAllowed": false,
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "productionWritesPerformed": false,
+  "priorEvidenceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+  "sources": [
+    {
+      "id": "masters-2021-oxalis-food-processing",
+      "scientificName": "Oxalis corniculata",
+      "taxonScope": "EXACT_SPECIES",
+      "kind": "PRIMARY_ETHNOBOTANICAL_FOOD_PROCESSING_DESCRIPTION_HELD",
+      "title": "Masters (2021): Traditional food plants of the upper Aswa River catchment of northern Uganda - a cultural crossroads",
+      "url": "https://doi.org/10.1186/s13002-021-00441-4",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC8022409/fullTextXML",
+      "reviewedAt": "2026-10-07",
+      "reviewCoverage": "FULL_TEXT_XML_METHODS_SPECIES_TABLE_AND_LEAF_VEGETABLE_PARAGRAPHS",
+      "reviewLocators": [
+        "Herbarium identification methods",
+        "Oxalis corniculata table row: leaf; SA45 field identifier",
+        "Par56 general leaf processing",
+        "Par60 explicitly named Oxalis parboiling"
+      ],
+      "fieldIdentifier": "SA45",
+      "identifierIsVoucherAccession": false,
+      "geographicContext": "Upper Aswa River catchment, northern Uganda",
+      "supports": [
+        "preparationMethod"
+      ],
+      "downloadBytes": 176752,
+      "downloadSha256": "6f11fb3480b2b03f046aee6402087e19b9d3f63bde1cd4c271444ef938c63cb1",
+      "limitation": "Ethnographic food-processing report, not a cooking-safety trial, Philippine practice, oxalate-removal validation, safe serving or clinical regimen. Neighboring greens' sauces and repeated-boiling instructions are not transferred.",
+      "reuseReview": "Educational summary only. The study records a no-commercial-use assurance to participants; public reuse/context review remains pending despite the open-access article license."
+    },
+    {
+      "id": "gul-2011-kastuli-laboratory",
+      "scientificName": "Abelmoschus moschatus",
+      "taxonScope": "EXACT_SPECIES",
+      "kind": "PRIMARY_IN_VITRO_LABORATORY_DESCRIPTION_HELD",
+      "title": "Gul et al. (2011): Evaluation of Abelmoschus moschatus extracts for antioxidant, free radical scavenging, antimicrobial and antiproliferative activities using in vitro assays",
+      "url": "https://doi.org/10.1186/1472-6882-11-64",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3201038/fullTextXML",
+      "reviewedAt": "2026-10-07",
+      "reviewCoverage": "FULL_TEXT_XML_PLANT_MATERIAL_AND_PREPARATION_OF_PLANT_EXTRACTS_SECTIONS",
+      "reviewLocators": [
+        "Plant material",
+        "Preparation of plant extracts"
+      ],
+      "materialProvenance": "Seeds and leaves supplied by CIMAP Regional Centre Hyderabad, India; no specimen voucher accession recorded in reviewed plant-material paragraph.",
+      "experimentalModel": "In vitro assays; not a human trial",
+      "supports": [
+        "preparationMethod"
+      ],
+      "downloadBytes": 132600,
+      "downloadSha256": "4f20b529e4ffdc2a2b1a90c25b87d8a313ae1b2328a701f2381ccba6f1db2c8a",
+      "limitation": "Water extraction, centrifugation and vacuum concentration are laboratory descriptions, not a household decoction, coffee-flavouring recipe, food-grade seed process, cancer treatment or human dose."
+    }
+  ],
+  "retrievals": [
+    {
+      "sourceId": "masters-2021-oxalis-food-processing",
+      "checkedAt": "2026-10-07T01:02:00.107Z",
+      "httpStatus": 200,
+      "rawOriginResponseObtained": true,
+      "reviewChannel": "BOUNDED_ORIGIN_XML_AND_PUBLISHER_TEXT",
+      "rawCopyCommitted": false
+    },
+    {
+      "sourceId": "gul-2011-kastuli-laboratory",
+      "checkedAt": "2026-10-07T01:01:17.937Z",
+      "httpStatus": 200,
+      "rawOriginResponseObtained": true,
+      "reviewChannel": "BOUNDED_ORIGIN_XML_AND_PUBLISHER_TEXT",
+      "rawCopyCommitted": false
+    }
+  ],
+  "proposals": [
+    {
+      "candidateId": "research-pardo-045",
+      "localName": "Oxalis corniculata",
+      "scientificName": "Oxalis corniculata",
+      "preparationKind": "TRADITIONAL_FOOD_PROCESSING_DESCRIPTION_HELD",
+      "preparationPart": "Leaves; not other Oxalis species or neighboring vegetables",
+      "preparationDescription": "Masters' northern Uganda ethnobotanical study lists Oxalis corniculata leaves among vegetables traditionally parboiled before further preparation. This is a source-reported food-processing description, not a complete beginner recipe or treatment. The study does not establish a safe serving, validated oxalate removal or species-specific cooking time; PROSEA's oxalate warning remains applicable to this held draft.",
+      "preparationSourceIds": [
+        "masters-2021-oxalis-food-processing"
+      ],
+      "methodEstablishedInReview": true,
+      "foodProcessingEstablished": true,
+      "foodSafetyCleared": false,
+      "medicinalInstructionsCleared": false,
+      "beginnerStepsCleared": false,
+      "preparationInstructions": null,
+      "dosage": null,
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-032",
+      "localName": "Kastuli",
+      "scientificName": "Abelmoschus moschatus",
+      "preparationKind": "LABORATORY_DESCRIPTION_HELD",
+      "preparationPart": "Seeds and leaves processed separately; not essential oil or okra",
+      "preparationDescription": "Gul and colleagues cleaned, shade-dried and coarsely powdered Abelmoschus moschatus seeds and leaves separately. Their in vitro study prepared water extracts from the powders, centrifuged the suspensions and concentrated the collected liquid with a vacuum evaporator. This laboratory description is not a home recipe or treatment, does not establish safe ingestion or a human dose, and supplies no coffee-flavouring process.",
+      "preparationSourceIds": [
+        "gul-2011-kastuli-laboratory"
+      ],
+      "methodEstablishedInReview": true,
+      "foodProcessingEstablished": false,
+      "foodSafetyCleared": false,
+      "medicinalInstructionsCleared": false,
+      "beginnerStepsCleared": false,
+      "preparationInstructions": null,
+      "dosage": null,
+      "publicationAllowed": false
+    }
+  ],
+  "lokolokoReview": {
+    "candidateId": "research-pardo-171",
+    "scientificName": "Ocimum gratissimum",
+    "status": "UNRESOLVED_NO_IDENTITY_OR_OCCURRENCE_CHANGE",
+    "identityReview": {
+      "url": "https://www.philippineplants.org/Families/Lamiaceae.html",
+      "reviewCoverage": "WEB_PAGE_EXTRACT_OCIMUM_TENUIFLORUM_MISAPPLIED_NAME_ENTRY",
+      "finding": "The flora retains Blanco's misapplied Ocimum virgatum under O. tenuiflorum. This does not reconcile the book's O. gratissimum association.",
+      "rawOriginResponseObtained": false,
+      "downloadBytes": null,
+      "downloadSha256": null
+    },
+    "occurrenceReview": {
+      "url": "https://apps.worldagroforestry.org/treedb/AFTPDFS/Ocimum_gratissimum.PDF",
+      "reviewCoverage": "WEB_PDF_TEXT_SEARCH_ONLY",
+      "finding": "No Philippines mention was found in this bounded PDF text search; omission is not absence. No current Philippine range or common-name reassignment is adopted.",
+      "absenceClaimed": false,
+      "rawOriginResponseObtained": false,
+      "downloadBytes": null,
+      "downloadSha256": null
+    },
+    "queueRenamed": false,
+    "regionalNamesReassigned": false,
+    "publicationAllowed": false
+  },
+  "excludedFromAdoption": [
+    "Borrowing neighboring vegetable recipes, sauce ingredients or boiling repetitions",
+    "Claiming that parboiling eliminates oxalate toxicity or creates a safe amount",
+    "Treating in vitro antioxidant or antiproliferative assays as human treatment evidence",
+    "Experimental extraction ratios, heat levels, durations or stock concentrations as household directions",
+    "Kastuli seed essential oil, perfume, incense, tobacco or other Abelmoschus species' recipes",
+    "Inferring Lokoloko's absence from country-list omission or relabelling it as holy basil"
+  ],
+  "remainingGaps": [
+    "Lokoloko remains partial and identity/occurrence held.",
+    "Kastuli seed food-grade and coffee processing remain unestablished.",
+    "Oxalis safe serving, oxalate controls and beginner recipe remain unvalidated.",
+    "Eleven covers, human/category/botanical review, source-reuse review, backup, transactional duplicates and isolated database tests remain pending."
+  ]
+}

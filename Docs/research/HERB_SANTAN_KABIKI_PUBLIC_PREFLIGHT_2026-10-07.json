@@ -1,0 +1,1161 @@
+{
+  "schemaVersion": 1,
+  "checkerExitCode": 2,
+  "stderr": "",
+  "status": "HELD_EXPANSION_RELEASE_PREFLIGHT",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "checkedAt": "2026-10-07T00:56:16.832Z",
+  "publicationAllowed": false,
+  "writeAllowed": false,
+  "publicCatalogOnly": true,
+  "mediaFollowUpEvidence": {
+    "evidenceFile": "HERB_COVER_INTEGRATION_2026-10-07.json",
+    "mediaReviewFile": "HERB_REPLACEMENT_MEDIA_REVIEW_2026-10-07.json",
+    "integratedAt": "2026-10-07T00:29:28Z",
+    "selectedCovers": 2
+  },
+  "counts": {
+    "candidates": 50,
+    "livePublicHerbs": 38,
+    "draftPlansPresent": 50,
+    "partialContentDrafts": 3,
+    "fullContentDrafts": 47,
+    "missingFullContentDrafts": 3,
+    "missingSelectedCovers": 11,
+    "heldSecondaryIdentities": 2,
+    "publicIdentityConflicts": 0,
+    "publicationCleared": 0
+  },
+  "globalBlockers": [
+    "Fresh, independently targeted all-state private-database comparison is still required before any write.",
+    "A backed-up import with isolated rollback and concurrent-duplicate tests is not present.",
+    "Historical image checks do not establish fresh delivery, licensing or taxon clearance.",
+    "Secondary preparation leads do not clear beginner instructions or medicinal dosage.",
+    "This report is read-only; no publish, database or embedding operation exists."
+  ],
+  "rows": [
+    {
+      "candidateId": "research-pardo-098",
+      "localName": "Duhat",
+      "scientificName": "Syzygium cumini",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/duhat_syzygium_cumini_cc0_607793783_kbwizf.jpg",
+      "preparationSourceIds": [
+        "duhat-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-088",
+      "localName": "Sampalok",
+      "scientificName": "Tamarindus indica",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791161286/sampalok_tamarindus_indica_cc0_580527782_yfyfsb.jpg",
+      "preparationSourceIds": [
+        "tamarind-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-005",
+      "localName": "Atis",
+      "scientificName": "Annona squamosa",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/atis_annona_squamosa_cc0_96588239_kud7zl.jpg",
+      "preparationSourceIds": [
+        "atis-food"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-094",
+      "localName": "Talisay",
+      "scientificName": "Terminalia catappa",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/talisay_terminalia_catappa_cc0_264306526_mi6yke.jpg",
+      "preparationSourceIds": [
+        "icraf-talisay-food",
+        "biego-2012-talisay-processing"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-077",
+      "localName": "Butterfly pea",
+      "scientificName": "Clitoria ternatea",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791161285/butterfly_pea_clitoria_ternatea_cc0_173979709_bih8jo.jpg",
+      "preparationSourceIds": [
+        "butterfly-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-069",
+      "localName": "Mangga",
+      "scientificName": "Mangifera indica",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/mangga_mangifera_indica_cc0_619870559_gydcw5.jpg",
+      "preparationSourceIds": [
+        "mango-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-063",
+      "localName": "Santol",
+      "scientificName": "Sandoricum koetjape",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/santol_sandoricum_koetjape_cc0_474259100_wyp3hf.jpg",
+      "preparationSourceIds": [
+        "santol-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-104",
+      "localName": "Papaya",
+      "scientificName": "Carica papaya",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/papaya_carica_papaya_cc0_174095229_m1upal.jpg",
+      "preparationSourceIds": [
+        "papaya-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-102",
+      "localName": "Granada",
+      "scientificName": "Punica granatum",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162655/granada_punica_granatum_cc0_245176628_tuduoh.jpg",
+      "preparationSourceIds": [
+        "pomegranate-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-137",
+      "localName": "Chico",
+      "scientificName": "Manilkara zapota",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162654/chico_manilkara_zapota_cc0_342658687_xfu2yk.jpg",
+      "preparationSourceIds": [
+        "chico-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-014",
+      "localName": "Mustasa",
+      "scientificName": "Brassica juncea",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791167109/mustasa_brassarda_juncea_cc0_131251463_swraso.jpg",
+      "preparationSourceIds": [
+        "mustard-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-015",
+      "localName": "Radish",
+      "scientificName": "Raphanus sativus",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791167109/radish_raphanus_raphanistrum_sativus_cc0_62230932_vvxzcn.jpg",
+      "preparationSourceIds": [
+        "radish-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-020",
+      "localName": "Olasiman",
+      "scientificName": "Portulaca oleracea",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165611/olasiman_portulaca_oleracea_cc0_141904820_sczrqh.jpg",
+      "preparationSourceIds": [
+        "purslane-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-044",
+      "localName": "Cacao",
+      "scientificName": "Theobroma cacao",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165611/cacao_theobroma_cacao_cc0_627816005_j9hblq.jpg",
+      "preparationSourceIds": [
+        "cacao-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-159",
+      "localName": "Linga",
+      "scientificName": "Sesamum indicum",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165609/linga_sesamum_indicum_cc0_309170794_rxvny8.jpg",
+      "preparationSourceIds": [
+        "pardo-1901"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-214",
+      "localName": "Niog",
+      "scientificName": "Cocos nucifera",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165611/niog_cocos_nucifera_cc0_237055447_qobn7o.jpg",
+      "preparationSourceIds": [
+        "coconut-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-217",
+      "localName": "Maize",
+      "scientificName": "Zea mays",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791167111/maize_zea_mays_cc0_312217428_ouxrur.jpg",
+      "preparationSourceIds": [
+        "maize-ema-draft",
+        "maize-ema-status"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-219",
+      "localName": "Tubo",
+      "scientificName": "Saccharum officinarum",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165609/tubo_saccharum_officinarum_cc0_59112165_avwbue.jpg",
+      "preparationSourceIds": [
+        "sugarcane-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-119",
+      "localName": "Fennel",
+      "scientificName": "Foeniculum vulgare",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165610/fennel_foeniculum_vulgare_cc0_216910898_iqwpoj.jpg",
+      "preparationSourceIds": [
+        "pardo-1901"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-184",
+      "localName": "Paminta",
+      "scientificName": "Piper nigrum",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165610/paminta_piper_nigrum_cc0_65746891_rc6xsa.jpg",
+      "preparationSourceIds": [
+        "pepper-nparks"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-170",
+      "localName": "Solasi",
+      "scientificName": "Ocimum basilicum",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176716/solasi_ocimum_basilicum_cc0_110372081_xkxkgb.jpg",
+      "preparationSourceIds": [
+        "nparks-common-basil"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-171",
+      "localName": "Lokoloko",
+      "scientificName": "Ocimum gratissimum",
+      "fullContentDraftPresent": false,
+      "missingFields": [
+        "regionFound"
+      ],
+      "selectedCoverUrl": null,
+      "preparationSourceIds": [
+        "diyaolu-2021-gratissimum"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING",
+        "SELECTED_COVER_MISSING",
+        "SECONDARY_SOURCE_IDENTITY_HELD",
+        "CATEGORY_UNRESOLVED",
+        "REGION_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:regionFound",
+        "UNCITED_FIELD:dosage",
+        "UNCITED_FIELD:regionFound",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-172",
+      "localName": "Balanay",
+      "scientificName": "Ocimum tenuiflorum",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176717/balanay_ocimum_tenuiflorum_cc0_346048247_ypx2ae.jpg",
+      "preparationSourceIds": [
+        "nparks-holy-basil"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-174",
+      "localName": "Romero",
+      "scientificName": "Salvia rosmarinus",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176721/romero_salvia_rosmarinus_cc0_179113899_td1l1p.png",
+      "preparationSourceIds": [
+        "nparks-rosemary"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-073",
+      "localName": "Katuray",
+      "scientificName": "Sesbania grandiflora",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176717/katuray_sesbania_grandiflora_cc0_212462413_mbbi3i.jpg",
+      "preparationSourceIds": [
+        "icraf-katuray-food"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-089",
+      "localName": "Alibangbang",
+      "scientificName": "Piliostigma malabaricum",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": null,
+      "preparationSourceIds": [
+        "icraf-alibangbang-food"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-091",
+      "localName": "Kupang",
+      "scientificName": "Parkia timoriana",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": null,
+      "preparationSourceIds": [
+        "medhe-2022-timoriana"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-215",
+      "localName": "Nipa",
+      "scientificName": "Nypa fruticans",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": null,
+      "preparationSourceIds": [
+        "nparks-nipa-food"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-108",
+      "localName": "Bottle gourd",
+      "scientificName": "Lagenaria siceraria",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": null,
+      "preparationSourceIds": [
+        "nparks-bottle-gourd-food"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-112",
+      "localName": "Luffa aegyptiaca",
+      "scientificName": "Luffa aegyptiaca",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176721/luffa_aegyptiaca_luffa_aegyptiaca_cc0_457593750_mfdjqi.jpg",
+      "preparationSourceIds": [
+        "gardeningsg-smooth-loofah-food"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-124",
+      "localName": "Santan",
+      "scientificName": "Ixora coccinea",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176717/santan_ixora_coccinea_cc0_263717811_aombm7.jpg",
+      "preparationSourceIds": [
+        "stuart-santan-root-description"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-139",
+      "localName": "Sampaguita",
+      "scientificName": "Jasminum sambac",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176718/sampaguita_jasminum_sambac_cc0_385822470_pszycj.jpg",
+      "preparationSourceIds": [
+        "zhang-2023-jasmine-processing"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-138",
+      "localName": "Kabiki",
+      "scientificName": "Mimusops elengi",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/kabiki_mimusops_elengi_cc0_338480147_a2wtdy.jpg",
+      "preparationSourceIds": [
+        "gupta-jain-kabiki-laboratory"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-033",
+      "localName": "Balibago",
+      "scientificName": "Hibiscus tiliaceus",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": null,
+      "preparationSourceIds": [
+        "tkdl-balibago-bark-practice"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-035",
+      "localName": "Thespesia populnea",
+      "scientificName": "Thespesia populnea",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176719/thespesia_populnea_thespesia_populnea_cc0_195224484_tkvso2.jpg",
+      "preparationSourceIds": [
+        "icraf-thespesia-food"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-038",
+      "localName": "Doldol",
+      "scientificName": "Ceiba pentandra",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176719/doldol_ceiba_pentandra_cc0_32279278_vo4eni.jpg",
+      "preparationSourceIds": [
+        "prota-ceiba-food-safety"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-039",
+      "localName": "Kalumpang",
+      "scientificName": "Sterculia foetida",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176721/kalumpang_sterculia_foetida_cc0_633583068_kei2id.jpg",
+      "preparationSourceIds": [
+        "alam-2021-sterculia-extraction"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-067",
+      "localName": "Manzanitas",
+      "scientificName": "Ziziphus mauritiana",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176723/manzanitas_ziziphus_mauritiana_cc0_252869971_ocniek.jpg",
+      "preparationSourceIds": [
+        "icraf-manzanitas-food"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SECONDARY_SOURCE_IDENTITY_HELD",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-079",
+      "localName": "Asana",
+      "scientificName": "Pterocarpus indicus",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": null,
+      "preparationSourceIds": [
+        "chen-2025-asana-extraction"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-125",
+      "localName": "Coffee",
+      "scientificName": "Coffea arabica",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176721/coffee_coffea_arabica_cc0_473238470_xasw5n.jpg",
+      "preparationSourceIds": [
+        "icraf-coffee-food"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-047",
+      "localName": "Kamias",
+      "scientificName": "Averrhoa bilimbi",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": null,
+      "preparationSourceIds": [
+        "nparks-kamias-food"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-048",
+      "localName": "Balimbing",
+      "scientificName": "Averrhoa carambola",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176723/balimbing_averrhoa_carambola_cc0_99204713_y8fzvv.jpg",
+      "preparationSourceIds": [
+        "nparks-balimbing-food"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-070",
+      "localName": "Kasuy",
+      "scientificName": "Anacardium occidentale",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176723/kasuy_anacardium_occidentale_cc0_217472168_ghh6am.jpg",
+      "preparationSourceIds": [
+        "nparks-cashew-apple-food"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-126",
+      "localName": "Bankundo",
+      "scientificName": "Morinda citrifolia",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176725/bankundo_morinda_citrifolia_cc0_105341351_ehoyzm.jpg",
+      "preparationSourceIds": [
+        "prosea-noni-traditional"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-045",
+      "localName": "Oxalis corniculata",
+      "scientificName": "Oxalis corniculata",
+      "fullContentDraftPresent": false,
+      "missingFields": [
+        "preparationMethod"
+      ],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176717/oxalis_corniculata_oxalis_corniculata_cc0_533454766_bn6sun.jpg",
+      "preparationSourceIds": [],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "PREPARATION_METHOD_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:preparationMethod",
+        "UNCITED_FIELD:dosage",
+        "UNCITED_FIELD:preparationMethod",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-054",
+      "localName": "Kahel",
+      "scientificName": "Citrus aurantium",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": null,
+      "preparationSourceIds": [
+        "nvbt-bitter-orange-food"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-003",
+      "localName": "Tsampaka",
+      "scientificName": "Magnolia champaca",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176717/tsampaka_magnolia_champaca_cc0_208651812_xwj1mw.jpg",
+      "preparationSourceIds": [
+        "champaca-flower-bud-rat-study"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-030",
+      "localName": "Abutilon indicum",
+      "scientificName": "Abutilon indicum",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791331844/abutilon_indicum_cc0_39272553_m6ztvo.jpg",
+      "preparationSourceIds": [
+        "krisanapun-2011-abutilon-extraction"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-032",
+      "localName": "Kastuli",
+      "scientificName": "Abelmoschus moschatus",
+      "fullContentDraftPresent": false,
+      "missingFields": [
+        "preparationMethod"
+      ],
+      "selectedCoverUrl": null,
+      "preparationSourceIds": [],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "PREPARATION_METHOD_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:preparationMethod",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "UNCITED_FIELD:preparationMethod",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-130",
+      "localName": "Ayapana",
+      "scientificName": "Ayapana triplinervis",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "selectedCoverUrl": null,
+      "preparationSourceIds": [
+        "checkouri-2020-ayapana-extraction"
+      ],
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "date": "2026-10-06",
+  "observedAtUtc": "2026-10-06T00:58:53Z",
+  "scope": "CI_ONLY_NOT_PRODUCTION_RELEASE",
+  "branch": "codex/mvp-acceptance-ci",
+  "initialCommit": "397f7b7742d632b2d4151577a5030f67afcff16c",
+  "correctedCommit": "3776993e80134816b0b147157a44f4e003ea316a",
+  "approvedInitialPaths": 24,
+  "correctivePaths": [
+    "herbalaibackend/src/content/herb-preparation-release.ts",
+    "herbalaibackend/tests/herb-preparation-release.test.ts",
+    "Docs/research/HERB_PREPARATION_DATABASE_GATES_2026-10-05.md"
+  ],
+  "initialBackend": {
+    "runId": 37395566466,
+    "conclusion": "failure",
+    "passed": 1148,
+    "failed": 2,
+    "files": 88,
+    "preparationSqlPassed": 6,
+    "preparationSqlFailed": 2
+  },
+  "reproducedIssue": "Identical catalog identities in different array orders were incorrectly rejected because only the database list was sorted.",
+  "repair": "Parse and sort both identity lists by ID without mutating either input; preserve full identity, completeness and duplicate checks.",
+  "newBoundaryRegressions": 11,
+  "localValidation": {
+    "focusedPassed": 104,
+    "focusedFiles": 4,
+    "cleanNonDatabasePassed": 1037,
+    "cleanFiles": 70,
+    "excludedDatabaseSuites": 18,
+    "strictToolingTypes": "passed",
+    "build": "passed",
+    "sourceLint": "passed",
+    "realLocalPostgreSql": "unavailable"
+  },
+  "workflows": [
+    {
+      "id": 37396535432,
+      "name": "Herb Preparation PostgreSQL Gate",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "3776993e80134816b0b147157a44f4e003ea316a",
+      "url": "https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37396535432",
+      "updated_at": "2026-10-06T00:56:39Z"
+    },
+    {
+      "id": 37396535092,
+      "name": "Herbal AI Continuous Integration (CI)",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "3776993e80134816b0b147157a44f4e003ea316a",
+      "url": "https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37396535092",
+      "updated_at": "2026-10-06T00:57:34Z"
+    }
+  ],
+  "finalBackend": {
+    "jobId": 112053754232,
+    "passed": 1161,
+    "failed": 0,
+    "files": 88,
+    "durationSeconds": 59.64,
+    "preparationSqlPassed": 8,
+    "preparationSqlFailed": 0
+  },
+  "finalPreparationGate": {
+    "jobId": 112053755328,
+    "boundaryPassed": 104,
+    "prismaGeneration": "passed",
+    "isolatedMigrations": "passed",
+    "sqlSuite": "passed",
+    "validationStagesCompleted": 3
+  },
+  "finalFrontend": {
+    "jobId": 112053753979,
+    "typecheck": "passed",
+    "lint": "passed",
+    "scheduledNativeRegressions": "passed",
+    "build": "passed"
+  },
+  "production": {
+    "liveContentModified": false,
+    "providerVariablesModified": false,
+    "mainRef": "95cf80761106f95ea4faaca0437fb4ddc348896f",
+    "deploymentBranchRef": "95cf80761106f95ea4faaca0437fb4ddc348896f",
+    "databaseUsedForDestructiveFixtures": false
+  },
+  "remainingGates": [
+    "Fresh intended-target verification and all-state duplicates",
+    "Reviewed backup, snapshot, field/source changes and genuine embeddings for the existing twenty-record preparation update",
+    "Authorized live application and Library/Dr. Ai validation",
+    "Separate clinical, taxonomy, method-gap, media and staging clearance for the fifty-new-herb candidates"
+  ],
+  "documentationNote": "This result ledger was saved locally after CI completed; it is not included in the two pushed commits."
+}

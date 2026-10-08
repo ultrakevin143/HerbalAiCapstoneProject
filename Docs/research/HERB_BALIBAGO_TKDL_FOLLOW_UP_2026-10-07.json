@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "status": "PREPARATION_FOLLOW_UP_NOT_IMPORTABLE",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "reviewedAt": "2026-10-07",
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "productionWritesPerformed": false,
+  "priorEvidenceFile": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+  "source": {
+    "id": "tkdl-balibago-bark-practice",
+    "scientificName": "Hibiscus tiliaceus",
+    "taxonScope": "EXACT_SPECIES",
+    "kind": "PRIMARY_TRADITIONAL_KNOWLEDGE_ACCOUNT",
+    "sourceStatus": "DOCUMENTED_TRADITIONAL_PRACTICE_PENDING_SAFETY_REVIEW",
+    "title": "TKDL: Hibiscus tiliaceus — Luwago (Tagabawa), Malabago (Tagalog)",
+    "url": "https://www.tkdlph.com/index.php/ct-menu-item-3/ct-menu-item-7/davao/20105-luwago-tagabawa-malabago-tagalog",
+    "reviewedAt": "2026-10-07",
+    "reviewCoverage": "SPECIES_PART_METHOD_AND_LANGUAGE_FIELDS_FROM_WEB_EXTRACT",
+    "reviewLocators": [
+      "Scientific name heading",
+      "Plant part used",
+      "Method of Preparation",
+      "Local name",
+      "Place gathered"
+    ],
+    "supports": [
+      "preparationMethod",
+      "regionalNames"
+    ],
+    "limitation": "An ethnographic bark-sap account, not a clinical trial, edible-leaf cooking method, recommended dose or proof of oral safety. Source dosing and harvesting-belief instructions are not adopted. Origin retrieval timed out; the reviewed web-tool page extract is not a fresh origin response."
+  },
+  "sourceProvenance": {
+    "url": "https://www.pchrd.dost.gov.ph/news_and_updates/philippines-dost-to-host-apec-workshop-on-the-development-of-herbal-medicine-database-in-asia-pacific-region/",
+    "reviewCoverage": "WEB_EXTRACT_TKDL_DOMAIN_REFERENCE_PARAGRAPH",
+    "summary": "DOST-PCHRD identifies tkdlph.com as the Traditional Knowledge Digital Library in its 2016 APEC workshop notice. This supports historical project provenance, not a 2026 clinical endorsement or a claim that tkdl.ph and tkdlph.com are interchangeable."
+  },
+  "retrieval": {
+    "reviewChannel": "WEB_TOOL_PAGE_EXTRACT",
+    "rawOriginResponseObtained": false,
+    "downloadBytes": null,
+    "downloadSha256": null,
+    "originAttempt": {
+      "checkedAt": "2026-10-07T00:39:41.312Z",
+      "status": "RETRIEVAL_FAILED",
+      "reason": "20-second timeout"
+    },
+    "provenanceOriginAttempt": {
+      "checkedAt": "2026-10-07T00:39:41.484Z",
+      "status": "RETRIEVAL_FAILED",
+      "reason": "fetch failed"
+    },
+    "requestedNewDomain": "https://www.tkdl.ph/library/herbarium",
+    "requestedNewDomainResult": "WEB_TOOL_TIMEOUT_NOT_TREATED_AS_SAME_HOST"
+  },
+  "proposal": {
+    "candidateId": "research-pardo-033",
+    "localName": "Balibago",
+    "scientificName": "Hibiscus tiliaceus",
+    "preparationKind": "TRADITIONAL_DESCRIPTION_HELD",
+    "preparationPart": "Pale inner bark; not young leaves, calyces or roots",
+    "preparationDescription": "TKDL records a Tagabawa practice for Hibiscus tiliaceus in which the pale inner bark is pressed to obtain sap, in an account concerning cough. This describes documented traditional practice, not a safe home recipe or treatment. No medicinal dose, schedule, child-use guidance or clinical efficacy is established by this record.",
+    "preparationSourceIds": [
+      "tkdl-balibago-bark-practice"
+    ],
+    "methodEstablishedInReview": true,
+    "foodProcessingEstablished": false,
+    "medicinalInstructionsCleared": false,
+    "beginnerStepsCleared": false,
+    "preparationInstructions": null,
+    "dosage": null,
+    "publicationAllowed": false
+  },
+  "regionalNames": [
+    {
+      "name": "Luwago",
+      "language": "Tagabawa",
+      "context": "Tudaya, Sibulan, Santa Cruz, Davao del Sur; recorded community account",
+      "sourceId": "tkdl-balibago-bark-practice"
+    },
+    {
+      "name": "Malabago",
+      "language": "Tagalog",
+      "context": "Name labelled Tagalog in the same TKDL record; not asserted as an exclusive or nationwide alias",
+      "sourceId": "tkdl-balibago-bark-practice"
+    }
+  ],
+  "excludedFromAdoption": [
+    "Source oral quantity, repetition and symptom-resolution directions",
+    "Body-position harvesting belief as an efficacy mechanism",
+    "Informant names and personal details",
+    "Leaf cooking, roselle preparation, childbirth or child dosing"
+  ],
+  "remainingGaps": [
+    "Human bark-use safety, efficacy, dose and beginner instructions remain uncleared.",
+    "Leaf-food processing remains unestablished; the bark account does not fill this separate gap.",
+    "Cover, category, genuine human review, targeted duplicate comparison, backup and isolated import/rollback/concurrency validation remain pending."
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-06",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "status": "RESEARCH_ONLY_NOT_IMPORTABLE",
+  "productionWritesPerformed": false,
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "sources": [
+    {
+      "id": "talisay-bark-rat-pregnancy",
+      "kind": "PRECLINICAL_SAFETY",
+      "title": "Influence of Aqueous Stem Bark Extract Terminalia catappa L. on Pregnant Wistar Rats and Brain g-6pdh Activities",
+      "url": "https://journalejmp.com/index.php/EJMP/article/view/333",
+      "doi": "10.9734/EJMP/2016/21425",
+      "scientificName": "Terminalia catappa",
+      "plantPart": "STEM_BARK",
+      "studyPopulation": "RATS",
+      "supports": ["warnings", "evidenceReview"],
+      "reviewCoverage": "PUBLISHER_ABSTRACT_STUDY_DESIGN_METHODS_RESULTS_AND_LIMITED_CONCLUSION",
+      "limitation": "A rat pregnancy experiment with selected fetal measurements and an adult brain enzyme endpoint. It is not evidence of human pregnancy safety, clinical efficacy, a household recipe or a safe human dose. Full-paper quality appraisal was not completed."
+    },
+    {
+      "id": "talisay-bark-rat-acute",
+      "kind": "PRECLINICAL_SAFETY",
+      "title": "Phytochemistry and Acute Toxicity Study of Aqueous and Methanol Stem Bark Extract of Terminalia catappa",
+      "url": "https://tjnpr.org/index.php/home/article/download/29/34/18",
+      "doi": "10.26538/tjnpr/v6i6.19",
+      "scientificName": "Terminalia catappa",
+      "plantPart": "STEM_BARK",
+      "studyPopulation": "RATS",
+      "supports": ["warnings", "evidenceReview"],
+      "reviewCoverage": "PUBLISHER_PDF_PLANT_COLLECTION_ANIMALS_ACUTE_TOXICITY_METHODS_TABLE_2_AND_DISCUSSION",
+      "limitation": "Acute rodent toxicity observations do not establish chronic or human safety or a medicinal dose. The paper has wording inconsistencies (leaf versus stem bark; ethanol versus methanol) and differences between dose descriptions and its table; no numerical regimen or blanket safe/non-toxic conclusion is adopted."
+    }
+  ],
+  "proposal": {
+    "candidateId": "research-pardo-094",
+    "localName": "Talisay",
+    "scientificName": "Terminalia catappa",
+    "bookEntry": 94,
+    "printedPage": 110,
+    "proposedWarnings": "The reviewed stem-bark safety studies involved rats, not people. They do not establish a safe human medicinal dose or safety in human pregnancy. Kernel-food processing is separate and does not justify bark or leaf treatment. Human bark safety and contraindications remain unresolved in this review.",
+    "proposedModernEvidenceNote": "The reviewed stem-bark studies are rat experiments, including a pregnancy experiment, not human efficacy trials. Their results cannot establish human treatment benefit or a safe medicinal regimen.",
+    "safetySourceIds": ["talisay-bark-rat-pregnancy", "talisay-bark-rat-acute"],
+    "humanSafetyCleared": false,
+    "medicinalInstructionsCleared": false,
+    "dosage": null,
+    "publicationAllowed": false,
+    "publicationBlockers": [
+      "Human bark and pregnancy safety remains unresolved; these citations are rat studies, not clinical clearance.",
+      "Fresh all-state duplicate check inside a guarded writer transaction",
+      "Isolated staging, rollback and concurrent-write validation",
+      "Source-quality and plant-part-specific final content review"
+    ]
+  },
+  "limitations": [
+    "This follow-up supplies citations for the limits of available preclinical bark evidence, not an assertion of safety or harm in humans.",
+    "The historical first-ten review and kernel-food preparation overlay are preserved unchanged.",
+    "Neither rat doses nor solvent extraction methods are converted into public household treatment instructions.",
+    "No dose, recipe, region, clinical approval, database write or publication is added by this ledger."
+  ]
+}

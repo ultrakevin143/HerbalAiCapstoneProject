@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-05",
+  "status": "RESEARCH_ONLY_NOT_IMPORTABLE",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "productionWritesPerformed": false,
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "supersedesPreparationOnly": "Docs/research/HERB_FIRST_TEN_PREPARATION_SUPPLEMENT_2026-10-05.json",
+  "preservesSafetyReview": "Docs/research/HERB_FIRST_TEN_REVIEW_2026-10-05.json",
+  "sources": [
+    {
+      "id": "icraf-talisay-food",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "Orwa et al. (2009), Agroforestree Database 4.0: Terminalia catappa",
+      "url": "https://apps.worldagroforestry.org/treedb/AFTPDFS/Terminalia_catappa.PDF",
+      "reviewCoverage": "PRODUCTS_FOOD_PARAGRAPH_PAGE_3_TEXT_AND_RENDER",
+      "printedPagesReviewed": [3],
+      "reviewedAt": "2026-10-05",
+      "downloadBytes": 435278,
+      "downloadSha256": "88244d6559e0a2d6330ae28d4dbd2ed77230a51d9c651e66e3ad0a21914e7fcc",
+      "retrievalNote": "The food paragraph describes raw or roasted kernels. Adjacent medicinal claims were not adopted.",
+      "limitation": "Food use does not validate leaf or bark treatment, a therapeutic dose or general clinical safety. No cooking time or temperature is supplied."
+    },
+    {
+      "id": "biego-2012-talisay-processing",
+      "kind": "PRIMARY_FOOD_PROCESSING_STUDY",
+      "title": "Biego et al. (2012), Physicochemical Quality of Kernels from Terminalia catappa L. and Sensory Evaluation of the Concocted Kernels",
+      "url": "https://www.ccsenet.org/journal/index.php/sar/article/view/15860",
+      "doi": "10.5539/sar.v1n2p1",
+      "pdfUrl": "https://ccsenet.org/journal/index.php/sar/article/download/15860/12787",
+      "reviewCoverage": "MATERIAL_AND_METHODS_SECTIONS_2_1_AND_2_3_1_PAGE_2_TEXT_AND_RENDER",
+      "printedPagesReviewed": [2],
+      "reviewedAt": "2026-10-05",
+      "downloadBytes": 154362,
+      "downloadSha256": "848b6b29b24721da2841a44655bb544232a3e9108519df0713c5b93e0968929a",
+      "retrievalNote": "The kernel extraction and appetizer-processing sections were inspected directly in the downloaded six-page paper, not inferred from a search snippet.",
+      "limitation": "A food-processing and sensory study, not a human treatment trial. Roasting time, temperature, medicinal dosage and household storage safety are not established."
+    }
+  ],
+  "proposal": {
+    "candidateId": "research-pardo-094",
+    "localName": "Talisay",
+    "scientificName": "Terminalia catappa",
+    "bookEntry": 94,
+    "printedPage": 110,
+    "preparationPart": "Fruit kernels, not leaf or bark",
+    "preparationKind": "FOOD_DESCRIPTION",
+    "proposedPreparationMethod": "Food preparation only, not treatment: a published study sun-dried ripe fruits for one week, extracted kernels with a nutcracker, then roasted whole kernels with or without salt. It supplies no roasting temperature or duration. This describes kernel-food processing, not a validated medicinal preparation or treatment dose.",
+    "preparationSourceIds": ["icraf-talisay-food", "biego-2012-talisay-processing"],
+    "preparationInstructions": null,
+    "dosage": null,
+    "householdRecipeEstablished": false,
+    "medicinalInstructionsCleared": false,
+    "historicalExclusions": [
+      "Keep bark treatment recipes and historical doses withheld.",
+      "Do not transfer kernel-food processing to leaf teas, root extracts, medicinal oil or other Terminalia species."
+    ],
+    "publicationAllowed": false,
+    "publicationBlockers": [
+      "Confirm intended live Neon target",
+      "Fresh all-state duplicate check",
+      "Plant-part-specific medical review",
+      "Isolated staging validation"
+    ]
+  },
+  "effectiveFirstTenPreparationCoverage": {
+    "records": 10,
+    "foodDescriptions": 10,
+    "preparationMethodsNotEstablished": 0,
+    "fullySpecifiedHouseholdRecipesAdded": 0,
+    "medicinalInstructionsCleared": 0
+  },
+  "limitations": [
+    "The earlier preparation supplement is preserved as its historical checkpoint. Only its Talisay food-description proposal is superseded here.",
+    "No new identity or duplicate herb is proposed. The first-ten draft planner was not regenerated and no live Library field or AI retrieval result changed.",
+    "Only the identified relevant source sections were reviewed; no full-paper clinical appraisal or preparation coverage for the remaining thirty candidates is claimed."
+  ]
+}

@@ -14,7 +14,9 @@ import {
   AlertTriangle,
   AlertCircle,
   ArrowRight,
+  ExternalLink,
 } from 'lucide-react';
+import { getHerbRegionalNames, matchesRegionalNames } from '../../lib/regionalCommonNames';
 import { cachedApiGet } from '../../lib/request-cache';
 import OptimizedFillImage from '../../components/OptimizedFillImage';
 import EmptyState from '../../components/EmptyState';
@@ -147,8 +149,8 @@ function LibraryContent() {
             <p className="mt-4 text-sm text-muted">Loading Philippine medicinal plants...</p>
           </div>
           <div className="mx-auto mb-8 h-12 max-w-4xl rounded-full bg-soft animate-pulse motion-reduce:animate-none" />
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
-            {Array.from({ length: 6 }, (_, index) => (
+          <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" aria-hidden="true">
+            {Array.from({ length: 8 }, (_, index) => (
               <div key={index} className="overflow-hidden rounded-3xl border border-line bg-panel">
                 <div className="h-52 bg-soft animate-pulse motion-reduce:animate-none" />
                 <div className="space-y-3 p-5">
@@ -179,48 +181,51 @@ function LibraryContent() {
         </div>
 
         {/* Search and Filter Section */}
-        <div className="mb-6 grid w-full max-w-4xl grid-cols-2 gap-2.5 mx-auto md:mb-8 md:flex md:items-center md:gap-3">
+        <div className="mb-6 flex flex-col gap-2.5 mx-auto w-full max-w-4xl sm:flex-row sm:items-center sm:gap-3 md:mb-8">
           {/* Search Input */}
-          <div className="library-search relative col-span-2 w-full flex-1">
+          <div className="library-search relative w-full flex-1">
             <Input
               type="text"
               placeholder="Search by name, scientific name, or uses..."
               aria-label="Search herbs by name, scientific name, or medicinal use"
               value={searchTerm}
               onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
-              className="search-input h-12 pl-11"
+              className="search-input h-12 pl-11 text-sm rounded-xl md:rounded-full"
             />
             <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-muted">
               <Search className="h-4 w-4" aria-hidden="true" />
             </span>
           </div>
 
-          {/* DOH Validated Filter Toggle */}
-          <Button
-            type="button"
-            variant={onlyDohApproved ? 'default' : 'outline'}
-            aria-pressed={onlyDohApproved}
-            onClick={() => { setOnlyDohApproved(!onlyDohApproved); setPage(1); }}
-            className="h-12 min-w-0 px-3 text-xs sm:px-5 sm:text-sm"
-          >
-            <ShieldCheck className="h-4 w-4" />
-            <span>DOH-listed</span>
-          </Button>
+          {/* Filter Controls: Category (Illness) gets full room, DOH badge beside it */}
+          <div className="flex items-center gap-2.5 w-full sm:w-auto">
+            {/* Category Selector */}
+            <div className="min-w-0 flex-1 sm:w-64 md:w-72 shrink-0">
+              <select
+                aria-label="Filter herbs by illness category"
+                value={selectedCategory}
+                onChange={(e) => { setSelectedCategory(e.target.value); setPage(1); }}
+                className="library-filter-btn h-12 w-full rounded-xl border border-line bg-panel px-3.5 pr-8 text-xs sm:text-sm font-semibold text-ink focus:outline-none md:rounded-full md:px-5 shadow-sm transition-colors cursor-pointer"
+              >
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat === 'All' ? 'All Illness Categories' : cat}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {/* Category Selector */}
-          <div className="min-w-0 w-full md:w-56 shrink-0">
-            <select
-              aria-label="Filter herbs by category"
-              value={selectedCategory}
-              onChange={(e) => { setSelectedCategory(e.target.value); setPage(1); }}
-              className="library-filter-btn h-12 w-full rounded-xl border border-line bg-panel px-4 text-sm font-semibold text-ink focus:outline-none md:rounded-full md:px-5"
+            {/* DOH Validated Filter Toggle */}
+            <Button
+              type="button"
+              variant={onlyDohApproved ? 'default' : 'outline'}
+              aria-pressed={onlyDohApproved}
+              onClick={() => { setOnlyDohApproved(!onlyDohApproved); setPage(1); }}
+              className="h-12 shrink-0 rounded-xl px-3.5 text-xs font-semibold sm:px-5 sm:text-sm md:rounded-full"
             >
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
+              <ShieldCheck className="h-4 w-4 text-[#74c69d]" />
+              <span className="whitespace-nowrap">DOH-listed</span>
+            </Button>
           </div>
         </div>
 
@@ -247,76 +252,100 @@ function LibraryContent() {
             description="Clear the search or choose another category to view the published Philippine medicinal-plant records."
           />
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredHerbs.map((herb) => (
-              <div
-                key={herb.id}
-                role="button"
-                tabIndex={0}
-                aria-haspopup="dialog"
-                aria-label={`View ${herb.localName} details`}
-                onClick={() => setSelectedHerb(herb)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    setSelectedHerb(herb);
-                  }
-                }}
-                className="herb-figma-card library-herb-card group flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-line bg-panel shadow-sm transition-colors hover:border-line-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-              >
-                {/* Image & Category Overlay */}
-                <div className="herb-figma-img relative flex h-44 w-full items-center justify-center overflow-hidden bg-soft sm:h-48 lg:h-52">
-                  <div className="absolute inset-0 flex items-center justify-center text-white/30">
-                    <Leaf className="h-16 w-16 stroke-[1.5]" />
-                  </div>
-                  {herb.imageUrl && herb.imageUrl.trim() !== '' && (
-                    <OptimizedFillImage
-                      src={herb.imageUrl}
-                      alt={herb.localName}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-85"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                      }}
-                    />
-                  )}
-                  
-                  {/* DOH Badge */}
-                  {herb.isDohApproved && (
-                    <Badge variant="outline" className="herb-doh-badge absolute z-10">
-                      <ShieldCheck className="h-3.5 w-3.5 text-[#74c69d]" />
-                      <span>DOH-listed plant</span>
-                    </Badge>
-                  )}
-
-                  <Badge variant="outline" className="herb-figma-badge absolute z-10">
-                    {herb.category}
-                  </Badge>
-                </div>
-
-                {/* Info Body */}
-                <div className="herb-figma-body p-5 flex-grow flex flex-col justify-between">
-                  <div>
-                    <h2 className="font-sans text-xl font-bold tracking-tight text-ink">
-                      {herb.localName}
-                    </h2>
-                    <p className="herb-figma-sci text-xs italic text-muted mt-1">
-                      {herb.scientificName} {herb.cebuanoName ? `(${herb.cebuanoName})` : ''}
-                    </p>
+          <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {filteredHerbs.map((herb) => {
+              const regional = getHerbRegionalNames(herb);
+              return (
+                <div
+                  key={herb.id}
+                  role="button"
+                  tabIndex={0}
+                  aria-haspopup="dialog"
+                  aria-label={`View ${herb.localName} details`}
+                  onClick={() => setSelectedHerb(herb)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      setSelectedHerb(herb);
+                    }
+                  }}
+                  className="herb-figma-card library-herb-card group flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-line bg-panel shadow-sm transition-all duration-200 hover:border-line-strong hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
+                  {/* Image & Category Overlay */}
+                  <div className="herb-figma-img relative flex h-40 w-full items-center justify-center overflow-hidden bg-soft sm:h-44">
+                    <div className="absolute inset-0 flex items-center justify-center text-white/30">
+                      <Leaf className="h-14 w-14 stroke-[1.5]" />
+                    </div>
+                    {herb.imageUrl && herb.imageUrl.trim() !== '' && (
+                      <OptimizedFillImage
+                        src={herb.imageUrl}
+                        alt={herb.localName}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-90"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
+                      />
+                    )}
                     
-                    <p className="text-sm font-medium text-muted line-clamp-3 mt-3">
-                      {herb.medicinalUses}
-                    </p>
+                    {/* DOH Badge */}
+                    {herb.isDohApproved && (
+                      <Badge variant="outline" className="herb-doh-badge absolute z-10 top-2.5 left-2.5">
+                        <ShieldCheck className="h-3 w-3 text-[#74c69d]" />
+                        <span className="text-[10px] font-semibold">DOH Plant</span>
+                      </Badge>
+                    )}
+
+                    <Badge variant="outline" className="herb-figma-badge absolute z-10 bottom-2.5 left-2.5 text-[10px]">
+                      {herb.category}
+                    </Badge>
                   </div>
 
-                  <div className="herb-figma-link mt-4 flex items-center justify-between text-xs text-accent font-bold border-t border-line pt-3">
-                    <span>View preparation & dosage</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
+                  {/* Info Body */}
+                  <div className="herb-figma-body p-4 flex-grow flex flex-col justify-between">
+                    <div>
+                      <h2 className="font-sans text-lg font-bold tracking-tight text-ink line-clamp-1">
+                        {herb.localName}
+                      </h2>
+                      <p className="herb-figma-sci text-xs italic text-muted mt-0.5 line-clamp-1">
+                        {herb.scientificName}
+                      </p>
+
+                      {/* English & Regional Common Names Preview */}
+                      <div className="mt-2.5 rounded-xl bg-soft/80 p-2.5 border border-line text-xs space-y-1">
+                        <div className="flex items-center gap-1.5 font-medium text-ink">
+                          <span className="font-bold text-accent text-[10px] uppercase tracking-wider">Eng:</span>
+                          <span className="truncate text-xs font-semibold text-ink" title={regional.english}>
+                            {regional.english}
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-muted">
+                          {regional.cebuano && (
+                            <span><strong className="text-ink font-semibold">Bis:</strong> {regional.cebuano.split(',')[0]}</span>
+                          )}
+                          {regional.ilocano && (
+                            <span><strong className="text-ink font-semibold">Ilk:</strong> {regional.ilocano.split(',')[0]}</span>
+                          )}
+                          {regional.bikol && (
+                            <span><strong className="text-ink font-semibold">Bik:</strong> {regional.bikol.split(',')[0]}</span>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <p className="text-xs font-medium text-muted line-clamp-2 mt-2.5 leading-relaxed">
+                        {herb.medicinalUses}
+                      </p>
+                    </div>
+
+                    <div className="herb-figma-link mt-3 flex items-center justify-between text-xs text-accent font-bold border-t border-line pt-2.5">
+                      <span>View details</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
@@ -373,10 +402,71 @@ function LibraryContent() {
                   {selectedHerb.localName}
                 </h2>
                 <p className="text-sm italic text-accent font-semibold">
-                  {selectedHerb.scientificName} {selectedHerb.cebuanoName ? `(${selectedHerb.cebuanoName})` : ''}
+                  {selectedHerb.scientificName}
                 </p>
               </div>
             </div>
+
+            {/* Regional Common Names Section in Modal */}
+            {(() => {
+              const regional = getHerbRegionalNames(selectedHerb);
+              return (
+                <div className="mb-6 rounded-2xl bg-soft border border-line p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs font-extrabold tracking-wider uppercase text-muted flex items-center gap-1.5">
+                      <span>Regional & Common Names (Lokal na Ngalan sa Rehiyon)</span>
+                    </h4>
+                    {regional.stuartUrl && (
+                      <a
+                        href={regional.stuartUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[11px] font-semibold text-accent hover:underline flex items-center gap-1"
+                      >
+                        <span>StuartXchange Monograph</span>
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    )}
+                  </div>
+
+                  <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3 text-xs">
+                    <div className="rounded-xl bg-panel p-2.5 border border-line">
+                      <span className="font-bold text-accent uppercase text-[10px] block tracking-wider">English Common Name</span>
+                      <span className="font-semibold text-ink text-xs">{regional.english}</span>
+                    </div>
+                    <div className="rounded-xl bg-panel p-2.5 border border-line">
+                      <span className="font-bold text-muted uppercase text-[10px] block tracking-wider">Tagalog / Filipino</span>
+                      <span className="font-medium text-ink text-xs">{regional.tagalog}</span>
+                    </div>
+                    <div className="rounded-xl bg-panel p-2.5 border border-line">
+                      <span className="font-bold text-muted uppercase text-[10px] block tracking-wider">Bisaya / Cebuano</span>
+                      <span className="font-medium text-ink text-xs">{regional.cebuano}</span>
+                    </div>
+                    <div className="rounded-xl bg-panel p-2.5 border border-line">
+                      <span className="font-bold text-muted uppercase text-[10px] block tracking-wider">Ilocano (Ilokano)</span>
+                      <span className="font-medium text-ink text-xs">{regional.ilocano}</span>
+                    </div>
+                    <div className="rounded-xl bg-panel p-2.5 border border-line">
+                      <span className="font-bold text-muted uppercase text-[10px] block tracking-wider">Bikol (Bicolano)</span>
+                      <span className="font-medium text-ink text-xs">{regional.bikol}</span>
+                    </div>
+                    {regional.hiligaynon ? (
+                      <div className="rounded-xl bg-panel p-2.5 border border-line">
+                        <span className="font-bold text-muted uppercase text-[10px] block tracking-wider">Hiligaynon / Waray</span>
+                        <span className="font-medium text-ink text-xs">{regional.hiligaynon}</span>
+                      </div>
+                    ) : null}
+                  </div>
+
+                  {regional.otherDialects && (
+                    <div className="rounded-xl bg-panel/70 px-3 py-2 border border-line text-xs">
+                      <span className="font-bold text-muted uppercase text-[10px] mr-1.5">Other Philippine Dialects:</span>
+                      <span className="text-ink font-medium">{regional.otherDialects}</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* DOH Official Endorsement Banner */}
             {selectedHerb.isDohApproved && (

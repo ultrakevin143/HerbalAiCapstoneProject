@@ -1,0 +1,428 @@
+{
+  "schemaVersion": 1,
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "reviewedAt": "2026-10-05",
+  "status": "EVIDENCE_REVIEW_NOT_IMPORTABLE",
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "counts": {
+    "records": 10,
+    "foodPreparationDescriptions": 7,
+    "traditionalDescriptionsHeld": 3,
+    "medicinalInstructionsCleared": 0
+  },
+  "scope": "Second-ten preparation evidence only. Descriptive food processing and labelled historical/draft reports are not prescriptions. No import or publication permission is granted.",
+  "limitations": [
+    "No database writes or new uploads occurred in this content review.",
+    "An EMA fennel page returned HTTP 429 on repeated access; a search listing is not a read monograph. No numerical fennel regimen is used.",
+    "The previous 55-row database snapshot is not a confirmed live target. Existing photos and botanical proposals do not clear medicinal content."
+  ],
+  "sources": [
+    {
+      "id": "pardo-1901",
+      "kind": "HISTORICAL",
+      "title": "The Medicinal Plants of the Philippines (1901)",
+      "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Historical report only. No clinical efficacy, modern safety clearance or human dosage is inferred; each record retains its exact entry and printed page."
+    },
+    {
+      "id": "mustard-nparks",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks: Growing Five Leafy Vegetables",
+      "url": "https://www.nparks.gov.sg/publications-resources/articles/growing-five-leafy-vegetables",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Only the Chinese Mustard paragraph is used. Boiling, steaming and stir-frying in the preceding Kailan paragraph are not transferred to mustard."
+    },
+    {
+      "id": "radish-nparks",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks: Growing Five Root Vegetables",
+      "url": "https://www.nparks.gov.sg/publications-resources/articles/growing-five-root-vegetables",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Only the Radish paragraph is used. The thorough-cooking warning for the later Tapioca paragraph is not misattributed to radish."
+    },
+    {
+      "id": "radish-gardening",
+      "kind": "BOTANICAL_DESCRIPTION",
+      "title": "GardeningSG: Radish",
+      "url": "https://gardeningsg.nparks.gov.sg/gardening-resource-library/radish/",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Cultivated Raphanus raphanistrum subsp. sativus; not all wild Raphanus populations or medicinal preparations."
+    },
+    {
+      "id": "purslane-nparks",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks: Portulaca oleracea",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/3/2359",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Food use of leaves, young shoots and flower buds; its traditional medicinal list is not clinical validation."
+    },
+    {
+      "id": "cacao-nparks",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks: Theobroma cacao",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/5/2/5241",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Food-processing overview, not a domestic fermentation safety protocol or therapeutic dose."
+    },
+    {
+      "id": "sesame-fda",
+      "kind": "AUTHORITATIVE_SAFETY_GUIDANCE",
+      "title": "FDA: The FASTER Act: Sesame Is the Ninth Major Food Allergen",
+      "url": "https://www.fda.gov/food/food-allergies/faster-act-sesame-ninth-major-food-allergen",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Used for sesame-allergen recognition, not Philippine labelling law or medicinal efficacy."
+    },
+    {
+      "id": "coconut-nparks",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks: Cocos nucifera",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/5/6/5618",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Food ingredients and processing; coconut milk, water and oil are different materials. No disease-treatment claim is adopted."
+    },
+    {
+      "id": "maize-ema-draft",
+      "kind": "DRAFT_REGULATORY_MONOGRAPH",
+      "title": "Draft European Union herbal monograph on Zea mays L., stigma, EMA/HMPC/509424/2023",
+      "url": "https://www.ema.europa.eu/en/documents/herbal-monograph/draft-european-union-herbal-monograph-zea-mays-l-stigma_en.pdf",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Six-page draft, dated 24 September 2025, specifies corn silk (stigma), not tassels, grain or stems; traditional use is not well-established clinical efficacy."
+    },
+    {
+      "id": "maize-ema-status",
+      "kind": "REGULATORY_STATUS",
+      "title": "EMA: Maydis stigma",
+      "url": "https://www.ema.europa.eu/en/medicines/herbal/maydis-stigma",
+      "reviewedAt": "2026-10-05",
+      "limitation": "The observed page still says draft under discussion. A closed consultation is not a final adopted monograph."
+    },
+    {
+      "id": "sugarcane-nparks",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks: Saccharum officinarum",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/4/2411",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Sugar processing and botanical description; commercially grown sugarcane can be a multi-species hybrid, so this is not specimen authentication."
+    },
+    {
+      "id": "pepper-nparks",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks: Piper nigrum",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/5/2/5262",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Dried-fruit food seasoning. Traditional disease claims are not adopted as proven treatment."
+    }
+  ],
+  "records": [
+    {
+      "candidateId": "research-pardo-014",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationPart": "Leaves and seeds",
+      "preparationDescription": "Culinary use, not treatment: mustard leaves are eaten in salads or cooked; seeds are used in curries and pickles. The source does not supply cooking times or medicinal quantities.",
+      "preparationSourceIds": [
+        "mustard-nparks"
+      ],
+      "historicalExclusions": [
+        "No mustard poultice recipe is supplied in this entry; do not borrow Cleome viscosa instructions."
+      ],
+      "identityNotes": "Reconcile the queue's Brassica juncea with the reviewed modern nothogenus proposal ×Brassarda juncea before import.",
+      "safetyNotes": "No validated medicinal regimen is established by these food-use sources.",
+      "scientificName": "Brassica juncea",
+      "localName": "Mustasa",
+      "bookEntry": 14,
+      "printedPage": 30,
+      "pdfPage": 36,
+      "preparationInstructions": null,
+      "dosage": null,
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Modern Philippine occurrence review",
+        "Isolated staging validation",
+        "Part-specific content and safety approval",
+        "Modern hybrid-name reconciliation"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-015",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationPart": "Cultivated taproot and leafy tops",
+      "preparationDescription": "Culinary use, not treatment: the swollen taproot is peeled, cut into small pieces and cooked in soups or meat dishes. The leafy tops may be stir-fried as a vegetable.",
+      "preparationSourceIds": [
+        "radish-nparks"
+      ],
+      "historicalExclusions": [
+        "Do not convert the book's antiscorbutic claim into a medicinal recipe."
+      ],
+      "identityNotes": "Raphanus sativus is treated in the modern GardeningSG page as cultivated Raphanus raphanistrum subsp. sativus; retain the subspecies distinction.",
+      "identitySourceIds": [
+        "radish-gardening"
+      ],
+      "safetyNotes": "Food preparation is not evidence that radish cures disease.",
+      "scientificName": "Raphanus sativus",
+      "localName": "Radish",
+      "bookEntry": 15,
+      "printedPage": 30,
+      "pdfPage": 36,
+      "preparationInstructions": null,
+      "dosage": null,
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Modern Philippine occurrence review",
+        "Isolated staging validation",
+        "Part-specific content and safety approval",
+        "Cultivated-subspecies reconciliation"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-020",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationPart": "Leaves, young shoots and flower buds",
+      "preparationDescription": "Culinary use, not treatment: leaves and young shoots are consumed as vegetables; flower buds are added to salads. The reviewed modern source supplies no medicinal preparation quantities.",
+      "preparationSourceIds": [
+        "purslane-nparks"
+      ],
+      "historicalExclusions": [
+        "Withhold leaf-juice eyewash and treatment of coughing blood."
+      ],
+      "identityNotes": "Olasiman here means Portulaca oleracea, not the existing Peperomia pellucida record sometimes called Ulasimang Bato.",
+      "safetyNotes": "The historical eye and bleeding claims must not become self-treatment instructions.",
+      "scientificName": "Portulaca oleracea",
+      "localName": "Olasiman",
+      "bookEntry": 20,
+      "printedPage": 34,
+      "pdfPage": 40,
+      "preparationInstructions": null,
+      "dosage": null,
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Modern Philippine occurrence review",
+        "Isolated staging validation",
+        "Part-specific content and safety approval",
+        "Regional common-name disambiguation"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-044",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationPart": "Seeds and surrounding fruit pulp",
+      "preparationDescription": "Food-processing overview, not treatment: seeds undergo fermentation and drying, then roasting, crushing, grinding and pressing to make chocolate products or cocoa butter. The surrounding pulp is eaten or processed into desserts. This is not a validated home fermentation protocol.",
+      "preparationSourceIds": [
+        "cacao-nparks"
+      ],
+      "historicalExclusions": [
+        "Withhold the book's stomach-dilation and theobromine diuretic claims."
+      ],
+      "identityNotes": "Queue identity retained; modern Philippine occurrence and all-state duplicate checks still required.",
+      "safetyNotes": "No therapeutic dose or condition-specific safety clearance is inferred from chocolate processing.",
+      "scientificName": "Theobroma cacao",
+      "localName": "Cacao",
+      "bookEntry": 44,
+      "printedPage": 55,
+      "pdfPage": 61,
+      "preparationInstructions": null,
+      "dosage": null,
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Modern Philippine occurrence review",
+        "Isolated staging validation",
+        "Part-specific content and safety approval"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-159",
+      "preparationKind": "HISTORICAL_DESCRIPTION_WITHHELD",
+      "preparationPart": "Leaves in the historical external report; seeds for allergen caution",
+      "preparationDescription": "Historical description only: the book reports sesame-leaf poultices. This is not recommended as a home treatment; medicinal preparation instructions remain withheld.",
+      "preparationSourceIds": [
+        "pardo-1901"
+      ],
+      "historicalExclusions": [
+        "Withhold emmenagogue baths and decoctions, purgative doses and castor-oil substitution."
+      ],
+      "identityNotes": "No seed or leaf medicinal method is clinically cleared by the reviewed sources.",
+      "safetyNotes": "Sesame is identified by the FDA as a major food allergen; avoid exposure when allergic. That guidance does not validate leaf treatment.",
+      "safetySourceIds": [
+        "sesame-fda"
+      ],
+      "scientificName": "Sesamum indicum",
+      "localName": "Linga",
+      "bookEntry": 159,
+      "printedPage": 184,
+      "pdfPage": 190,
+      "preparationInstructions": null,
+      "dosage": null,
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Modern Philippine occurrence review",
+        "Isolated staging validation",
+        "Part-specific content and safety approval",
+        "Modern part-specific medicinal safety review"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-214",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationPart": "Coconut flesh",
+      "preparationDescription": "Culinary use, not treatment: coconut flesh is shredded for desiccated coconut or squeezed to obtain coconut milk. Coconut milk is an ingredient in curries and desserts; oil is also extracted from the flesh. Coconut milk is not the liquid naturally inside the fruit.",
+      "preparationSourceIds": [
+        "coconut-nparks"
+      ],
+      "historicalExclusions": [
+        "Withhold fermented-sap tuberculosis treatment."
+      ],
+      "identityNotes": "Queue identity retained; no disease-specific preparation clearance inferred.",
+      "safetyNotes": "The preparation describes distinct food ingredients, not a medicine.",
+      "scientificName": "Cocos nucifera",
+      "localName": "Niog",
+      "bookEntry": 214,
+      "printedPage": 236,
+      "pdfPage": 242,
+      "preparationInstructions": null,
+      "dosage": null,
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Modern Philippine occurrence review",
+        "Isolated staging validation",
+        "Part-specific content and safety approval"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-217",
+      "preparationKind": "DRAFT_TRADITIONAL_DESCRIPTION",
+      "preparationPart": "Corn silk (stigma), not tassel, grain or stalk",
+      "preparationDescription": "A draft EMA monograph describes cut corn silk as an oral herbal tea prepared by infusion or decoction. It addresses traditional use, not well-established clinical efficacy. No recipe or human dose is cleared here, and the book's tassel preparation is not substituted for corn silk.",
+      "preparationSourceIds": [
+        "maize-ema-draft",
+        "maize-ema-status"
+      ],
+      "historicalExclusions": [
+        "Withhold the book's tassel and stalk diuretic recipes; tassels are not corn silk."
+      ],
+      "identityNotes": "Modern evidence is plant-part-specific; the foliage photograph cannot confirm medicinal-grade stigma material.",
+      "safetyNotes": "The draft does not recommend use below age 12 or during pregnancy/lactation, or when fluid intake must be restricted. Fever, painful urination or blood in urine require medical assessment.",
+      "safetySourceIds": [
+        "maize-ema-draft"
+      ],
+      "scientificName": "Zea mays",
+      "localName": "Maize",
+      "bookEntry": 217,
+      "printedPage": 240,
+      "pdfPage": 246,
+      "preparationInstructions": null,
+      "dosage": null,
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Modern Philippine occurrence review",
+        "Isolated staging validation",
+        "Part-specific content and safety approval",
+        "Final monograph status and stigma-specific safety review"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-219",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationPart": "Juicy stem (culm)",
+      "preparationDescription": "Food-processing overview, not treatment: juice is extracted from the soft tissue of sugarcane stems and processed into sugar or syrup. No medicinal heating time, dose or cough treatment is supplied.",
+      "preparationSourceIds": [
+        "sugarcane-nparks"
+      ],
+      "historicalExclusions": [
+        "Withhold warm-juice respiratory-treatment claims."
+      ],
+      "identityNotes": "NParks notes that commercial sugarcane is often a complex hybrid; resolve the photographed specimen's species scope.",
+      "safetyNotes": "Sugar processing does not establish medicinal benefit.",
+      "scientificName": "Saccharum officinarum",
+      "localName": "Tubo",
+      "bookEntry": 219,
+      "printedPage": 241,
+      "pdfPage": 247,
+      "preparationInstructions": null,
+      "dosage": null,
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Modern Philippine occurrence review",
+        "Isolated staging validation",
+        "Part-specific content and safety approval",
+        "Species-versus-commercial-hybrid reconciliation"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-119",
+      "preparationKind": "HISTORICAL_DESCRIPTION_WITHHELD",
+      "preparationPart": "Fennel material in a shared historical fennel/coriander discussion",
+      "preparationDescription": "Historical description only: the shared fennel and coriander passage mentions infusions and other extracts. It does not clear a modern, variety-specific preparation or human dose for this queue record.",
+      "preparationSourceIds": [
+        "pardo-1901"
+      ],
+      "historicalExclusions": [
+        "Withhold the historical concentrated infusion and daily-volume regimen."
+      ],
+      "identityNotes": "The species-level queue and photograph do not establish the sweet-fennel variety or medicinal fruit quality covered by a monograph.",
+      "safetyNotes": "Do not transfer a sweet-fennel fruit regimen to unspecified fennel leaves, essential oil or another variety.",
+      "scientificName": "Foeniculum vulgare",
+      "localName": "Fennel",
+      "bookEntry": 119,
+      "printedPage": 137,
+      "pdfPage": 143,
+      "preparationInstructions": null,
+      "dosage": null,
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Modern Philippine occurrence review",
+        "Isolated staging validation",
+        "Part-specific content and safety approval",
+        "Exact variety and plant-part reconciliation",
+        "Full current fennel monograph and safety review"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-184",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationPart": "Fruits (peppercorns)",
+      "preparationDescription": "Culinary use, not treatment: dried pepper fruits are used as food seasoning. NParks describes unripe fruits turning black when dried. No medicinal quantity or malaria regimen is supplied.",
+      "preparationSourceIds": [
+        "pepper-nparks"
+      ],
+      "historicalExclusions": [
+        "Withhold brandy-and-anise malaria treatment and purified-piperine dosing."
+      ],
+      "identityNotes": "Piper nigrum is not Piper betle; do not transfer adjacent betel-leaf instructions.",
+      "safetyNotes": "Food seasoning does not prove that concentrated pepper products or piperine treat disease.",
+      "scientificName": "Piper nigrum",
+      "localName": "Paminta",
+      "bookEntry": 184,
+      "printedPage": 206,
+      "pdfPage": 212,
+      "preparationInstructions": null,
+      "dosage": null,
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Modern Philippine occurrence review",
+        "Isolated staging validation",
+        "Part-specific content and safety approval"
+      ]
+    }
+  ]
+}

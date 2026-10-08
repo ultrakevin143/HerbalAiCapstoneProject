@@ -1,0 +1,450 @@
+{
+  "schemaVersion": 1,
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "reviewedAt": "2026-10-05",
+  "status": "PREPARATION_RESEARCH_NOT_IMPORTABLE",
+  "batch": 4,
+  "productionWritesPerformed": false,
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "counts": {
+    "records": 10,
+    "foodPreparationDescriptions": 4,
+    "manufacturingDescriptionsHeld": 1,
+    "laboratoryDescriptionsHeld": 2,
+    "methodsNotEstablished": 3,
+    "fullySpecifiedHouseholdRecipes": 0,
+    "medicinalInstructionsCleared": 0,
+    "remainingCandidatesWithoutThisPreparationReview": 10
+  },
+  "publicationBlockers": [
+    "Fresh all-state duplicate check against the confirmed live Neon target",
+    "Species, plant-part and cultivar-specific content and safety review",
+    "Media clearance for candidates still on image hold",
+    "Isolated PostgreSQL staging and rollback validation"
+  ],
+  "sources": [
+    {
+      "id": "nparks-ixora-genus-lead",
+      "scientificName": null,
+      "taxonScope": "GENUS_ONLY",
+      "kind": "AUTHORITATIVE_GENUS_FOOD_LEAD",
+      "title": "NParks Gardenwise 62 (February 2024), Edibles: Ixora",
+      "url": "https://www.nparks.gov.sg/sbg/research/publications/-/media/sbg/gardenwise/gw_pdf_2020-2029/gw_2024_vol_62_feb_updated.pdf",
+      "supports": [
+        "researchGap"
+      ],
+      "reviewCoverage": "EXTRACTED_PRINTED_PAGE_31_IXORA_SECTION",
+      "retrievalNote": "The paragraph names Ixora only, not I. coccinea. Text was reviewed; screenshot retrieval returned HTTP 403.",
+      "limitation": "A genus-level tempura description cannot establish the species or cultivar suitable for consumption."
+    },
+    {
+      "id": "zhang-2023-jasmine-processing",
+      "scientificName": "Jasminum sambac",
+      "taxonScope": "EXACT_SPECIES",
+      "kind": "PRIMARY_FOOD_MANUFACTURING_STUDY_HELD",
+      "title": "Zhang et al. (2023): Volatilomics Analysis of Jasmine Tea during Multiple Rounds of Scenting Processes",
+      "url": "https://doi.org/10.3390/foods12040812",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9956320/fullTextXML",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewCoverage": "FULL_TEXT_XML_SECTION_2_1_MANUFACTURING",
+      "downloadBytes": 195208,
+      "downloadSha256": "34b538036e1d6a618aae0a966d58f72e439cfb4fef4548d49fdbcea65e2438fb",
+      "limitation": "Controlled manufacturing uses J. sambac cv. bifoliatum and Camellia sinensis tea. It does not validate a home infusion of ornamental flowers or medicinal efficacy."
+    },
+    {
+      "id": "nparks-kabiki-food-use",
+      "scientificName": "Mimusops elengi",
+      "taxonScope": "EXACT_SPECIES",
+      "kind": "AUTHORITATIVE_EDIBLE_PART_DESCRIPTION",
+      "title": "NParks: Mimusops elengi",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/3/0/3030",
+      "supports": [
+        "foodUse",
+        "researchGap"
+      ],
+      "reviewCoverage": "SPECIES_HEADING_FRUIT_AND_EDIBLE_PART_PARAGRAPHS",
+      "limitation": "The page identifies edible fruit flesh but gives no processing method. Adjacent traditional medicine claims are not preparation or safety validation."
+    },
+    {
+      "id": "nparks-balibago-food-use",
+      "scientificName": "Hibiscus tiliaceus",
+      "taxonScope": "EXACT_SPECIES",
+      "kind": "AUTHORITATIVE_EDIBLE_PART_DESCRIPTION",
+      "title": "NParks: Hibiscus tiliaceus",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/9/2954",
+      "supports": [
+        "foodUse",
+        "researchGap"
+      ],
+      "reviewCoverage": "SPECIES_HEADING_SIMILAR_SPECIES_AND_FOOD_PARAGRAPH",
+      "limitation": "Young leaves are described as a vegetable without a cooking method. Roselle recipes and the similar Thespesia populnea must not be substituted."
+    },
+    {
+      "id": "icraf-thespesia-food",
+      "scientificName": "Thespesia populnea",
+      "taxonScope": "EXACT_SPECIES",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "Orwa et al. (2009), Agroforestree Database 4.0: Thespesia populnea",
+      "url": "https://apps.worldagroforestry.org/treedb/AFTPDFS/Thespesia_populnea.PDF",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewCoverage": "PDF_PRINTED_PAGE_3_FOOD_PARAGRAPH_VISUALLY_INSPECTED",
+      "downloadBytes": 455981,
+      "downloadSha256": "1e17808c50a138eb7333eb5dd7542cc2576e32375d59e843e91d0427aa4eef9c",
+      "limitation": "No quantities or cooking duration. Culinary reporting is not treatment clearance; medicinal fruit, bark and seed claims were excluded."
+    },
+    {
+      "id": "prota-ceiba-food-safety",
+      "scientificName": "Ceiba pentandra",
+      "taxonScope": "EXACT_SPECIES",
+      "kind": "AUTHORITATIVE_FOOD_AND_CAUTION_DESCRIPTION",
+      "title": "Duvall (2011), PROTA4U: Ceiba pentandra",
+      "url": "https://prota.prota4u.org/protav8.asp?h=M4&p=Ceiba+pentandra&t=Ceiba,pentandra",
+      "supports": [
+        "preparationMethod",
+        "warnings"
+      ],
+      "reviewCoverage": "SPECIES_USES_FOOD_AND_SEED_OIL_CAUTION_PARAGRAPHS",
+      "limitation": "No cooking time or human therapeutic regimen. The entry discourages culinary seed oil for health reasons and reports digestive upset from seeds."
+    },
+    {
+      "id": "alam-2021-sterculia-extraction",
+      "scientificName": "Sterculia foetida",
+      "taxonScope": "EXACT_SPECIES",
+      "kind": "PRIMARY_LABORATORY_EXTRACTION_STUDY_HELD",
+      "title": "Alam et al. (2021): Chemical Profiling, Pharmacological Insights and In Silico Studies of Methanol Seed Extract of Sterculia foetida",
+      "url": "https://doi.org/10.3390/plants10061135",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC8227630/fullTextXML",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewCoverage": "FULL_TEXT_XML_SECTION_4_1_PLANT_COLLECTION_AND_EXTRACTION",
+      "downloadBytes": 171540,
+      "downloadSha256": "15b759e445028d6824dff23a1cbdd963b2d6e8e7ae9964d92353a6dc1c0bd56a",
+      "limitation": "Methanol extraction and rotary evaporation are laboratory processing, not food preparation. Preclinical results do not establish safe seed cooking or a human dose."
+    },
+    {
+      "id": "icraf-manzanitas-food",
+      "scientificName": "Ziziphus mauritiana",
+      "taxonScope": "EXACT_SPECIES",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "Orwa et al. (2009), Agroforestree Database 4.0: Ziziphus mauritiana",
+      "url": "https://apps.worldagroforestry.org/treedb/AFTPDFS/Ziziphus_mauritiana.PDF",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewCoverage": "PDF_PRINTED_PAGE_3_FOOD_PARAGRAPH_VISUALLY_INSPECTED",
+      "downloadBytes": 398904,
+      "downloadSha256": "f8e1d8728ed90c2567c34b181e7038ca35ffe11b064ac12819e7a7daf757e86d",
+      "limitation": "Food methods lack ratios and processing times. The historical Zizyphus Jujuba, Lam. heading does not authorize transferring modern Ziziphus jujuba recipes."
+    },
+    {
+      "id": "chen-2025-asana-extraction",
+      "scientificName": "Pterocarpus indicus",
+      "taxonScope": "EXACT_SPECIES",
+      "kind": "PRIMARY_LABORATORY_EXTRACTION_STUDY_HELD",
+      "title": "Chen et al. (2025): Dose-Dependent Cardioprotection of Pterocarpus indicus Extract in Rats With Myocardial Ischemia",
+      "url": "https://doi.org/10.1177/15593258251404066",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12690059/fullTextXML",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewCoverage": "FULL_TEXT_XML_DRUG_EXTRACTION_SECTION",
+      "downloadBytes": 161939,
+      "downloadSha256": "151e6732f1221b2602148f6c2127b1a066eac917ef58d4836ed71c919f0c0cab",
+      "limitation": "Heartwood extraction, solvent fractionation and a rat experiment do not validate a household decoction, clinical efficacy or a human dose."
+    },
+    {
+      "id": "icraf-coffee-food",
+      "scientificName": "Coffea arabica",
+      "taxonScope": "EXACT_SPECIES",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "Orwa et al. (2009), Agroforestree Database 4.0: Coffea arabica",
+      "url": "https://apps.worldagroforestry.org/treedb/AFTPDFS/Coffea_arabica.PDF",
+      "supports": [
+        "preparationMethod"
+      ],
+      "reviewCoverage": "PDF_PRINTED_PAGE_3_FOOD_PARAGRAPH_VISUALLY_INSPECTED",
+      "downloadBytes": 497289,
+      "downloadSha256": "6b7ee73bcd06e0331d12cae6e891a097ce1a1c0a85664b79bbb64ccf347e1468",
+      "limitation": "No roasting temperature, brewing ratio, serving limit or therapeutic dose. The seed beverage description cannot be transferred to coffee leaves or other species."
+    }
+  ],
+  "records": [
+    {
+      "candidateId": "research-pardo-124",
+      "localName": "Santan",
+      "scientificName": "Ixora coccinea",
+      "bookEntry": 124,
+      "printedPage": 143,
+      "pdfPage": 149,
+      "historicalHeading": "Ixora coccinea",
+      "preparationPart": "Not established for the exact species",
+      "preparationKind": "METHOD_NOT_ESTABLISHED",
+      "preparationDescription": "The reviewed Gardenwise paragraph describes flowers under the genus Ixora but does not identify Ixora coccinea. No exact-species preparation method was established in this review; the lead is not treatment guidance.",
+      "preparationSourceIds": [],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [
+        "nparks-ixora-genus-lead"
+      ],
+      "safetySourceIds": [],
+      "reviewGaps": [
+        "Find a species- and cultivar-specific primary preparation source; do not promote the genus-only tempura lead.",
+        "Do not treat a planted ornamental, nectar anecdote or edible-garden label as human safety clearance."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-139",
+      "localName": "Sampaguita",
+      "scientificName": "Jasminum sambac",
+      "bookEntry": 139,
+      "printedPage": 158,
+      "pdfPage": 164,
+      "historicalHeading": "Jasminum Sambac",
+      "preparationPart": "Flowers of Jasminum sambac cv. bifoliatum used to scent Camellia sinensis tea",
+      "preparationKind": "MANUFACTURING_DESCRIPTION_HELD",
+      "preparationDescription": "A primary tea study mixed opened flowers of Jasminum sambac cv. bifoliatum with prepared green tea in controlled scenting rounds, separated spent flowers and dried the tea between rounds. This manufacturing description is not a home recipe or treatment.",
+      "preparationSourceIds": [
+        "zhang-2023-jasmine-processing"
+      ],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [],
+      "safetySourceIds": [],
+      "reviewGaps": [
+        "The cultivar, food-grade sourcing and controlled factory process must remain explicit.",
+        "Do not replace scenting tea with boiling arbitrary ornamental jasmine, essential oil or another jasmine species.",
+        "No clinical dose or household recipe is cleared."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-138",
+      "localName": "Kabiki",
+      "scientificName": "Mimusops elengi",
+      "bookEntry": 138,
+      "printedPage": 157,
+      "pdfPage": 163,
+      "historicalHeading": "Mimusops Elengi",
+      "preparationPart": "Ripe fruit flesh identified as edible; processing not established",
+      "preparationKind": "METHOD_NOT_ESTABLISHED",
+      "preparationDescription": "NParks identifies edible yellow flesh around the seeds of ripe Mimusops elengi fruit. It supplies no preparation process, so no raw-serving, seed-oil, drying or cooking method is added. This edible-part description is not treatment guidance.",
+      "preparationSourceIds": [],
+      "foodUseSourceIds": [
+        "nparks-kabiki-food-use"
+      ],
+      "gapSourceIds": [
+        "nparks-kabiki-food-use"
+      ],
+      "safetySourceIds": [],
+      "reviewGaps": [
+        "Find an explicit food-processing method rather than inferring one from the word edible.",
+        "Do not convert adjacent bark, leaf-smoking or flower medicine claims into instructions."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-033",
+      "localName": "Balibago",
+      "scientificName": "Hibiscus tiliaceus",
+      "bookEntry": 33,
+      "printedPage": 46,
+      "pdfPage": 52,
+      "historicalHeading": "Hibiscus tiliaceus, L.",
+      "preparationPart": "Young leaves reported as a vegetable; processing not established",
+      "preparationKind": "METHOD_NOT_ESTABLISHED",
+      "preparationDescription": "NParks reports young Hibiscus tiliaceus leaves eaten as a vegetable but gives no cooking method. No boiling duration or roselle-style tea is supplied. This food-use statement is not treatment guidance.",
+      "preparationSourceIds": [],
+      "foodUseSourceIds": [
+        "nparks-balibago-food-use"
+      ],
+      "gapSourceIds": [
+        "nparks-balibago-food-use"
+      ],
+      "safetySourceIds": [],
+      "reviewGaps": [
+        "Do not borrow Hibiscus sabdariffa calyx recipes or Thespesia populnea methods for this species.",
+        "Leaf sap, childbirth and bark medicine claims remain outside cleared household instructions.",
+        "An explicit preparation method and part-specific safety review remain missing."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-035",
+      "localName": "Thespesia populnea",
+      "scientificName": "Thespesia populnea",
+      "bookEntry": 35,
+      "printedPage": 47,
+      "pdfPage": 53,
+      "historicalHeading": "Thespesia populnea",
+      "preparationPart": "Young flower buds and leaves",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationDescription": "World Agroforestry reports young flower buds and leaves of Thespesia populnea eaten uncooked or fried using butter. No cooking duration or ingredient ratio is supplied. This culinary description is not treatment guidance.",
+      "preparationSourceIds": [
+        "icraf-thespesia-food"
+      ],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [],
+      "safetySourceIds": [],
+      "reviewGaps": [
+        "Keep the food parts separate from medicinal fruit, seed, bark and heartwood preparations.",
+        "Food reporting alone does not establish safety for every person or medicinal efficacy."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-038",
+      "localName": "Doldol",
+      "scientificName": "Ceiba pentandra",
+      "bookEntry": 38,
+      "printedPage": 50,
+      "pdfPage": 56,
+      "historicalHeading": "Eriodendron anfractuosum",
+      "preparationPart": "Leaves, flowers and young fruits; seed oil excluded",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationDescription": "PROTA describes Ceiba pentandra leaves, flowers and young fruits cooked into sauces. Its caution against culinary seed oil and reported digestive upset from seeds remain attached; seed and oil preparations are excluded. This culinary description is not treatment guidance.",
+      "preparationSourceIds": [
+        "prota-ceiba-food-safety"
+      ],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [],
+      "safetySourceIds": [
+        "prota-ceiba-food-safety"
+      ],
+      "reviewGaps": [
+        "No quantities or cooking time are specified; this is not a fully specified recipe.",
+        "Do not override the PROTA seed-oil caution using the older World Agroforestry cooking-oil mention.",
+        "Root, bark, eye-bath, childbirth and abortifacient uses are not cleared."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-039",
+      "localName": "Kalumpang",
+      "scientificName": "Sterculia foetida",
+      "bookEntry": 39,
+      "printedPage": 51,
+      "pdfPage": 57,
+      "historicalHeading": "Sterculia fœtida",
+      "preparationPart": "Dried seeds used for a laboratory methanol extract",
+      "preparationKind": "LABORATORY_DESCRIPTION_HELD",
+      "preparationDescription": "Alam and colleagues prepared an experimental extract from ground dried Sterculia foetida seeds using methanol maceration followed by rotary evaporation. This is laboratory processing, not a home recipe or treatment; no seed meal or cooking method is cleared.",
+      "preparationSourceIds": [
+        "alam-2021-sterculia-extraction"
+      ],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [],
+      "safetySourceIds": [],
+      "reviewGaps": [
+        "Do not reproduce solvent extraction at home or transfer animal assay doses to humans.",
+        "Seed consumption and oil safety require separate evidence; background edible claims are not cooking validation.",
+        "Do not borrow preparations from Sterculia lychnophora or other Sterculia species."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-067",
+      "localName": "Manzanitas",
+      "scientificName": "Ziziphus mauritiana",
+      "bookEntry": 67,
+      "printedPage": 81,
+      "pdfPage": 87,
+      "historicalHeading": "Zizyphus Jujuba, Lam.",
+      "preparationPart": "Fruit; not root or bark",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationDescription": "World Agroforestry describes Ziziphus mauritiana fruit consumed fresh or dried, processed into pickles, or macerated in water for a beverage. Ratios and processing times are not given. This culinary description is not treatment guidance.",
+      "preparationSourceIds": [
+        "icraf-manzanitas-food"
+      ],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [],
+      "safetySourceIds": [],
+      "reviewGaps": [
+        "Preserve the historical author-qualified name; do not treat modern Ziziphus jujuba as the same recipe source.",
+        "Do not infer safe storage, fermentation, a medicinal dose or root-water instructions."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-079",
+      "localName": "Asana",
+      "scientificName": "Pterocarpus indicus",
+      "bookEntry": 79,
+      "printedPage": 93,
+      "pdfPage": 99,
+      "historicalHeading": "2. P. Indicus,",
+      "preparationPart": "Heartwood used for laboratory solvent extraction",
+      "preparationKind": "LABORATORY_DESCRIPTION_HELD",
+      "preparationDescription": "Chen and colleagues extracted authenticated Pterocarpus indicus heartwood using ethanol soaking and heated reflux, then solvent fractionation and freeze-drying, for a rat study. This laboratory description is not a home recipe or treatment; it does not establish a human regimen.",
+      "preparationSourceIds": [
+        "chen-2025-asana-extraction"
+      ],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [],
+      "safetySourceIds": [],
+      "reviewGaps": [
+        "Do not convert rat cardioprotection findings into human cardiovascular advice.",
+        "Do not borrow Pterocarpus marsupium, Pterocarpus angolensis or Sphaeranthus indicus preparations.",
+        "Traditional childbirth, eye and latex uses are not cleared."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-125",
+      "localName": "Coffee",
+      "scientificName": "Coffea arabica",
+      "bookEntry": 125,
+      "printedPage": 144,
+      "pdfPage": 150,
+      "historicalHeading": "Coffea Arabica",
+      "preparationPart": "Dried seeds (coffee beans), not leaves",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationDescription": "World Agroforestry describes dried Coffea arabica seeds being roasted, milled and brewed into a beverage. The paragraph provides no brewing ratio or roasting duration. This seed-beverage description is not treatment guidance.",
+      "preparationSourceIds": [
+        "icraf-coffee-food"
+      ],
+      "foodUseSourceIds": [],
+      "gapSourceIds": [],
+      "safetySourceIds": [],
+      "reviewGaps": [
+        "No medicinal dose, caffeine limit or disease-treatment claim is inferred.",
+        "Do not transfer this seed processing to Coffea canephora or coffee-leaf teas."
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "medicalReview": "PENDING",
+      "publicationAllowed": false
+    }
+  ]
+}

@@ -1,0 +1,536 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-06",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "status": "RESEARCH_COVERAGE_NOT_RELEASE_MANIFEST",
+  "productionWritesPerformed": false,
+  "publicationAllowed": false,
+  "stagingAllowed": false,
+  "counts": {
+    "reviewedCandidates": 50,
+    "boundedFoodDescriptions": 31,
+    "heldFoodOrReportedFoodDescriptions": 5,
+    "heldTraditionalDescriptions": 4,
+    "heldLaboratoryDescriptions": 5,
+    "heldManufacturingDescriptions": 1,
+    "methodsNotEstablished": 4,
+    "fullySpecifiedHouseholdRecipes": 0,
+    "medicinalInstructionsCleared": 0,
+    "publicationCleared": 0
+  },
+  "overlay": "TALISAY_PREPARATION_FOLLOW_UP_2026-10-05.json supersedes only Talisay's earlier missing preparation description; all identity/safety/publication gates remain.",
+  "methodGapCandidateIds": [
+    "research-pardo-124",
+    "research-pardo-138",
+    "research-pardo-033",
+    "research-pardo-003"
+  ],
+  "publicationBlockers": [
+    "Fresh all-state duplicate check against the confirmed live Neon target",
+    "Species, plant-part and cultivar-specific content and safety review",
+    "Media clearance for candidates still on image hold",
+    "Isolated PostgreSQL staging and rollback validation"
+  ],
+  "records": [
+    {
+      "batch": 1,
+      "candidateId": "research-pardo-098",
+      "localName": "Duhat",
+      "scientificName": "Syzygium cumini",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FIRST_TEN_PREPARATION_SUPPLEMENT_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 1,
+      "candidateId": "research-pardo-088",
+      "localName": "Sampalok",
+      "scientificName": "Tamarindus indica",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FIRST_TEN_PREPARATION_SUPPLEMENT_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 1,
+      "candidateId": "research-pardo-005",
+      "localName": "Atis",
+      "scientificName": "Annona squamosa",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FIRST_TEN_PREPARATION_SUPPLEMENT_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 1,
+      "candidateId": "research-pardo-094",
+      "localName": "Talisay",
+      "scientificName": "Terminalia catappa",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "TALISAY_PREPARATION_FOLLOW_UP_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 1,
+      "candidateId": "research-pardo-077",
+      "localName": "Butterfly pea",
+      "scientificName": "Clitoria ternatea",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FIRST_TEN_PREPARATION_SUPPLEMENT_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 1,
+      "candidateId": "research-pardo-069",
+      "localName": "Mangga",
+      "scientificName": "Mangifera indica",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FIRST_TEN_PREPARATION_SUPPLEMENT_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 1,
+      "candidateId": "research-pardo-063",
+      "localName": "Santol",
+      "scientificName": "Sandoricum koetjape",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FIRST_TEN_PREPARATION_SUPPLEMENT_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 1,
+      "candidateId": "research-pardo-104",
+      "localName": "Papaya",
+      "scientificName": "Carica papaya",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FIRST_TEN_PREPARATION_SUPPLEMENT_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 1,
+      "candidateId": "research-pardo-102",
+      "localName": "Granada",
+      "scientificName": "Punica granatum",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FIRST_TEN_PREPARATION_SUPPLEMENT_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 1,
+      "candidateId": "research-pardo-137",
+      "localName": "Chico",
+      "scientificName": "Manilkara zapota",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FIRST_TEN_PREPARATION_SUPPLEMENT_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 2,
+      "candidateId": "research-pardo-014",
+      "localName": "Mustasa",
+      "scientificName": "Brassica juncea",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_SECOND_TEN_CONTENT_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 2,
+      "candidateId": "research-pardo-015",
+      "localName": "Radish",
+      "scientificName": "Raphanus sativus",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_SECOND_TEN_CONTENT_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 2,
+      "candidateId": "research-pardo-020",
+      "localName": "Olasiman",
+      "scientificName": "Portulaca oleracea",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_SECOND_TEN_CONTENT_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 2,
+      "candidateId": "research-pardo-044",
+      "localName": "Cacao",
+      "scientificName": "Theobroma cacao",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_SECOND_TEN_CONTENT_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 2,
+      "candidateId": "research-pardo-159",
+      "localName": "Linga",
+      "scientificName": "Sesamum indicum",
+      "kind": "HISTORICAL_DESCRIPTION_WITHHELD",
+      "sourceFile": "HERB_SECOND_TEN_CONTENT_REVIEW_2026-10-05.json",
+      "coverageClass": "HELD_TRADITIONAL_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 2,
+      "candidateId": "research-pardo-214",
+      "localName": "Niog",
+      "scientificName": "Cocos nucifera",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_SECOND_TEN_CONTENT_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 2,
+      "candidateId": "research-pardo-217",
+      "localName": "Maize",
+      "scientificName": "Zea mays",
+      "kind": "DRAFT_TRADITIONAL_DESCRIPTION",
+      "sourceFile": "HERB_SECOND_TEN_CONTENT_REVIEW_2026-10-05.json",
+      "coverageClass": "HELD_TRADITIONAL_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 2,
+      "candidateId": "research-pardo-219",
+      "localName": "Tubo",
+      "scientificName": "Saccharum officinarum",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_SECOND_TEN_CONTENT_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 2,
+      "candidateId": "research-pardo-119",
+      "localName": "Fennel",
+      "scientificName": "Foeniculum vulgare",
+      "kind": "HISTORICAL_DESCRIPTION_WITHHELD",
+      "sourceFile": "HERB_SECOND_TEN_CONTENT_REVIEW_2026-10-05.json",
+      "coverageClass": "HELD_TRADITIONAL_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 2,
+      "candidateId": "research-pardo-184",
+      "localName": "Paminta",
+      "scientificName": "Piper nigrum",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_SECOND_TEN_CONTENT_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 3,
+      "candidateId": "research-pardo-170",
+      "localName": "Solasi",
+      "scientificName": "Ocimum basilicum",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_THIRD_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 3,
+      "candidateId": "research-pardo-171",
+      "localName": "Lokoloko",
+      "scientificName": "Ocimum gratissimum",
+      "kind": "REPORTED_FOOD_USE_DESCRIPTION",
+      "sourceFile": "HERB_THIRD_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "HELD_FOOD_OR_REPORTED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 3,
+      "candidateId": "research-pardo-172",
+      "localName": "Balanay",
+      "scientificName": "Ocimum tenuiflorum",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_THIRD_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 3,
+      "candidateId": "research-pardo-174",
+      "localName": "Romero",
+      "scientificName": "Salvia rosmarinus",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_THIRD_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 3,
+      "candidateId": "research-pardo-073",
+      "localName": "Katuray",
+      "scientificName": "Sesbania grandiflora",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_THIRD_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 3,
+      "candidateId": "research-pardo-089",
+      "localName": "Alibangbang",
+      "scientificName": "Piliostigma malabaricum",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_THIRD_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 3,
+      "candidateId": "research-pardo-091",
+      "localName": "Kupang",
+      "scientificName": "Parkia timoriana",
+      "kind": "LABORATORY_FOOD_PROCESSING_DESCRIPTION_HELD",
+      "sourceFile": "HERB_THIRD_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "HELD_LABORATORY_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 3,
+      "candidateId": "research-pardo-215",
+      "localName": "Nipa",
+      "scientificName": "Nypa fruticans",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_THIRD_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 3,
+      "candidateId": "research-pardo-108",
+      "localName": "Bottle gourd",
+      "scientificName": "Lagenaria siceraria",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_THIRD_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 3,
+      "candidateId": "research-pardo-112",
+      "localName": "Luffa aegyptiaca",
+      "scientificName": "Luffa aegyptiaca",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_THIRD_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 4,
+      "candidateId": "research-pardo-124",
+      "localName": "Santan",
+      "scientificName": "Ixora coccinea",
+      "kind": "METHOD_NOT_ESTABLISHED",
+      "sourceFile": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "METHOD_NOT_ESTABLISHED",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 4,
+      "candidateId": "research-pardo-139",
+      "localName": "Sampaguita",
+      "scientificName": "Jasminum sambac",
+      "kind": "MANUFACTURING_DESCRIPTION_HELD",
+      "sourceFile": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "HELD_MANUFACTURING_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 4,
+      "candidateId": "research-pardo-138",
+      "localName": "Kabiki",
+      "scientificName": "Mimusops elengi",
+      "kind": "METHOD_NOT_ESTABLISHED",
+      "sourceFile": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "METHOD_NOT_ESTABLISHED",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 4,
+      "candidateId": "research-pardo-033",
+      "localName": "Balibago",
+      "scientificName": "Hibiscus tiliaceus",
+      "kind": "METHOD_NOT_ESTABLISHED",
+      "sourceFile": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "METHOD_NOT_ESTABLISHED",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 4,
+      "candidateId": "research-pardo-035",
+      "localName": "Thespesia populnea",
+      "scientificName": "Thespesia populnea",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 4,
+      "candidateId": "research-pardo-038",
+      "localName": "Doldol",
+      "scientificName": "Ceiba pentandra",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 4,
+      "candidateId": "research-pardo-039",
+      "localName": "Kalumpang",
+      "scientificName": "Sterculia foetida",
+      "kind": "LABORATORY_DESCRIPTION_HELD",
+      "sourceFile": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "HELD_LABORATORY_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 4,
+      "candidateId": "research-pardo-067",
+      "localName": "Manzanitas",
+      "scientificName": "Ziziphus mauritiana",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 4,
+      "candidateId": "research-pardo-079",
+      "localName": "Asana",
+      "scientificName": "Pterocarpus indicus",
+      "kind": "LABORATORY_DESCRIPTION_HELD",
+      "sourceFile": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "HELD_LABORATORY_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 4,
+      "candidateId": "research-pardo-125",
+      "localName": "Coffee",
+      "scientificName": "Coffea arabica",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 5,
+      "candidateId": "research-pardo-047",
+      "localName": "Kamias",
+      "scientificName": "Averrhoa bilimbi",
+      "kind": "FOOD_DESCRIPTION_HELD",
+      "sourceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "coverageClass": "HELD_FOOD_OR_REPORTED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 5,
+      "candidateId": "research-pardo-048",
+      "localName": "Balimbing",
+      "scientificName": "Averrhoa carambola",
+      "kind": "FOOD_DESCRIPTION_HELD",
+      "sourceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "coverageClass": "HELD_FOOD_OR_REPORTED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 5,
+      "candidateId": "research-pardo-070",
+      "localName": "Kasuy",
+      "scientificName": "Anacardium occidentale",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 5,
+      "candidateId": "research-pardo-126",
+      "localName": "Bankundo",
+      "scientificName": "Morinda citrifolia",
+      "kind": "TRADITIONAL_DESCRIPTION_HELD",
+      "sourceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "coverageClass": "HELD_TRADITIONAL_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 5,
+      "candidateId": "research-pardo-045",
+      "localName": "Oxalis corniculata",
+      "scientificName": "Oxalis corniculata",
+      "kind": "REPORTED_FOOD_USE_DESCRIPTION_HELD",
+      "sourceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "coverageClass": "HELD_FOOD_OR_REPORTED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 5,
+      "candidateId": "research-pardo-054",
+      "localName": "Kahel",
+      "scientificName": "Citrus aurantium",
+      "kind": "FOOD_DESCRIPTION",
+      "sourceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "coverageClass": "BOUNDED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 5,
+      "candidateId": "research-pardo-003",
+      "localName": "Tsampaka",
+      "scientificName": "Magnolia champaca",
+      "kind": "METHOD_NOT_ESTABLISHED",
+      "sourceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "coverageClass": "METHOD_NOT_ESTABLISHED",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 5,
+      "candidateId": "research-pardo-030",
+      "localName": "Abutilon indicum",
+      "scientificName": "Abutilon indicum",
+      "kind": "LABORATORY_DESCRIPTION_HELD",
+      "sourceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "coverageClass": "HELD_LABORATORY_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 5,
+      "candidateId": "research-pardo-032",
+      "localName": "Kastuli",
+      "scientificName": "Abelmoschus moschatus",
+      "kind": "REPORTED_FOOD_USE_DESCRIPTION_HELD",
+      "sourceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "coverageClass": "HELD_FOOD_OR_REPORTED_FOOD_DESCRIPTION",
+      "publicationAllowed": false
+    },
+    {
+      "batch": 5,
+      "candidateId": "research-pardo-130",
+      "localName": "Ayapana",
+      "scientificName": "Ayapana triplinervis",
+      "kind": "LABORATORY_DESCRIPTION_HELD",
+      "sourceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "coverageClass": "HELD_LABORATORY_DESCRIPTION",
+      "publicationAllowed": false
+    }
+  ]
+}

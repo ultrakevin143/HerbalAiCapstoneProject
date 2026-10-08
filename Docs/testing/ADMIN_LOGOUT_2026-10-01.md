@@ -32,3 +32,20 @@ Unrelated session-recovery evidence edits and the main checkout were preserved. 
 ## Publication authorization — 2 October 2026
 
 The user authorized the proposed deployment and live checks. Before committing, the unchanged source was reviewed and the combined frontend regressions rerun: 119 tests passed, zero failed. The release is restricted to the administrator page, its native regression suite and CI step, this report, and the reviewed password-settings evidence. Three unrelated session-recovery report edits remain unstaged. Publish to the isolated existing CI branch first, and promote the same commit to main and the deployment branch only after its CI succeeds. Live logout, protected-route rejection and Google password setup are not yet counted as passed.
+
+## Released and tested live — 2 October 2026
+
+The reviewed five-file batch was committed as b7913bcbb009b06ad28b4830631aae580fb44a20 and pushed to codex/mvp-acceptance-ci. [Isolated CI run 36888913872](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/36888913872) succeeded: logs confirm 523 backend tests across 67 files and 119 frontend regressions, including the seven administrator logout cases. The same commit was atomically fast-forwarded to main and codex/readability-accessibility. Main CI run 36889169081 and deployment-branch CI run 36889169063 subsequently succeeded. Vercel and Railway both reported successful deployments for the release SHA.
+
+| Live check | Observed result | Boundary |
+| --- | --- | --- |
+| Authenticated desktop dashboard | Admin Kevs dashboard loaded with the new Log out button beside existing footer controls | Actual Mercado Chrome; no administrator password changed by the agent |
+| Mobile discovery | At 390 by 844 CSS pixels, opening Toggle admin navigation exposed Log out within the viewport | Browser emulation, not a physical phone |
+| Mobile horizontal fit | Document width was 375 against a 390-pixel viewport; logout bounds were x=16..358, y=352.77..398.52 | No horizontal overflow; temporary viewport override restored |
+| Keyboard activation | Pressing Enter on Log out completed navigation to Sign In | Actual live logout request, not a mock |
+| Independent protected-route check | A second previously opened administrator tab redirected to /signin?callbackUrl=%2Fadmin after reload | No dashboard or protected data rendered after logout |
+| Browser Back | The logout tab returned to Sign In rather than reopening the administrator console | Actual history action; not a promise about every browser's history UI |
+
+Visual evidence is saved outside Git in admin-logout-live-desktop-20261002.png, admin-logout-live-mobile-20261002.png and admin-logout-blocked-admin-20261002.png in the task visualization directory. The authorized logout ends the administrator session in this Chrome profile; it is not a password reset or an all-device administrator password mutation.
+
+The user selected kevinmercado987@gmail.com for the next Google-linked password test. Google account selection and the branded signing-in page returned to the authenticated Mercado Kevin contributor homepage. Account settings showed the expected email and username mercado_kevin_b67e52. The email-link request and actual Inbox delivery passed; the secure password form awaits user entry and submission. That remaining lifecycle is recorded in PASSWORD_SETTINGS_2026-10-01.md, not counted as completed here. No additional commit or push was performed for this post-release evidence.

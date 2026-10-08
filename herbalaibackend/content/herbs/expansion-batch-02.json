@@ -19,8 +19,8 @@
       "publisher": "University of Santo Tomas",
       "url": "https://www.ust.edu.ph/ust-manila-plant-databse/oregano/",
       "reviewCoverage": "WEB_PAGE",
-      "retrievalNote": "Reviewed 2026-10-05: names the Philippine species and reports leaf juice and infusions. It does not supply a standardized quantity, infusion time or clinically validated treatment dose.",
-      "accessedAt": "2026-10-05"
+      "retrievalNote": "Rechecked 2026-10-06 through a successful direct HTTP read of the university page: names Coleus amboinicus and reports leaf juice and infusions. It supplies no standardized leaf quantity, infusion time or clinically validated treatment dose. Broader efficacy and postpartum claims are not adopted.",
+      "accessedAt": "2026-10-06"
     },
     "kew-makabuhay": {
       "title": "Tinospora crispa (L.) Hook.f. & Thomson",
@@ -126,12 +126,20 @@
       "accessedAt": "2026-10-05"
     },
     "cavite-preparations-2021": {
-      "title": "The local practice of using medicinal plants in Cavite, Philippines",
+      "title": "The practice of using medicinal plants by local herbalists in Cavite, Philippines",
       "publisher": "Indian Journal of Traditional Knowledge; Caunca and Balinado (2021)",
       "url": "https://nopr.niscpr.res.in/bitstream/123456789/57216/3/IJTK%2020%282%29%20335-343.pdf",
       "reviewCoverage": "METHODS_AND_TABLE_2_ROWS_17_AND_50",
-      "retrievalNote": "Publisher PDF extracted: Langka leaf crushing/external; Mangosteen leaf decoction/internal. Interview reports, not validated recipes. Source prints Garcinia x mangostana.",
-      "accessedAt": "2026-10-05"
+      "retrievalNote": "Rechecked 2026-10-06: publisher PDF bytes match the retained original. Methods and visually inspected Table 2 rows 17 (printed page 337) and 50 (page 339) report Langka leaf crushing/external and Mangosteen leaf decoction/internal for reported dengue fever or fever. This is an interview survey, not a clinical trial or validated preparation/dose. The source prints Garcinia x mangostana; no name or plant part is silently substituted.",
+      "accessedAt": "2026-10-06"
+    },
+    "who-dengue-2025": {
+      "title": "Dengue",
+      "publisher": "World Health Organization",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue",
+      "reviewCoverage": "KEY_FACTS_SYMPTOMS_DIAGNOSTICS_AND_TREATMENT",
+      "retrievalNote": "Fact sheet dated 21 August 2025, reviewed 2026-10-06. Early detection and proper medical care lower severe-dengue fatality; severe symptoms require immediate care. Supports medical-assessment and no-delay warnings, not Mangosteen efficacy, preparation or dosage.",
+      "accessedAt": "2026-10-06"
     },
     "panay-preparations-2021": {
       "title": "Medicinal plants used by the indigenous Ati tribe in Tobias Fornier, Antique, Philippines",
@@ -1064,7 +1072,7 @@
       "medicinalUses": "Philippine research records leaf use for cough and reports laboratory neuroprotective and antioxidant activity. These laboratory findings do not establish a treatment for neurologic disease or cough.",
       "preparationMethod": "Documented traditional preparation: the Cavite survey records an oral Garcinia mangostana leaf decoction for fever, including reported dengue use. This is not proof of effectiveness or a dengue treatment recommendation. No leaf quantity, water ratio or boiling duration is supplied. Fruit-rind supplements are not interchangeable.",
       "dosage": "No verified human treatment dose is supplied.",
-      "warnings": "This record concerns leaves, not fruit-rind supplements. Reported use does not establish effectiveness or a safe dose. Suspected dengue or persistent fever needs medical assessment; do not delay care to use this preparation.",
+      "warnings": "This record concerns leaves, not fruit-rind supplements. The cited survey reports traditional use; it does not establish effectiveness or a safe treatment dose. Suspected dengue requires medical assessment; do not delay care to try this preparation. Seek immediate medical care for severe abdominal pain, persistent vomiting, bleeding or difficulty breathing.",
       "regionFound": "Cultivated and sold in the Philippines; documented in North Cotabato research.",
       "evidenceReview": {
         "sourceIds": [
@@ -1089,7 +1097,10 @@
         "preparationMethod": [
           "cavite-preparations-2021"
         ],
-        "warnings": []
+        "warnings": [
+          "cavite-preparations-2021",
+          "who-dengue-2025"
+        ]
       },
       "reviewGaps": [
         "Qualified health-professional review before adding any preparation or dosage guidance",

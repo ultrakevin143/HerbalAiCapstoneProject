@@ -1,0 +1,1475 @@
+{
+  "status": "DRAFT_PLAN_NOT_EXECUTABLE",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "evidenceFile": "HERB_FOURTH_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+  "auditedAt": "2026-10-06T17:07:46Z",
+  "snapshotCapturedAt": null,
+  "comparisonScope": "NO_PRIVATE_DATABASE_COMPARISON_PERFORMED",
+  "writeAllowed": false,
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "productionWritesPerformed": false,
+  "scope": "Fourth ten held editorial drafts only, not medically reviewed content, executable import data or public AI knowledge.",
+  "sourceEvidenceFile": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+  "sourceReuseNote": "The 2026-10-05 preparation ledger remains historical and unchanged. Separately dated follow-ups own Balibago's TKDL bark description, Santan's secondary root-decoction description and Kabiki's authenticated laboratory bark description. Other preparation text remains unchanged. Descriptive evidence does not clear household, clinical, food-processing or beginner use.",
+  "counts": {
+    "assembledDrafts": 10,
+    "draftsWithCoreFieldsAndPreparationEvidence": 10,
+    "partialDrafts": 0,
+    "methodsNotEstablished": 0,
+    "selectedCoversInSavedAudit": 7,
+    "missingSelectedCovers": 2,
+    "foodPreparationDescriptions": 4,
+    "manufacturingDescriptionsHeld": 1,
+    "laboratoryDescriptionsHeld": 3,
+    "medicinalInstructionsCleared": 0,
+    "publicationCleared": 0,
+    "selectedCoversFromMediaFollowUp": 1,
+    "selectedCoversInCurrentPlan": 8,
+    "traditionalDescriptionsHeld": 2,
+    "foodProcessingGapsRetained": 3
+  },
+  "blockers": [
+    "Balibago and Santan have held traditional descriptions; Kabiki has a laboratory extraction description only. Balibago leaf-food, Santan exact-cultivar flower-food and Kabiki fruit-processing gaps remain unresolved; none has medicinal or beginner clearance.",
+    "Balibago and Asana lack selected uploaded covers. Kabiki's follow-up cover and animal-study description do not clear botanical review or human use.",
+    "Manzanitas author-qualified synonym and the mixed Pterocarpus historical passage remain held.",
+    "Categories, safety and human review remain unresolved; no private comparison, guarded writer, embedding request or production write occurred."
+  ],
+  "draftRows": [
+    {
+      "candidateId": "research-pardo-124",
+      "creatorMetadataFollowUpFile": "HERB_CREATOR_METADATA_FOLLOW_UP_2026-10-07.json",
+      "batch": 4,
+      "book": {
+        "entry": 124,
+        "heading": "Ixora coccinea",
+        "commonNames": "Santan, Tag.",
+        "printedPage": 143,
+        "pdfPage": 149
+      },
+      "identityNotes": {
+        "queueScientificName": "Ixora coccinea",
+        "scientificSynonyms": [],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Santan, Tag.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Find a species- and cultivar-specific primary preparation source; do not promote the genus-only tempura lead.",
+        "Do not treat a planted ornamental, nectar anecdote or edible-garden label as human safety clearance.",
+        "Historical image check is not fresh taxon, license or delivery clearance.",
+        "Root-decoction folklore is secondary evidence only; exact-cultivar flower-food processing and medicinal safety remain unresolved."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "The reviewed Ixora food lead is genus-only. An ornamental label or generic tempura description does not establish an Ixora coccinea preparation. The separately owned follow-up records a secondary Philippine root-decoction description without primary or clinical clearance.",
+      "preparationReview": {
+        "plantPart": "Roots; not flowers, nectar or an unspecified Ixora cultivar",
+        "kind": "TRADITIONAL_DESCRIPTION_HELD",
+        "methodEstablishedInReview": true,
+        "foodProcessingEstablished": false,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "HISTORICAL_SELECTED_COVER",
+        "ledger": "HERB_SEVENTEEN_MEDIA_DELIVERY_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:11.289Z",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-124",
+        "localName": "Santan",
+        "scientificName": "Ixora coccinea",
+        "sourceScientificName": "Ixora coccinea",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical reports describe flower and root uses; they do not establish modern treatment benefit.\n\nEvidence limits: The reviewed Ixora food lead is genus-only. An ornamental label or generic tempura description does not establish an Ixora coccinea preparation. The separately owned follow-up records a secondary Philippine root-decoction description without primary or clinical clearance.",
+        "preparationMethod": "StuartXchange's Ixora coccinea entry reports Philippine traditional use of a root decoction in accounts concerning nausea, hiccups and appetite loss. This secondary folklore description is not a safe home recipe or treatment. No quantities, preparation times, medicinal dose, child-use guidance or clinical efficacy are established by this account.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "Exact-species preparation and medicinal safety remain unverified. No genus-level food use or historical treatment recipe is cleared.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Co's Digital Flora lists Ixora coccinea as cultivated for ornament and not naturalized. No province-level range or edible cultivar is established.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176717/santan_ixora_coccinea_cc0_263717811_aombm7.jpg",
+        "imageCreator": null,
+        "imageSourceUrl": "https://www.inaturalist.org/observations/152744571",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; uploaded unchanged checked source bytes",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational report only, tied to each book entry and page. No old medicinal recipe, clinical efficacy or safe dose is adopted."
+        },
+        {
+          "id": "nparks-ixora-genus-lead",
+          "scientificName": null,
+          "taxonScope": "GENUS_ONLY",
+          "kind": "AUTHORITATIVE_GENUS_FOOD_LEAD",
+          "title": "NParks Gardenwise 62 (February 2024), Edibles: Ixora",
+          "url": "https://www.nparks.gov.sg/sbg/research/publications/-/media/sbg/gardenwise/gw_pdf_2020-2029/gw_2024_vol_62_feb_updated.pdf",
+          "supports": [
+            "researchGap"
+          ],
+          "reviewCoverage": "EXTRACTED_PRINTED_PAGE_31_IXORA_SECTION",
+          "retrievalNote": "The paragraph names Ixora only, not I. coccinea. Text was reviewed; screenshot retrieval returned HTTP 403.",
+          "limitation": "A genus-level tempura description cannot establish the species or cultivar suitable for consumption.",
+          "reviewedAt": "2026-10-05"
+        },
+        {
+          "id": "santan-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Ixora coccinea",
+          "url": "https://powo.science.kew.org/taxon/753844-1",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity"
+          ],
+          "reviewLocator": "Accepted species; Philippine occurrence supported separately.",
+          "limitation": "Exact botanical taxon only; country-list omission is not absence, and botanical distribution does not establish clinical efficacy or a safe dose."
+        },
+        {
+          "id": "santan-cdf",
+          "kind": "BOTANICAL_OCCURRENCE",
+          "title": "Co's Digital Flora: Ixora coccinea",
+          "url": "https://www.philippineplants.org/Families/Rubiaceae.html",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "regionFound"
+          ],
+          "reviewLocator": "Ixora > Cultivated, not naturalized > Ixora coccinea.",
+          "limitation": "Exact-entry local botanical compilation only; not medicinal safety, a contemporary population census or permission to reuse adjacent species' methods."
+        },
+        {
+          "id": "stuart-santan-root-description",
+          "scientificName": "Ixora coccinea",
+          "taxonScope": "EXACT_SPECIES",
+          "kind": "SECONDARY_TRADITIONAL_DESCRIPTION_HELD",
+          "sourceStatus": "DOCUMENTED_TRADITIONAL_DESCRIPTION_PENDING_PRIMARY_AND_SAFETY_REVIEW",
+          "title": "StuartXchange: Santan / Ixora coccinea",
+          "url": "https://www.stuartxchange.org/Santan",
+          "reviewedAt": "2026-10-07",
+          "reviewCoverage": "SPECIES_HEADING_SHARED_NAME_WARNING_AND_PHILIPPINE_ROOT_DECOCTION_PARAGRAPH",
+          "reviewLocators": [
+            "Ixora coccinea species heading",
+            "Quisumbing shared Santan names note",
+            "Uses > Folkloric > Philippine root decoction"
+          ],
+          "supports": [
+            "preparationMethod"
+          ],
+          "downloadBytes": 96560,
+          "downloadSha256": "acc96d15bb3bb7a490a735935736e4eabafb9e47a171425bb537603f35e4a47a",
+          "limitation": "Secondary folklore compilation, not a primary clinical study or safe recipe. Shared Santan names do not identify a cultivar; the genus-only flower-tempura lead remains excluded. No human dose, child use or therapeutic efficacy is established."
+        }
+      ],
+      "preparationFollowUpFile": "HERB_SANTAN_KABIKI_PREPARATION_FOLLOW_UP_2026-10-07.json"
+    },
+    {
+      "candidateId": "research-pardo-139",
+      "creatorMetadataFollowUpFile": "HERB_CREATOR_METADATA_FOLLOW_UP_2026-10-07.json",
+      "batch": 4,
+      "book": {
+        "entry": 139,
+        "heading": "Jasminum Sambac",
+        "commonNames": "Sampaga, Tag.; Sampaguitas, Sp.-Fil.; Arabian Jasmin, Eng.",
+        "printedPage": 158,
+        "pdfPage": 164
+      },
+      "identityNotes": {
+        "queueScientificName": "Jasminum sambac",
+        "scientificSynonyms": [],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Sampaga, Tag.; Sampaguitas, Sp.-Fil.; Arabian Jasmin, Eng.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "The cultivar, food-grade sourcing and controlled factory process must remain explicit.",
+        "Do not replace scenting tea with boiling arbitrary ornamental jasmine, essential oil or another jasmine species.",
+        "No clinical dose or household recipe is cleared.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "The reviewed study concerns controlled scenting of green tea with Jasminum sambac cv. bifoliatum, not human treatment or an infusion of arbitrary ornamental flowers.",
+      "preparationReview": {
+        "plantPart": "Flowers of Jasminum sambac cv. bifoliatum used to scent Camellia sinensis tea",
+        "kind": "MANUFACTURING_DESCRIPTION_HELD",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "HISTORICAL_SELECTED_COVER",
+        "ledger": "HERB_SEVENTEEN_MEDIA_DELIVERY_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:11.091Z",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-139",
+        "localName": "Sampaguita",
+        "scientificName": "Jasminum sambac",
+        "sourceScientificName": "Jasminum Sambac",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical eye and lactation-use reports are not adopted as modern recommendations.\n\nEvidence limits: The reviewed study concerns controlled scenting of green tea with Jasminum sambac cv. bifoliatum, not human treatment or an infusion of arbitrary ornamental flowers.",
+        "preparationMethod": "A primary tea study mixed opened flowers of Jasminum sambac cv. bifoliatum with prepared green tea in controlled scenting rounds, separated spent flowers and dried the tea between rounds. This manufacturing description is not a home recipe or treatment.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "Food-grade sourcing, cultivar and controlled manufacturing remain essential limits. No ornamental-flower home infusion, essential-oil use or medicinal dose is cleared.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Co's Digital Flora reports Jasminum sambac commonly cultivated for ornament and not naturalized. This does not establish food-grade flowers.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176718/sampaguita_jasminum_sambac_cc0_385822470_pszycj.jpg",
+        "imageCreator": null,
+        "imageSourceUrl": "https://www.inaturalist.org/observations/218051844",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; uploaded unchanged checked source bytes",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational report only, tied to each book entry and page. No old medicinal recipe, clinical efficacy or safe dose is adopted."
+        },
+        {
+          "id": "zhang-2023-jasmine-processing",
+          "scientificName": "Jasminum sambac",
+          "taxonScope": "EXACT_SPECIES",
+          "kind": "PRIMARY_FOOD_MANUFACTURING_STUDY_HELD",
+          "title": "Zhang et al. (2023): Volatilomics Analysis of Jasmine Tea during Multiple Rounds of Scenting Processes",
+          "url": "https://doi.org/10.3390/foods12040812",
+          "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9956320/fullTextXML",
+          "supports": [
+            "preparationMethod",
+            "evidenceReview",
+            "medicinalUses"
+          ],
+          "reviewCoverage": "FULL_TEXT_XML_SECTION_2_1_MANUFACTURING",
+          "downloadBytes": 195208,
+          "downloadSha256": "34b538036e1d6a618aae0a966d58f72e439cfb4fef4548d49fdbcea65e2438fb",
+          "limitation": "Controlled manufacturing uses J. sambac cv. bifoliatum and Camellia sinensis tea. It does not validate a home infusion of ornamental flowers or medicinal efficacy.",
+          "reviewedAt": "2026-10-05"
+        },
+        {
+          "id": "sampaguita-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Jasminum sambac",
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:609755-1",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity"
+          ],
+          "reviewLocator": "Accepted species; Philippine occurrence supported separately.",
+          "limitation": "Exact botanical taxon only; country-list omission is not absence, and botanical distribution does not establish clinical efficacy or a safe dose."
+        },
+        {
+          "id": "sampaguita-cdf",
+          "kind": "BOTANICAL_OCCURRENCE",
+          "title": "Co's Digital Flora: Jasminum sambac",
+          "url": "https://www.philippineplants.org/Families/Oleaceae.html",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "regionFound"
+          ],
+          "reviewLocator": "Jasminum sambac > commonly cultivated throughout the Philippines, not naturalized.",
+          "limitation": "Exact-entry local botanical compilation only; not medicinal safety, a contemporary population census or permission to reuse adjacent species' methods."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-138",
+      "batch": 4,
+      "book": {
+        "entry": 138,
+        "heading": "Mimusops Elengi",
+        "commonNames": "Kabiki, Tag.",
+        "printedPage": 157,
+        "pdfPage": 163
+      },
+      "identityNotes": {
+        "queueScientificName": "Mimusops elengi",
+        "scientificSynonyms": [],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Kabiki, Tag.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Find an explicit food-processing method rather than inferring one from the word edible.",
+        "Do not convert adjacent bark, leaf-smoking or flower medicine claims into instructions.",
+        "Follow-up cover selected from checked unchanged bytes; botanical review and fresh pre-publication delivery/license checks remain pending.",
+        "Authenticated bark methanol extraction is a mouse-study method, not fruit processing or safe human wound care. Merged Kabiki/Bansalagin folklore remains quarantined."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "NParks identifies edible flesh in ripe Mimusops elengi fruit but does not supply an explicit processing method in the reviewed paragraphs. The separately owned follow-up describes authenticated stem-bark laboratory extraction in mice only; the fruit-processing gap remains open.",
+      "preparationReview": {
+        "plantPart": "Authenticated stem bark; not fruit flesh, seeds or leaves",
+        "kind": "LABORATORY_DESCRIPTION_HELD",
+        "methodEstablishedInReview": true,
+        "foodProcessingEstablished": false,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "DELIVERY_BYTES_MATCH_BOTANICAL_REVIEW_PENDING",
+        "ledger": "HERB_COVER_INTEGRATION_2026-10-07.json",
+        "uploadReceipt": "HERB_REPLACEMENT_MEDIA_REVIEW_2026-10-07.json",
+        "checkedAt": "2026-10-07T00:19:18.762Z",
+        "deliveryCheckedInUploadReceipt": true,
+        "freshDeliveryChecked": false,
+        "botanicalClearance": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-138",
+        "localName": "Kabiki",
+        "scientificName": "Mimusops elengi",
+        "sourceScientificName": "Mimusops Elengi",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical bark and fruit treatment reports do not establish clinical efficacy.\n\nEvidence limits: NParks identifies edible flesh in ripe Mimusops elengi fruit but does not supply an explicit processing method in the reviewed paragraphs. The separately owned follow-up describes authenticated stem-bark laboratory extraction in mice only; the fruit-processing gap remains open.",
+        "preparationMethod": "Gupta and Jain's authenticated Mimusops elengi stem-bark study shade-dried and powdered the bark, extracted it with methanol in a Soxhlet apparatus, removed solvent under reduced pressure and incorporated the extract into an ointment base for mouse wound experiments. This laboratory description is not a home recipe or treatment and does not establish a safe human wound-care preparation or dose.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "Medicinal and processing safety remain unverified. An edible-part label does not clear a raw-serving process, seed oil, bark treatment or leaf smoking.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Kew includes Mimusops elengi in its native distribution. No province-level map is inferred.",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null,
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/kabiki_mimusops_elengi_cc0_338480147_a2wtdy.jpg",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/192768898",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageCreator": null,
+        "imageModification": "None; uploaded unchanged checked source bytes"
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational report only, tied to each book entry and page. No old medicinal recipe, clinical efficacy or safe dose is adopted."
+        },
+        {
+          "id": "nparks-kabiki-food-use",
+          "scientificName": "Mimusops elengi",
+          "taxonScope": "EXACT_SPECIES",
+          "kind": "AUTHORITATIVE_EDIBLE_PART_DESCRIPTION",
+          "title": "NParks: Mimusops elengi",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/3/0/3030",
+          "supports": [
+            "foodUse",
+            "researchGap"
+          ],
+          "reviewCoverage": "SPECIES_HEADING_FRUIT_AND_EDIBLE_PART_PARAGRAPHS",
+          "limitation": "The page identifies edible fruit flesh but gives no processing method. Adjacent traditional medicine claims are not preparation or safety validation.",
+          "reviewedAt": "2026-10-05"
+        },
+        {
+          "id": "kabiki-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Mimusops elengi",
+          "url": "https://powo.science.kew.org/taxon/787918-1",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity",
+            "regionFound"
+          ],
+          "reviewLocator": "Accepted species; Native to: Philippines.",
+          "limitation": "Exact botanical taxon only; country-list omission is not absence, and botanical distribution does not establish clinical efficacy or a safe dose."
+        },
+        {
+          "id": "gupta-jain-kabiki-laboratory",
+          "scientificName": "Mimusops elengi",
+          "taxonScope": "EXACT_SPECIES",
+          "kind": "PRIMARY_LABORATORY_EXTRACTION_STUDY_HELD",
+          "sourceStatus": "AUTHENTICATED_ANIMAL_STUDY_NOT_HUMAN_GUIDANCE",
+          "title": "Gupta and Jain (2011): Investigation of wound healing activity of methanolic extract of stem bark of Mimusops elengi Linn",
+          "url": "https://doi.org/10.4314/ajtcam.v8i2.63197",
+          "retrievalUrl": "https://journals.athmsi.org/index.php/ajtcam/article/download/1216/643/2836",
+          "pmid": "22238490",
+          "pmcid": "PMC3252694",
+          "reviewedAt": "2026-10-07",
+          "reviewCoverage": "PUBLISHER_PDF_PRINTED_PAGES_98_99_METHODS_VISUALLY_INSPECTED",
+          "reviewLocators": [
+            "Material and Methods > Plant material",
+            "Extraction and preparation of formulation",
+            "Animals"
+          ],
+          "voucher": "NBRI/CIF/Re./08/2008/32",
+          "experimentalModel": "Albino mice",
+          "supports": [
+            "preparationMethod"
+          ],
+          "downloadBytes": 295452,
+          "downloadSha256": "779aef574132783d643bc4a07bdb960f36d09779a4cbc823fbc262225108749f",
+          "limitation": "Methanol Soxhlet bark extraction and mouse wound experiments are laboratory descriptions only. No human wound remedy, solvent substitution, raw fruit serving process, clinical efficacy or safe dose is adopted."
+        },
+        {
+          "id": "stuart-kabiki-merged-taxa-gap",
+          "kind": "MERGED_HISTORICAL_TAXA_RESEARCH_GAP",
+          "sourceStatus": "QUARANTINED_MERGED_TAXA",
+          "title": "StuartXchange Kabiki: explicit Kabiki/Bansalagin merger warning",
+          "url": "https://www.stuartxchange.org/Kabiki",
+          "reviewedAt": "2026-10-07",
+          "reviewCoverage": "HISTORICAL_KABIKI_BANSALAGIN_MERGER_NOTE",
+          "supports": [
+            "researchGap"
+          ],
+          "downloadBytes": 93955,
+          "downloadSha256": "5e8ce4a8d6435ed5742898a42fa5816895ba4c1cccf3c0325adf106585458810",
+          "limitation": "The page explicitly combines historically separate Kabiki and Bansalagin names, folklore and studies. Its merged remedies and aliases are not adopted as exact-species evidence; this is not a modern synonym determination."
+        }
+      ],
+      "mediaFollowUpEvidenceFile": "HERB_COVER_INTEGRATION_2026-10-07.json",
+      "preparationFollowUpFile": "HERB_SANTAN_KABIKI_PREPARATION_FOLLOW_UP_2026-10-07.json"
+    },
+    {
+      "candidateId": "research-pardo-033",
+      "batch": 4,
+      "book": {
+        "entry": 33,
+        "heading": "Hibiscus tiliaceus, L.",
+        "commonNames": "Balibago, Tag., Pam.; Malabago, Vis.",
+        "printedPage": 46,
+        "pdfPage": 52
+      },
+      "identityNotes": {
+        "queueScientificName": "Hibiscus tiliaceus",
+        "scientificSynonyms": [],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_WITH_CONTEXT_BOUND_TKDL_NAMES",
+        "sourceId": "pardo-1901",
+        "sourceText": "Balibago, Tag., Pam.; Malabago, Vis.",
+        "modernRegionalMappingCleared": false,
+        "followUpNames": [
+          {
+            "name": "Luwago",
+            "language": "Tagabawa",
+            "context": "Tudaya, Sibulan, Santa Cruz, Davao del Sur; recorded community account",
+            "sourceId": "tkdl-balibago-bark-practice"
+          },
+          {
+            "name": "Malabago",
+            "language": "Tagalog",
+            "context": "Name labelled Tagalog in the same TKDL record; not asserted as an exclusive or nationwide alias",
+            "sourceId": "tkdl-balibago-bark-practice"
+          }
+        ],
+        "followUpEvidenceFile": "HERB_BALIBAGO_TKDL_FOLLOW_UP_2026-10-07.json"
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Do not borrow Hibiscus sabdariffa calyx recipes or Thespesia populnea methods for this species.",
+        "Leaf sap, childbirth and bark medicine claims remain outside cleared household instructions.",
+        "A traditional bark-extraction description is now cited; leaf-food processing and human bark-use safety remain unresolved.",
+        "No selected uploaded cover; no synthetic or other-species substitute is permitted."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "The reviewed source reports young leaves as a vegetable, without an explicit cooking method. No Hibiscus sabdariffa or Thespesia populnea recipe is substituted. TKDL separately documents bark-sap extraction in a Tagabawa account; this is not a young-leaf cooking method or clinical validation.",
+      "preparationReview": {
+        "plantPart": "Pale inner bark; not young leaves, calyces or roots",
+        "kind": "TRADITIONAL_DESCRIPTION_HELD",
+        "methodEstablishedInReview": true,
+        "foodProcessingEstablished": false,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "MISSING_SELECTED_COVER",
+        "ledger": null,
+        "checkedAt": null,
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-033",
+        "localName": "Balibago",
+        "scientificName": "Hibiscus tiliaceus",
+        "sourceScientificName": "Hibiscus tiliaceus, L.",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical skin and ear-use reports are not current preparation recommendations.\n\nEvidence limits: The reviewed source reports young leaves as a vegetable, without an explicit cooking method. No Hibiscus sabdariffa or Thespesia populnea recipe is substituted.",
+        "preparationMethod": "TKDL records a Tagabawa practice for Hibiscus tiliaceus in which the pale inner bark is pressed to obtain sap, in an account concerning cough. This describes documented traditional practice, not a safe home recipe or treatment. No medicinal dose, schedule, child-use guidance or clinical efficacy is established by this record.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "Exact preparation and part-specific safety remain unverified. Leaf-food reporting does not clear childbirth, ear-drop or bark-remedy instructions.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Kew includes Hibiscus tiliaceus in its native distribution. No province-level range is inferred.",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational report only, tied to each book entry and page. No old medicinal recipe, clinical efficacy or safe dose is adopted."
+        },
+        {
+          "id": "nparks-balibago-food-use",
+          "scientificName": "Hibiscus tiliaceus",
+          "taxonScope": "EXACT_SPECIES",
+          "kind": "AUTHORITATIVE_EDIBLE_PART_DESCRIPTION",
+          "title": "NParks: Hibiscus tiliaceus",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/9/2954",
+          "supports": [
+            "foodUse",
+            "researchGap"
+          ],
+          "reviewCoverage": "SPECIES_HEADING_SIMILAR_SPECIES_AND_FOOD_PARAGRAPH",
+          "limitation": "Young leaves are described as a vegetable without a cooking method. Roselle recipes and the similar Thespesia populnea must not be substituted.",
+          "reviewedAt": "2026-10-05"
+        },
+        {
+          "id": "balibago-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Hibiscus tiliaceus",
+          "url": "https://powo.science.kew.org/taxon/30143354-2",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity",
+            "regionFound"
+          ],
+          "reviewLocator": "Accepted species; Native to: Philippines.",
+          "limitation": "Exact botanical taxon only; country-list omission is not absence, and botanical distribution does not establish clinical efficacy or a safe dose."
+        },
+        {
+          "id": "tkdl-balibago-bark-practice",
+          "scientificName": "Hibiscus tiliaceus",
+          "taxonScope": "EXACT_SPECIES",
+          "kind": "PRIMARY_TRADITIONAL_KNOWLEDGE_ACCOUNT",
+          "sourceStatus": "DOCUMENTED_TRADITIONAL_PRACTICE_PENDING_SAFETY_REVIEW",
+          "title": "TKDL: Hibiscus tiliaceus — Luwago (Tagabawa), Malabago (Tagalog)",
+          "url": "https://www.tkdlph.com/index.php/ct-menu-item-3/ct-menu-item-7/davao/20105-luwago-tagabawa-malabago-tagalog",
+          "reviewedAt": "2026-10-07",
+          "reviewCoverage": "SPECIES_PART_METHOD_AND_LANGUAGE_FIELDS_FROM_WEB_EXTRACT",
+          "reviewLocators": [
+            "Scientific name heading",
+            "Plant part used",
+            "Method of Preparation",
+            "Local name",
+            "Place gathered"
+          ],
+          "supports": [
+            "preparationMethod",
+            "regionalNames"
+          ],
+          "limitation": "An ethnographic bark-sap account, not a clinical trial, edible-leaf cooking method, recommended dose or proof of oral safety. Source dosing and harvesting-belief instructions are not adopted. Origin retrieval timed out; the reviewed web-tool page extract is not a fresh origin response."
+        }
+      ],
+      "preparationFollowUpFile": "HERB_BALIBAGO_TKDL_FOLLOW_UP_2026-10-07.json"
+    },
+    {
+      "candidateId": "research-pardo-035",
+      "creatorMetadataFollowUpFile": "HERB_CREATOR_METADATA_FOLLOW_UP_2026-10-07.json",
+      "batch": 4,
+      "book": {
+        "entry": 35,
+        "heading": "Thespesia populnea",
+        "commonNames": "Babuy or Bobuy gubat, Tag.; Bulakan, Vis.",
+        "printedPage": 47,
+        "pdfPage": 53
+      },
+      "identityNotes": {
+        "queueScientificName": "Thespesia populnea",
+        "scientificSynonyms": [],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Babuy or Bobuy gubat, Tag.; Bulakan, Vis.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Keep the food parts separate from medicinal fruit, seed, bark and heartwood preparations.",
+        "Food reporting alone does not establish safety for every person or medicinal efficacy.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "The reviewed agroforestry food description concerns young leaves and flower buds, not clinical benefit or a validated medicinal regimen.",
+      "preparationReview": {
+        "plantPart": "Young flower buds and leaves",
+        "kind": "FOOD_DESCRIPTION",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "HISTORICAL_SELECTED_COVER",
+        "ledger": "HERB_SEVENTEEN_MEDIA_DELIVERY_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:11.201Z",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-035",
+        "localName": "Thespesia populnea",
+        "scientificName": "Thespesia populnea",
+        "sourceScientificName": "Thespesia populnea",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical skin and digestive-use reports are not validated treatment advice.\n\nEvidence limits: The reviewed agroforestry food description concerns young leaves and flower buds, not clinical benefit or a validated medicinal regimen.",
+        "preparationMethod": "World Agroforestry reports young flower buds and leaves of Thespesia populnea eaten uncooked or fried using butter. No cooking duration or ingredient ratio is supplied. This culinary description is not treatment guidance.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "Food-use reporting does not establish safety for every person. Medicinal fruit, seed, bark, root and heartwood preparations remain uncleared.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Kew includes Thespesia populnea in its native distribution. No province-by-province occurrence is inferred.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176719/thespesia_populnea_thespesia_populnea_cc0_195224484_tkvso2.jpg",
+        "imageCreator": null,
+        "imageSourceUrl": "https://www.inaturalist.org/observations/115670200",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; uploaded unchanged checked source bytes",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational report only, tied to each book entry and page. No old medicinal recipe, clinical efficacy or safe dose is adopted."
+        },
+        {
+          "id": "icraf-thespesia-food",
+          "scientificName": "Thespesia populnea",
+          "taxonScope": "EXACT_SPECIES",
+          "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+          "title": "Orwa et al. (2009), Agroforestree Database 4.0: Thespesia populnea",
+          "url": "https://apps.worldagroforestry.org/treedb/AFTPDFS/Thespesia_populnea.PDF",
+          "supports": [
+            "preparationMethod"
+          ],
+          "reviewCoverage": "PDF_PRINTED_PAGE_3_FOOD_PARAGRAPH_VISUALLY_INSPECTED",
+          "downloadBytes": 455981,
+          "downloadSha256": "1e17808c50a138eb7333eb5dd7542cc2576e32375d59e843e91d0427aa4eef9c",
+          "limitation": "No quantities or cooking duration. Culinary reporting is not treatment clearance; medicinal fruit, bark and seed claims were excluded.",
+          "reviewedAt": "2026-10-05"
+        },
+        {
+          "id": "thespesia-populnea-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Thespesia populnea",
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:564713-1",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity",
+            "regionFound"
+          ],
+          "reviewLocator": "Accepted species; Native to: Philippines.",
+          "limitation": "Exact botanical taxon only; country-list omission is not absence, and botanical distribution does not establish clinical efficacy or a safe dose."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-038",
+      "creatorMetadataFollowUpFile": "HERB_CREATOR_METADATA_FOLLOW_UP_2026-10-07.json",
+      "batch": 4,
+      "book": {
+        "entry": 38,
+        "heading": "Eriodendron anfractuosum",
+        "commonNames": "Boboy, Tag.; Doldol, Vis.; Bulak kastila, Pam.",
+        "printedPage": 50,
+        "pdfPage": 56
+      },
+      "identityNotes": {
+        "queueScientificName": "Ceiba pentandra",
+        "scientificSynonyms": [
+          "Eriodendron anfractuosum"
+        ],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Boboy, Tag.; Doldol, Vis.; Bulak kastila, Pam.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "No quantities or cooking time are specified; this is not a fully specified recipe.",
+        "Do not override the PROTA seed-oil caution using the older World Agroforestry cooking-oil mention.",
+        "Root, bark, eye-bath, childbirth and abortifacient uses are not cleared.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "uncitedFields": [
+        "dosage"
+      ],
+      "modernEvidenceNote": "The retained PROTA food description and seed-oil caution are not evidence of therapeutic efficacy or a medicinal dose.",
+      "preparationReview": {
+        "plantPart": "Leaves, flowers and young fruits; seed oil excluded",
+        "kind": "FOOD_DESCRIPTION",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "HISTORICAL_SELECTED_COVER",
+        "ledger": "HERB_SEVENTEEN_MEDIA_DELIVERY_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:11.070Z",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-038",
+        "localName": "Doldol",
+        "scientificName": "Ceiba pentandra",
+        "sourceScientificName": "Eriodendron anfractuosum",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical fiber and external-use reports do not establish modern clinical treatment.\n\nEvidence limits: The retained PROTA food description and seed-oil caution are not evidence of therapeutic efficacy or a medicinal dose.",
+        "preparationMethod": "PROTA describes Ceiba pentandra leaves, flowers and young fruits cooked into sauces. Its caution against culinary seed oil and reported digestive upset from seeds remain attached; seed and oil preparations are excluded. This culinary description is not treatment guidance.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "The retained PROTA source discourages culinary seed oil for health reasons and reports digestive upset from seeds. Seed and oil preparations are excluded; root, bark, eye-bath and childbirth uses remain uncleared.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Co's Digital Flora describes Ceiba pentandra as planted in settled areas and naturalized. Its local listing is not a current population census.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176719/doldol_ceiba_pentandra_cc0_32279278_vo4eni.jpg",
+        "imageCreator": null,
+        "imageSourceUrl": "https://www.inaturalist.org/observations/20915462",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; uploaded unchanged checked source bytes",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational report only, tied to each book entry and page. No old medicinal recipe, clinical efficacy or safe dose is adopted."
+        },
+        {
+          "id": "prota-ceiba-food-safety",
+          "scientificName": "Ceiba pentandra",
+          "taxonScope": "EXACT_SPECIES",
+          "kind": "AUTHORITATIVE_FOOD_AND_CAUTION_DESCRIPTION",
+          "title": "Duvall (2011), PROTA4U: Ceiba pentandra",
+          "url": "https://prota.prota4u.org/protav8.asp?h=M4&p=Ceiba+pentandra&t=Ceiba,pentandra",
+          "supports": [
+            "preparationMethod",
+            "warnings"
+          ],
+          "reviewCoverage": "SPECIES_USES_FOOD_AND_SEED_OIL_CAUTION_PARAGRAPHS",
+          "limitation": "No cooking time or human therapeutic regimen. The entry discourages culinary seed oil for health reasons and reports digestive upset from seeds.",
+          "reviewedAt": "2026-10-05"
+        },
+        {
+          "id": "doldol-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Ceiba pentandra",
+          "url": "https://powo.science.kew.org/taxon/1166232-2",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity"
+          ],
+          "reviewLocator": "Accepted species; Philippine occurrence supported separately.",
+          "limitation": "Exact botanical taxon only; country-list omission is not absence, and botanical distribution does not establish clinical efficacy or a safe dose."
+        },
+        {
+          "id": "doldol-cdf",
+          "kind": "BOTANICAL_OCCURRENCE",
+          "title": "Co's Digital Flora: Ceiba pentandra",
+          "url": "https://www.philippineplants.org/Families/Bombacaceae.html",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity",
+            "regionFound"
+          ],
+          "reviewLocator": "Ceiba pentandra > planted in settled areas throughout the Philippines and naturalized; Eriodendron anfractuosum synonym.",
+          "limitation": "Exact-entry local botanical compilation only; not medicinal safety, a contemporary population census or permission to reuse adjacent species' methods."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-039",
+      "creatorMetadataFollowUpFile": "HERB_CREATOR_METADATA_FOLLOW_UP_2026-10-07.json",
+      "batch": 4,
+      "book": {
+        "entry": 39,
+        "heading": "Sterculia fœtida",
+        "commonNames": "Kalumpag̃, Tag.; Bag̃ar, Iloc.",
+        "printedPage": 51,
+        "pdfPage": 57
+      },
+      "identityNotes": {
+        "queueScientificName": "Sterculia foetida",
+        "scientificSynonyms": [],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Kalumpag̃, Tag.; Bag̃ar, Iloc.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Do not reproduce solvent extraction at home or transfer animal assay doses to humans.",
+        "Seed consumption and oil safety require separate evidence; background edible claims are not cooking validation.",
+        "Do not borrow preparations from Sterculia lychnophora or other Sterculia species.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "The reviewed methanol seed-extract study is preclinical laboratory research, not human treatment or seed-cooking validation.",
+      "preparationReview": {
+        "plantPart": "Dried seeds used for a laboratory methanol extract",
+        "kind": "LABORATORY_DESCRIPTION_HELD",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "HISTORICAL_SELECTED_COVER",
+        "ledger": "HERB_SEVENTEEN_MEDIA_DELIVERY_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:10.622Z",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-039",
+        "localName": "Kalumpang",
+        "scientificName": "Sterculia foetida",
+        "sourceScientificName": "Sterculia fœtida",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical external and food-use reports do not establish a safe seed recipe.\n\nEvidence limits: The reviewed methanol seed-extract study is preclinical laboratory research, not human treatment or seed-cooking validation.",
+        "preparationMethod": "Alam and colleagues prepared an experimental extract from ground dried Sterculia foetida seeds using methanol maceration followed by rotary evaporation. This is laboratory processing, not a home recipe or treatment; no seed meal or cooking method is cleared.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "Do not reproduce methanol extraction at home or transfer animal assay doses to humans. Food-use anecdotes do not establish safe seed or oil processing.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Kew includes Sterculia foetida in its native distribution. This is not medicinal safety or specimen authentication.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176721/kalumpang_sterculia_foetida_cc0_633583068_kei2id.jpg",
+        "imageCreator": null,
+        "imageSourceUrl": "https://www.inaturalist.org/observations/347483687",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; uploaded unchanged checked source bytes",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational report only, tied to each book entry and page. No old medicinal recipe, clinical efficacy or safe dose is adopted."
+        },
+        {
+          "id": "alam-2021-sterculia-extraction",
+          "scientificName": "Sterculia foetida",
+          "taxonScope": "EXACT_SPECIES",
+          "kind": "PRIMARY_LABORATORY_EXTRACTION_STUDY_HELD",
+          "title": "Alam et al. (2021): Chemical Profiling, Pharmacological Insights and In Silico Studies of Methanol Seed Extract of Sterculia foetida",
+          "url": "https://doi.org/10.3390/plants10061135",
+          "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC8227630/fullTextXML",
+          "supports": [
+            "preparationMethod",
+            "evidenceReview",
+            "medicinalUses"
+          ],
+          "reviewCoverage": "FULL_TEXT_XML_SECTION_4_1_PLANT_COLLECTION_AND_EXTRACTION",
+          "downloadBytes": 171540,
+          "downloadSha256": "15b759e445028d6824dff23a1cbdd963b2d6e8e7ae9964d92353a6dc1c0bd56a",
+          "limitation": "Methanol extraction and rotary evaporation are laboratory processing, not food preparation. Preclinical results do not establish safe seed cooking or a human dose.",
+          "reviewedAt": "2026-10-05"
+        },
+        {
+          "id": "kalumpang-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Sterculia foetida",
+          "url": "https://powo.science.kew.org/taxon/825227-1",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity",
+            "regionFound"
+          ],
+          "reviewLocator": "Accepted species; Native to: Philippines.",
+          "limitation": "Exact botanical taxon only; country-list omission is not absence, and botanical distribution does not establish clinical efficacy or a safe dose."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-067",
+      "creatorMetadataFollowUpFile": "HERB_CREATOR_METADATA_FOLLOW_UP_2026-10-07.json",
+      "batch": 4,
+      "book": {
+        "entry": 67,
+        "heading": "Zizyphus Jujuba, Lam.",
+        "commonNames": "Manzanitas, Sp.-Fil.; Jujube Fruit, Eng.",
+        "printedPage": 81,
+        "pdfPage": 87
+      },
+      "identityNotes": {
+        "queueScientificName": "Ziziphus mauritiana",
+        "scientificSynonyms": [
+          "Zizyphus jujuba"
+        ],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": true
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Manzanitas, Sp.-Fil.; Jujube Fruit, Eng.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Preserve the historical author-qualified name; do not treat modern Ziziphus jujuba as the same recipe source.",
+        "Do not infer safe storage, fermentation, a medicinal dose or root-water instructions.",
+        "Historical image check is not fresh taxon, license or delivery clearance.",
+        "The unqualified queue synonym Zizyphus jujuba is not sufficient to distinguish historical Lam. from modern Mill.; guarded all-state comparison must retain author-qualified identity."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "The retained food methods are for Ziziphus mauritiana. The historical author-qualified name does not authorize using modern Ziziphus jujuba recipes.",
+      "preparationReview": {
+        "plantPart": "Fruit; not root or bark",
+        "kind": "FOOD_DESCRIPTION",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "HISTORICAL_SELECTED_COVER",
+        "ledger": "HERB_SEVENTEEN_MEDIA_DELIVERY_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:09.164Z",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-067",
+        "localName": "Manzanitas",
+        "scientificName": "Ziziphus mauritiana",
+        "sourceScientificName": "Zizyphus Jujuba, Lam.",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical fruit-use reports are not clinical efficacy evidence.\n\nEvidence limits: The retained food methods are for Ziziphus mauritiana. The historical author-qualified name does not authorize using modern Ziziphus jujuba recipes.",
+        "preparationMethod": "World Agroforestry describes Ziziphus mauritiana fruit consumed fresh or dried, processed into pickles, or macerated in water for a beverage. Ratios and processing times are not given. This culinary description is not treatment guidance.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "Safe storage, fermentation, medicinal dosage and root/bark use remain unverified. Keep the author-qualified historical name distinct from Ziziphus jujuba Mill.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Co's Digital Flora describes Ziziphus mauritiana as cultivated or semi-cultivated, with limited naturalization and an Ilocos Norte photo locality. No complete province map is inferred.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176723/manzanitas_ziziphus_mauritiana_cc0_252869971_ocniek.jpg",
+        "imageCreator": null,
+        "imageSourceUrl": "https://www.inaturalist.org/observations/147002607",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; uploaded unchanged checked source bytes",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational report only, tied to each book entry and page. No old medicinal recipe, clinical efficacy or safe dose is adopted."
+        },
+        {
+          "id": "icraf-manzanitas-food",
+          "scientificName": "Ziziphus mauritiana",
+          "taxonScope": "EXACT_SPECIES",
+          "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+          "title": "Orwa et al. (2009), Agroforestree Database 4.0: Ziziphus mauritiana",
+          "url": "https://apps.worldagroforestry.org/treedb/AFTPDFS/Ziziphus_mauritiana.PDF",
+          "supports": [
+            "preparationMethod"
+          ],
+          "reviewCoverage": "PDF_PRINTED_PAGE_3_FOOD_PARAGRAPH_VISUALLY_INSPECTED",
+          "downloadBytes": 398904,
+          "downloadSha256": "f8e1d8728ed90c2567c34b181e7038ca35ffe11b064ac12819e7a7daf757e86d",
+          "limitation": "Food methods lack ratios and processing times. The historical Zizyphus Jujuba, Lam. heading does not authorize transferring modern Ziziphus jujuba recipes.",
+          "reviewedAt": "2026-10-05"
+        },
+        {
+          "id": "manzanitas-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Ziziphus mauritiana",
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:719349-1",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity"
+          ],
+          "reviewLocator": "Accepted species; Philippine occurrence supported separately.",
+          "limitation": "Exact botanical taxon only; country-list omission is not absence, and botanical distribution does not establish clinical efficacy or a safe dose."
+        },
+        {
+          "id": "manzanitas-cdf",
+          "kind": "BOTANICAL_OCCURRENCE",
+          "title": "Co's Digital Flora: Ziziphus mauritiana",
+          "url": "https://www.philippineplants.org/Families/Rhamnaceae.html",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity",
+            "regionFound"
+          ],
+          "reviewLocator": "Ziziphus mauritiana = Ziziphus jujuba Lam., non Mill.; cultivated or semi-cultivated in Philippines.",
+          "limitation": "Exact-entry local botanical compilation only; not medicinal safety, a contemporary population census or permission to reuse adjacent species' methods."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-079",
+      "batch": 4,
+      "book": {
+        "entry": 79,
+        "heading": "2. P. Indicus,",
+        "commonNames": "Asana, Tag.; Naga, Vis.",
+        "printedPage": 93,
+        "pdfPage": 99
+      },
+      "identityNotes": {
+        "queueScientificName": "Pterocarpus indicus",
+        "scientificSynonyms": [],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": true
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Asana, Tag.; Naga, Vis.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Do not convert rat cardioprotection findings into human cardiovascular advice.",
+        "Do not borrow Pterocarpus marsupium, Pterocarpus angolensis or Sphaeranthus indicus preparations.",
+        "Traditional childbirth, eye and latex uses are not cleared.",
+        "No selected uploaded cover; no synthetic or other-species substitute is permitted."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "The retained Pterocarpus indicus heartwood extraction was studied in rats, not human cardiovascular treatment.",
+      "preparationReview": {
+        "plantPart": "Heartwood used for laboratory solvent extraction",
+        "kind": "LABORATORY_DESCRIPTION_HELD",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "MISSING_SELECTED_COVER",
+        "ledger": null,
+        "checkedAt": null,
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-079",
+        "localName": "Asana",
+        "scientificName": "Pterocarpus indicus",
+        "sourceScientificName": "2. P. Indicus,",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical Pterocarpus passage contains multiple species; its traditional claims do not establish clinical benefit.\n\nEvidence limits: The retained Pterocarpus indicus heartwood extraction was studied in rats, not human cardiovascular treatment.",
+        "preparationMethod": "Chen and colleagues extracted authenticated Pterocarpus indicus heartwood using ethanol soaking and heated reflux, then solvent fractionation and freeze-drying, for a rat study. This laboratory description is not a home recipe or treatment; it does not establish a human regimen.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "Do not convert rat cardioprotection findings or solvent-fractionation methods into human advice or household recipes. Eye, latex and childbirth uses remain uncleared.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Kew includes Pterocarpus indicus Willd. in its native distribution. The author-qualified species is not Pterocarpus indicus Wall.",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational report only, tied to each book entry and page. No old medicinal recipe, clinical efficacy or safe dose is adopted."
+        },
+        {
+          "id": "chen-2025-asana-extraction",
+          "scientificName": "Pterocarpus indicus",
+          "taxonScope": "EXACT_SPECIES",
+          "kind": "PRIMARY_LABORATORY_EXTRACTION_STUDY_HELD",
+          "title": "Chen et al. (2025): Dose-Dependent Cardioprotection of Pterocarpus indicus Extract in Rats With Myocardial Ischemia",
+          "url": "https://doi.org/10.1177/15593258251404066",
+          "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12690059/fullTextXML",
+          "supports": [
+            "preparationMethod",
+            "evidenceReview",
+            "medicinalUses"
+          ],
+          "reviewCoverage": "FULL_TEXT_XML_DRUG_EXTRACTION_SECTION",
+          "downloadBytes": 161939,
+          "downloadSha256": "151e6732f1221b2602148f6c2127b1a066eac917ef58d4836ed71c919f0c0cab",
+          "limitation": "Heartwood extraction, solvent fractionation and a rat experiment do not validate a household decoction, clinical efficacy or a human dose.",
+          "reviewedAt": "2026-10-05"
+        },
+        {
+          "id": "asana-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Pterocarpus indicus",
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:516487-1",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity",
+            "regionFound"
+          ],
+          "reviewLocator": "Accepted species; Native to: Philippines.",
+          "limitation": "Exact botanical taxon only; country-list omission is not absence, and botanical distribution does not establish clinical efficacy or a safe dose."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-125",
+      "creatorMetadataFollowUpFile": "HERB_CREATOR_METADATA_FOLLOW_UP_2026-10-07.json",
+      "batch": 4,
+      "book": {
+        "entry": 125,
+        "heading": "Coffea Arabica",
+        "commonNames": "Cafe, Sp.; Coffee, Eng.",
+        "printedPage": 144,
+        "pdfPage": 150
+      },
+      "identityNotes": {
+        "queueScientificName": "Coffea arabica",
+        "scientificSynonyms": [],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Cafe, Sp.; Coffee, Eng.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "No medicinal dose, caffeine limit or disease-treatment claim is inferred.",
+        "Do not transfer this seed processing to Coffea canephora or coffee-leaf teas.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "The retained description concerns roasted, milled and brewed Coffea arabica seeds. No therapeutic regimen or clinical benefit was assessed in this batch.",
+      "preparationReview": {
+        "plantPart": "Dried seeds (coffee beans), not leaves",
+        "kind": "FOOD_DESCRIPTION",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "HISTORICAL_SELECTED_COVER",
+        "ledger": "HERB_SEVENTEEN_MEDIA_DELIVERY_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:10.568Z",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-125",
+        "localName": "Coffee",
+        "scientificName": "Coffea arabica",
+        "sourceScientificName": "Coffea Arabica",
+        "category": "Uncategorized",
+        "medicinalUses": "Historical coffee-beverage and stimulant reports do not establish a disease-treatment regimen.\n\nEvidence limits: The retained description concerns roasted, milled and brewed Coffea arabica seeds. No therapeutic regimen or clinical benefit was assessed in this batch.",
+        "preparationMethod": "World Agroforestry describes dried Coffea arabica seeds being roasted, milled and brewed into a beverage. The paragraph provides no brewing ratio or roasting duration. This seed-beverage description is not treatment guidance.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "No medicinal dose, caffeine limit or disease-treatment claim is established here. Seed-beverage processing must not be transferred to leaves or other coffee species.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Co's Digital Flora records Coffea arabica as naturalized, citing a February 2022 botanical communication. This is not a current province-by-province survey.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176721/coffee_coffea_arabica_cc0_473238470_xasw5n.jpg",
+        "imageCreator": null,
+        "imageSourceUrl": "https://www.inaturalist.org/observations/263426741",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; uploaded unchanged checked source bytes",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational report only, tied to each book entry and page. No old medicinal recipe, clinical efficacy or safe dose is adopted."
+        },
+        {
+          "id": "icraf-coffee-food",
+          "scientificName": "Coffea arabica",
+          "taxonScope": "EXACT_SPECIES",
+          "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+          "title": "Orwa et al. (2009), Agroforestree Database 4.0: Coffea arabica",
+          "url": "https://apps.worldagroforestry.org/treedb/AFTPDFS/Coffea_arabica.PDF",
+          "supports": [
+            "preparationMethod"
+          ],
+          "reviewCoverage": "PDF_PRINTED_PAGE_3_FOOD_PARAGRAPH_VISUALLY_INSPECTED",
+          "downloadBytes": 497289,
+          "downloadSha256": "6b7ee73bcd06e0331d12cae6e891a097ce1a1c0a85664b79bbb64ccf347e1468",
+          "limitation": "No roasting temperature, brewing ratio, serving limit or therapeutic dose. The seed beverage description cannot be transferred to coffee leaves or other species.",
+          "reviewedAt": "2026-10-05"
+        },
+        {
+          "id": "coffee-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Coffea arabica",
+          "url": "https://powo.science.kew.org/taxon/747038-1",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity"
+          ],
+          "reviewLocator": "Accepted species; Philippine occurrence supported separately.",
+          "limitation": "Exact botanical taxon only; country-list omission is not absence, and botanical distribution does not establish clinical efficacy or a safe dose."
+        },
+        {
+          "id": "coffee-cdf",
+          "kind": "BOTANICAL_OCCURRENCE",
+          "title": "Co's Digital Flora: Coffea arabica",
+          "url": "https://www.philippineplants.org/Families/Rubiaceae.html",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "regionFound"
+          ],
+          "reviewLocator": "Coffea arabica > Naturalized in Philippines; D. Cabactulan and J.P. Collantes, pers. comm. 11-Feb-2022.",
+          "limitation": "Exact-entry local botanical compilation only; not medicinal safety, a contemporary population census or permission to reuse adjacent species' methods."
+        }
+      ]
+    }
+  ],
+  "mediaFollowUpEvidenceFile": "HERB_COVER_INTEGRATION_2026-10-07.json",
+  "preparationFollowUpFiles": [
+    "HERB_BALIBAGO_TKDL_FOLLOW_UP_2026-10-07.json",
+    "HERB_SANTAN_KABIKI_PREPARATION_FOLLOW_UP_2026-10-07.json"
+  ]
+}

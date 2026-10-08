@@ -1,0 +1,35 @@
+{
+  "target": { "host": "ep-icy-sound-aqfe958d.c-8.us-east-1.aws.neon.tech", "database": "neondb" },
+  "records": [
+    {
+      "id": "builtin-expansion-03-pardo-030",
+      "scientificName": "Abutilon indicum",
+      "expectedPreparationMethod": "Clean leaves and stems are boiled in water to prepare an external decoction for skin wash, or crushed fresh into a topical emollient poultice. Not formulated for internal medicinal ingestion.",
+      "preparationMethod": "Reported traditional preparation: a decoction of Abutilon indicum leaves used externally as a wash. StuartXchange documents this Philippine practice but does not specify quantities or boiling time for that use. This is an ethnobotanical description, not a clinically validated treatment recipe.",
+      "source": {
+        "id": 358,
+        "expectedUrl": "https://www.stuartxchange.org/Gling.html",
+        "title": "StuartXchange Philippine Medicinal Plants: Malbas / Abutilon indicum",
+        "publisher": "StuartXchange",
+        "url": "https://www.stuartxchange.org/Malbas.html",
+        "citation": "Folkloric uses section reports a Philippine external leaf-decoction wash. It does not specify stems, crushed-leaf poultice preparation, quantities or boiling time for that wash. Traditional documentation is not clinical safety or efficacy validation.",
+        "supports": ["preparationMethod"]
+      }
+    },
+    {
+      "id": "builtin-expansion-03-pardo-171",
+      "scientificName": "Ocimum gratissimum",
+      "expectedPreparationMethod": "Fresh aromatic leaves are crushed and steeped in hot water for 5 to 10 minutes to brew an herbal infusion.",
+      "preparationMethod": "The historical book mentions an infusion in a shared account of three basil species and a leaf decoction specifically for Ocimum gratissimum. It gives no measured, species-specific household recipe or steeping time. These descriptions are historical records, not a validated treatment guide.",
+      "source": {
+        "id": 242,
+        "expectedUrl": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+        "title": "The Medicinal Plants of the Philippines (1901)",
+        "publisher": "Project Gutenberg",
+        "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+        "citation": "Mint Family, pages 195-196: the infusion account groups three basil species; the leaf-decoction report specifically names O. gratissimum. No species-specific measured infusion recipe or steeping time is supplied in this passage. Historical reports do not establish current clinical efficacy or safe household treatment.",
+        "supports": ["medicinalUses", "preparationMethod"]
+      }
+    }
+  ]
+}

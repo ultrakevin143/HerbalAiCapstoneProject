@@ -1,0 +1,1979 @@
+{
+  "status": "HELD_EXPANSION_RELEASE_PREFLIGHT",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "checkedAt": "2026-10-06T17:12:21.956Z",
+  "publicationAllowed": false,
+  "writeAllowed": false,
+  "publicCatalogOnly": true,
+  "historicalAuditAt": "2026-10-06T05:44:52.741Z",
+  "draftPlanAt": "2026-10-06T06:58:26.585Z",
+  "privateSnapshotAt": "2026-10-05T01:13:24.305Z",
+  "draftEvidence": [
+    {
+      "evidenceFile": "HERB_FIRST_TEN_FIELD_DRAFT_PLAN_2026-10-06.json",
+      "auditedAt": "2026-10-06T06:58:26.585Z",
+      "privateSnapshotAt": "2026-10-05T01:13:24.305Z"
+    },
+    {
+      "evidenceFile": "HERB_SECOND_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "auditedAt": "2026-10-06T16:40:07.000Z",
+      "privateSnapshotAt": null
+    },
+    {
+      "evidenceFile": "HERB_THIRD_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "auditedAt": "2026-10-06T16:57:00Z",
+      "privateSnapshotAt": null
+    },
+    {
+      "evidenceFile": "HERB_FOURTH_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "auditedAt": "2026-10-06T17:07:46Z",
+      "privateSnapshotAt": null
+    }
+  ],
+  "globalBlockers": [
+    "Fresh, independently targeted all-state private-database comparison is still required before any write.",
+    "A backed-up import with isolated rollback and concurrent-duplicate tests is not present.",
+    "Historical image checks do not establish fresh delivery, licensing or taxon clearance.",
+    "Secondary preparation leads do not clear beginner instructions or medicinal dosage.",
+    "This report is read-only; no publish, database or embedding operation exists."
+  ],
+  "counts": {
+    "candidates": 50,
+    "livePublicHerbs": 38,
+    "draftPlansPresent": 40,
+    "partialContentDrafts": 5,
+    "fullContentDrafts": 35,
+    "missingFullContentDrafts": 15,
+    "missingSelectedCovers": 13,
+    "heldSecondaryIdentities": 2,
+    "publicIdentityConflicts": 0,
+    "publicationCleared": 0
+  },
+  "rows": [
+    {
+      "candidateId": "research-pardo-098",
+      "localName": "Duhat",
+      "scientificName": "Syzygium cumini",
+      "batch": 1,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:identity",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific medical review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation",
+        "Food descriptions are not complete medicinal household recipes or validated treatment doses."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/duhat_syzygium_cumini_cc0_607793783_kbwizf.jpg",
+      "imageCheckAt": "2026-10-06T03:12:06.298Z",
+      "preparationDescription": "Culinary use, not treatment: duhat fruits are eaten fresh or processed into juice, sauces, jams and preserves. The source supplies no diabetes-treatment recipe.",
+      "preparationEvidenceFile": "HERB_FIRST_TEN_FIELD_DRAFT_PLAN_2026-10-06.json",
+      "preparationSourceIds": [
+        "duhat-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-088",
+      "localName": "Sampalok",
+      "scientificName": "Tamarindus indica",
+      "batch": 1,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:identity",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific medical review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation",
+        "Food descriptions are not complete medicinal household recipes or validated treatment doses."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791161286/sampalok_tamarindus_indica_cc0_580527782_yfyfsb.jpg",
+      "imageCheckAt": "2026-10-06T03:12:06.511Z",
+      "preparationDescription": "Culinary use, not treatment: the tart pulp is used as a flavouring in curries, chutneys, jams, confectionery and beverages. No medicinal laxative dose or timed recipe is established.",
+      "preparationEvidenceFile": "HERB_FIRST_TEN_FIELD_DRAFT_PLAN_2026-10-06.json",
+      "preparationSourceIds": [
+        "tamarind-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-005",
+      "localName": "Atis",
+      "scientificName": "Annona squamosa",
+      "batch": 1,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:identity",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific medical review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation",
+        "Food descriptions are not complete medicinal household recipes or validated treatment doses."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/atis_annona_squamosa_cc0_96588239_kud7zl.jpg",
+      "imageCheckAt": "2026-10-06T03:12:06.269Z",
+      "preparationDescription": "Culinary use, not treatment: mature fruit is eaten fresh or added to smoothies and desserts. Seeds must be removed before serving; the source identifies them as toxic when swallowed.",
+      "preparationEvidenceFile": "HERB_FIRST_TEN_FIELD_DRAFT_PLAN_2026-10-06.json",
+      "preparationSourceIds": [
+        "atis-food"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-094",
+      "localName": "Talisay",
+      "scientificName": "Terminalia catappa",
+      "batch": 1,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:identity",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific medical review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation",
+        "Food descriptions are not complete medicinal household recipes or validated treatment doses.",
+        "Human bark and pregnancy safety remains unresolved; these citations are rat studies, not clinical clearance.",
+        "Fresh all-state duplicate check inside a guarded writer transaction",
+        "Isolated staging, rollback and concurrent-write validation",
+        "Source-quality and plant-part-specific final content review"
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/talisay_terminalia_catappa_cc0_264306526_mi6yke.jpg",
+      "imageCheckAt": "2026-10-06T03:12:06.212Z",
+      "preparationDescription": "Food preparation only, not treatment: a published study sun-dried ripe fruits for one week, extracted kernels with a nutcracker, then roasted whole kernels with or without salt. It supplies no roasting temperature or duration. This describes kernel-food processing, not a validated medicinal preparation or treatment dose.",
+      "preparationEvidenceFile": "HERB_FIRST_TEN_FIELD_DRAFT_PLAN_2026-10-06.json",
+      "preparationSourceIds": [
+        "icraf-talisay-food",
+        "biego-2012-talisay-processing"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-077",
+      "localName": "Butterfly pea",
+      "scientificName": "Clitoria ternatea",
+      "batch": 1,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:identity",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific medical review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation",
+        "Food descriptions are not complete medicinal household recipes or validated treatment doses."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791161285/butterfly_pea_clitoria_ternatea_cc0_173979709_bih8jo.jpg",
+      "imageCheckAt": "2026-10-06T03:12:06.599Z",
+      "preparationDescription": "Culinary use, not treatment: flowers supply an edible blue colour extract used in traditional Malay pastries. The reviewed source gives no extraction time, ratio or therapeutic flower-tea regimen.",
+      "preparationEvidenceFile": "HERB_FIRST_TEN_FIELD_DRAFT_PLAN_2026-10-06.json",
+      "preparationSourceIds": [
+        "butterfly-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-069",
+      "localName": "Mangga",
+      "scientificName": "Mangifera indica",
+      "batch": 1,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:identity",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific medical and topical-safety review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation",
+        "Food descriptions are not complete medicinal household recipes or validated treatment doses."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/mangga_mangifera_indica_cc0_619870559_gydcw5.jpg",
+      "imageCheckAt": "2026-10-06T03:12:06.864Z",
+      "preparationDescription": "Culinary use, not treatment: the edible ripe fruit has juicy yellow flesh. The reviewed page does not specify a cooking recipe; do not manufacture a leaf or bark decoction from its list of folk claims.",
+      "preparationEvidenceFile": "HERB_FIRST_TEN_FIELD_DRAFT_PLAN_2026-10-06.json",
+      "preparationSourceIds": [
+        "mango-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-063",
+      "localName": "Santol",
+      "scientificName": "Sandoricum koetjape",
+      "batch": 1,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:identity",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific medical review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation",
+        "Food descriptions are not complete medicinal household recipes or validated treatment doses."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/santol_sandoricum_koetjape_cc0_474259100_wyp3hf.jpg",
+      "imageCheckAt": "2026-10-06T03:12:06.819Z",
+      "preparationDescription": "Culinary use, not treatment: the whitish pulp is eaten fresh or made into marmalade and candy. Medicinal bark and root instructions are not cleared by this food description.",
+      "preparationEvidenceFile": "HERB_FIRST_TEN_FIELD_DRAFT_PLAN_2026-10-06.json",
+      "preparationSourceIds": [
+        "santol-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-104",
+      "localName": "Papaya",
+      "scientificName": "Carica papaya",
+      "batch": 1,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:identity",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific medical and pregnancy-safety review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation",
+        "Food descriptions are not complete medicinal household recipes or validated treatment doses."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162652/papaya_carica_papaya_cc0_174095229_m1upal.jpg",
+      "imageCheckAt": "2026-10-06T03:12:07.102Z",
+      "preparationDescription": "Culinary use, not treatment: papaya fruit is eaten, made into jellies or preserves, or cooked as a vegetable. This food description does not establish dengue treatment or a latex preparation.",
+      "preparationEvidenceFile": "HERB_FIRST_TEN_FIELD_DRAFT_PLAN_2026-10-06.json",
+      "preparationSourceIds": [
+        "papaya-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-102",
+      "localName": "Granada",
+      "scientificName": "Punica granatum",
+      "batch": 1,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:identity",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific medical review",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation",
+        "Food descriptions are not complete medicinal household recipes or validated treatment doses."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162655/granada_punica_granatum_cc0_245176628_tuduoh.jpg",
+      "imageCheckAt": "2026-10-06T03:12:07.112Z",
+      "preparationDescription": "Culinary use, not treatment: the fruit pulp is eaten fresh or processed into juice, jellies and syrups. This does not establish a root-bark worm treatment.",
+      "preparationEvidenceFile": "HERB_FIRST_TEN_FIELD_DRAFT_PLAN_2026-10-06.json",
+      "preparationSourceIds": [
+        "pomegranate-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-137",
+      "localName": "Chico",
+      "scientificName": "Manilkara zapota",
+      "batch": 1,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:identity",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Modern seed and bark safety evidence",
+        "Fresh all-state duplicate check",
+        "Isolated staging validation",
+        "Food descriptions are not complete medicinal household recipes or validated treatment doses."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791162654/chico_manilkara_zapota_cc0_342658687_xfu2yk.jpg",
+      "imageCheckAt": "2026-10-06T03:12:07.156Z",
+      "preparationDescription": "Culinary use, not treatment: edible fruit is eaten fresh or used in desserts. The same source flags irritating sap and toxic seed ingestion, so no seed preparation is included.",
+      "preparationEvidenceFile": "HERB_FIRST_TEN_FIELD_DRAFT_PLAN_2026-10-06.json",
+      "preparationSourceIds": [
+        "chico-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-014",
+      "localName": "Mustasa",
+      "scientificName": "Brassica juncea",
+      "batch": 2,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "Reconcile the queue's Brassica juncea with the reviewed modern nothogenus proposal ×Brassarda juncea before import.",
+        "No mustard poultice recipe is supplied in this entry; do not borrow Cleome viscosa instructions."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791167109/mustasa_brassarda_juncea_cc0_131251463_swraso.jpg",
+      "imageCheckAt": "2026-10-06T03:12:08.923Z",
+      "preparationDescription": "Culinary use, not treatment: mustard leaves are eaten in salads or cooked; seeds are used in curries and pickles. The source does not supply cooking times or medicinal quantities.",
+      "preparationEvidenceFile": "HERB_SECOND_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "mustard-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-015",
+      "localName": "Radish",
+      "scientificName": "Raphanus sativus",
+      "batch": 2,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "Raphanus sativus is treated in the modern GardeningSG page as cultivated Raphanus raphanistrum subsp. sativus; retain the subspecies distinction.",
+        "Do not convert the book's antiscorbutic claim into a medicinal recipe."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791167109/radish_raphanus_raphanistrum_sativus_cc0_62230932_vvxzcn.jpg",
+      "imageCheckAt": "2026-10-06T03:12:08.241Z",
+      "preparationDescription": "Culinary use, not treatment: the swollen taproot is peeled, cut into small pieces and cooked in soups or meat dishes. The leafy tops may be stir-fried as a vegetable.",
+      "preparationEvidenceFile": "HERB_SECOND_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "radish-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-020",
+      "localName": "Olasiman",
+      "scientificName": "Portulaca oleracea",
+      "batch": 2,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "Olasiman here means Portulaca oleracea, not the existing Peperomia pellucida record sometimes called Ulasimang Bato.",
+        "Withhold leaf-juice eyewash and treatment of coughing blood."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165611/olasiman_portulaca_oleracea_cc0_141904820_sczrqh.jpg",
+      "imageCheckAt": "2026-10-06T03:12:07.731Z",
+      "preparationDescription": "Culinary use, not treatment: leaves and young shoots are consumed as vegetables; flower buds are added to salads. The reviewed modern source supplies no medicinal preparation quantities.",
+      "preparationEvidenceFile": "HERB_SECOND_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "purslane-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-044",
+      "localName": "Cacao",
+      "scientificName": "Theobroma cacao",
+      "batch": 2,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "Queue identity retained; modern Philippine occurrence and all-state duplicate checks still required.",
+        "Withhold the book's stomach-dilation and theobromine diuretic claims."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165611/cacao_theobroma_cacao_cc0_627816005_j9hblq.jpg",
+      "imageCheckAt": "2026-10-06T03:12:07.914Z",
+      "preparationDescription": "Food-processing overview, not treatment: seeds undergo fermentation and drying, then roasting, crushing, grinding and pressing to make chocolate products or cocoa butter. The surrounding pulp is eaten or processed into desserts. This is not a validated home fermentation protocol.",
+      "preparationEvidenceFile": "HERB_SECOND_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "cacao-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-159",
+      "localName": "Linga",
+      "scientificName": "Sesamum indicum",
+      "batch": 2,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "No seed or leaf medicinal method is clinically cleared by the reviewed sources.",
+        "Withhold emmenagogue baths and decoctions, purgative doses and castor-oil substitution."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165609/linga_sesamum_indicum_cc0_309170794_rxvny8.jpg",
+      "imageCheckAt": "2026-10-06T03:12:07.400Z",
+      "preparationDescription": "Historical description only: the book reports sesame-leaf poultices. This is not recommended as a home treatment; medicinal preparation instructions remain withheld.",
+      "preparationEvidenceFile": "HERB_SECOND_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "pardo-1901"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-214",
+      "localName": "Niog",
+      "scientificName": "Cocos nucifera",
+      "batch": 2,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "Queue identity retained; no disease-specific preparation clearance inferred.",
+        "Withhold fermented-sap tuberculosis treatment."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165611/niog_cocos_nucifera_cc0_237055447_qobn7o.jpg",
+      "imageCheckAt": "2026-10-06T03:12:08.058Z",
+      "preparationDescription": "Culinary use, not treatment: coconut flesh is shredded for desiccated coconut or squeezed to obtain coconut milk. Coconut milk is an ingredient in curries and desserts; oil is also extracted from the flesh. Coconut milk is not the liquid naturally inside the fruit.",
+      "preparationEvidenceFile": "HERB_SECOND_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "coconut-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-217",
+      "localName": "Maize",
+      "scientificName": "Zea mays",
+      "batch": 2,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "Modern evidence is plant-part-specific; the foliage photograph cannot confirm medicinal-grade stigma material.",
+        "Withhold the book's tassel and stalk diuretic recipes; tassels are not corn silk."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791167111/maize_zea_mays_cc0_312217428_ouxrur.jpg",
+      "imageCheckAt": "2026-10-06T03:12:10.487Z",
+      "preparationDescription": "A draft EMA monograph describes cut corn silk as an oral herbal tea prepared by infusion or decoction. It addresses traditional use, not well-established clinical efficacy. No recipe or human dose is cleared here, and the book's tassel preparation is not substituted for corn silk.",
+      "preparationEvidenceFile": "HERB_SECOND_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "maize-ema-draft",
+        "maize-ema-status"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-219",
+      "localName": "Tubo",
+      "scientificName": "Saccharum officinarum",
+      "batch": 2,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "NParks notes that commercial sugarcane is often a complex hybrid; resolve the photographed specimen's species scope.",
+        "Withhold warm-juice respiratory-treatment claims."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165609/tubo_saccharum_officinarum_cc0_59112165_avwbue.jpg",
+      "imageCheckAt": "2026-10-06T03:12:07.643Z",
+      "preparationDescription": "Food-processing overview, not treatment: juice is extracted from the soft tissue of sugarcane stems and processed into sugar or syrup. No medicinal heating time, dose or cough treatment is supplied.",
+      "preparationEvidenceFile": "HERB_SECOND_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "sugarcane-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-119",
+      "localName": "Fennel",
+      "scientificName": "Foeniculum vulgare",
+      "batch": 2,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "REGION_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "SOURCE_TAG_REVIEW:regionFound",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "UNCITED_FIELD:regionFound",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "The species-level queue and photograph do not establish the sweet-fennel variety or medicinal fruit quality covered by a monograph.",
+        "Withhold the historical concentrated infusion and daily-volume regimen.",
+        "Modern Philippine occurrence remains unresolved. Kew omits Philippines in the inspected list; this is not proof of absence."
+      ],
+      "earlierMissingFields": [
+        "regionFound"
+      ],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165610/fennel_foeniculum_vulgare_cc0_216910898_iqwpoj.jpg",
+      "imageCheckAt": "2026-10-06T03:12:07.606Z",
+      "preparationDescription": "Historical description only: the shared fennel and coriander passage mentions infusions and other extracts. It does not clear a modern, variety-specific preparation or human dose for this queue record.",
+      "preparationEvidenceFile": "HERB_SECOND_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "pardo-1901"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-184",
+      "localName": "Paminta",
+      "scientificName": "Piper nigrum",
+      "batch": 2,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "An isolated import, rollback and concurrent-duplicate test is required.",
+        "Photo taxon and licensing clearance must be confirmed before publication.",
+        "Piper nigrum is not Piper betle; do not transfer adjacent betel-leaf instructions.",
+        "Withhold brandy-and-anise malaria treatment and purified-piperine dosing."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791165610/paminta_piper_nigrum_cc0_65746891_rc6xsa.jpg",
+      "imageCheckAt": "2026-10-06T03:12:07.386Z",
+      "preparationDescription": "Culinary use, not treatment: dried pepper fruits are used as food seasoning. NParks describes unripe fruits turning black when dried. No medicinal quantity or malaria regimen is supplied.",
+      "preparationEvidenceFile": "HERB_SECOND_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "pepper-nparks"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-170",
+      "localName": "Solasi",
+      "scientificName": "Ocimum basilicum",
+      "batch": 3,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Do not substitute other basil species, seeds or essential-oil preparations.",
+        "Historical photo provenance is not fresh taxon, license or delivery clearance."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176716/solasi_ocimum_basilicum_cc0_110372081_xkxkgb.jpg",
+      "imageCheckAt": "2026-10-06T03:12:12.301Z",
+      "preparationDescription": "Food preparation only, not treatment: fresh or dried common-basil leaves flavour tomato dishes; fresh leaves can be blended with other ingredients into pesto. The source supplies no complete ingredient ratios, cooking duration or medicinal regimen.",
+      "preparationEvidenceFile": "HERB_THIRD_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "nparks-common-basil"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-171",
+      "localName": "Lokoloko",
+      "scientificName": "Ocimum gratissimum",
+      "batch": 3,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING",
+        "SELECTED_COVER_MISSING",
+        "SECONDARY_SOURCE_IDENTITY_HELD",
+        "CATEGORY_UNRESOLVED",
+        "REGION_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:regionFound",
+        "UNCITED_FIELD:dosage",
+        "UNCITED_FIELD:regionFound",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Background food-use reporting is not a cooking trial or Philippine occurrence evidence.",
+        "Contaminated-site samples and brine-shrimp assays cannot establish safe human use.",
+        "Modern Philippine occurrence remains unresolved; inspected country-list omissions do not prove absence.",
+        "No selected uploaded cover; do not substitute an adjacent species or generate a fake botanical photo.",
+        "PRIMARY_HISTORICAL_IDENTITY_HOLD: the book's O. virgatum Blanco association conflicts with Co's Digital Flora's placement under O. tenuiflorum; Lokoloko may not unambiguously identify the queued O. gratissimum."
+      ],
+      "earlierMissingFields": [
+        "regionFound"
+      ],
+      "selectedCoverUrl": null,
+      "imageCheckAt": null,
+      "preparationDescription": "Reported food use only, not treatment: a chemical-analysis paper describes Ocimum gratissimum leaves in Nigerian soups and salads as flavouring. Its background supplies no reproducible household recipe, ingredient amount or cooking time; laboratory extracts and handling are not food instructions.",
+      "preparationEvidenceFile": "HERB_THIRD_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "diyaolu-2021-gratissimum"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_MISMATCH",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-172",
+      "localName": "Balanay",
+      "scientificName": "Ocimum tenuiflorum",
+      "batch": 3,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Keep historical Ocimum sanctum linked to this candidate; do not borrow common-basil recipes or seed and extract doses.",
+        "Historical photo provenance is not fresh taxon, license or delivery clearance."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176717/balanay_ocimum_tenuiflorum_cc0_346048247_ypx2ae.jpg",
+      "imageCheckAt": "2026-10-06T03:12:11.805Z",
+      "preparationDescription": "Food preparation only, not treatment: holy-basil leaves flavour salads and dishes containing fruit, fish or chicken. The selected food paragraph provides no ingredient amount or cooking time and does not validate a therapeutic tea regimen.",
+      "preparationEvidenceFile": "HERB_THIRD_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "nparks-holy-basil"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-174",
+      "localName": "Romero",
+      "scientificName": "Salvia rosmarinus",
+      "batch": 3,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "The source advises pregnant or breastfeeding women to avoid taking rosemary essential oil; food use does not clear medicinal oil use.",
+        "Historical photo provenance is not fresh taxon, license or delivery clearance."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176721/romero_salvia_rosmarinus_cc0_179113899_td1l1p.png",
+      "imageCheckAt": "2026-10-06T03:12:10.858Z",
+      "preparationDescription": "Food preparation only, not treatment: rosemary leaves are used as a culinary dressing or to flavour smoked or roasted meat. No ingredient ratio, cooking time or medicinal dose is supplied; leaf seasoning is not essential-oil ingestion.",
+      "preparationEvidenceFile": "HERB_THIRD_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "nparks-rosemary"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-073",
+      "localName": "Katuray",
+      "scientificName": "Sesbania grandiflora",
+      "batch": 3,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Preserve the selected flower part and white-flowered form; do not transfer other Sesbania species' cooking methods.",
+        "Historical photo provenance is not fresh taxon, license or delivery clearance."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176717/katuray_sesbania_grandiflora_cc0_212462413_mbbi3i.jpg",
+      "imageCheckAt": "2026-10-06T03:12:11.834Z",
+      "preparationDescription": "Food preparation only, not treatment: the source describes unopened white flowers in the Philippines with stamen and calyx removed, then steamed or cooked in soups and stews. No amount or cooking duration is specified. This does not validate root, bark, leaf-tea or eye-drop remedies.",
+      "preparationEvidenceFile": "HERB_THIRD_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "icraf-katuray-food"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-089",
+      "localName": "Alibangbang",
+      "scientificName": "Piliostigma malabaricum",
+      "batch": 3,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Keep leaf-condiment use distinct from seed antinutritional substances and medicinal bark or flower infusions.",
+        "No selected uploaded cover; do not substitute an adjacent species or generate a fake botanical photo."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": null,
+      "imageCheckAt": null,
+      "preparationDescription": "Food preparation only, not treatment: young leaves are cooked with fish or meat to flavour soup. The reviewed source provides no leaf quantity, cooking time or medicinal dose. Its separate seed-composition notes do not establish a seed-food recipe.",
+      "preparationEvidenceFile": "HERB_THIRD_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "icraf-alibangbang-food"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-091",
+      "localName": "Kupang",
+      "scientificName": "Parkia timoriana",
+      "batch": 3,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Cooking endpoint and household safety remain unresolved; freeze-drying is a laboratory operation.",
+        "Do not substitute Parkia speciosa or Parkia biglobosa processing or assume the Thai study establishes Philippine occurrence.",
+        "No selected uploaded cover; do not substitute an adjacent species or generate a fake botanical photo."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": null,
+      "imageCheckAt": null,
+      "preparationDescription": "Laboratory food-processing description, not a home recipe or treatment: a Parkia timoriana study cut and rinsed seeds, soaked them in distilled water for 12 hours and cooked them before freeze-drying and milling to flour. The reviewed subsection does not specify the numeric cooking time. No household protocol or medicinal dose is cleared.",
+      "preparationEvidenceFile": "HERB_THIRD_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "medhe-2022-timoriana"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-215",
+      "localName": "Nipa",
+      "scientificName": "Nypa fruticans",
+      "batch": 3,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Preserve young-seed identity; do not substitute another palm's fruit or claim a treatment dose.",
+        "No selected uploaded cover; do not substitute an adjacent species or generate a fake botanical photo."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": null,
+      "imageCheckAt": null,
+      "preparationDescription": "Food preparation only, not treatment: young translucent seeds, called attap chee, are boiled in sugar syrup and added to desserts. The source specifies no syrup ratio or boiling duration. This seed-food description does not clear sap fermentation or flower-sheath tea as medicinal preparations.",
+      "preparationEvidenceFile": "HERB_THIRD_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "nparks-nipa-food"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-108",
+      "localName": "Bottle gourd",
+      "scientificName": "Lagenaria siceraria",
+      "batch": 3,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "The ICMR advisory warns against bitter juice; discomfort, nausea, vomiting or diarrhoea after consumption requires urgent medical attention.",
+        "The human adverse-event assessment does not establish a safe medicinal dose or treatment benefit.",
+        "No selected uploaded cover; do not substitute an adjacent species or generate a fake botanical photo."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": null,
+      "imageCheckAt": null,
+      "preparationDescription": "Food preparation only, not treatment: young bottle-gourd fruit is described as boiled or used in stews, without a specified cooking time or ingredient amount. Discard bitter fruit and do not consume bitter juice. This food description is not a medicinal juice recipe or evidence that cooking clears toxicity.",
+      "preparationEvidenceFile": "HERB_THIRD_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "nparks-bottle-gourd-food"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-112",
+      "localName": "Luffa aegyptiaca",
+      "scientificName": "Luffa aegyptiaca",
+      "batch": 3,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Mature fruit is described as bitter and inedible; do not transfer angled-loofah, seed-oil or medicinal-sap instructions.",
+        "Historical photo provenance is not fresh taxon, license or delivery clearance."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176721/luffa_aegyptiaca_luffa_aegyptiaca_cc0_457593750_mfdjqi.jpg",
+      "imageCheckAt": "2026-10-06T03:12:09.973Z",
+      "preparationDescription": "Food preparation only, not treatment: young smooth-loofah fruit is fried, stewed, boiled or steamed as a vegetable. No quantity or cooking duration is given. Mature fibrous fruit is not the same food part, and a raw-use statement for sweet cultivars must not be generalized to all plants.",
+      "preparationEvidenceFile": "HERB_THIRD_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "gardeningsg-smooth-loofah-food"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-124",
+      "localName": "Santan",
+      "scientificName": "Ixora coccinea",
+      "batch": 4,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "PREPARATION_METHOD_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:preparationMethod",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "UNCITED_FIELD:preparationMethod",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Find a species- and cultivar-specific primary preparation source; do not promote the genus-only tempura lead.",
+        "Do not treat a planted ornamental, nectar anecdote or edible-garden label as human safety clearance.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "earlierMissingFields": [
+        "preparationMethod"
+      ],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176717/santan_ixora_coccinea_cc0_263717811_aombm7.jpg",
+      "imageCheckAt": "2026-10-06T03:12:11.289Z",
+      "preparationDescription": "The reviewed Gardenwise paragraph describes flowers under the genus Ixora but does not identify Ixora coccinea. No exact-species preparation method was established in this review; the lead is not treatment guidance.",
+      "preparationEvidenceFile": "HERB_FOURTH_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-139",
+      "localName": "Sampaguita",
+      "scientificName": "Jasminum sambac",
+      "batch": 4,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "The cultivar, food-grade sourcing and controlled factory process must remain explicit.",
+        "Do not replace scenting tea with boiling arbitrary ornamental jasmine, essential oil or another jasmine species.",
+        "No clinical dose or household recipe is cleared.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176718/sampaguita_jasminum_sambac_cc0_385822470_pszycj.jpg",
+      "imageCheckAt": "2026-10-06T03:12:11.091Z",
+      "preparationDescription": "A primary tea study mixed opened flowers of Jasminum sambac cv. bifoliatum with prepared green tea in controlled scenting rounds, separated spent flowers and dried the tea between rounds. This manufacturing description is not a home recipe or treatment.",
+      "preparationEvidenceFile": "HERB_FOURTH_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "zhang-2023-jasmine-processing"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-138",
+      "localName": "Kabiki",
+      "scientificName": "Mimusops elengi",
+      "batch": 4,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "PREPARATION_METHOD_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:preparationMethod",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "UNCITED_FIELD:preparationMethod",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Find an explicit food-processing method rather than inferring one from the word edible.",
+        "Do not convert adjacent bark, leaf-smoking or flower medicine claims into instructions.",
+        "No selected uploaded cover; no synthetic or other-species substitute is permitted."
+      ],
+      "earlierMissingFields": [
+        "preparationMethod"
+      ],
+      "selectedCoverUrl": null,
+      "imageCheckAt": null,
+      "preparationDescription": "NParks identifies edible yellow flesh around the seeds of ripe Mimusops elengi fruit. It supplies no preparation process, so no raw-serving, seed-oil, drying or cooking method is added. This edible-part description is not treatment guidance.",
+      "preparationEvidenceFile": "HERB_FOURTH_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-033",
+      "localName": "Balibago",
+      "scientificName": "Hibiscus tiliaceus",
+      "batch": 4,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "PREPARATION_METHOD_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:preparationMethod",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "UNCITED_FIELD:preparationMethod",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Do not borrow Hibiscus sabdariffa calyx recipes or Thespesia populnea methods for this species.",
+        "Leaf sap, childbirth and bark medicine claims remain outside cleared household instructions.",
+        "An explicit preparation method and part-specific safety review remain missing.",
+        "No selected uploaded cover; no synthetic or other-species substitute is permitted."
+      ],
+      "earlierMissingFields": [
+        "preparationMethod"
+      ],
+      "selectedCoverUrl": null,
+      "imageCheckAt": null,
+      "preparationDescription": "NParks reports young Hibiscus tiliaceus leaves eaten as a vegetable but gives no cooking method. No boiling duration or roselle-style tea is supplied. This food-use statement is not treatment guidance.",
+      "preparationEvidenceFile": "HERB_FOURTH_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-035",
+      "localName": "Thespesia populnea",
+      "scientificName": "Thespesia populnea",
+      "batch": 4,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Keep the food parts separate from medicinal fruit, seed, bark and heartwood preparations.",
+        "Food reporting alone does not establish safety for every person or medicinal efficacy.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176719/thespesia_populnea_thespesia_populnea_cc0_195224484_tkvso2.jpg",
+      "imageCheckAt": "2026-10-06T03:12:11.201Z",
+      "preparationDescription": "World Agroforestry reports young flower buds and leaves of Thespesia populnea eaten uncooked or fried using butter. No cooking duration or ingredient ratio is supplied. This culinary description is not treatment guidance.",
+      "preparationEvidenceFile": "HERB_FOURTH_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "icraf-thespesia-food"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-038",
+      "localName": "Doldol",
+      "scientificName": "Ceiba pentandra",
+      "batch": 4,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "No quantities or cooking time are specified; this is not a fully specified recipe.",
+        "Do not override the PROTA seed-oil caution using the older World Agroforestry cooking-oil mention.",
+        "Root, bark, eye-bath, childbirth and abortifacient uses are not cleared.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176719/doldol_ceiba_pentandra_cc0_32279278_vo4eni.jpg",
+      "imageCheckAt": "2026-10-06T03:12:11.070Z",
+      "preparationDescription": "PROTA describes Ceiba pentandra leaves, flowers and young fruits cooked into sauces. Its caution against culinary seed oil and reported digestive upset from seeds remain attached; seed and oil preparations are excluded. This culinary description is not treatment guidance.",
+      "preparationEvidenceFile": "HERB_FOURTH_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "prota-ceiba-food-safety"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-039",
+      "localName": "Kalumpang",
+      "scientificName": "Sterculia foetida",
+      "batch": 4,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Do not reproduce solvent extraction at home or transfer animal assay doses to humans.",
+        "Seed consumption and oil safety require separate evidence; background edible claims are not cooking validation.",
+        "Do not borrow preparations from Sterculia lychnophora or other Sterculia species.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176721/kalumpang_sterculia_foetida_cc0_633583068_kei2id.jpg",
+      "imageCheckAt": "2026-10-06T03:12:10.622Z",
+      "preparationDescription": "Alam and colleagues prepared an experimental extract from ground dried Sterculia foetida seeds using methanol maceration followed by rotary evaporation. This is laboratory processing, not a home recipe or treatment; no seed meal or cooking method is cleared.",
+      "preparationEvidenceFile": "HERB_FOURTH_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "alam-2021-sterculia-extraction"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-067",
+      "localName": "Manzanitas",
+      "scientificName": "Ziziphus mauritiana",
+      "batch": 4,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SECONDARY_SOURCE_IDENTITY_HELD",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Preserve the historical author-qualified name; do not treat modern Ziziphus jujuba as the same recipe source.",
+        "Do not infer safe storage, fermentation, a medicinal dose or root-water instructions.",
+        "Historical image check is not fresh taxon, license or delivery clearance.",
+        "The unqualified queue synonym Zizyphus jujuba is not sufficient to distinguish historical Lam. from modern Mill.; guarded all-state comparison must retain author-qualified identity."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176723/manzanitas_ziziphus_mauritiana_cc0_252869971_ocniek.jpg",
+      "imageCheckAt": "2026-10-06T03:12:09.164Z",
+      "preparationDescription": "World Agroforestry describes Ziziphus mauritiana fruit consumed fresh or dried, processed into pickles, or macerated in water for a beverage. Ratios and processing times are not given. This culinary description is not treatment guidance.",
+      "preparationEvidenceFile": "HERB_FOURTH_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "icraf-manzanitas-food"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_MISMATCH",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-079",
+      "localName": "Asana",
+      "scientificName": "Pterocarpus indicus",
+      "batch": 4,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "SELECTED_COVER_MISSING",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Do not convert rat cardioprotection findings into human cardiovascular advice.",
+        "Do not borrow Pterocarpus marsupium, Pterocarpus angolensis or Sphaeranthus indicus preparations.",
+        "Traditional childbirth, eye and latex uses are not cleared.",
+        "No selected uploaded cover; no synthetic or other-species substitute is permitted."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": null,
+      "imageCheckAt": null,
+      "preparationDescription": "Chen and colleagues extracted authenticated Pterocarpus indicus heartwood using ethanol soaking and heated reflux, then solvent fractionation and freeze-drying, for a rat study. This laboratory description is not a home recipe or treatment; it does not establish a human regimen.",
+      "preparationEvidenceFile": "HERB_FOURTH_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "chen-2025-asana-extraction"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-125",
+      "localName": "Coffee",
+      "scientificName": "Coffea arabica",
+      "batch": 4,
+      "draftPlanPresent": true,
+      "fullContentDraftPresent": true,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "CATEGORY_UNRESOLVED",
+        "SOURCE_TAG_REVIEW:warnings",
+        "UNCITED_FIELD:warnings",
+        "UNCITED_FIELD:dosage",
+        "DRAFT_REVIEW_GAPS_OPEN"
+      ],
+      "draftReviewNotes": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "No medicinal dose, caffeine limit or disease-treatment claim is inferred.",
+        "Do not transfer this seed processing to Coffea canephora or coffee-leaf teas.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "earlierMissingFields": [],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176721/coffee_coffea_arabica_cc0_473238470_xasw5n.jpg",
+      "imageCheckAt": "2026-10-06T03:12:10.568Z",
+      "preparationDescription": "World Agroforestry describes dried Coffea arabica seeds being roasted, milled and brewed into a beverage. The paragraph provides no brewing ratio or roasting duration. This seed-beverage description is not treatment guidance.",
+      "preparationEvidenceFile": "HERB_FOURTH_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+      "preparationSourceIds": [
+        "icraf-coffee-food"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": false,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-047",
+      "localName": "Kamias",
+      "scientificName": "Averrhoa bilimbi",
+      "batch": 5,
+      "draftPlanPresent": false,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING",
+        "SELECTED_COVER_MISSING"
+      ],
+      "draftReviewNotes": [],
+      "earlierMissingFields": [
+        "category",
+        "regionFound",
+        "explicitReviewedDosageLimitation",
+        "traditionalUseDraft",
+        "modernEvidenceDraft",
+        "completeIdentityAndSafetyDraft"
+      ],
+      "selectedCoverUrl": null,
+      "imageCheckAt": null,
+      "preparationDescription": "NParks reports green Averrhoa bilimbi fruit made into a relish in Suriname, without a full processing method. A human case report documents oxalate kidney injury after fruit juice and leaves cooking's effect on toxicity unresolved. This held food description is not treatment guidance.",
+      "preparationEvidenceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "preparationSourceIds": [
+        "nparks-kamias-food"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": true,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-048",
+      "localName": "Balimbing",
+      "scientificName": "Averrhoa carambola",
+      "batch": 5,
+      "draftPlanPresent": false,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING"
+      ],
+      "draftReviewNotes": [],
+      "earlierMissingFields": [
+        "category",
+        "regionFound",
+        "explicitReviewedDosageLimitation",
+        "traditionalUseDraft",
+        "modernEvidenceDraft",
+        "completeIdentityAndSafetyDraft"
+      ],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176723/balimbing_averrhoa_carambola_cc0_99204713_y8fzvv.jpg",
+      "imageCheckAt": "2026-10-06T03:12:09.437Z",
+      "preparationDescription": "NParks describes Averrhoa carambola fruit in salads and preserves. A primary case series records oxalate-associated acute kidney injury after starfruit intake. The food description remains held for renal safety review and is not treatment guidance.",
+      "preparationEvidenceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "preparationSourceIds": [
+        "nparks-balimbing-food"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": true,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-070",
+      "localName": "Kasuy",
+      "scientificName": "Anacardium occidentale",
+      "batch": 5,
+      "draftPlanPresent": false,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING"
+      ],
+      "draftReviewNotes": [],
+      "earlierMissingFields": [
+        "category",
+        "regionFound",
+        "explicitReviewedDosageLimitation",
+        "traditionalUseDraft",
+        "modernEvidenceDraft",
+        "completeIdentityAndSafetyDraft"
+      ],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176723/kasuy_anacardium_occidentale_cc0_217472168_ghh6am.jpg",
+      "imageCheckAt": "2026-10-06T03:12:09.921Z",
+      "preparationDescription": "NParks describes the fleshy Anacardium occidentale cashew apple eaten fresh, included in fruit salads or preserved as jam. This does not supply nut-shell processing, roasting, fermentation or oil instructions. The culinary description is not treatment guidance.",
+      "preparationEvidenceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "preparationSourceIds": [
+        "nparks-cashew-apple-food"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": true,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-126",
+      "localName": "Bankundo",
+      "scientificName": "Morinda citrifolia",
+      "batch": 5,
+      "draftPlanPresent": false,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING"
+      ],
+      "draftReviewNotes": [],
+      "earlierMissingFields": [
+        "category",
+        "regionFound",
+        "explicitReviewedDosageLimitation",
+        "traditionalUseDraft",
+        "modernEvidenceDraft",
+        "completeIdentityAndSafetyDraft"
+      ],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176725/bankundo_morinda_citrifolia_cc0_105341351_ehoyzm.jpg",
+      "imageCheckAt": "2026-10-06T03:12:09.049Z",
+      "preparationDescription": "PROSEA reports a Thai traditional infusion or decoction using dried, thinly sliced unripe Morinda citrifolia fruit. This is a traditional-use description, not treatment guidance or clinical approval. Potassium, medication and liver-report uncertainties remain attached.",
+      "preparationEvidenceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "preparationSourceIds": [
+        "prosea-noni-traditional"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": true,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-045",
+      "localName": "Oxalis corniculata",
+      "scientificName": "Oxalis corniculata",
+      "batch": 5,
+      "draftPlanPresent": false,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING"
+      ],
+      "draftReviewNotes": [],
+      "earlierMissingFields": [
+        "category",
+        "regionFound",
+        "explicitReviewedDosageLimitation",
+        "traditionalUseDraft",
+        "modernEvidenceDraft",
+        "completeIdentityAndSafetyDraft"
+      ],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176717/oxalis_corniculata_oxalis_corniculata_cc0_533454766_bn6sun.jpg",
+      "imageCheckAt": "2026-10-06T03:12:12.090Z",
+      "preparationDescription": "PROSEA reports Oxalis corniculata leaves added to food as seasoning and warns that larger amounts can be toxic due to oxalates. It gives no safe amount or cooking controls. This held food-use report is not treatment guidance.",
+      "preparationEvidenceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "preparationSourceIds": [],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": true,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-054",
+      "localName": "Kahel",
+      "scientificName": "Citrus aurantium",
+      "batch": 5,
+      "draftPlanPresent": false,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING",
+        "SELECTED_COVER_MISSING"
+      ],
+      "draftReviewNotes": [],
+      "earlierMissingFields": [
+        "category",
+        "regionFound",
+        "explicitReviewedDosageLimitation",
+        "traditionalUseDraft",
+        "modernEvidenceDraft",
+        "completeIdentityAndSafetyDraft"
+      ],
+      "selectedCoverUrl": null,
+      "imageCheckAt": null,
+      "preparationDescription": "The Dutch Botanical Gardens Association describes bitter-orange fruit used to make marmalade. No sugar ratio, boiling duration or canning process is supplied. This food description is not treatment guidance and must not be extended to concentrated supplements or essential oil ingestion.",
+      "preparationEvidenceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "preparationSourceIds": [
+        "nvbt-bitter-orange-food"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": true,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-003",
+      "localName": "Tsampaka",
+      "scientificName": "Magnolia champaca",
+      "batch": 5,
+      "draftPlanPresent": false,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING"
+      ],
+      "draftReviewNotes": [],
+      "earlierMissingFields": [
+        "category",
+        "regionFound",
+        "explicitReviewedDosageLimitation",
+        "traditionalUseDraft",
+        "modernEvidenceDraft",
+        "completeIdentityAndSafetyDraft"
+      ],
+      "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176717/tsampaka_magnolia_champaca_cc0_208651812_xwj1mw.jpg",
+      "imageCheckAt": "2026-10-06T03:12:11.722Z",
+      "preparationDescription": "The retrieved Magnolia champaca study has inconsistent retraction-link metadata: its linked notice concerns a different paper. The source is quarantined and no method is adopted. This unresolved research gap is not treatment guidance and is not a confirmed retraction finding.",
+      "preparationEvidenceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "preparationSourceIds": [],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": true,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-030",
+      "localName": "Abutilon indicum",
+      "scientificName": "Abutilon indicum",
+      "batch": 5,
+      "draftPlanPresent": false,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING",
+        "SELECTED_COVER_MISSING"
+      ],
+      "draftReviewNotes": [],
+      "earlierMissingFields": [
+        "category",
+        "regionFound",
+        "explicitReviewedDosageLimitation",
+        "traditionalUseDraft",
+        "modernEvidenceDraft",
+        "completeIdentityAndSafetyDraft"
+      ],
+      "selectedCoverUrl": null,
+      "imageCheckAt": null,
+      "preparationDescription": "A primary Abutilon indicum study dried and powdered combined leaves, twigs and roots, boiled the material in distilled water, freeze-dried the extract and prepared solvent fractions for preclinical experiments. This laboratory description is not a home recipe or treatment.",
+      "preparationEvidenceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "preparationSourceIds": [
+        "krisanapun-2011-abutilon-extraction"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": true,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-032",
+      "localName": "Kastuli",
+      "scientificName": "Abelmoschus moschatus",
+      "batch": 5,
+      "draftPlanPresent": false,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING",
+        "SELECTED_COVER_MISSING"
+      ],
+      "draftReviewNotes": [],
+      "earlierMissingFields": [
+        "category",
+        "regionFound",
+        "explicitReviewedDosageLimitation",
+        "traditionalUseDraft",
+        "modernEvidenceDraft",
+        "completeIdentityAndSafetyDraft"
+      ],
+      "selectedCoverUrl": null,
+      "imageCheckAt": null,
+      "preparationDescription": "PROSEA reports Abelmoschus moschatus seeds used to flavour coffee, without specifying processing or a food-grade quantity. This is a reported food use, not a complete recipe or treatment guidance. Oil, perfume, incense and tobacco preparation are excluded.",
+      "preparationEvidenceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "preparationSourceIds": [],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": true,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    },
+    {
+      "candidateId": "research-pardo-130",
+      "localName": "Ayapana",
+      "scientificName": "Ayapana triplinervis",
+      "batch": 5,
+      "draftPlanPresent": false,
+      "fullContentDraftPresent": false,
+      "blockers": [
+        "IDENTITY_REVIEW_PENDING",
+        "CONTENT_SAFETY_REVIEW_PENDING",
+        "HUMAN_REVIEW_NOT_RECORDED",
+        "FULL_CONTENT_DRAFT_MISSING",
+        "SELECTED_COVER_MISSING"
+      ],
+      "draftReviewNotes": [],
+      "earlierMissingFields": [
+        "category",
+        "regionFound",
+        "explicitReviewedDosageLimitation",
+        "traditionalUseDraft",
+        "modernEvidenceDraft",
+        "completeIdentityAndSafetyDraft"
+      ],
+      "selectedCoverUrl": null,
+      "imageCheckAt": null,
+      "preparationDescription": "A primary analytical study included Ayapana triplinervis industrial leaf/stem mash, prepared water infusions and decoctions, removed the tea bags and froze the samples for chemical and cell testing. This laboratory description is not a home recipe or treatment.",
+      "preparationEvidenceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+      "preparationSourceIds": [
+        "checkouri-2020-ayapana-extraction"
+      ],
+      "medicinalInstructionsCleared": false,
+      "descriptivePreparationLeadOnly": true,
+      "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+      "matchedPublicRecords": [],
+      "publicationAllowed": false
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "status": "MEDIA_FOLLOW_UP_NOT_IMPORTABLE",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "evidenceFile": "HERB_NIPA_KASTULI_COVER_INTEGRATION_2026-10-07.json",
+  "mediaReviewFile": "HERB_NIPA_KASTULI_MEDIA_RECOVERY_2026-10-07.json",
+  "historicalAuditFile": "HERB_FIFTY_LIVE_RELEASE_AUDIT_2026-10-06.json",
+  "integratedAt": "2026-10-07T01:53:00Z",
+  "writeAllowed": false,
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "productionWritesPerformed": false,
+  "selections": [
+    {
+      "candidateId": "research-pardo-215",
+      "photoId": 688949209,
+      "assetId": "cbc3c68f31c9639b0d8ef84e67056a0e",
+      "cloudinaryUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791337596/nipa_nypa_fruticans_cc0_688949209_h7tvo6.jpg",
+      "sha256": "0db20c5f1359ae69613c3855713f47b0bc5eeceffda7e1c91327e93259586f42"
+    },
+    {
+      "candidateId": "research-pardo-032",
+      "photoId": 447252274,
+      "assetId": "25ff5a29f82c430f5622fb540ec59bed",
+      "cloudinaryUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791337598/kastuli_abelmoschus_moschatus_cc0_447252274_uppdhj.jpg",
+      "sha256": "f1f2d159af16687339243d7711cb2a6d256696232c382ded1ce4326f597e9951"
+    }
+  ],
+  "limitations": [
+    "Adds two checked covers to held plans in memory only; no database import or publication.",
+    "Existing plan files and historical media receipts remain unchanged. Original review notes retain their historical context."
+  ]
+}

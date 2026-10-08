@@ -21,6 +21,26 @@ interface SendMailOptions {
   html: string;
 }
 
+const gmailAuthorizationErrors = new Set([
+  "invalid_grant", "invalid_client", "invalid_request", "invalid_scope",
+  "unauthorized_client", "unsupported_grant_type", "access_denied",
+]);
+
+const readGmailAccessToken = async (response: Response): Promise<string> => {
+  const payload: unknown = await response.json().catch(() => null);
+  const data = payload && typeof payload === "object" && !Array.isArray(payload) ? payload : null;
+  if (!response.ok) {
+    const reason = data && "error" in data && typeof data.error === "string"
+      && gmailAuthorizationErrors.has(data.error) ? `; ${data.error}` : "";
+    throw new Error(`Gmail authorization failed (HTTP ${response.status}${reason}).`);
+  }
+  if (!data || !("access_token" in data) || typeof data.access_token !== "string"
+    || !data.access_token.trim()) {
+    throw new Error("Gmail authorization returned no access token.");
+  }
+  return data.access_token;
+};
+
 export const ensureMailReady = (recipient?: string) => {
   const deliveryMode = ENV.EMAIL_DELIVERY_MODE.toLowerCase();
   if (deliveryMode === "log") return;
@@ -86,14 +106,7 @@ export const sendMail = async ({ to, subject, html }: SendMailOptions) => {
       }),
       signal: AbortSignal.timeout(10_000),
     });
-    if (!tokenResponse.ok) {
-      throw new Error(`Gmail authorization failed (HTTP ${tokenResponse.status}).`);
-    }
-
-    const tokenData = await tokenResponse.json() as { access_token?: string };
-    if (!tokenData.access_token) {
-      throw new Error("Gmail authorization returned no access token.");
-    }
+    const accessToken = await readGmailAccessToken(tokenResponse);
 
     const composer = nodemailer.createTransport({ streamTransport: true, buffer: true });
     const composed = await composer.sendMail({
@@ -109,7 +122,7 @@ export const sendMail = async ({ to, subject, html }: SendMailOptions) => {
     const response = await fetch("https://gmail.googleapis.com/gmail/v1/users/me/messages/send", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${tokenData.access_token}`,
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ raw: composed.message.toString("base64url") }),

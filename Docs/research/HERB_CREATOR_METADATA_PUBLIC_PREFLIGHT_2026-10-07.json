@@ -1,0 +1,584 @@
+{
+  "schemaVersion": 1,
+  "checkerExitCode": 2,
+  "status": "HELD_EXPANSION_RELEASE_PREFLIGHT",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "checkedAt": "2026-10-07T01:15:53.689Z",
+  "publicationAllowed": false,
+  "writeAllowed": false,
+  "counts": {
+    "candidates": 50,
+    "livePublicHerbs": 38,
+    "draftPlansPresent": 50,
+    "partialContentDrafts": 1,
+    "fullContentDrafts": 49,
+    "missingFullContentDrafts": 1,
+    "missingSelectedCovers": 11,
+    "heldSecondaryIdentities": 2,
+    "publicIdentityConflicts": 0,
+    "publicationCleared": 0
+  },
+  "globalBlockers": [
+    "Fresh, independently targeted all-state private-database comparison is still required before any write.",
+    "A backed-up import with isolated rollback and concurrent-duplicate tests is not present.",
+    "Historical image checks do not establish fresh delivery, licensing or taxon clearance.",
+    "Secondary preparation leads do not clear beginner instructions or medicinal dosage.",
+    "This report is read-only; no publish, database or embedding operation exists."
+  ],
+  "rows": [
+    {
+      "candidateId": "research-pardo-098",
+      "localName": "Duhat",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "duhat-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-088",
+      "localName": "Sampalok",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "tamarind-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-005",
+      "localName": "Atis",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "atis-food"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-094",
+      "localName": "Talisay",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "icraf-talisay-food",
+        "biego-2012-talisay-processing"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-077",
+      "localName": "Butterfly pea",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "butterfly-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-069",
+      "localName": "Mangga",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "mango-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-063",
+      "localName": "Santol",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "santol-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-104",
+      "localName": "Papaya",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "papaya-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-102",
+      "localName": "Granada",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "pomegranate-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-137",
+      "localName": "Chico",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "chico-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-014",
+      "localName": "Mustasa",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "mustard-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-015",
+      "localName": "Radish",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "radish-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-020",
+      "localName": "Olasiman",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "purslane-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-044",
+      "localName": "Cacao",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "cacao-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-159",
+      "localName": "Linga",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "pardo-1901"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-214",
+      "localName": "Niog",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "coconut-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-217",
+      "localName": "Maize",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "maize-ema-draft",
+        "maize-ema-status"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-219",
+      "localName": "Tubo",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "sugarcane-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-119",
+      "localName": "Fennel",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "pardo-1901"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-184",
+      "localName": "Paminta",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "pepper-nparks"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-170",
+      "localName": "Solasi",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "nparks-common-basil"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-171",
+      "localName": "Lokoloko",
+      "fullContentDraftPresent": false,
+      "missingFields": [
+        "regionFound"
+      ],
+      "preparationSourceIds": [
+        "diyaolu-2021-gratissimum"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-172",
+      "localName": "Balanay",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "nparks-holy-basil"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-174",
+      "localName": "Romero",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "nparks-rosemary"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-073",
+      "localName": "Katuray",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "icraf-katuray-food"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-089",
+      "localName": "Alibangbang",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "icraf-alibangbang-food"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-091",
+      "localName": "Kupang",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "medhe-2022-timoriana"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-215",
+      "localName": "Nipa",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "nparks-nipa-food"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-108",
+      "localName": "Bottle gourd",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "nparks-bottle-gourd-food"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-112",
+      "localName": "Luffa aegyptiaca",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "gardeningsg-smooth-loofah-food"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-124",
+      "localName": "Santan",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "stuart-santan-root-description"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-139",
+      "localName": "Sampaguita",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "zhang-2023-jasmine-processing"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-138",
+      "localName": "Kabiki",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "gupta-jain-kabiki-laboratory"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-033",
+      "localName": "Balibago",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "tkdl-balibago-bark-practice"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-035",
+      "localName": "Thespesia populnea",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "icraf-thespesia-food"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-038",
+      "localName": "Doldol",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "prota-ceiba-food-safety"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-039",
+      "localName": "Kalumpang",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "alam-2021-sterculia-extraction"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-067",
+      "localName": "Manzanitas",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "icraf-manzanitas-food"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-079",
+      "localName": "Asana",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "chen-2025-asana-extraction"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-125",
+      "localName": "Coffee",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "icraf-coffee-food"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-047",
+      "localName": "Kamias",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "nparks-kamias-food"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-048",
+      "localName": "Balimbing",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "nparks-balimbing-food"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-070",
+      "localName": "Kasuy",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "nparks-cashew-apple-food"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-126",
+      "localName": "Bankundo",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "prosea-noni-traditional"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-045",
+      "localName": "Oxalis corniculata",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "masters-2021-oxalis-food-processing"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-054",
+      "localName": "Kahel",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "nvbt-bitter-orange-food"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-003",
+      "localName": "Tsampaka",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "champaca-flower-bud-rat-study"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-030",
+      "localName": "Abutilon indicum",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "krisanapun-2011-abutilon-extraction"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-032",
+      "localName": "Kastuli",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "gul-2011-kastuli-laboratory"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    },
+    {
+      "candidateId": "research-pardo-130",
+      "localName": "Ayapana",
+      "fullContentDraftPresent": true,
+      "missingFields": [],
+      "preparationSourceIds": [
+        "checkouri-2020-ayapana-extraction"
+      ],
+      "publicationAllowed": false,
+      "medicinalInstructionsCleared": false
+    }
+  ]
+}

@@ -27,6 +27,17 @@ pnpm-debug.log*
 .demo-logs/
 tmp/
 .codex-remote-attachments/
+.agents/
+.codex/
+.impeccable/
+.github/agents/
+.github/hooks/
+.github/skills/
+skills-lock.json
+video/
+Docs/local-notes/
+Docs/prototypes/
+Docs/testing/*.png
 
 # Operating System & IDE files
 .DS_Store
@@ -41,3 +52,8 @@ Thumbs.db
 
 # Generated Prisma
 /generated/prisma
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class

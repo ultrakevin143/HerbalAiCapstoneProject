@@ -17,7 +17,7 @@ const response = () => Object.assign(new EventEmitter(), {
   write: vi.fn(), end: vi.fn(), json: vi.fn(),
 });
 
-beforeEach(() => { vi.resetAllMocks(); environment.DR_AI_REQUEST_TIMEOUT_MS = 90; });
+beforeEach(() => { vi.resetAllMocks(); environment.DR_AI_REQUEST_TIMEOUT_MS = 10_000; });
 afterEach(() => vi.useRealTimers());
 
 describe('Chat request lifetime (no database or provider calls)', () => {
@@ -56,6 +56,7 @@ describe('Chat request lifetime (no database or provider calls)', () => {
 
   it('bounds a stalled stream iterator and returns only a generic terminal error', async () => {
     vi.useFakeTimers();
+    environment.DR_AI_REQUEST_TIMEOUT_MS = 90;
     const req = request();
     const res = response();
     let release!: () => void;
@@ -78,6 +79,7 @@ describe('Chat request lifetime (no database or provider calls)', () => {
 
   it('bounds JSON setup without disclosing timeout details', async () => {
     vi.useFakeTimers();
+    environment.DR_AI_REQUEST_TIMEOUT_MS = 90;
     const req = request();
     const res = response();
     mocks.askDrAi.mockImplementation(() => new Promise(() => undefined));

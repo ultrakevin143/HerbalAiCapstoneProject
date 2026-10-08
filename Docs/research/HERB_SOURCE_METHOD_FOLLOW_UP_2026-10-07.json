@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "status": "SOURCE_FOLLOW_UP_NOT_A_RELEASE_MANIFEST",
+  "reviewedAt": "2026-10-07",
+  "publicationAllowed": false,
+  "productionWritesPerformed": false,
+  "counts": {
+    "sourcesAttempted": 6,
+    "fullTextMethodsRead": 5,
+    "fullTextRetrievalFailed": 1,
+    "appliedHeldLaboratoryDescriptions": 1,
+    "newHouseholdRecipesCleared": 0
+  },
+  "records": [
+    {
+      "localName": "Santan",
+      "pmcid": "PMC3326908",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3326908/fullTextXML",
+      "reviewCoverage": "FULL_TEXT_METHOD_SECTIONS_READ",
+      "title": "Cardioprotective effect of methanolic extract of  Ixora coccinea  Linn. leaves on doxorubicin-induced cardiac toxicity in rats",
+      "doi": "10.4103/0253-7613.93844",
+      "downloadBytes": 58920,
+      "downloadSha256": "b2b53e9a96e8257a860bbca721541a29ffa84c4cc92813f1c7141b0e6a919dfe",
+      "scientificName": "Ixora coccinea",
+      "part": "Leaves",
+      "method": "Dried powdered leaves underwent methanol Soxhlet extraction, solvent removal and drying before rat experiments.",
+      "limitation": "Laboratory extract only, not leaf tea, a heart-protection treatment or human dose.",
+      "adoption": "LEAD_ONLY_NOT_APPLIED_TO_DRAFT"
+    },
+    {
+      "localName": "Kabiki",
+      "pmcid": "PMC3252694",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3252694/fullTextXML",
+      "reviewCoverage": "RETRIEVAL_FAILED",
+      "title": null,
+      "doi": null,
+      "downloadBytes": null,
+      "downloadSha256": null,
+      "scientificName": "Mimusops elengi",
+      "part": "Stem bark",
+      "method": null,
+      "limitation": "Full-text XML retrieval returned HTTP 500. Search-exposed method text is not a fresh full-text validation; no method is adopted.",
+      "adoption": "PARTIAL_SOURCE_COVERAGE_HELD"
+    },
+    {
+      "localName": "Balibago",
+      "pmcid": "PMC4967069",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC4967069/fullTextXML",
+      "reviewCoverage": "FULL_TEXT_METHOD_SECTIONS_READ",
+      "title": "Evaluation of pharmacological activity of  Hibiscus tiliaceus",
+      "doi": "10.1186/s40064-016-2891-0",
+      "downloadBytes": 57338,
+      "downloadSha256": "0e9e7290dabb9fd4425bcd6af69901d14ef5efe8fd45ac7286214adb983a6240",
+      "scientificName": "Hibiscus tiliaceus",
+      "part": "Leaves and bark",
+      "method": "Experimental preparations used ethanol-containing extraction and solvent concentration.",
+      "limitation": "The aqueous ethanol extraction is not a water-only home decoction. It does not establish human wound-treatment or pregnancy safety.",
+      "adoption": "LEAD_ONLY_NOT_APPLIED_TO_DRAFT"
+    },
+    {
+      "localName": "Oxalis corniculata",
+      "pmcid": "PMC3507345",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3507345/fullTextXML",
+      "reviewCoverage": "FULL_TEXT_METHOD_SECTIONS_READ",
+      "title": "Gastroprotective Effect of  Oxalis corniculata  (Whole Plant) on Experimentally Induced Gastric Ulceration in Wistar Rats",
+      "doi": "10.4103/0250-474X.102543",
+      "downloadBytes": 50468,
+      "downloadSha256": "f0f2db04c9978dbe4edc1d94879110846c758f2bc2e99bcd5f1a764112573a9c",
+      "scientificName": "Oxalis corniculata",
+      "part": "Whole plant",
+      "method": "Dried whole-plant powder was defatted and extracted using laboratory solvents before rat-ulcer experiments.",
+      "limitation": "This does not supply edible-leaf processing, a safe serving or a human ulcer-treatment method.",
+      "adoption": "LEAD_ONLY_FOOD_METHOD_GAP_REMAINS"
+    },
+    {
+      "localName": "Kastuli",
+      "pmcid": "PMC7321509",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7321509/fullTextXML",
+      "reviewCoverage": "FULL_TEXT_METHOD_SECTIONS_READ",
+      "title": "Acute and 28-Day Repeated-Dose Oral Toxicity Assessment of  Abelmoschus moschatus  Medik. in Healthy Wistar Rats",
+      "doi": "10.1155/2020/1359050",
+      "downloadBytes": 142149,
+      "downloadSha256": "fa891c996263cafe8608ecea7eca4bd454d9027f7dcfed84944b44c333aa5a0d",
+      "scientificName": "Abelmoschus moschatus",
+      "part": "Leaves; not seeds",
+      "method": "Leaves underwent sequential solvent/water extraction and drying for rat toxicity experiments.",
+      "limitation": "The method does not validate seed-flavoured coffee, food-grade quantities or general human safety.",
+      "adoption": "LEAD_ONLY_SEED_FOOD_METHOD_GAP_REMAINS"
+    },
+    {
+      "localName": "Tsampaka",
+      "pmcid": "PMC3025142",
+      "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3025142/fullTextXML",
+      "reviewCoverage": "FULL_TEXT_METHOD_SECTIONS_READ",
+      "title": "Antidiabetic activity of flower buds of  Michelia champaca  Linn",
+      "doi": "10.4103/0253-7613.45151",
+      "downloadBytes": 65983,
+      "downloadSha256": "1fc7475b7952c47028fde11f93ed106f8b477ffab5f0ea738b0357fa7512eb74",
+      "scientificName": "Magnolia champaca",
+      "part": "Flower buds",
+      "method": "Dried powdered flower buds were used for comparative laboratory extracts, including a separate boiled-water extract, then concentrated for rat experiments.",
+      "limitation": "No human diabetes dose, beginner recipe or resolution of the separate quarantined stem-bark metadata.",
+      "adoption": "HELD_LAB_DESCRIPTION_APPLIED_IN_EXPLICIT_FOLLOW_UP"
+    }
+  ],
+  "unresolvedOccurrence": {
+    "localName": "Lokoloko",
+    "scientificName": "Ocimum gratissimum",
+    "status": "BOUNDED_PHILIPPINE_OCCURRENCE_UNRESOLVED",
+    "absenceClaimed": false
+  },
+  "boundaries": [
+    "No source text copied wholesale; summaries retain plant-part and model limitations.",
+    "No laboratory or rat extraction parameter becomes a household quantity, duration or medicinal dose.",
+    "Kabiki's failed full-text retrieval is not counted as a full method-section read.",
+    "The 2026-10-06 preparation coverage ledger is historical and remains unchanged."
+  ]
+}

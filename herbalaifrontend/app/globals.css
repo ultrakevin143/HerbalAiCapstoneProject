@@ -550,9 +550,10 @@ button:disabled { cursor: not-allowed; }
 .chat-safety { font-size: .8125rem; line-height: 1.4; color: var(--ui-muted); margin-top: .5rem; }
 .quick-prompts { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
 .quick-prompts button { border: 1px solid var(--ui-line); border-radius: 999px; padding: .375rem .75rem; font-size: .8125rem; background: var(--ui-panel); color: var(--ui-muted); }
-.library-herb-card .herb-figma-badge, .library-herb-card .herb-doh-badge { font-size: .6875rem; line-height: 1.2; font-weight: 700; text-transform: none; letter-spacing: 0; padding: .3rem .55rem; background: color-mix(in srgb, var(--ui-panel) 96%, transparent); color: var(--ui-ink); border: 1px solid var(--ui-line-strong); max-width: 48%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 2px 8px rgb(23 32 24 / .08); }
-.library-herb-card .herb-figma-badge { inset: auto .75rem .75rem auto; }
-.library-herb-card .herb-doh-badge { inset: .75rem auto auto .75rem; }
+.library-herb-card .herb-figma-badge { font-size: .6875rem; line-height: 1.2; font-weight: 700; text-transform: none; letter-spacing: 0; padding: .3rem .6rem; background: rgba(15, 23, 18, 0.88); color: #ffffff; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.25); max-width: calc(100% - 1.25rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); inset: auto auto .625rem .625rem; }
+.library-herb-card .herb-doh-badge { font-size: .6875rem; line-height: 1.2; font-weight: 700; text-transform: none; letter-spacing: 0; padding: .3rem .55rem; background: color-mix(in srgb, var(--ui-panel) 96%, transparent); color: var(--ui-ink); border: 1px solid var(--ui-line-strong); max-width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 2px 8px rgb(23 32 24 / .08); inset: .75rem auto auto .75rem; }
+
+
 .library-herb-card h2 { font-size: 1.125rem; }
 .herb-figma-sci { font-size: .875rem; }
 @media (max-width: 639px) {

@@ -1,0 +1,62 @@
+{
+  "checkedAt": "2026-10-07T03:11:31.161Z",
+  "target": {
+    "host": "ep-icy-sound-aqfe958d.c-8.us-east-1.aws.neon.tech",
+    "database": "neondb"
+  },
+  "status": "LIVE_SEMANTIC_RETRIEVAL_PASSED",
+  "scope": "Read-only query embeddings against the live published-herb pgvector retrieval predicate; not an authenticated Dr. Ai chat/UI acceptance result.",
+  "providerCalls": 1,
+  "queryEmbeddings": 2,
+  "chatMessagesSent": 0,
+  "databaseWrites": 0,
+  "retries": 0,
+  "results": [
+    {
+      "question": "What food preparation and safety limitations are documented for Duhat?",
+      "expectedId": "builtin-expansion-03-pardo-098",
+      "expectedRank": 1,
+      "matchedInTopThree": true,
+      "neighbors": [
+        {
+          "id": "builtin-expansion-03-pardo-098",
+          "localName": "Duhat",
+          "distance": 0.15753821314289873
+        },
+        {
+          "id": "builtin-expansion-03-pardo-094",
+          "localName": "Talisay",
+          "distance": 0.24659511406358603
+        },
+        {
+          "id": "builtin-expansion-03-pardo-063",
+          "localName": "Santol",
+          "distance": 0.2658997970520728
+        }
+      ]
+    },
+    {
+      "question": "What is documented about preparing Atis fruit and removing its seeds?",
+      "expectedId": "builtin-expansion-03-pardo-005",
+      "expectedRank": 1,
+      "matchedInTopThree": true,
+      "neighbors": [
+        {
+          "id": "builtin-expansion-03-pardo-005",
+          "localName": "Atis",
+          "distance": 0.1779384744531186
+        },
+        {
+          "id": "builtin-expansion-03-pardo-137",
+          "localName": "Chico",
+          "distance": 0.27214972052592534
+        },
+        {
+          "id": "builtin-expansion-03-pardo-063",
+          "localName": "Santol",
+          "distance": 0.27289223660121775
+        }
+      ]
+    }
+  ]
+}

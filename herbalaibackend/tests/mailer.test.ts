@@ -116,6 +116,41 @@ describe('email delivery', () => {
     expect(streamSend).not.toHaveBeenCalled();
   });
 
+  it.each(['invalid_grant', 'invalid_client', 'unauthorized_client'])('reports only the safe Google authorization code %s', async reason => {
+    environment.EMAIL_PROVIDER = 'gmail';
+    vi.mocked(fetch).mockResolvedValue(new Response(JSON.stringify({
+      error: reason, error_description: 'PRIVATE refresh-token client-secret sender-address',
+      refresh_token: 'PRIVATE token',
+    }), { status: 400 }));
+    await expect(sendMail(message)).rejects.toThrow(`Gmail authorization failed (HTTP 400; ${reason}).`);
+    expect(fetch).toHaveBeenCalledOnce();
+    expect(streamSend).not.toHaveBeenCalled();
+  });
+
+  it.each([null, [], { error: 'PRIVATE provider response' }, { error: { secret: 'PRIVATE' } }])('keeps unknown token rejection payloads private (%s)', async payload => {
+    environment.EMAIL_PROVIDER = 'gmail';
+    vi.mocked(fetch).mockResolvedValue(new Response(JSON.stringify(payload), { status: 400 }));
+    await expect(sendMail(message)).rejects.toThrow('Gmail authorization failed (HTTP 400).');
+    expect(fetch).toHaveBeenCalledOnce();
+    expect(streamSend).not.toHaveBeenCalled();
+  });
+
+  it.each([null, [], {}, { access_token: 123 }, { access_token: '' }, { access_token: '  ' }])('rejects malformed successful token payloads before sending (%s)', async payload => {
+    environment.EMAIL_PROVIDER = 'gmail';
+    vi.mocked(fetch).mockResolvedValue(new Response(JSON.stringify(payload), { status: 200 }));
+    await expect(sendMail(message)).rejects.toThrow('Gmail authorization returned no access token.');
+    expect(fetch).toHaveBeenCalledOnce();
+    expect(streamSend).not.toHaveBeenCalled();
+  });
+
+  it('rejects a non-JSON token success without exposing its content', async () => {
+    environment.EMAIL_PROVIDER = 'gmail';
+    vi.mocked(fetch).mockResolvedValue(new Response('PRIVATE non-JSON response', { status: 200 }));
+    await expect(sendMail(message)).rejects.toThrow('Gmail authorization returned no access token.');
+    expect(fetch).toHaveBeenCalledOnce();
+    expect(streamSend).not.toHaveBeenCalled();
+  });
+
   it('does not claim delivery when Gmail rejects a message', async () => {
     environment.EMAIL_PROVIDER = 'gmail';
     streamSend.mockResolvedValue({ message: Buffer.from('composed MIME message') });

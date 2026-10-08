@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "status": "SANTAN_KABIKI_DESCRIPTIONS_VALIDATED_RELEASE_HELD",
+  "checkedAt": "2026-10-07T00:56:49Z",
+  "branch": "codex/mvp-acceptance-ci",
+  "gitHead": "741167b",
+  "testSuite": {
+    "command": "npx vitest run tests/herb-santan-kabiki-follow-up.test.ts tests/herb-balibago-tkdl-follow-up.test.ts tests/herb-expansion-media-follow-up.test.ts tests/herb-expansion-release-preflight.test.ts tests/herb-third-ten-field-drafts.test.ts tests/herb-fourth-ten-field-drafts.test.ts tests/herb-fifth-ten-field-drafts.test.ts tests/herb-expansion-review.test.ts tests/herb-expansion-staging-plan.test.ts tests/herb-expansion-field-research.test.ts tests/herb-expansion-occurrence-research.test.ts tests/herb-first-ten-content-review.test.ts tests/herb-first-ten-preparation-supplement.test.ts tests/herb-second-ten-content-review.test.ts tests/herb-second-ten-photo-review.test.ts tests/herb-identity-media-follow-up.test.ts tests/herb-fifty-live-release-audit.test.ts tests/stuartxchange-preparation-review.test.ts tests/herb-third-ten-preparation-review.test.ts tests/herb-fourth-ten-preparation-review.test.ts tests/herb-fifth-ten-preparation-review.test.ts tests/herb-cover-replacement-research.test.ts tests/herb-preparation-public-review.test.ts tests/herb-preparation-rag.test.ts tests/herb-preparation-review.test.ts tests/herb-preparation-update.test.ts tests/built-in-herb-fields.test.ts tests/herb-preparation-ci.test.ts tests/herb-preparation-isolated-runner.test.ts tests/herb-taxonomic-identity.test.ts tests/herb-remaining-photo-leads.test.ts tests/herb-remaining-thirty-intake.test.ts tests/herb-remaining-thirty-visual-review.test.ts tests/herb-seventeen-media-delivery.test.ts tests/talisay-preparation-follow-up.test.ts tests/herb-provider-target-follow-up.test.ts",
+    "files": 36,
+    "passed": 592,
+    "failed": 0,
+    "exitCode": 0,
+    "newFollowUpTests": 16
+  },
+  "backendTypecheck": {
+    "command": "npx tsc --noEmit",
+    "exitCode": 0
+  },
+  "strictChangedTestsTypecheck": {
+    "command": "npx tsc --noEmit --target esnext --module nodenext --moduleResolution nodenext --strict --exactOptionalPropertyTypes --noUncheckedIndexedAccess --skipLibCheck tests/herb-santan-kabiki-follow-up.test.ts tests/herb-balibago-tkdl-follow-up.test.ts tests/herb-fourth-ten-field-drafts.test.ts tests/herb-fifth-ten-field-drafts.test.ts tests/herb-expansion-media-follow-up.test.ts",
+    "exitCode": 0
+  },
+  "targetedLint": {
+    "command": "npx eslint tests/herb-santan-kabiki-follow-up.test.ts tests/herb-balibago-tkdl-follow-up.test.ts tests/herb-fourth-ten-field-drafts.test.ts tests/herb-fifth-ten-field-drafts.test.ts tests/herb-expansion-media-follow-up.test.ts",
+    "exitCode": 0
+  },
+  "gitWhitespaceCheckExitCode": 0,
+  "publicPreflight": {
+    "receiptFile": "HERB_SANTAN_KABIKI_PUBLIC_PREFLIGHT_2026-10-07.json",
+    "checkedAt": "2026-10-07T00:56:16.832Z",
+    "checkerExitCode": 2,
+    "counts": {
+      "candidates": 50,
+      "livePublicHerbs": 38,
+      "draftPlansPresent": 50,
+      "partialContentDrafts": 3,
+      "fullContentDrafts": 47,
+      "missingFullContentDrafts": 3,
+      "missingSelectedCovers": 11,
+      "heldSecondaryIdentities": 2,
+      "publicIdentityConflicts": 0,
+      "publicationCleared": 0
+    }
+  },
+  "sourceFollowUpFile": "HERB_SANTAN_KABIKI_PREPARATION_FOLLOW_UP_2026-10-07.json",
+  "historicalPreparationReceipt": {
+    "file": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+    "unchanged": true,
+    "sha256": "7098f83002993bb10203a33fb96cb322566ef03d8a10c410338580dbf410baa3"
+  },
+  "sourceValidation": {
+    "santanOriginHtmlHttpStatus": 200,
+    "kabikiMergedSummaryOriginHtmlHttpStatus": 200,
+    "publisherPdfHttpStatus": 200,
+    "publisherPdfBytes": 295452,
+    "publisherPdfSha256": "779aef574132783d643bc4a07bdb960f36d09779a4cbc823fbc262225108749f",
+    "publisherPdfPrintedPagesVisuallyReviewed": [
+      98,
+      99
+    ],
+    "fullSixPageVisualReviewPerformed": false,
+    "europePmcXmlStatus": 500,
+    "nlmCaptchaFullTextValidated": false,
+    "webScreenshotsSucceeded": false,
+    "localRenderedMethodsLegible": true,
+    "renderWarnings": [
+      "No display font for Symbol",
+      "No display font for ArialUnicode"
+    ],
+    "unavailableOptionalTool": "pdftotext was not on PATH in the attempted combined rendering command; local visual review used the generated PNGs."
+  },
+  "repairedValidationIssue": "The first targeted/broad runs retained an obsolete media-test expectation that Kabiki still had PREPARATION_METHOD_UNRESOLVED. The new laboratory description resolves only that descriptive field; the test now asserts continuing safety, human-review and draft-gap holds. The final 36-file run passed.",
+  "remainingPartialDrafts": [
+    {
+      "name": "Lokoloko",
+      "field": "regionFound"
+    },
+    {
+      "name": "Oxalis corniculata",
+      "field": "preparationMethod"
+    },
+    {
+      "name": "Kastuli",
+      "field": "preparationMethod"
+    }
+  ],
+  "additionalRecordedIssue": {
+    "scope": "Five current field-draft plans",
+    "affectedDrafts": 17,
+    "issue": "imageCreator contains the rights phrase 'no rights reserved', not an authenticated photographer name",
+    "fixed": false,
+    "nextAction": "Ownership-bound draft provenance cleanup; do not rewrite historical upload/audit receipts or invent creator names."
+  },
+  "productionWrites": 0,
+  "cloudinaryUploads": 0,
+  "aiProviderRequests": 0,
+  "gitCommits": 0,
+  "gitPushes": 0,
+  "limitations": [
+    "47 descriptive core-field drafts does not mean 47 safe medicinal recipes or beginner guides.",
+    "Santan folklore is secondary evidence; Kabiki is a methanol laboratory extraction in mice, not human care.",
+    "Balibago leaf, Santan exact-cultivar flower-food and Kabiki fruit-processing gaps remain separate.",
+    "No real isolated PostgreSQL import/rollback/concurrency suite or all-state transactional duplicate comparison was run.",
+    "The public GET returned 38 live herbs and zero public name conflicts only; it is not private duplicate clearance.",
+    "Eleven covers, category/content/botanical/human review, backup and guarded import validation remain unresolved.",
+    "This focused source/contract/RAG regression suite does not constitute full live MVP acceptance."
+  ]
+}

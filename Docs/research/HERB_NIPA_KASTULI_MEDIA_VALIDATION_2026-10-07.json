@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "status": "LOCAL_COVER_INTEGRATION_VALIDATED_NOT_PUBLISHED",
+  "validatedAt": "2026-10-07T01:56:13.404Z",
+  "cloudinaryUploadsThisBatch": 2,
+  "selectedDraftCovers": 41,
+  "remainingDraftCoverGaps": 9,
+  "tests": {
+    "files": 40,
+    "passed": 682,
+    "failed": 0,
+    "command": "npx vitest run tests/herb-current-cover-selection.test.ts tests/herb-creator-metadata-follow-up.test.ts tests/herb-oxalis-kastuli-follow-up.test.ts tests/herb-santan-kabiki-follow-up.test.ts tests/herb-balibago-tkdl-follow-up.test.ts tests/herb-expansion-media-follow-up.test.ts tests/herb-expansion-release-preflight.test.ts tests/herb-third-ten-field-drafts.test.ts tests/herb-fourth-ten-field-drafts.test.ts tests/herb-fifth-ten-field-drafts.test.ts tests/herb-expansion-review.test.ts tests/herb-expansion-staging-plan.test.ts tests/herb-expansion-field-research.test.ts tests/herb-expansion-occurrence-research.test.ts tests/herb-first-ten-content-review.test.ts tests/herb-first-ten-preparation-supplement.test.ts tests/herb-second-ten-content-review.test.ts tests/herb-second-ten-photo-review.test.ts tests/herb-identity-media-follow-up.test.ts tests/herb-fifty-live-release-audit.test.ts tests/stuartxchange-preparation-review.test.ts tests/herb-third-ten-preparation-review.test.ts tests/herb-fourth-ten-preparation-review.test.ts tests/herb-fifth-ten-preparation-review.test.ts tests/herb-cover-replacement-research.test.ts tests/herb-preparation-public-review.test.ts tests/herb-preparation-rag.test.ts tests/herb-preparation-review.test.ts tests/herb-preparation-update.test.ts tests/built-in-herb-fields.test.ts tests/herb-preparation-ci.test.ts tests/herb-preparation-isolated-runner.test.ts tests/herb-taxonomic-identity.test.ts tests/herb-remaining-photo-leads.test.ts tests/herb-remaining-thirty-intake.test.ts tests/herb-remaining-thirty-visual-review.test.ts tests/herb-seventeen-media-delivery.test.ts tests/talisay-preparation-follow-up.test.ts tests/herb-provider-target-follow-up.test.ts tests/herb-nipa-kastuli-media-recovery.test.ts"
+  },
+  "backendTypecheck": {
+    "command": "npx tsc --noEmit -p tsconfig.json",
+    "exitCode": 0
+  },
+  "focusedLint": {
+    "command": "npx eslint src/content/herb-expansion-media-follow-up.ts src/content/herb-expansion-release-preflight.ts",
+    "exitCode": 0
+  },
+  "cliTypecheck": {
+    "command": "npx tsc --noEmit --module NodeNext --moduleResolution NodeNext --target ES2022 --strict --esModuleInterop --skipLibCheck prisma/check-herb-expansion-release.ts prisma/find-herb-cover-replacements.ts",
+    "exitCode": 0
+  },
+  "publicPreflight": {
+    "cliExitCode": 2,
+    "status": "HELD_EXPANSION_RELEASE_PREFLIGHT",
+    "checkedAt": "2026-10-07T01:56:13.404Z",
+    "counts": {
+      "candidates": 50,
+      "livePublicHerbs": 38,
+      "draftPlansPresent": 50,
+      "partialContentDrafts": 1,
+      "fullContentDrafts": 49,
+      "missingFullContentDrafts": 1,
+      "missingSelectedCovers": 9,
+      "heldSecondaryIdentities": 2,
+      "publicIdentityConflicts": 0,
+      "publicationCleared": 0
+    },
+    "globalBlockers": [
+      "Fresh, independently targeted all-state private-database comparison is still required before any write.",
+      "A backed-up import with isolated rollback and concurrent-duplicate tests is not present.",
+      "Historical image checks do not establish fresh delivery, licensing or taxon clearance.",
+      "Secondary preparation leads do not clear beginner instructions or medicinal dosage.",
+      "This report is read-only; no publish, database or embedding operation exists."
+    ],
+    "newMediaEvidence": [
+      {
+        "evidenceFile": "HERB_NIPA_KASTULI_COVER_INTEGRATION_2026-10-07.json",
+        "mediaReviewFile": "HERB_NIPA_KASTULI_MEDIA_RECOVERY_2026-10-07.json",
+        "integratedAt": "2026-10-07T01:53:00Z",
+        "selectedCovers": 2
+      }
+    ],
+    "missingCovers": [
+      {
+        "candidateId": "research-pardo-171",
+        "localName": "Lokoloko",
+        "scientificName": "Ocimum gratissimum"
+      },
+      {
+        "candidateId": "research-pardo-089",
+        "localName": "Alibangbang",
+        "scientificName": "Piliostigma malabaricum"
+      },
+      {
+        "candidateId": "research-pardo-091",
+        "localName": "Kupang",
+        "scientificName": "Parkia timoriana"
+      },
+      {
+        "candidateId": "research-pardo-108",
+        "localName": "Bottle gourd",
+        "scientificName": "Lagenaria siceraria"
+      },
+      {
+        "candidateId": "research-pardo-033",
+        "localName": "Balibago",
+        "scientificName": "Hibiscus tiliaceus"
+      },
+      {
+        "candidateId": "research-pardo-079",
+        "localName": "Asana",
+        "scientificName": "Pterocarpus indicus"
+      },
+      {
+        "candidateId": "research-pardo-047",
+        "localName": "Kamias",
+        "scientificName": "Averrhoa bilimbi"
+      },
+      {
+        "candidateId": "research-pardo-054",
+        "localName": "Kahel",
+        "scientificName": "Citrus aurantium"
+      },
+      {
+        "candidateId": "research-pardo-130",
+        "localName": "Ayapana",
+        "scientificName": "Ayapana triplinervis"
+      }
+    ],
+    "remainingIncompleteDrafts": [
+      {
+        "candidateId": "research-pardo-171",
+        "localName": "Lokoloko",
+        "earlierMissingFields": [
+          "regionFound"
+        ]
+      }
+    ]
+  },
+  "databaseWrites": 0,
+  "publishedNewHerbs": 0,
+  "commits": 0,
+  "pushes": 0,
+  "limitations": [
+    "Database import/rollback/concurrent-duplicate tests were not run; isolated PostgreSQL is unavailable.",
+    "This test pass validates local code and receipt integration, not a production import.",
+    "Nine missing covers, one missing region field, two secondary identity holds and unresolved review/category gates remain.",
+    "Current source-backed preparation descriptions include food and laboratory reports, not universally validated beginner recipes.",
+    "No new AI calls, embeddings, credentials, personal inbox operations or administrator changes were performed."
+  ]
+}

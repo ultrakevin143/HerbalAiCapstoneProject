@@ -1,0 +1,375 @@
+{
+  "schemaVersion": 1,
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "reviewedAt": "2026-10-05",
+  "status": "PREPARATION_SUPPLEMENT_NOT_IMPORTABLE",
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "supersedes": "Preparation research only; the earlier first-ten safety and identity review remains unchanged and its publication blockers still apply.",
+  "counts": {
+    "records": 10,
+    "foodDescriptions": 9,
+    "preparationMethodsNotEstablished": 1,
+    "medicinalInstructionsCleared": 0
+  },
+  "limitations": [
+    "Descriptions are not step-by-step home recipes or treatments. Some sources describe food use but supply no processing timings or ratios.",
+    "No Neon writes, Cloudinary uploads, clinical approval or herb publication occurred in this supplement.",
+    "The existing first-ten DRAFT planner is not regenerated here and still contains its earlier withheld preparation state."
+  ],
+  "sources": [
+    {
+      "id": "duhat-food",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks/GardeningSG: Syzygium cumini",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/3/1/3158",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Food use is not clinical validation. Do not transfer safety, plant parts or medicinal quantities from neighbouring statements, species or unsupported historical recipes."
+    },
+    {
+      "id": "tamarind-food",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks/GardeningSG: Tamarindus indica",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/3/1/3174",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Food use is not clinical validation. Do not transfer safety, plant parts or medicinal quantities from neighbouring statements, species or unsupported historical recipes."
+    },
+    {
+      "id": "atis-food",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks/GardeningSG: Annona squamosa",
+      "url": "https://gardeningsg.nparks.gov.sg/gardening-resource-library/custard-apple/",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Food use is not clinical validation. Do not transfer safety, plant parts or medicinal quantities from neighbouring statements, species or unsupported historical recipes."
+    },
+    {
+      "id": "talisay-food",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks/GardeningSG: Terminalia catappa",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/3/1/3181",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Food use is not clinical validation. Do not transfer safety, plant parts or medicinal quantities from neighbouring statements, species or unsupported historical recipes."
+    },
+    {
+      "id": "butterfly-food",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks/GardeningSG: Clitoria ternatea",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/1/3/1372",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Food use is not clinical validation. Do not transfer safety, plant parts or medicinal quantities from neighbouring statements, species or unsupported historical recipes."
+    },
+    {
+      "id": "mango-food",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks/GardeningSG: Mangifera indica",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/3/0/3013",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Food use is not clinical validation. Do not transfer safety, plant parts or medicinal quantities from neighbouring statements, species or unsupported historical recipes."
+    },
+    {
+      "id": "santol-food",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks/GardeningSG: Sandoricum koetjape",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/3/1/3109",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Food use is not clinical validation. Do not transfer safety, plant parts or medicinal quantities from neighbouring statements, species or unsupported historical recipes."
+    },
+    {
+      "id": "papaya-food",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks/GardeningSG: Carica papaya",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/7/2785",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Food use is not clinical validation. Do not transfer safety, plant parts or medicinal quantities from neighbouring statements, species or unsupported historical recipes."
+    },
+    {
+      "id": "pomegranate-food",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks/GardeningSG: Punica granatum",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/3/2378",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Food use is not clinical validation. Do not transfer safety, plant parts or medicinal quantities from neighbouring statements, species or unsupported historical recipes."
+    },
+    {
+      "id": "chico-food",
+      "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+      "title": "NParks/GardeningSG: Manilkara zapota",
+      "url": "https://www.nparks.gov.sg/florafaunaweb/flora/3/0/3014",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Food use is not clinical validation. Do not transfer safety, plant parts or medicinal quantities from neighbouring statements, species or unsupported historical recipes."
+    },
+    {
+      "id": "pomegranate-safety",
+      "kind": "AUTHORITATIVE_SAFETY_GUIDANCE",
+      "title": "NCCIH: Pomegranate",
+      "url": "https://www.nccih.nih.gov/health/pomegranate",
+      "reviewedAt": "2026-10-05",
+      "limitation": "Safety guidance distinguishes juice from root, stem and peel; no worm-treatment preparation is validated."
+    }
+  ],
+  "records": [
+    {
+      "candidateId": "research-pardo-098",
+      "scientificName": "Syzygium cumini",
+      "localName": "Duhat",
+      "bookEntry": 98,
+      "printedPage": 114,
+      "preparationPart": "Fruit",
+      "preparationDescription": "Culinary use, not treatment: duhat fruits are eaten fresh or processed into juice, sauces, jams and preserves. The source supplies no diabetes-treatment recipe.",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationSourceIds": [
+        "duhat-food"
+      ],
+      "safetySourceIds": [],
+      "preparationInstructions": null,
+      "dosage": null,
+      "historicalExclusions": [
+        "Do not substitute seed powder, bark or leaf tea for diabetes treatment."
+      ],
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Part-specific content and safety approval",
+        "Isolated staging validation"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-088",
+      "scientificName": "Tamarindus indica",
+      "localName": "Sampalok",
+      "bookEntry": 88,
+      "printedPage": 104,
+      "preparationPart": "Fruit pulp",
+      "preparationDescription": "Culinary use, not treatment: the tart pulp is used as a flavouring in curries, chutneys, jams, confectionery and beverages. No medicinal laxative dose or timed recipe is established.",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationSourceIds": [
+        "tamarind-food"
+      ],
+      "safetySourceIds": [],
+      "preparationInstructions": null,
+      "dosage": null,
+      "historicalExclusions": [
+        "Do not present historical laxative doses as current clinical guidance."
+      ],
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Part-specific content and safety approval",
+        "Isolated staging validation"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-005",
+      "scientificName": "Annona squamosa",
+      "localName": "Atis",
+      "bookEntry": 5,
+      "printedPage": 20,
+      "preparationPart": "Fruit flesh, excluding seeds",
+      "preparationDescription": "Culinary use, not treatment: mature fruit is eaten fresh or added to smoothies and desserts. Seeds must be removed before serving; the source identifies them as toxic when swallowed.",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationSourceIds": [
+        "atis-food"
+      ],
+      "safetySourceIds": [],
+      "preparationInstructions": null,
+      "dosage": null,
+      "historicalExclusions": [
+        "Withhold seed scalp-pest recipes and prevent seed exposure to eyes."
+      ],
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Part-specific content and safety approval",
+        "Isolated staging validation"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-094",
+      "scientificName": "Terminalia catappa",
+      "localName": "Talisay",
+      "bookEntry": 94,
+      "printedPage": 110,
+      "preparationPart": "Kernel, not leaf or bark",
+      "preparationDescription": "NParks identifies the kernel as food, but the reviewed page gives no preparation method. Do not invent roasting, boiling or medicinal tea instructions to fill this field.",
+      "preparationKind": "PREPARATION_METHOD_NOT_ESTABLISHED",
+      "preparationSourceIds": [
+        "talisay-food"
+      ],
+      "safetySourceIds": [],
+      "preparationInstructions": null,
+      "dosage": null,
+      "historicalExclusions": [
+        "Withhold unsupported leaf-tea and bark treatment recipes."
+      ],
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Part-specific content and safety approval",
+        "Isolated staging validation",
+        "Source a concrete preparation method"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-077",
+      "scientificName": "Clitoria ternatea",
+      "localName": "Butterfly pea",
+      "bookEntry": 77,
+      "printedPage": 92,
+      "preparationPart": "Flowers, not roots or seeds",
+      "preparationDescription": "Culinary use, not treatment: flowers supply an edible blue colour extract used in traditional Malay pastries. The reviewed source gives no extraction time, ratio or therapeutic flower-tea regimen.",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationSourceIds": [
+        "butterfly-food"
+      ],
+      "safetySourceIds": [],
+      "preparationInstructions": null,
+      "dosage": null,
+      "historicalExclusions": [
+        "Withhold the historical root and seed purgative recipes."
+      ],
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Part-specific content and safety approval",
+        "Isolated staging validation"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-069",
+      "scientificName": "Mangifera indica",
+      "localName": "Mangga",
+      "bookEntry": 69,
+      "printedPage": 82,
+      "preparationPart": "Fruit flesh",
+      "preparationDescription": "Culinary use, not treatment: the edible ripe fruit has juicy yellow flesh. The reviewed page does not specify a cooking recipe; do not manufacture a leaf or bark decoction from its list of folk claims.",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationSourceIds": [
+        "mango-food"
+      ],
+      "safetySourceIds": [],
+      "preparationInstructions": null,
+      "dosage": null,
+      "historicalExclusions": [
+        "Withhold unvalidated bark, resin, seed and leaf treatments."
+      ],
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Part-specific content and safety approval",
+        "Isolated staging validation"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-063",
+      "scientificName": "Sandoricum koetjape",
+      "localName": "Santol",
+      "bookEntry": 63,
+      "printedPage": 77,
+      "preparationPart": "Whitish fruit pulp, not seeds",
+      "preparationDescription": "Culinary use, not treatment: the whitish pulp is eaten fresh or made into marmalade and candy. Medicinal bark and root instructions are not cleared by this food description.",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationSourceIds": [
+        "santol-food"
+      ],
+      "safetySourceIds": [],
+      "preparationInstructions": null,
+      "dosage": null,
+      "historicalExclusions": [
+        "Do not recommend swallowing santol seeds; retain the existing human-injury safety hold."
+      ],
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Part-specific content and safety approval",
+        "Isolated staging validation"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-104",
+      "scientificName": "Carica papaya",
+      "localName": "Papaya",
+      "bookEntry": 104,
+      "printedPage": 123,
+      "preparationPart": "Fruit flesh only in this proposed description",
+      "preparationDescription": "Culinary use, not treatment: papaya fruit is eaten, made into jellies or preserves, or cooked as a vegetable. This food description does not establish dengue treatment or a latex preparation.",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationSourceIds": [
+        "papaya-food"
+      ],
+      "safetySourceIds": [],
+      "preparationInstructions": null,
+      "dosage": null,
+      "historicalExclusions": [
+        "Withhold latex, seed, root and leaf medicinal regimens; retain part-specific pregnancy and child safety review."
+      ],
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Part-specific content and safety approval",
+        "Isolated staging validation"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-102",
+      "scientificName": "Punica granatum",
+      "localName": "Granada",
+      "bookEntry": 102,
+      "printedPage": 120,
+      "preparationPart": "Edible fruit pulp surrounding seeds",
+      "preparationDescription": "Culinary use, not treatment: the fruit pulp is eaten fresh or processed into juice, jellies and syrups. This does not establish a root-bark worm treatment.",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationSourceIds": [
+        "pomegranate-food"
+      ],
+      "safetySourceIds": [
+        "pomegranate-safety"
+      ],
+      "preparationInstructions": null,
+      "dosage": null,
+      "historicalExclusions": [
+        "Withhold root, stem and peel regimens; NCCIH warns that large amounts of those materials can be harmful."
+      ],
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Part-specific content and safety approval",
+        "Isolated staging validation"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-137",
+      "scientificName": "Manilkara zapota",
+      "localName": "Chico",
+      "bookEntry": 137,
+      "printedPage": 156,
+      "preparationPart": "Fruit flesh, not seed kernels or sap",
+      "preparationDescription": "Culinary use, not treatment: edible fruit is eaten fresh or used in desserts. The same source flags irritating sap and toxic seed ingestion, so no seed preparation is included.",
+      "preparationKind": "FOOD_DESCRIPTION",
+      "preparationSourceIds": [
+        "chico-food"
+      ],
+      "safetySourceIds": [],
+      "preparationInstructions": null,
+      "dosage": null,
+      "historicalExclusions": [
+        "Withhold seed paste and immature-fruit medicinal regimens; a seed injury threshold is not a safe dose."
+      ],
+      "publicationAllowed": false,
+      "publicationBlockers": [
+        "Confirm intended live Neon target",
+        "Fresh all-state duplicate check",
+        "Part-specific content and safety approval",
+        "Isolated staging validation"
+      ]
+    }
+  ]
+}

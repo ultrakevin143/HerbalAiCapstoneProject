@@ -19,6 +19,11 @@ const foodReview = JSON.parse(readFileSync(new URL('../../Docs/research/HERB_PRE
   proposals: Array<{ recordId: string; localName: string; scientificName: string; proposedPreparationMethod: string; preparationSourceIds: string[] }>;
 };
 const sourceCatalog = { ...foodBatch.sources, ...batch.sources, ...foodReview.sources };
+const getSource = (sourceId: string) => {
+  const source = sourceCatalog[sourceId];
+  if (!source) throw new Error(`Missing preparation source fixture: ${sourceId}`);
+  return source;
+};
 const fixture = (slug: string) => {
   const herb = batch.herbs.find(item => item.slug === slug) ?? foodBatch.herbs.find(item => item.slug === slug);
   if (!herb) throw new Error(`Missing herb fixture: ${slug}`);
@@ -28,7 +33,8 @@ const fixture = (slug: string) => {
     isVerified: true,
     cebuanoName: null as string | null,
     evidenceClass: 'DOCUMENTED_TRADITIONAL_USE',
-    sources: herb.fieldSources.preparationMethod.map(sourceId => ({ ...sourceCatalog[sourceId], supports: ['preparationMethod'] })),
+    sources: [...new Set(['preparationMethod', 'dosage', 'warnings'].flatMap(field => herb.fieldSources[field] ?? []))]
+      .map(sourceId => ({ ...getSource(sourceId), supports: ['preparationMethod', 'dosage', 'warnings'].filter(field => herb.fieldSources[field]?.includes(sourceId)) })),
   };
 };
 
@@ -48,7 +54,7 @@ describe('preparation retrieval regressions (isolated published fixtures, not li
     const herb = fixture('oregano');
     await AskAIService(`How is ${name} prepared?`);
     expect(mocks.answer.mock.calls[0]?.[1]).toContain(herb.preparationMethod);
-    expect(mocks.answer.mock.calls[0]?.[1]).toContain(batch.sources['ust-oregano'].url);
+    expect(mocks.answer.mock.calls[0]?.[1]).toContain(getSource('ust-oregano').url);
     expect(mocks.embed).not.toHaveBeenCalled();
   });
 
@@ -61,6 +67,29 @@ describe('preparation retrieval regressions (isolated published fixtures, not li
     expect(context).toContain(herb.warnings);
     for (const source of herb.sources) expect(context).toContain(source.url);
     expect(mocks.embed).not.toHaveBeenCalled();
+  });
+
+  it.each(['Mangosteen', 'Garcinia mangostana'])('retrieves %s preparation, safety warning and both correctly scoped references', async name => {
+    const herb = fixture('mangosteen');
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    await AskAIService(`What preparation is recorded for ${name}?`);
+    const context = mocks.answer.mock.calls[0]?.[1];
+    expect(context).toContain(herb.preparationMethod);
+    expect(context).toContain(herb.warnings);
+    expect(context).toContain(batch.sources['who-dengue-2025']!.url);
+    expect(context).toContain(batch.sources['cavite-preparations-2021']!.url);
+    expect(herb.sources.find(source => source.url.includes('who.int'))?.supports).toEqual(['warnings']);
+    expect(mocks.embed).not.toHaveBeenCalled();
+  });
+
+  it('retains the sourced Mangosteen care warning during provider failure without inventing a dose', async () => {
+    const herb = fixture('mangosteen');
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    mocks.answer.mockRejectedValue(new Error('test provider unavailable'));
+    const result = await AskAIService('How is Garcinia mangostana prepared?');
+    expect(result.data?.answer).toContain(herb.preparationMethod);
+    expect(result.data?.answer).toContain(herb.warnings);
+    expect(result.data?.answer).toContain('cannot synthesize a dose');
   });
 
   it('keeps an incomplete entry incomplete when a matching preparation source is unavailable', async () => {
@@ -104,7 +133,7 @@ describe('preparation retrieval regressions (isolated published fixtures, not li
     mocks.herbs.mockResolvedValue([{ ...herb, distance: 0.1 }]);
     await AskAIService('Which record describes a poultice?');
     expect(mocks.answer.mock.calls[0]?.[1]).toContain(herb.preparationMethod);
-    expect(mocks.answer.mock.calls[0]?.[1]).toContain(batch.sources['la-union-preparations'].url);
+    expect(mocks.answer.mock.calls[0]?.[1]).toContain(getSource('la-union-preparations').url);
   });
 
   it('returns the recorded preparation without synthesizing a new dose when generation fails', async () => {
@@ -119,6 +148,46 @@ describe('preparation retrieval regressions (isolated published fixtures, not li
     for await (const chunk of response.chunks) expect(chunk).toBe('Grounded test response.');
     expect(mocks.stream.mock.calls[0]?.[1]).toContain(fixture('oregano').preparationMethod);
     expect(response.getResult().sources).toContainEqual({ type: 'herb', title: 'Oregano', distance: 0 });
+  });
+
+  it.each([
+    'What preparation does the repository document for Takip-kohol?',
+    'How is Centella asiatica prepared?',
+    'How do I prepare Takip-kohol?',
+    'What preparations are documented for Takip-kohol?',
+  ])('includes recorded adult frequency and duration for preparation question: %s', async question => {
+    const herb = fixture('takip-kohol');
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    await AskAIService(question);
+    const context = mocks.answer.mock.calls[0]?.[1];
+    expect(context).toContain('dosageField');
+    expect(context).toContain(herb.dosage);
+    expect(context).toContain(herb.warnings);
+    expect(context).toContain(getSource('ema-centella-2022').url);
+  });
+
+  it('includes recorded frequency in streamed preparation context too', async () => {
+    const herb = fixture('takip-kohol');
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    const response = await createDrAiStream('What preparation is recorded for Centella asiatica?');
+    for await (const chunk of response.chunks) expect(chunk).toBe('Grounded test response.');
+    expect(mocks.stream.mock.calls[0]?.[1]).toContain(herb.dosage);
+  });
+
+  it('does not add dosage context to unrelated botanical questions', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [fixture('takip-kohol')] });
+    await AskAIService('What is the scientific name of Takip-kohol?');
+    expect(mocks.answer.mock.calls[0]?.[1]).not.toContain('dosageField');
+  });
+
+  it('keeps adult preparation frequency out of child-specific answers', async () => {
+    const herb = fixture('takip-kohol');
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    const result = await AskAIService('How do I prepare Centella asiatica for my child?');
+    expect(result.data?.answer).toContain('cannot provide child-specific preparation');
+    expect(result.data?.answer).not.toContain(herb.dosage);
+    expect(result.data?.answer).not.toContain('0.6');
+    expect(mocks.answer).not.toHaveBeenCalled();
   });
 
   it('continues to withhold preparation quantities for a child through a botanical alias', async () => {
@@ -142,7 +211,7 @@ describe('preparation retrieval regressions (isolated published fixtures, not li
       preparationMethod: proposal.proposedPreparationMethod, dosage: 'No general medicinal dosage is established.',
       warnings: 'Concentrated essential oil should not be swallowed or applied undiluted.',
       fieldSources: { preparationMethod: proposal.preparationSourceIds },
-      sources: proposal.preparationSourceIds.map(sourceId => ({ ...sourceCatalog[sourceId], supports: ['preparationMethod'] })),
+      sources: proposal.preparationSourceIds.map(sourceId => ({ ...getSource(sourceId), supports: ['preparationMethod'] })),
     } : fixture(slug);
     mocks.catalog.mockResolvedValue({ herbs: [herb] });
     await AskAIService(`How is ${herb.scientificName} prepared as food?`);

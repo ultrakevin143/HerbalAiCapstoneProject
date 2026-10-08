@@ -405,21 +405,17 @@ export const resendEmailVerification = async (email: string) => {
   return { message: "If this email is registered and unverified, a new link has been sent." };
 };
 
-export const forgotPassword = async (email: string) => {
+const requestPasswordResetLink = async (email: string): Promise<"missing" | "cooldown" | "failed" | "sent"> => {
   const user = await userRepo.findUserByEmail(email);
 
-  const neutralResponse = {
-    message: "If an account with that email exists, a password reset link has been sent. Check your email and Spam folder; if you requested one recently, wait an hour before trying again.",
-  };
-
   if (!user || isAccountBanned(user)) {
-    return neutralResponse;
+    return "missing";
   }
 
   const requestedAt = new Date();
   const cooldownStart = new Date(requestedAt.getTime() - 60 * 60 * 1000);
   const claimed = await userRepo.claimPasswordResetRequest(user.id, requestedAt, cooldownStart);
-  if (!claimed) return neutralResponse;
+  if (!claimed) return "cooldown";
 
   const resetToken = crypto.randomBytes(32).toString("hex");
   const expiresAt = new Date(requestedAt.getTime() + 60 * 60 * 1000);
@@ -468,7 +464,7 @@ export const forgotPassword = async (email: string) => {
     for (const result of cleanup) {
       if (result.status === "rejected") console.error("Failed to clean up password reset request:", result.reason);
     }
-    return neutralResponse;
+    return "failed";
   }
 
   try {
@@ -477,7 +473,14 @@ export const forgotPassword = async (email: string) => {
     console.error("Failed to revoke previous password reset links:", error);
   }
 
-  return neutralResponse;
+  return "sent";
+};
+
+export const forgotPassword = async (email: string) => {
+  await requestPasswordResetLink(email);
+  return {
+    message: "If an account with that email exists, a password reset link has been sent. Check your email and Spam folder; if you requested one recently, wait an hour before trying again.",
+  };
 };
 
 export const changePassword = async (
@@ -507,7 +510,15 @@ export const requestPasswordSetup = async (userId: string) => {
   const user = await userRepo.findUserById(userId);
   if (!user) throw { status: 401, message: "Please sign in again." };
   if (isAccountBanned(user)) throw { status: 403, message: banMessage(user) };
-  return forgotPassword(user.email);
+  const outcome = await requestPasswordResetLink(user.email);
+  if (outcome === "missing") throw { status: 401, message: "Please sign in again." };
+  if (outcome === "cooldown") {
+    throw { status: 429, message: "You can request one password link per hour. Check your email and Spam folder for the existing link, or wait before requesting another." };
+  }
+  if (outcome === "failed") {
+    throw { status: 503, message: "We could not send your password link. Please try again later." };
+  }
+  return { message: "Your password link was sent. Check your email and Spam folder. The link expires in one hour and works only once." };
 };
 
 export const resetPassword = async (token: string, newPassword: string) => {

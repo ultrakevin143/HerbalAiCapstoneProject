@@ -8,6 +8,12 @@ const batch = JSON.parse(readFileSync(new URL('../content/herbs/expansion-batch-
   herbs: Array<Parameters<typeof builtInHerbEmbeddingText>[0]>;
 };
 
+const sourceReviewDate = (sourceId: string) => {
+  const source = batch.sources[sourceId];
+  if (!source) throw new Error(`Missing source date fixture: ${sourceId}`);
+  return herbSourceAccessedAt(source, batch.preparedAt).toISOString();
+};
+
 describe('built-in preparation embedding and citation dates', () => {
   it('embeds current preparations, safety text and botanical aliases', () => {
     for (const herb of batch.herbs) {
@@ -21,8 +27,10 @@ describe('built-in preparation embedding and citation dates', () => {
   });
 
   it('keeps later source review dates rather than backdating them to the original batch', () => {
-    expect(herbSourceAccessedAt(batch.sources['ust-oregano'], batch.preparedAt).toISOString()).toBe('2026-10-05T00:00:00.000Z');
-    expect(herbSourceAccessedAt(batch.sources['tinospora-hepatitis-2014'], batch.preparedAt).toISOString()).toBe('2026-10-05T00:00:00.000Z');
+    for (const sourceId of ['ust-oregano', 'cavite-preparations-2021', 'who-dengue-2025']) {
+      expect(sourceReviewDate(sourceId)).toBe('2026-10-06T00:00:00.000Z');
+    }
+    expect(sourceReviewDate('tinospora-hepatitis-2014')).toBe('2026-10-05T00:00:00.000Z');
   });
 
   it('preserves the original batch date when no later access date was recorded', () => {

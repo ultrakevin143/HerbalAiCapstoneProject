@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "status": "BALIBAGO_TRADITIONAL_DESCRIPTION_VALIDATED_RELEASE_HELD",
+  "checkedAt": "2026-10-07T00:45:27Z",
+  "branch": "codex/mvp-acceptance-ci",
+  "gitHead": "741167b",
+  "testSuite": {
+    "command": "npx vitest run tests/herb-balibago-tkdl-follow-up.test.ts tests/herb-expansion-media-follow-up.test.ts tests/herb-expansion-release-preflight.test.ts tests/herb-third-ten-field-drafts.test.ts tests/herb-fourth-ten-field-drafts.test.ts tests/herb-fifth-ten-field-drafts.test.ts tests/herb-expansion-review.test.ts tests/herb-expansion-staging-plan.test.ts tests/herb-expansion-field-research.test.ts tests/herb-expansion-occurrence-research.test.ts tests/herb-first-ten-content-review.test.ts tests/herb-first-ten-preparation-supplement.test.ts tests/herb-second-ten-content-review.test.ts tests/herb-second-ten-photo-review.test.ts tests/herb-identity-media-follow-up.test.ts tests/herb-fifty-live-release-audit.test.ts tests/stuartxchange-preparation-review.test.ts tests/herb-third-ten-preparation-review.test.ts tests/herb-fourth-ten-preparation-review.test.ts tests/herb-fifth-ten-preparation-review.test.ts tests/herb-cover-replacement-research.test.ts tests/herb-preparation-public-review.test.ts tests/herb-preparation-rag.test.ts tests/herb-preparation-review.test.ts tests/herb-preparation-update.test.ts tests/built-in-herb-fields.test.ts tests/herb-preparation-ci.test.ts tests/herb-preparation-isolated-runner.test.ts tests/herb-taxonomic-identity.test.ts tests/herb-remaining-photo-leads.test.ts tests/herb-remaining-thirty-intake.test.ts tests/herb-remaining-thirty-visual-review.test.ts tests/herb-seventeen-media-delivery.test.ts tests/talisay-preparation-follow-up.test.ts tests/herb-provider-target-follow-up.test.ts",
+    "files": 35,
+    "passed": 576,
+    "failed": 0,
+    "exitCode": 0
+  },
+  "backendTypecheck": {
+    "command": "npx tsc --noEmit",
+    "exitCode": 0
+  },
+  "strictChangedTestsTypecheck": {
+    "command": "npx tsc --noEmit --target esnext --module nodenext --moduleResolution nodenext --strict --exactOptionalPropertyTypes --noUncheckedIndexedAccess --skipLibCheck tests/herb-balibago-tkdl-follow-up.test.ts tests/herb-fourth-ten-field-drafts.test.ts tests/herb-fifth-ten-field-drafts.test.ts tests/herb-expansion-media-follow-up.test.ts",
+    "exitCode": 0
+  },
+  "targetedLint": {
+    "command": "npx eslint tests/herb-balibago-tkdl-follow-up.test.ts tests/herb-fourth-ten-field-drafts.test.ts tests/herb-fifth-ten-field-drafts.test.ts tests/herb-expansion-media-follow-up.test.ts",
+    "exitCode": 0
+  },
+  "gitWhitespaceCheckExitCode": 0,
+  "localReceiptValidation": { "filesChecked": 10, "jsonFilesParsed": 4, "trailingWhitespace": false, "finalNewlines": true },
+  "publicPreflight": {
+    "receiptFile": "HERB_BALIBAGO_TKDL_PUBLIC_PREFLIGHT_2026-10-07.json",
+    "checkedAt": "2026-10-07T00:43:14.254Z",
+    "checkerExitCode": 2,
+    "counts": {
+      "candidates": 50,
+      "livePublicHerbs": 38,
+      "draftPlansPresent": 50,
+      "partialContentDrafts": 5,
+      "fullContentDrafts": 45,
+      "missingFullContentDrafts": 5,
+      "missingSelectedCovers": 11,
+      "heldSecondaryIdentities": 2,
+      "publicIdentityConflicts": 0,
+      "publicationCleared": 0
+    }
+  },
+  "rawSourceRetrieval": {
+    "originBodyObtained": false,
+    "webPageExtractRead": true,
+    "tkdlOriginAttempt": "20-second timeout",
+    "dostOriginAttempt": "fetch failed",
+    "sha256Claimed": false,
+    "downloadBytesClaimed": false
+  },
+  "historicalPreparationReceipt": {
+    "file": "HERB_FOURTH_TEN_PREPARATION_REVIEW_2026-10-05.json",
+    "unchanged": true,
+    "sha256": "7098f83002993bb10203a33fb96cb322566ef03d8a10c410338580dbf410baa3"
+  },
+  "sourceFollowUpFile": "HERB_BALIBAGO_TKDL_FOLLOW_UP_2026-10-07.json",
+  "remainingBalibagoHolds": [
+    "Leaf-food processing method",
+    "Human bark-use safety, efficacy, dose and beginner instructions",
+    "Missing selected cover",
+    "Category and genuine human review",
+    "Fresh source/origin/permission check",
+    "Target backup and transactional all-state duplicate comparison",
+    "Isolated PostgreSQL import, rollback and concurrency validation"
+  ],
+  "repairedValidationIssue": "The initial new test fixture schema rejected Santan's intentionally null genus-only scientificName. It now preserves the nullable field; exact-species preparation and genus-only rejection guards are unchanged. Final 35-file run passed.",
+  "productionWrites": 0,
+  "cloudinaryUploads": 0,
+  "aiProviderRequests": 0,
+  "gitCommits": 0,
+  "gitPushes": 0,
+  "limitations": [
+    "This batch did not run a real isolated PostgreSQL import/rollback/concurrency test or full live MVP acceptance.",
+    "Descriptive core-field completeness is not human safety, food-processing or medicinal-instruction clearance.",
+    "Fresh source origin retrieval failed; reviewed web-tool page extraction is explicitly distinguished from an origin HTTP/download receipt."
+  ]
+}

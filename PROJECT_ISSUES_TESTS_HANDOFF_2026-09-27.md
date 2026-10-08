@@ -1,5 +1,7 @@
 # Herbal-Ai issues, tests, and release handoff
 
+Latest consolidated root review: [PROJECT_REVIEW.md](PROJECT_REVIEW.md), updated 8 October 2026. It records the subsequent release, current 88/88 vector coverage, live retrieval checks, remaining evidence gaps and defense study links. The 27 September baseline below is retained as historical evidence, not the current deployment status.
+
 Date: 27 September 2026
 Purpose: one root entry point for future SRS, SPMP, SDD, STD, deployment, and defense revisions. This is a dated engineering record, not a signed UAT result or a claim that every workflow works on every device.
 

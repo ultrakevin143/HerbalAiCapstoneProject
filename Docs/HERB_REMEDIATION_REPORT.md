@@ -4,6 +4,10 @@ Status: Completed
 Applied: 2026-09-12  
 Authoritative baseline: PITAHC Directory of Herbs, accessed 2026-09-12
 
+## Historical phase result — not the current catalog
+
+The completed actions and verification below describe the 12 September 2026 remediation phase. In particular, the ten-record count and the exclusion of Gumamela, Indian Heliotrope and Tanglad are historical results, not current live guarantees. The later `20260913093000_restore_evidence_supported_herbs` migration restored those three with sources and bounded educational wording. The public API returned 38 records on 4 October. See [the current source-scope review](testing/LIBRARY_SOURCE_AUDIT_2026-10-04.md) for current observations and remaining review items. The original phase results are preserved rather than rewritten as newly executed tests.
+
 ## Result
 
 The public catalog now contains one governed record for each of the ten medicinal plants in the current PITAHC directory. Medical-use wording now distinguishes clinical and pre-clinical evidence, preparation and amount statements follow the directory, and each record links to its supporting government source.

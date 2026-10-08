@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "status": "CREATOR_METADATA_VALIDATED_RELEASE_HELD",
+  "checkedAt": "2026-10-07T01:17:00Z",
+  "branch": "codex/mvp-acceptance-ci",
+  "gitHead": "741167b",
+  "targetedSuite": {
+    "files": 6,
+    "passed": 186,
+    "failed": 0,
+    "exitCode": 0
+  },
+  "testSuite": {
+    "command": "npx vitest run tests/herb-creator-metadata-follow-up.test.ts tests/herb-oxalis-kastuli-follow-up.test.ts tests/herb-santan-kabiki-follow-up.test.ts tests/herb-balibago-tkdl-follow-up.test.ts tests/herb-expansion-media-follow-up.test.ts tests/herb-expansion-release-preflight.test.ts tests/herb-third-ten-field-drafts.test.ts tests/herb-fourth-ten-field-drafts.test.ts tests/herb-fifth-ten-field-drafts.test.ts tests/herb-expansion-review.test.ts tests/herb-expansion-staging-plan.test.ts tests/herb-expansion-field-research.test.ts tests/herb-expansion-occurrence-research.test.ts tests/herb-first-ten-content-review.test.ts tests/herb-first-ten-preparation-supplement.test.ts tests/herb-second-ten-content-review.test.ts tests/herb-second-ten-photo-review.test.ts tests/herb-identity-media-follow-up.test.ts tests/herb-fifty-live-release-audit.test.ts tests/stuartxchange-preparation-review.test.ts tests/herb-third-ten-preparation-review.test.ts tests/herb-fourth-ten-preparation-review.test.ts tests/herb-fifth-ten-preparation-review.test.ts tests/herb-cover-replacement-research.test.ts tests/herb-preparation-public-review.test.ts tests/herb-preparation-rag.test.ts tests/herb-preparation-review.test.ts tests/herb-preparation-update.test.ts tests/built-in-herb-fields.test.ts tests/herb-preparation-ci.test.ts tests/herb-preparation-isolated-runner.test.ts tests/herb-taxonomic-identity.test.ts tests/herb-remaining-photo-leads.test.ts tests/herb-remaining-thirty-intake.test.ts tests/herb-remaining-thirty-visual-review.test.ts tests/herb-seventeen-media-delivery.test.ts tests/talisay-preparation-follow-up.test.ts tests/herb-provider-target-follow-up.test.ts",
+    "files": 38,
+    "passed": 650,
+    "failed": 0,
+    "exitCode": 0,
+    "newMetadataRegressionTests": 41,
+    "scope": "Focused unit, content-contract and mocked retrieval checks, not full live MVP acceptance."
+  },
+  "backendTypecheck": {
+    "command": "npx tsc --noEmit",
+    "exitCode": 0
+  },
+  "strictChangedFilesTypecheck": {
+    "command": "npx tsc --noEmit --target esnext --module nodenext --moduleResolution nodenext --strict --exactOptionalPropertyTypes --noUncheckedIndexedAccess --skipLibCheck tests/herb-creator-metadata-follow-up.test.ts src/content/herb-expansion-release-preflight.ts",
+    "exitCode": 0
+  },
+  "targetedLint": {
+    "command": "npx eslint src/content/herb-expansion-release-preflight.ts tests/herb-creator-metadata-follow-up.test.ts",
+    "exitCode": 0
+  },
+  "gitWhitespaceCheckExitCode": 0,
+  "publicPreflight": {
+    "receiptFile": "HERB_CREATOR_METADATA_PUBLIC_PREFLIGHT_2026-10-07.json",
+    "checkedAt": "2026-10-07T01:15:53.689Z",
+    "checkerExitCode": 2,
+    "counts": {
+      "candidates": 50,
+      "livePublicHerbs": 38,
+      "draftPlansPresent": 50,
+      "partialContentDrafts": 1,
+      "fullContentDrafts": 49,
+      "missingFullContentDrafts": 1,
+      "missingSelectedCovers": 11,
+      "heldSecondaryIdentities": 2,
+      "publicIdentityConflicts": 0,
+      "publicationCleared": 0
+    }
+  },
+  "metadataFollowUpFile": "HERB_CREATOR_METADATA_FOLLOW_UP_2026-10-07.json",
+  "creatorFieldsCorrected": 17,
+  "selectedCoversUnchanged": 39,
+  "namedCreatorsRetainedWithoutFreshReverification": 20,
+  "unknownSelectedCoverCreators": 19,
+  "historicalReceipts": [
+    {
+      "file": "HERB_SEVENTEEN_MEDIA_DELIVERY_2026-10-05.json",
+      "sha256": "77f11b8bce5f9509690c969ccda694a72015f47b883b2e35ba4aa900b8466779",
+      "rawHashVerifiedUnchanged": true
+    },
+    {
+      "file": "HERB_FIFTY_LIVE_RELEASE_AUDIT_2026-10-06.json",
+      "sha256": "c2b7074642d05aa44282517e8b0dd89fdfc9ddff3d0801a56d86136a1ae7954b",
+      "rawHashVerifiedUnchanged": true
+    },
+    {
+      "file": "HERB_REPLACEMENT_MEDIA_REVIEW_2026-10-07.json",
+      "sha256": "6d082f6b35ca710bbc5b28c878b3597ec3f598142930283445cff8598b38caf3",
+      "rawHashVerifiedUnchanged": true
+    }
+  ],
+  "databaseToolAvailability": {
+    "docker": false,
+    "psql": false,
+    "postgres": false
+  },
+  "productionWrites": 0,
+  "cloudinaryUploads": 0,
+  "aiProviderRequests": 0,
+  "gitCommits": 0,
+  "gitPushes": 0,
+  "limitations": [
+    "Null means photographer identity is unconfirmed, not that the image has no creator.",
+    "CC0 rights metadata does not identify a photographer; this batch did not revalidate individual photo licenses, delivery or botanical identity.",
+    "Twenty retained creator names are historical metadata, not freshly authenticated identities.",
+    "Eleven covers, Lokoloko regionFound and two secondary identity holds remain unresolved.",
+    "49 descriptive core-field drafts do not establish safe medicinal recipes or complete beginner guides.",
+    "Human content/category/botanical review, source-reuse review, backup and all-state private transactional duplicate checks remain required.",
+    "No real isolated PostgreSQL import, rollback or concurrency validation was performed.",
+    "No public herb was added or edited; the fifty drafts are not public AI knowledge."
+  ]
+}

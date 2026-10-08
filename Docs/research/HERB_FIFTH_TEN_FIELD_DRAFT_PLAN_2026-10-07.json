@@ -1,0 +1,1499 @@
+{
+  "status": "DRAFT_PLAN_NOT_EXECUTABLE",
+  "queueId": "pardo-fifty-research-2026-10-04",
+  "evidenceFile": "HERB_FIFTH_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+  "auditedAt": "2026-10-06T17:20:36.640Z",
+  "snapshotCapturedAt": null,
+  "comparisonScope": "NO_PRIVATE_DATABASE_COMPARISON_PERFORMED",
+  "writeAllowed": false,
+  "stagingAllowed": false,
+  "publicationAllowed": false,
+  "productionWritesPerformed": false,
+  "scope": "Fifth ten held editorial field plans; food, traditional and laboratory descriptions are not cleared medicinal or beginner instructions.",
+  "sourceEvidenceFile": "HERB_FIFTH_TEN_PREPARATION_REVIEW_2026-10-06.json",
+  "sourceReuseNote": "Preparation and non-NCCIH safety descriptions retain their 2026-10-06 reviewed provenance. Fresh 2026-10-07 botanical identity/occurrence and NCCIH observations are separately dated. No claim that all earlier sources were freshly reread is made. A separately dated Tsampaka follow-up replaces only the method-gap description with an independent flower-bud laboratory description; the historical preparation ledger and stem-bark quarantine remain unchanged. The Oxalis/Kastuli follow-up separately owns a primary ethnobotanical leaf-processing description and an in vitro extraction description; their original food-use and safety limitations remain held.",
+  "counts": {
+    "assembledDrafts": 10,
+    "draftsWithCoreFieldsAndPreparationEvidence": 10,
+    "partialDrafts": 0,
+    "methodsNotEstablished": 0,
+    "reportedFoodUsesWithoutMethods": 0,
+    "selectedCoversInSavedAudit": 5,
+    "missingSelectedCovers": 4,
+    "foodPreparationDescriptions": 3,
+    "foodDescriptionsHeld": 0,
+    "traditionalFoodProcessingDescriptionsHeld": 1,
+    "separateFoodProcessingGapsRetained": 1,
+    "traditionalDescriptionsHeld": 1,
+    "laboratoryDescriptionsHeld": 4,
+    "quarantinedSources": 1,
+    "medicinalInstructionsCleared": 0,
+    "publicationCleared": 0,
+    "selectedCoversFromMediaFollowUp": 1,
+    "selectedCoversInCurrentPlan": 6
+  },
+  "blockers": [
+    "Species/part/cultivar and human safety review remains pending.",
+    "Oxalis has a held northern Uganda parboiling description, not safe cooking controls. Kastuli has a laboratory description only; its coffee-flavouring process and food-grade safety remain unresolved. No recipe or safe quantity is invented.",
+    "Four covers have no selected uploaded image. Abutilon indicum's checked follow-up cover remains botanically unreviewed.",
+    "Kahel accepted hybrid notation and historical identity require reconciliation.",
+    "Quarantined Magnolia evidence may support researchGap only.",
+    "Fresh independently targeted private comparison, backup and isolated import/rollback/concurrent-duplicate validation are required."
+  ],
+  "draftRows": [
+    {
+      "candidateId": "research-pardo-047",
+      "batch": 5,
+      "book": {
+        "entry": 47,
+        "heading": "Averrhoa Bilimbi",
+        "commonNames": "Kamias, Kalamias, Tag.; Kilingiwa, Vis.; Pias, Iloc.",
+        "printedPage": 60,
+        "pdfPage": 66
+      },
+      "identityNotes": {
+        "queueScientificName": "Averrhoa bilimbi",
+        "scientificSynonyms": [],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Kamias, Kalamias, Tag.; Kilingiwa, Vis.; Pias, Iloc.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "No concentrated juice, empty-stomach regimen or claim that cooking removes nephrotoxicity is cleared.",
+        "A safe quantity or validated relish protocol remains missing; kidney-risk review is required.",
+        "No selected uploaded cover; no synthetic or other-species substitute is permitted."
+      ],
+      "uncitedFields": [
+        "dosage"
+      ],
+      "modernEvidenceNote": "The relish report does not establish a safe serving or processing-based detoxification. Human adverse events are not evidence of benefit.",
+      "preparationReview": {
+        "plantPart": "Fruit; no juice regimen",
+        "kind": "FOOD_DESCRIPTION_HELD",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "BOUNDED_LOCAL_COMPILATION",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "NO_SELECTED_UPLOADED_COVER",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-047",
+        "localName": "Kamias",
+        "scientificName": "Averrhoa bilimbi",
+        "sourceScientificName": "Averrhoa Bilimbi",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical source records this plant; modern medicinal efficacy is not established by this drafting review.\n\nEvidence limits: The relish report does not establish a safe serving or processing-based detoxification. Human adverse events are not evidence of benefit.",
+        "preparationMethod": "NParks reports green Averrhoa bilimbi fruit made into a relish in Suriname, without a full processing method. A human case report documents oxalate kidney injury after fruit juice and leaves cooking's effect on toxicity unresolved. This held food description is not treatment guidance.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "The cited human cases describe oxalate kidney injury after bilimbi juice. Cooking's effect on nephrotoxicity remains unresolved; no safe quantity or juice regimen is cleared.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Co's Digital Flora records Averrhoa bilimbi as naturalized, with Isabela and Mindoro photo localities. This is bounded occurrence evidence, not nationwide abundance or medicinal safety.",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational entry/page provenance only. No historical recipe, safe dose or modern clinical efficacy is adopted."
+        },
+        {
+          "id": "nparks-kamias-food",
+          "scientificName": "Averrhoa bilimbi",
+          "kind": "AUTHORITATIVE_FOOD_DESCRIPTION_HELD",
+          "title": "NParks: Averrhoa bilimbi",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/7/2735",
+          "supports": [
+            "preparationMethod"
+          ],
+          "reviewCoverage": "SPECIES_HEADING_AND_RELISH_FOOD_PARAGRAPH",
+          "limitation": "Relish use is reported without proportions or processing controls. It does not establish safe juice consumption or resolve oxalate toxicity.",
+          "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+          "reviewedAt": "2026-10-06"
+        },
+        {
+          "id": "nair-2014-bilimbi-safety",
+          "scientificName": "Averrhoa bilimbi",
+          "kind": "PRIMARY_HUMAN_ADVERSE_EVENT_REPORT",
+          "title": "Nair et al. (2014): Acute Oxalate Nephropathy following Ingestion of Averrhoa bilimbi Juice",
+          "url": "https://doi.org/10.1155/2014/240936",
+          "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC4065667/fullTextXML",
+          "supports": [
+            "warnings"
+          ],
+          "reviewCoverage": "FULL_TEXT_XML_ABSTRACT_AND_COOKING_UNCERTAINTY_PARAGRAPH",
+          "downloadBytes": 40809,
+          "downloadSha256": "b42e69c7ccf0cb72aa60a78e1672f0854d4f548b156bf4609e4639e8b01f89f7",
+          "limitation": "Two adverse-event cases do not establish a safe amount. The authors explicitly leave cooking's effect on nephrotoxicity unresolved.",
+          "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+          "reviewedAt": "2026-10-06"
+        },
+        {
+          "id": "research-pardo-047-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Averrhoa bilimbi",
+          "url": "https://powo.science.kew.org/taxon/371869-1",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity"
+          ],
+          "reviewLocator": "Accepted species; Philippine occurrence supported separately.",
+          "limitation": "Botanical identity/occurrence only, not clinical efficacy, dose or household safety. Country-list omission is not proof of absence."
+        },
+        {
+          "id": "research-pardo-047-cdf",
+          "kind": "BOTANICAL_OCCURRENCE",
+          "title": "Co's Digital Flora: Averrhoa bilimbi",
+          "url": "https://www.philippineplants.org/Families/Oxalidaceae.html",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "regionFound"
+          ],
+          "reviewLocator": "Averrhoa > Averrhoa bilimbi; naturalized; Isabela and Mindoro photo localities.",
+          "limitation": "Exact-entry local botanical compilation only, not medicinal safety, a current population census or permission to borrow adjacent species' methods."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-048",
+      "creatorMetadataFollowUpFile": "HERB_CREATOR_METADATA_FOLLOW_UP_2026-10-07.json",
+      "batch": 5,
+      "book": {
+        "entry": 48,
+        "heading": "Averrhoa Carambola",
+        "commonNames": "Bilimbin, Balimbin, Tag.",
+        "printedPage": 60,
+        "pdfPage": 66
+      },
+      "identityNotes": {
+        "queueScientificName": "Averrhoa carambola",
+        "scientificSynonyms": [],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Bilimbin, Balimbin, Tag.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "No safe serving amount or processing-based detoxification is inferred.",
+        "Do not present fruit or juice as a diabetes or kidney treatment; retain renal-risk review.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "uncitedFields": [
+        "dosage"
+      ],
+      "modernEvidenceNote": "Fruit salad and preserve reporting does not establish renal safety or a treatment for diabetes or kidney disease.",
+      "preparationReview": {
+        "plantPart": "Fruit; juice and medicinal regimens excluded",
+        "kind": "FOOD_DESCRIPTION_HELD",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "HISTORICAL_SELECTED_COVER",
+        "ledger": "HERB_SEVENTEEN_MEDIA_DELIVERY_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:09.437Z",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-048",
+        "localName": "Balimbing",
+        "scientificName": "Averrhoa carambola",
+        "sourceScientificName": "Averrhoa Carambola",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical source records this plant; modern medicinal efficacy is not established by this drafting review.\n\nEvidence limits: Fruit salad and preserve reporting does not establish renal safety or a treatment for diabetes or kidney disease.",
+        "preparationMethod": "NParks describes Averrhoa carambola fruit in salads and preserves. A primary case series records oxalate-associated acute kidney injury after starfruit intake. The food description remains held for renal safety review and is not treatment guidance.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "The cited human case series describes oxalate-associated acute kidney injury after starfruit intake. No safe serving, medicinal juice regimen or processing-based detoxification is established here.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Kew lists Averrhoa carambola in its introduced country range. No province-level abundance, household safety or clinical benefit is inferred.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176723/balimbing_averrhoa_carambola_cc0_99204713_y8fzvv.jpg",
+        "imageCreator": null,
+        "imageSourceUrl": "https://www.inaturalist.org/observations/61956100",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; uploaded unchanged checked source bytes",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational entry/page provenance only. No historical recipe, safe dose or modern clinical efficacy is adopted."
+        },
+        {
+          "id": "nparks-balimbing-food",
+          "scientificName": "Averrhoa carambola",
+          "kind": "AUTHORITATIVE_FOOD_DESCRIPTION_HELD",
+          "title": "NParks: Averrhoa carambola",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/7/2736",
+          "supports": [
+            "preparationMethod"
+          ],
+          "reviewCoverage": "SPECIES_HEADING_AND_FRUIT_FOOD_PARAGRAPH",
+          "limitation": "Salad and preserve use is descriptive, not a validated cooking protocol. Juice, laxative and medicinal claims are excluded.",
+          "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+          "reviewedAt": "2026-10-06"
+        },
+        {
+          "id": "barman-2016-starfruit-safety",
+          "scientificName": "Averrhoa carambola",
+          "kind": "PRIMARY_HUMAN_ADVERSE_EVENT_REPORT",
+          "title": "Barman et al. (2016): Acute kidney injury associated with ingestion of star fruit: Acute oxalate nephropathy",
+          "url": "https://doi.org/10.4103/0971-4065.175978",
+          "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5131384/fullTextXML",
+          "supports": [
+            "warnings"
+          ],
+          "reviewCoverage": "FULL_TEXT_XML_ABSTRACT_AND_CASE_REPORT",
+          "downloadBytes": 29376,
+          "downloadSha256": "f25958bbf879590a35c87f2d9387001af68d289e118a96507eb9d8b877dc311d",
+          "limitation": "An adverse-event series is not a safe-serving trial. Food-use reporting cannot be treated as renal safety or medicinal benefit.",
+          "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+          "reviewedAt": "2026-10-06"
+        },
+        {
+          "id": "research-pardo-048-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Averrhoa carambola",
+          "url": "https://powo.science.kew.org/taxon/371870-1",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity",
+            "regionFound"
+          ],
+          "reviewLocator": "Accepted species; Philippines in introduced country list.",
+          "limitation": "Botanical identity/occurrence only, not clinical efficacy, dose or household safety. Country-list omission is not proof of absence."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-070",
+      "creatorMetadataFollowUpFile": "HERB_CREATOR_METADATA_FOLLOW_UP_2026-10-07.json",
+      "batch": 5,
+      "book": {
+        "entry": 70,
+        "heading": "Anacardium occidentale",
+        "commonNames": "Kasuy, Tag.; Caskew Nut, Eng.",
+        "printedPage": 84,
+        "pdfPage": 90
+      },
+      "identityNotes": {
+        "queueScientificName": "Anacardium occidentale",
+        "scientificSynonyms": [],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Kasuy, Tag.; Caskew Nut, Eng.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Keep cashew apple distinct from the true nut, shell liquid, seed coats and bark.",
+        "Food allergy and part-specific safety review remain required; no full jam or canning protocol is supplied.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "The described food part is the fleshy cashew apple, not the true nut. No validated jam/canning, nut-shell or oil protocol is supplied.",
+      "preparationReview": {
+        "plantPart": "Fleshy cashew apple, not nut shell or seed oil",
+        "kind": "FOOD_DESCRIPTION",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "BOUNDED_LOCAL_COMPILATION",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "HISTORICAL_SELECTED_COVER",
+        "ledger": "HERB_SEVENTEEN_MEDIA_DELIVERY_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:09.921Z",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-070",
+        "localName": "Kasuy",
+        "scientificName": "Anacardium occidentale",
+        "sourceScientificName": "Anacardium occidentale",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical source records this plant; modern medicinal efficacy is not established by this drafting review.\n\nEvidence limits: The described food part is the fleshy cashew apple, not the true nut. No validated jam/canning, nut-shell or oil protocol is supplied.",
+        "preparationMethod": "NParks describes the fleshy Anacardium occidentale cashew apple eaten fresh, included in fruit salads or preserved as jam. This does not supply nut-shell processing, roasting, fermentation or oil instructions. The culinary description is not treatment guidance.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "Part-specific and allergy safety review is pending. The cashew-apple description does not clear handling shell liquid, processing nuts, ingesting seed oil or adopting historical bark remedies.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Co's Digital Flora records Anacardium occidentale as cultivated and naturalized in seasonal settled areas at low and medium elevations. This does not establish safe nut-shell processing.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176723/kasuy_anacardium_occidentale_cc0_217472168_ghh6am.jpg",
+        "imageCreator": null,
+        "imageSourceUrl": "https://www.inaturalist.org/observations/128053906",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; uploaded unchanged checked source bytes",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational entry/page provenance only. No historical recipe, safe dose or modern clinical efficacy is adopted."
+        },
+        {
+          "id": "nparks-cashew-apple-food",
+          "scientificName": "Anacardium occidentale",
+          "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+          "title": "NParks: Anacardium occidentale",
+          "url": "https://www.nparks.gov.sg/florafaunaweb/flora/2/7/2709",
+          "supports": [
+            "preparationMethod"
+          ],
+          "reviewCoverage": "SPECIES_HEADING_AND_CASHEW_APPLE_FOOD_PARAGRAPH",
+          "limitation": "Only the fleshy cashew apple is described here. No validated nut-shell removal, roasting control, fermentation or therapeutic recipe is supplied.",
+          "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+          "reviewedAt": "2026-10-06"
+        },
+        {
+          "id": "research-pardo-070-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Anacardium occidentale",
+          "url": "https://powo.science.kew.org/taxon/319068-2",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity"
+          ],
+          "reviewLocator": "Accepted species; Philippine occurrence supported separately.",
+          "limitation": "Botanical identity/occurrence only, not clinical efficacy, dose or household safety. Country-list omission is not proof of absence."
+        },
+        {
+          "id": "research-pardo-070-cdf",
+          "kind": "BOTANICAL_OCCURRENCE",
+          "title": "Co's Digital Flora: Anacardium occidentale",
+          "url": "https://www.philippineplants.org/Families/Anacardiaceae.html",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "regionFound"
+          ],
+          "reviewLocator": "Anacardium > Anacardium occidentale; cultivated/naturalized in settled seasonal areas.",
+          "limitation": "Exact-entry local botanical compilation only, not medicinal safety, a current population census or permission to borrow adjacent species' methods."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-126",
+      "creatorMetadataFollowUpFile": "HERB_CREATOR_METADATA_FOLLOW_UP_2026-10-07.json",
+      "batch": 5,
+      "book": {
+        "entry": 126,
+        "heading": "Morinda citrifolia",
+        "commonNames": "Bankundo, Pankundo, Bag̃kuro, Nino, Kulit, Tumbog̃aso, Lino, Mambog, Takpus, Tag. and Vis.; Taliantar, Pam.; Apalot, Iloc.; Indian Mulberry, Indo-Eng.",
+        "printedPage": 148,
+        "pdfPage": 154
+      },
+      "identityNotes": {
+        "queueScientificName": "Morinda citrifolia",
+        "scientificSynonyms": [],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Bankundo, Pankundo, Bag̃kuro, Nino, Kulit, Tumbog̃aso, Lino, Mambog, Takpus, Tag. and Vis.; Taliantar, Pam.; Apalot, Iloc.; Indian Mulberry, Indo-Eng.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Do not convert the report into a treatment recommendation or a home fermentation/juice regimen.",
+        "NCCIH reports limited human evidence, uncertain causation of reported liver injury and potassium/medication cautions.",
+        "Pregnancy and breastfeeding safety are insufficiently known; no human dosage is added.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "uncitedFields": [
+        "dosage"
+      ],
+      "modernEvidenceNote": "NCCIH reports very limited human research and no demonstrated health-condition benefit in human studies. The Thai traditional report does not establish clinical approval.",
+      "preparationReview": {
+        "plantPart": "Unripe fruit in a reported Thai traditional preparation",
+        "kind": "TRADITIONAL_DESCRIPTION_HELD",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "HISTORICAL_SELECTED_COVER",
+        "ledger": "HERB_SEVENTEEN_MEDIA_DELIVERY_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:09.049Z",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-126",
+        "localName": "Bankundo",
+        "scientificName": "Morinda citrifolia",
+        "sourceScientificName": "Morinda citrifolia",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical source records this plant; modern medicinal efficacy is not established by this drafting review.\n\nEvidence limits: NCCIH reports very limited human research and no demonstrated health-condition benefit in human studies. The Thai traditional report does not establish clinical approval.",
+        "preparationMethod": "PROSEA reports a Thai traditional infusion or decoction using dried, thinly sliced unripe Morinda citrifolia fruit. This is a traditional-use description, not treatment guidance or clinical approval. Potassium, medication and liver-report uncertainties remain attached.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "NCCIH reports uncertain causation of liver-injury reports, substantial potassium, possible medication interactions and inadequate pregnancy/breastfeeding safety information. Kidney disease or potassium restriction warrants clinical advice; no dose is cleared.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Kew lists Morinda citrifolia in its native country range. No province-level abundance, household safety or clinical benefit is inferred.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176725/bankundo_morinda_citrifolia_cc0_105341351_ehoyzm.jpg",
+        "imageCreator": null,
+        "imageSourceUrl": "https://www.inaturalist.org/observations/65446730",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; uploaded unchanged checked source bytes",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational entry/page provenance only. No historical recipe, safe dose or modern clinical efficacy is adopted."
+        },
+        {
+          "id": "prosea-noni-traditional",
+          "scientificName": "Morinda citrifolia",
+          "kind": "AUTHORITATIVE_TRADITIONAL_REPORT_HELD",
+          "title": "PROSEA: Morinda citrifolia, record 2778",
+          "url": "https://prosea.prota4u.org/view.aspx?id=2778",
+          "supports": [
+            "preparationMethod"
+          ],
+          "reviewCoverage": "EXACT_SPECIES_USES_SECTION_THAI_UNRIPE_FRUIT_REPORT",
+          "limitation": "A reported traditional preparation is not a clinical trial or safety clearance. The vague food-use word prepared supplies no fermentation or cooking protocol.",
+          "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+          "reviewedAt": "2026-10-06"
+        },
+        {
+          "id": "nccih-noni-safety",
+          "scientificName": "Morinda citrifolia",
+          "kind": "AUTHORITATIVE_HEALTH_SAFETY_SUMMARY",
+          "title": "NCCIH: Noni (February 2025)",
+          "url": "https://www.nccih.nih.gov/health/noni",
+          "supports": [
+            "warnings"
+          ],
+          "reviewCoverage": "LATIN_NAME_HUMAN_EVIDENCE_AND_SAFETY_SECTIONS",
+          "limitation": "Limited human evidence; liver-injury reports do not prove causation. Potassium, medication and pregnancy/breastfeeding cautions must not become a safe-dose recommendation.",
+          "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+          "reviewedAt": "2026-10-07",
+          "freshReviewCoverage": "LATIN_NAME_HUMAN_EVIDENCE_AND_SAFETY_SECTIONS"
+        },
+        {
+          "id": "research-pardo-126-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Morinda citrifolia",
+          "url": "https://powo.science.kew.org/taxon/756359-1",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity",
+            "regionFound"
+          ],
+          "reviewLocator": "Accepted species; Philippines in native country list.",
+          "limitation": "Botanical identity/occurrence only, not clinical efficacy, dose or household safety. Country-list omission is not proof of absence."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-045",
+      "creatorMetadataFollowUpFile": "HERB_CREATOR_METADATA_FOLLOW_UP_2026-10-07.json",
+      "batch": 5,
+      "book": {
+        "entry": 45,
+        "heading": "Oxalis corniculata",
+        "commonNames": "Taig̃an dogá, Susokayoli, Tag.; Darasig, Vis.; Malabalugbug dagis, Ayo, Kongi, Yayo, Pam.; Indian Sorrel, Eng.",
+        "printedPage": 58,
+        "pdfPage": 64
+      },
+      "identityNotes": {
+        "queueScientificName": "Oxalis corniculata",
+        "scientificSynonyms": [],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Taig̃an dogá, Susokayoli, Tag.; Darasig, Vis.; Malabalugbug dagis, Ayo, Kongi, Yayo, Pam.; Indian Sorrel, Eng.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Do not infer that boiling makes this plant safe or invent a daily serving.",
+        "No poisoning antidote, wound preparation, emmenagogue or renal treatment is cleared.",
+        "Do not substitute Oxalis corymbosa, other sorrels or similar-looking plants.",
+        "Kew and Co's Digital Flora differ in native/cryptogenic status; retain bounded occurrence without declaring the origin dispute resolved.",
+        "Historical image check is not fresh taxon, license or delivery clearance.",
+        "The northern Uganda parboiling report does not establish a safe serving or oxalate reduction; source-reuse/context review remains pending."
+      ],
+      "uncitedFields": [
+        "dosage"
+      ],
+      "modernEvidenceNote": "Reported seasoning use provides no preparation controls or safe amount. Occurrence and edible-use labels do not resolve oxalate safety. A separately dated primary ethnobotanical follow-up reports parboiling leaves in northern Uganda, without validating safe cooking controls or a Philippine recipe.",
+      "preparationReview": {
+        "plantPart": "Leaves; not other Oxalis species or neighboring vegetables",
+        "kind": "TRADITIONAL_FOOD_PROCESSING_DESCRIPTION_HELD",
+        "methodEstablishedInReview": true,
+        "foodProcessingEstablished": true,
+        "foodSafetyCleared": false,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "BOUNDED_LOCAL_COMPILATION",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "HISTORICAL_SELECTED_COVER",
+        "ledger": "HERB_SEVENTEEN_MEDIA_DELIVERY_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:12.090Z",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-045",
+        "localName": "Oxalis corniculata",
+        "scientificName": "Oxalis corniculata",
+        "sourceScientificName": "Oxalis corniculata",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical source records this plant; modern medicinal efficacy is not established by this drafting review.\n\nEvidence limits: Reported seasoning use provides no preparation controls or safe amount. Occurrence and edible-use labels do not resolve oxalate safety. A separately dated primary ethnobotanical follow-up reports parboiling leaves in northern Uganda, without validating safe cooking controls or a Philippine recipe.",
+        "preparationMethod": "Masters' northern Uganda ethnobotanical study lists Oxalis corniculata leaves among vegetables traditionally parboiled before further preparation. This is a source-reported food-processing description, not a complete beginner recipe or treatment. The study does not establish a safe serving, validated oxalate removal or species-specific cooking time; PROSEA's oxalate warning remains applicable to this held draft.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "PROSEA warns of oxalate toxicity at larger exposures. No safe quantity, boiling detoxification, renal treatment or poisoning-antidote use is established.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Co's Digital Flora records Oxalis corniculata at multiple Philippine localities and describes its origin as cryptogenic. Kew lists Philippines as native; this review does not resolve the status difference or infer a safe serving.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176717/oxalis_corniculata_oxalis_corniculata_cc0_533454766_bn6sun.jpg",
+        "imageCreator": null,
+        "imageSourceUrl": "https://www.inaturalist.org/observations/296273400",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; uploaded unchanged checked source bytes",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational entry/page provenance only. No historical recipe, safe dose or modern clinical efficacy is adopted."
+        },
+        {
+          "id": "prosea-oxalis-food-safety",
+          "scientificName": "Oxalis corniculata",
+          "kind": "AUTHORITATIVE_FOOD_USE_AND_TOXICITY_REPORT",
+          "title": "Chung (1999), PROSEA: Oxalis corniculata, record 86",
+          "url": "https://prosea.prota4u.org/view.aspx?id=86",
+          "supports": [
+            "foodUse",
+            "researchGap",
+            "warnings"
+          ],
+          "reviewCoverage": "EXACT_SPECIES_USES_AND_OXALATE_PROPERTIES_PARAGRAPHS",
+          "limitation": "Reported small-amount seasoning does not specify a safe amount or cooking method. The source warns of toxicity at larger exposures.",
+          "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+          "reviewedAt": "2026-10-06"
+        },
+        {
+          "id": "research-pardo-045-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Oxalis corniculata",
+          "url": "https://powo.science.kew.org/taxon/177893-2",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity"
+          ],
+          "reviewLocator": "Accepted species; Philippine occurrence supported separately.",
+          "limitation": "Botanical identity/occurrence only, not clinical efficacy, dose or household safety. Country-list omission is not proof of absence."
+        },
+        {
+          "id": "research-pardo-045-cdf",
+          "kind": "BOTANICAL_OCCURRENCE",
+          "title": "Co's Digital Flora: Oxalis corniculata",
+          "url": "https://www.philippineplants.org/Families/Oxalidaceae.html",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "regionFound"
+          ],
+          "reviewLocator": "Oxalis > Oxalis corniculata; Philippine localities; origin classified cryptogenic.",
+          "limitation": "Exact-entry local botanical compilation only, not medicinal safety, a current population census or permission to borrow adjacent species' methods."
+        },
+        {
+          "id": "masters-2021-oxalis-food-processing",
+          "scientificName": "Oxalis corniculata",
+          "taxonScope": "EXACT_SPECIES",
+          "kind": "PRIMARY_ETHNOBOTANICAL_FOOD_PROCESSING_DESCRIPTION_HELD",
+          "title": "Masters (2021): Traditional food plants of the upper Aswa River catchment of northern Uganda - a cultural crossroads",
+          "url": "https://doi.org/10.1186/s13002-021-00441-4",
+          "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC8022409/fullTextXML",
+          "reviewedAt": "2026-10-07",
+          "reviewCoverage": "FULL_TEXT_XML_METHODS_SPECIES_TABLE_AND_LEAF_VEGETABLE_PARAGRAPHS",
+          "reviewLocators": [
+            "Herbarium identification methods",
+            "Oxalis corniculata table row: leaf; SA45 field identifier",
+            "Par56 general leaf processing",
+            "Par60 explicitly named Oxalis parboiling"
+          ],
+          "fieldIdentifier": "SA45",
+          "identifierIsVoucherAccession": false,
+          "geographicContext": "Upper Aswa River catchment, northern Uganda",
+          "supports": [
+            "preparationMethod"
+          ],
+          "downloadBytes": 176752,
+          "downloadSha256": "6f11fb3480b2b03f046aee6402087e19b9d3f63bde1cd4c271444ef938c63cb1",
+          "limitation": "Ethnographic food-processing report, not a cooking-safety trial, Philippine practice, oxalate-removal validation, safe serving or clinical regimen. Neighboring greens' sauces and repeated-boiling instructions are not transferred.",
+          "reuseReview": "Educational summary only. The study records a no-commercial-use assurance to participants; public reuse/context review remains pending despite the open-access article license."
+        }
+      ],
+      "preparationFollowUpEvidenceFile": "HERB_OXALIS_KASTULI_PREPARATION_FOLLOW_UP_2026-10-07.json"
+    },
+    {
+      "candidateId": "research-pardo-054",
+      "batch": 5,
+      "book": {
+        "entry": 54,
+        "heading": "Citrus Bigaradia",
+        "commonNames": "Naranjas del país, Sp.; Kahel, Kahil, Tag.; Native Orange, Eng.",
+        "printedPage": 66,
+        "pdfPage": 72
+      },
+      "identityNotes": {
+        "queueScientificName": "Citrus aurantium",
+        "scientificSynonyms": [
+          "Citrus bigaradia"
+        ],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": true,
+        "sourceAcceptedScientificName": "Citrus × aurantium",
+        "mappingCleared": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Naranjas del país, Sp.; Kahel, Kahil, Tag.; Native Orange, Eng.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Preserve the queue identity; reconcile the source's Citrus × aurantium hybrid notation before staging.",
+        "Ordinary food reporting does not clear p-synephrine supplements or weight-loss use.",
+        "NCCIH notes uncertain cardiovascular findings and medication/pregnancy cautions; no causal claim is inferred from multi-ingredient event reports.",
+        "PRIMARY_HISTORICAL_IDENTITY_HOLD: reconcile Citrus Bigaradia / Citrus aurantium with Citrus × aurantium and its infraspecifics before all-state duplicate comparison; no automatic queue rename.",
+        "No selected uploaded cover; no synthetic or other-species substitute is permitted."
+      ],
+      "uncitedFields": [
+        "dosage"
+      ],
+      "modernEvidenceNote": "Marmalade food reporting does not clear p-synephrine supplements, weight-loss treatment or essential-oil ingestion. The accepted hybrid notation must be reconciled before staging.",
+      "preparationReview": {
+        "plantPart": "Bitter-orange fruit for marmalade, not concentrated extract or essential oil",
+        "kind": "FOOD_DESCRIPTION",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false,
+        "identityMappingHeld": true
+      },
+      "photoReview": {
+        "status": "NO_SELECTED_UPLOADED_COVER",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-054",
+        "localName": "Kahel",
+        "scientificName": "Citrus aurantium",
+        "sourceScientificName": "Citrus Bigaradia",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical source records this plant; modern medicinal efficacy is not established by this drafting review.\n\nEvidence limits: Marmalade food reporting does not clear p-synephrine supplements, weight-loss treatment or essential-oil ingestion. The accepted hybrid notation must be reconciled before staging.",
+        "preparationMethod": "The Dutch Botanical Gardens Association describes bitter-orange fruit used to make marmalade. No sugar ratio, boiling duration or canning process is supplied. This food description is not treatment guidance and must not be extended to concentrated supplements or essential oil ingestion.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "NCCIH distinguishes ordinary food amounts from concentrated bitter-orange products. Cardiovascular findings are inconclusive, mixed-product event reports do not establish causation, and medication/pregnancy/breastfeeding cautions remain.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Kew lists introduced occurrence under Citrus × aurantium. Mapping the queue's Citrus aurantium and historical Citrus Bigaradia to the accepted hybrid notation remains held for identity review; no infraspecific identity is inferred.",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational entry/page provenance only. No historical recipe, safe dose or modern clinical efficacy is adopted."
+        },
+        {
+          "id": "nvbt-bitter-orange-food",
+          "scientificName": "Citrus aurantium",
+          "sourceTaxon": "Citrus × aurantium",
+          "kind": "AUTHORITATIVE_FOOD_DESCRIPTION",
+          "title": "Dutch Botanical Gardens Association: Bitter Orange or Seville Orange",
+          "url": "https://www.botanischetuinen.nl/en/plant_en/2621/bitter-orange-or-seville-orange",
+          "supports": [
+            "preparationMethod"
+          ],
+          "reviewCoverage": "BOTANICAL_HEADING_AND_MARMALADE_FOOD_USE_PARAGRAPHS",
+          "limitation": "Marmalade use supplies no recipe ratio, boiling duration or canning validation. Hybrid notation must be reconciled separately; adjacent oil and medicinal claims are not adopted.",
+          "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+          "reviewedAt": "2026-10-06"
+        },
+        {
+          "id": "nccih-bitter-orange-safety",
+          "scientificName": "Citrus aurantium",
+          "kind": "AUTHORITATIVE_HEALTH_SAFETY_SUMMARY",
+          "title": "NCCIH: Bitter Orange",
+          "url": "https://www.nccih.nih.gov/health/bitter-orange",
+          "supports": [
+            "warnings"
+          ],
+          "reviewCoverage": "LATIN_NAME_AND_FOOD_VERSUS_SUPPLEMENT_SAFETY_SECTIONS",
+          "limitation": "Ordinary food use is not concentrated-extract safety. Cardiovascular event reports often involve mixed products; causation is uncertain, and medication/pregnancy cautions remain.",
+          "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+          "reviewedAt": "2026-10-07",
+          "freshReviewCoverage": "LATIN_NAME_HUMAN_EVIDENCE_AND_SAFETY_SECTIONS"
+        },
+        {
+          "id": "research-pardo-054-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Citrus × aurantium",
+          "url": "https://powo.science.kew.org/taxon/59600-2",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity",
+            "regionFound"
+          ],
+          "sourceTaxon": "Citrus × aurantium",
+          "mappingCleared": false,
+          "reviewLocator": "Accepted hybrid; Philippines in introduced list; queue/historical notation correspondence remains held.",
+          "limitation": "Botanical identity/occurrence only, not clinical efficacy, dose or household safety. Country-list omission is not proof of absence."
+        }
+      ]
+    },
+    {
+      "candidateId": "research-pardo-003",
+      "creatorMetadataFollowUpFile": "HERB_CREATOR_METADATA_FOLLOW_UP_2026-10-07.json",
+      "batch": 5,
+      "book": {
+        "entry": 3,
+        "heading": "Michelia Champaca, L.",
+        "commonNames": "Tsampaka, Sampaka, Tag.; Champaca, Fil.-Span.",
+        "printedPage": 19,
+        "pdfPage": 25
+      },
+      "identityNotes": {
+        "queueScientificName": "Magnolia champaca",
+        "scientificSynonyms": [
+          "Michelia champaca"
+        ],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Tsampaka, Sampaka, Tag.; Champaca, Fil.-Span.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "The independent flower-bud study does not resolve the original stem-bark paper's correction/retraction metadata or establish clinical safety.",
+        "Do not turn solvent-extracted bark or ornamental flower fragrance into a home tea.",
+        "Preserve the Michelia champaca historical heading without substituting Magnolia officinalis or Magnolia grandiflora.",
+        "Historical image check is not fresh taxon, license or delivery clearance."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "An independent flower-bud rat study supplies a bounded laboratory-method description, not a human treatment or household recipe. The separate stem-bark study remains quarantined because its linked notice refers to a different article; no method or clinical benefit from that source is adopted, and no confirmed retraction is alleged.",
+      "preparationReview": {
+        "plantPart": "Flower buds; not stem bark, leaves or fragrance oil",
+        "kind": "LABORATORY_DESCRIPTION_HELD",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "BOUNDED_LOCAL_COMPILATION",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "HISTORICAL_SELECTED_COVER",
+        "ledger": "HERB_SEVENTEEN_MEDIA_DELIVERY_2026-10-05.json",
+        "checkedAt": "2026-10-06T03:12:11.722Z",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-003",
+        "localName": "Tsampaka",
+        "scientificName": "Magnolia champaca",
+        "sourceScientificName": "Michelia Champaca, L.",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical source records this plant; modern medicinal efficacy is not established by this drafting review.\n\nEvidence limits: An independent flower-bud rat study supplies a bounded laboratory-method description, not a human treatment or household recipe. The separate stem-bark study remains quarantined because its linked notice refers to a different article; no method or clinical benefit from that source is adopted, and no confirmed retraction is alleged.",
+        "preparationMethod": "An independent study of Michelia champaca (Magnolia champaca) dried and powdered flower buds, compared solvent extracts with a separate boiled-water extract, and vacuum-concentrated the extracts for Wistar-rat experiments. This laboratory description is not a home recipe or treatment and supplies no validated human diabetes dose. The quarantined stem-bark source is not used; its unresolved metadata is not a confirmed retraction finding.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "Human flower-bud preparation and part-specific medicinal safety remain uncleared. Rat experiments cannot establish a safe household extract or diabetes treatment. The quarantined stem-bark paper cannot establish a safe bark extract or flower tea, and its retraction status is not confirmed.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Co's Digital Flora lists Magnolia champaca as cultivated and not naturalized, with an explicit Philippine cultivation note for var. champaca. No wild occurrence or identity of an individual cultivar is inferred.",
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176717/tsampaka_magnolia_champaca_cc0_208651812_xwj1mw.jpg",
+        "imageCreator": null,
+        "imageSourceUrl": "https://www.inaturalist.org/observations/123181636",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageModification": "None; uploaded unchanged checked source bytes",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational entry/page provenance only. No historical recipe, safe dose or modern clinical efficacy is adopted."
+        },
+        {
+          "id": "magnolia-metadata-quarantine",
+          "scientificName": "Magnolia champaca",
+          "sourceStatus": "QUARANTINED_METADATA_MISMATCH",
+          "supports": [
+            "researchGap"
+          ],
+          "title": "Hasan et al.: Unveiling the therapeutic potential: Evaluation of anti-inflammatory and antineoplastic activity of Magnolia champaca Linn’s stem bark isolate through molecular docking insights",
+          "url": "https://doi.org/10.1016/j.heliyon.2023.e22972",
+          "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10758728/fullTextXML",
+          "downloadBytes": 139173,
+          "downloadSha256": "cbde97aa534578b30a44076d654257469a9355873187bd365c99ca2c4b82298e",
+          "reviewCoverage": "FULL_TEXT_XML_METADATA_AND_METHOD_SECTION",
+          "reason": "The XML contains a retraction-forward pointer, but its linked PMC article has a different title and DOI. Retraction status of this Magnolia paper is not confirmed. Quarantined rather than adopted.",
+          "claimedRelatedPmcId": "PMC11923187",
+          "linkedArticle": {
+            "title": "Retraction Note: Anti-proliferative and immunomodulatory potencies of cinnamon oil on Ehrlich ascites carcinoma bearing mice",
+            "doi": "10.1038/s41598-025-94143-6",
+            "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11923187/fullTextXML",
+            "downloadBytes": 8489,
+            "downloadSha256": "acc659e2875a9c8bcfe911a8dadcb5ed1b7db6b634a9d3f640f15365c33d6b83",
+            "matchesOriginalArticle": false
+          },
+          "crossrefCheck": {
+            "url": "https://api.crossref.org/works/10.1016%2Fj.heliyon.2023.e22972",
+            "originalDoi": "10.1016/j.heliyon.2023.e22972",
+            "relationEntriesReturned": 0,
+            "limitation": "An empty relation list does not prove the paper has not been retracted."
+          },
+          "reviewedAt": "2026-10-06",
+          "adoptedAsMethod": false
+        },
+        {
+          "id": "research-pardo-003-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Magnolia champaca",
+          "url": "https://powo.science.kew.org/taxon/554657-1",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity"
+          ],
+          "reviewLocator": "Accepted species; Philippine occurrence supported separately.",
+          "limitation": "Botanical identity/occurrence only, not clinical efficacy, dose or household safety. Country-list omission is not proof of absence."
+        },
+        {
+          "id": "research-pardo-003-cdf",
+          "kind": "BOTANICAL_OCCURRENCE",
+          "title": "Co's Digital Flora: Magnolia champaca",
+          "url": "https://www.philippineplants.org/Families/Magnoliaceae.html",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "regionFound"
+          ],
+          "reviewLocator": "Magnolia > Cultivated, not naturalized > Magnolia champaca; var. champaca Philippine cultivation note.",
+          "limitation": "Exact-entry local botanical compilation only, not medicinal safety, a current population census or permission to borrow adjacent species' methods."
+        },
+        {
+          "id": "champaca-flower-bud-rat-study",
+          "scientificName": "Magnolia champaca",
+          "sourceScientificName": "Michelia champaca",
+          "kind": "PRIMARY_PRECLINICAL_STUDY",
+          "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+          "title": "Antidiabetic activity of flower buds of  Michelia champaca  Linn",
+          "url": "https://doi.org/10.4103/0253-7613.45151",
+          "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3025142/fullTextXML",
+          "downloadBytes": 65983,
+          "downloadSha256": "1fc7475b7952c47028fde11f93ed106f8b477ffab5f0ea738b0357fa7512eb74",
+          "reviewCoverage": "FULL_TEXT_METHOD_SECTIONS_READ",
+          "reviewLocators": [
+            "Plant material",
+            "Preparation of extracts",
+            "Animals and treatment"
+          ],
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "preparationMethod"
+          ],
+          "plantPart": "Flower buds",
+          "voucher": "BRNCP/M/003/2006",
+          "limitation": "Laboratory flower-bud extraction and rat experiments only. Not a stem-bark method, human diabetes treatment, safe dose or beginner home recipe."
+        }
+      ],
+      "preparationFollowUpEvidenceFile": "HERB_TSAMPAKA_PREPARATION_FOLLOW_UP_2026-10-07.json"
+    },
+    {
+      "candidateId": "research-pardo-030",
+      "batch": 5,
+      "book": {
+        "entry": 30,
+        "heading": "Abutilon Indicum",
+        "commonNames": "Kuakuakohan, Gilig̃-gilig̃an, Tag.; Tabig̃, Malis, Dulupag, Pilis, Vis.; Malvas de Castilla, Sp.-Fil.",
+        "printedPage": 43,
+        "pdfPage": 49
+      },
+      "identityNotes": {
+        "queueScientificName": "Abutilon indicum",
+        "scientificSynonyms": [],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Kuakuakohan, Gilig̃-gilig̃an, Tag.; Tabig̃, Malis, Dulupag, Pilis, Vis.; Malvas de Castilla, Sp.-Fil.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Retain the combined plant parts; do not relabel the method as leaf-only tea.",
+        "Animal, tissue and cell-model findings do not establish human diabetes efficacy, dose or safety.",
+        "No household solvent fractionation or freeze-drying instructions are supplied.",
+        "Follow-up cover selected from checked unchanged bytes; botanical review and fresh pre-publication delivery/license checks remain pending."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "The cited preclinical study concerns combined leaves, twigs and roots with freeze-drying and solvent fractions. It does not establish human treatment efficacy, dose or a household process.",
+      "preparationReview": {
+        "plantPart": "Combined leaves, twigs and roots in a laboratory extract",
+        "kind": "LABORATORY_DESCRIPTION_HELD",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "DELIVERY_BYTES_MATCH_BOTANICAL_REVIEW_PENDING",
+        "ledger": "HERB_COVER_INTEGRATION_2026-10-07.json",
+        "uploadReceipt": "HERB_REPLACEMENT_MEDIA_REVIEW_2026-10-07.json",
+        "checkedAt": "2026-10-07T00:12:43.867Z",
+        "deliveryCheckedInUploadReceipt": true,
+        "freshDeliveryChecked": false,
+        "botanicalClearance": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-030",
+        "localName": "Abutilon indicum",
+        "scientificName": "Abutilon indicum",
+        "sourceScientificName": "Abutilon Indicum",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical source records this plant; modern medicinal efficacy is not established by this drafting review.\n\nEvidence limits: The cited preclinical study concerns combined leaves, twigs and roots with freeze-drying and solvent fractions. It does not establish human treatment efficacy, dose or a household process.",
+        "preparationMethod": "A primary Abutilon indicum study dried and powdered combined leaves, twigs and roots, boiled the material in distilled water, freeze-dried the extract and prepared solvent fractions for preclinical experiments. This laboratory description is not a home recipe or treatment.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "Human dose and safety remain unapproved. The combined-parts laboratory extract must not become a leaf-only tea or a household solvent-fractionation diabetes remedy.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Kew lists Abutilon indicum in its native country range. No province-level abundance, household safety or clinical benefit is inferred.",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null,
+        "imageUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791331844/abutilon_indicum_cc0_39272553_m6ztvo.jpg",
+        "imageSourceUrl": "https://www.inaturalist.org/observations/25362732",
+        "imageLicense": "CC0 1.0",
+        "imageLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "imageCreator": null,
+        "imageModification": "None; uploaded unchanged checked source bytes"
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational entry/page provenance only. No historical recipe, safe dose or modern clinical efficacy is adopted."
+        },
+        {
+          "id": "krisanapun-2011-abutilon-extraction",
+          "scientificName": "Abutilon indicum",
+          "kind": "PRIMARY_LABORATORY_EXTRACTION_STUDY_HELD",
+          "title": "Krisanapun et al. (2011): Antidiabetic Activities of Abutilon indicum (L.) Sweet Are Mediated by Enhancement of Adipocyte Differentiation and Activation of the GLUT1 Promoter",
+          "url": "https://doi.org/10.1093/ecam/neq004",
+          "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3094712/fullTextXML",
+          "supports": [
+            "preparationMethod",
+            "evidenceReview"
+          ],
+          "reviewCoverage": "FULL_TEXT_XML_SECTION_2_1_PLANT_MATERIAL",
+          "downloadBytes": 96609,
+          "downloadSha256": "16349ea50258af582df422186eb1c58e6dbbe37c4b9c2e495951e8f901200977",
+          "limitation": "A combined leaf/twig/root extract, freeze-drying and butanol fractionation used in preclinical experiments do not establish a household diabetes remedy.",
+          "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+          "reviewedAt": "2026-10-06"
+        },
+        {
+          "id": "research-pardo-030-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Abutilon indicum",
+          "url": "https://powo.science.kew.org/taxon/1101632-2",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity",
+            "regionFound"
+          ],
+          "reviewLocator": "Accepted species; Philippines in native country list.",
+          "limitation": "Botanical identity/occurrence only, not clinical efficacy, dose or household safety. Country-list omission is not proof of absence."
+        }
+      ],
+      "mediaFollowUpEvidenceFile": "HERB_COVER_INTEGRATION_2026-10-07.json"
+    },
+    {
+      "candidateId": "research-pardo-032",
+      "batch": 5,
+      "book": {
+        "entry": 32,
+        "heading": "Hibiscus Abelmoschus, L.",
+        "commonNames": "Kastuli, Kastio, Kastiogan, Dalupan, Tag.; Marikum, Dukum, Marukum, Marapoto, Vis.;2 Marsh Mallow, Eng.",
+        "printedPage": 45,
+        "pdfPage": 51
+      },
+      "identityNotes": {
+        "queueScientificName": "Abelmoschus moschatus",
+        "scientificSynonyms": [
+          "Hibiscus abelmoschus"
+        ],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Kastuli, Kastio, Kastiogan, Dalupan, Tag.; Marikum, Dukum, Marukum, Marapoto, Vis.;2 Marsh Mallow, Eng.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "Do not convert industrial essential-oil concentrations or historical regulatory claims into safe household dosing.",
+        "Do not borrow okra (Abelmoschus esculentus) or other Abelmoschus species' cooking instructions.",
+        "Plant-part, subspecies and food-grade sourcing require review before publication.",
+        "No selected uploaded cover; no synthetic or other-species substitute is permitted.",
+        "An in vitro laboratory water extraction does not fill the separate coffee-flavouring or food-grade processing gap."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "Seed coffee-flavouring is a reported use without processing controls or a food-grade amount. Industrial additive concentrations are not household preparation instructions. The separately dated follow-up describes separate seed and leaf laboratory water extractions only.",
+      "preparationReview": {
+        "plantPart": "Seeds and leaves processed separately; not essential oil or okra",
+        "kind": "LABORATORY_DESCRIPTION_HELD",
+        "methodEstablishedInReview": true,
+        "foodProcessingEstablished": false,
+        "foodSafetyCleared": false,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "NO_SELECTED_UPLOADED_COVER",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-032",
+        "localName": "Kastuli",
+        "scientificName": "Abelmoschus moschatus",
+        "sourceScientificName": "Hibiscus Abelmoschus, L.",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical source records this plant; modern medicinal efficacy is not established by this drafting review.\n\nEvidence limits: Seed coffee-flavouring is a reported use without processing controls or a food-grade amount. Industrial additive concentrations are not household preparation instructions. The separately dated follow-up describes separate seed and leaf laboratory water extractions only.",
+        "preparationMethod": "Gul and colleagues cleaned, shade-dried and coarsely powdered Abelmoschus moschatus seeds and leaves separately. Their in vitro study prepared water extracts from the powders, centrifuged the suspensions and concentrated the collected liquid with a vacuum evaporator. This laboratory description is not a home recipe or treatment, does not establish safe ingestion or a human dose, and supplies no coffee-flavouring process.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "A species-, subspecies-, part- and food-grade safety review is pending. No seed amount, essential-oil ingestion, perfume, incense or tobacco instruction is cleared; other Abelmoschus recipes cannot substitute.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Kew lists Abelmoschus moschatus in its native country range. No province-level abundance, household safety or clinical benefit is inferred.",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational entry/page provenance only. No historical recipe, safe dose or modern clinical efficacy is adopted."
+        },
+        {
+          "id": "prosea-kastuli-food-use",
+          "scientificName": "Abelmoschus moschatus",
+          "sourceSynonymsReviewed": [
+            "Hibiscus abelmoschus"
+          ],
+          "kind": "AUTHORITATIVE_REPORTED_FOOD_USE_HELD",
+          "title": "PROSEA: Abelmoschus moschatus, record 76",
+          "url": "https://prosea.prota4u.org/view.aspx?id=76",
+          "supports": [
+            "foodUse",
+            "researchGap"
+          ],
+          "reviewCoverage": "EXACT_SPECIES_SYNONYM_AND_SEED_COFFEE_FLAVOURING_PARAGRAPH",
+          "limitation": "Reported seed flavouring gives no seed processing, food-grade controls or amount. Industrial oil/additive concentrations and historical regulatory claims are not household instructions.",
+          "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+          "reviewedAt": "2026-10-06"
+        },
+        {
+          "id": "research-pardo-032-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Abelmoschus moschatus",
+          "url": "https://powo.science.kew.org/taxon/558023-1",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity",
+            "regionFound"
+          ],
+          "reviewLocator": "Accepted species; Philippines in native country list.",
+          "limitation": "Botanical identity/occurrence only, not clinical efficacy, dose or household safety. Country-list omission is not proof of absence."
+        },
+        {
+          "id": "gul-2011-kastuli-laboratory",
+          "scientificName": "Abelmoschus moschatus",
+          "taxonScope": "EXACT_SPECIES",
+          "kind": "PRIMARY_IN_VITRO_LABORATORY_DESCRIPTION_HELD",
+          "title": "Gul et al. (2011): Evaluation of Abelmoschus moschatus extracts for antioxidant, free radical scavenging, antimicrobial and antiproliferative activities using in vitro assays",
+          "url": "https://doi.org/10.1186/1472-6882-11-64",
+          "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3201038/fullTextXML",
+          "reviewedAt": "2026-10-07",
+          "reviewCoverage": "FULL_TEXT_XML_PLANT_MATERIAL_AND_PREPARATION_OF_PLANT_EXTRACTS_SECTIONS",
+          "reviewLocators": [
+            "Plant material",
+            "Preparation of plant extracts"
+          ],
+          "materialProvenance": "Seeds and leaves supplied by CIMAP Regional Centre Hyderabad, India; no specimen voucher accession recorded in reviewed plant-material paragraph.",
+          "experimentalModel": "In vitro assays; not a human trial",
+          "supports": [
+            "preparationMethod"
+          ],
+          "downloadBytes": 132600,
+          "downloadSha256": "4f20b529e4ffdc2a2b1a90c25b87d8a313ae1b2328a701f2381ccba6f1db2c8a",
+          "limitation": "Water extraction, centrifugation and vacuum concentration are laboratory descriptions, not a household decoction, coffee-flavouring recipe, food-grade seed process, cancer treatment or human dose."
+        }
+      ],
+      "preparationFollowUpEvidenceFile": "HERB_OXALIS_KASTULI_PREPARATION_FOLLOW_UP_2026-10-07.json"
+    },
+    {
+      "candidateId": "research-pardo-130",
+      "batch": 5,
+      "book": {
+        "entry": 130,
+        "heading": "Eupatorium Ayapana",
+        "commonNames": "Aya-pana, Sp.; Ayapana, Apana, Tag.; Ayapan, Indo-Eng.",
+        "printedPage": 149,
+        "pdfPage": 155
+      },
+      "identityNotes": {
+        "queueScientificName": "Ayapana triplinervis",
+        "scientificSynonyms": [
+          "Eupatorium ayapana"
+        ],
+        "queueRenamed": false,
+        "identityReview": "PENDING",
+        "historicalMappingHeld": false
+      },
+      "regionalNameReview": {
+        "status": "HISTORICAL_TEXT_ONLY",
+        "sourceId": "pardo-1901",
+        "sourceText": "Aya-pana, Sp.; Ayapana, Apana, Tag.; Ayapan, Indo-Eng.",
+        "modernRegionalMappingCleared": false
+      },
+      "reviewGaps": [
+        "Plant-part-specific content and safety review remains pending.",
+        "Category assignment remains unresolved.",
+        "Fresh independently targeted all-state duplicate comparison is required.",
+        "Isolated import, rollback and concurrent-duplicate tests are required.",
+        "In vitro antioxidant results do not prove clinical benefit or a human dose.",
+        "No newborn feeding, children's regimen, pregnancy guidance or essential-oil ingestion is cleared.",
+        "Preserve the exact species rather than transferring recipes from the other seven plants in the study.",
+        "No selected uploaded cover; no synthetic or other-species substitute is permitted."
+      ],
+      "uncitedFields": [
+        "warnings",
+        "dosage"
+      ],
+      "modernEvidenceNote": "The cited study tests industrial dehydrated leaf/stem mash analytically. Antioxidant and cell-test results do not establish clinical benefit or a human tea regimen.",
+      "preparationReview": {
+        "plantPart": "Industrial dehydrated leaf/stem mash in analytical tea bags",
+        "kind": "LABORATORY_DESCRIPTION_HELD",
+        "methodEstablishedInReview": true,
+        "medicinalInstructionsCleared": false,
+        "beginnerStepsCleared": false
+      },
+      "occurrenceReview": {
+        "status": "BOUNDED_EVIDENCE_LOCATED_PENDING_REVIEW",
+        "geographicScope": "COUNTRY_ONLY",
+        "absenceClaimed": false
+      },
+      "photoReview": {
+        "status": "NO_SELECTED_UPLOADED_COVER",
+        "freshDeliveryChecked": false,
+        "publicationAllowed": false
+      },
+      "proposedData": {
+        "id": "builtin-expansion-03-pardo-130",
+        "localName": "Ayapana",
+        "scientificName": "Ayapana triplinervis",
+        "sourceScientificName": "Eupatorium Ayapana",
+        "category": "Uncategorized",
+        "medicinalUses": "The historical source records this plant; modern medicinal efficacy is not established by this drafting review.\n\nEvidence limits: The cited study tests industrial dehydrated leaf/stem mash analytically. Antioxidant and cell-test results do not establish clinical benefit or a human tea regimen.",
+        "preparationMethod": "A primary analytical study included Ayapana triplinervis industrial leaf/stem mash, prepared water infusions and decoctions, removed the tea bags and froze the samples for chemical and cell testing. This laboratory description is not a home recipe or treatment.",
+        "dosage": "No medicinal dose is cleared by this review. Historical, food, manufacturing and laboratory descriptions are not dosing instructions.",
+        "warnings": "Human safety and dose remain unapproved. In-vitro analytical leaf/stem samples do not clear newborn feeding, child-specific guidance, pregnancy use or essential-oil ingestion.\n\nReview limit: part-specific medicinal safety remains unapproved; no medicinal household recipe is cleared.",
+        "regionFound": "Philippines; Kew lists Ayapana triplinervis in its introduced country range. No province-level abundance, household safety or clinical benefit is inferred.",
+        "publicationStatus": "DRAFT",
+        "evidenceClass": "UNASSESSED",
+        "provenance": "BUILT_IN",
+        "isVerified": false,
+        "isDohApproved": false,
+        "reviewedAt": null,
+        "reviewedById": null,
+        "embedding": null
+      },
+      "proposedSources": [
+        {
+          "id": "pardo-1901",
+          "kind": "HISTORICAL",
+          "title": "The Medicinal Plants of the Philippines (1901)",
+          "url": "https://www.gutenberg.org/files/26393/26393-h/26393-h.htm",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "medicinalUses"
+          ],
+          "limitation": "Historical educational entry/page provenance only. No historical recipe, safe dose or modern clinical efficacy is adopted."
+        },
+        {
+          "id": "checkouri-2020-ayapana-extraction",
+          "scientificName": "Ayapana triplinervis",
+          "kind": "PRIMARY_LABORATORY_AQUEOUS_EXTRACTION_STUDY_HELD",
+          "title": "Checkouri et al. (2020): Evaluation of Polyphenol Content and Antioxidant Capacity of Aqueous Extracts from Eight Medicinal Plants from Reunion Island",
+          "url": "https://doi.org/10.3390/antiox9100959",
+          "retrievalUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC7650546/fullTextXML",
+          "supports": [
+            "preparationMethod",
+            "evidenceReview"
+          ],
+          "reviewCoverage": "FULL_TEXT_XML_RAW_MATERIAL_IDENTITY_TABLE_AND_INFUSIONS_DECOCTIONS",
+          "downloadBytes": 206185,
+          "downloadSha256": "dfae2b7bafd78459dd2852a76cdf356fd7e6c6b2cb8cd3e3b3fbbf35d0576289",
+          "limitation": "Analytical infusions/decoctions of industrial dehydrated mash tested in vitro are not validated human tea doses, clinical efficacy or newborn/child safety.",
+          "sourceStatus": "REVIEWED_RESEARCH_ONLY",
+          "reviewedAt": "2026-10-06"
+        },
+        {
+          "id": "research-pardo-130-kew",
+          "kind": "BOTANICAL_IDENTITY_AND_DISTRIBUTION",
+          "title": "Kew POWO: Ayapana triplinervis",
+          "url": "https://powo.science.kew.org/taxon/27457-2",
+          "reviewedAt": "2026-10-07",
+          "supports": [
+            "identity",
+            "regionFound"
+          ],
+          "reviewLocator": "Accepted species; Philippines in introduced country list.",
+          "limitation": "Botanical identity/occurrence only, not clinical efficacy, dose or household safety. Country-list omission is not proof of absence."
+        }
+      ]
+    }
+  ],
+  "followUpEvidenceFiles": [
+    "HERB_TSAMPAKA_PREPARATION_FOLLOW_UP_2026-10-07.json",
+    "HERB_OXALIS_KASTULI_PREPARATION_FOLLOW_UP_2026-10-07.json"
+  ],
+  "mediaFollowUpEvidenceFile": "HERB_COVER_INTEGRATION_2026-10-07.json"
+}

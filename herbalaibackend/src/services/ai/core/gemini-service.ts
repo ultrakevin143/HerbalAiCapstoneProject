@@ -92,7 +92,7 @@ const createChat = (modelName: string, history: Content[]) => {
  * Utility to chunk text for embeddings.
  * If the text exceeds 2000 characters, it is split into chunks with a 200-character overlap.
  */
-function chunkText(text: string, size: number = 2000, overlap: number = 200): string[] {
+export function chunkText(text: string, size: number = 2000, overlap: number = 200): string[] {
   if (text.length <= size) return [text];
   const chunks: string[] = [];
   let start = 0;

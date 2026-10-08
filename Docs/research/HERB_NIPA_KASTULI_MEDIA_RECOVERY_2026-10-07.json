@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "evidenceFile": "HERB_NIPA_KASTULI_MEDIA_RECOVERY_2026-10-07.json",
+  "status": "REPLACEMENT_MEDIA_UPLOADED_NOT_PUBLISHED",
+  "reviewedAt": "2026-10-07T01:53:00Z",
+  "publicationAllowed": false,
+  "neonWrites": 0,
+  "cloudinaryUploads": 2,
+  "gitCommits": 0,
+  "gitPushes": 0,
+  "sourceLeadFile": "HERB_REMAINING_ELEVEN_PHOTO_RESEARCH_2026-10-07.json",
+  "previousFailedDownloadFile": "HERB_REMAINING_ELEVEN_DOWNLOAD_CHECK_2026-10-07.json",
+  "uploads": [
+    {
+      "candidateId": "research-pardo-215",
+      "localName": "Nipa",
+      "scientificName": "Nypa fruticans",
+      "botanicalClearance": false,
+      "medicinalInstructionsCleared": false,
+      "publicationAllowed": false,
+      "selectedInDraftPlan": false,
+      "imageCreator": null,
+      "imageCreatorNote": "The individual photo page displays a byline, recorded separately. It is not independent confirmation of photographer identity.",
+      "imageModification": "None; uploaded unchanged checked source bytes",
+      "sourceReview": {
+        "checkedAt": "2026-10-07T01:52:11.827Z",
+        "httpStatus": 200,
+        "quality": "research",
+        "scientificName": "Nypa fruticans",
+        "rank": "species",
+        "taxonId": 83106,
+        "photoId": 688949209,
+        "observationId": 376785431,
+        "assetUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/688949209/large.jpg",
+        "licenseCode": "cc0",
+        "creatorIndependentlyConfirmed": false,
+        "photoPageUrl": "https://www.inaturalist.org/photos/688949209",
+        "displayedCreator": "wilmotsenaratne",
+        "licenseScope": "Individual photo CC0, not the observation-level license",
+        "browserDownloadSeconds": 52.1156
+      },
+      "visualReview": {
+        "status": "COVER_QUALITY_PASSED_BOTANICAL_REVIEW_PENDING",
+        "reason": "Intact palm stand and fronds are visible; ditch and ornamental foreground are busy. This habitat view is not a diagnostic fruit or leaf close-up or expert botanical authentication.",
+        "imageRetouched": false,
+        "syntheticImage": false,
+        "publicationAllowed": false
+      },
+      "cloudinary": {
+        "checkedAt": "2026-10-07T01:52:48.918Z",
+        "url": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791337596/nipa_nypa_fruticans_cc0_688949209_h7tvo6.jpg",
+        "publicId": "nipa_nypa_fruticans_cc0_688949209_h7tvo6",
+        "assetId": "cbc3c68f31c9639b0d8ef84e67056a0e",
+        "cloudName": "dclqw6at7",
+        "httpStatus": 200,
+        "contentType": "image/jpeg",
+        "bytes": 285322,
+        "width": 1024,
+        "height": 680,
+        "format": "jpeg",
+        "sha256": "0db20c5f1359ae69613c3855713f47b0bc5eeceffda7e1c91327e93259586f42",
+        "sourceSha256": "0db20c5f1359ae69613c3855713f47b0bc5eeceffda7e1c91327e93259586f42",
+        "sourceCopyMatches": true,
+        "deliveryBytesMatch": true,
+        "fullDecodePassed": true,
+        "assetFolder": "Home",
+        "createdMinuteObserved": "2026-10-07 09:46 Asia/Manila"
+      }
+    },
+    {
+      "candidateId": "research-pardo-032",
+      "localName": "Kastuli",
+      "scientificName": "Abelmoschus moschatus",
+      "botanicalClearance": false,
+      "medicinalInstructionsCleared": false,
+      "publicationAllowed": false,
+      "selectedInDraftPlan": false,
+      "imageCreator": null,
+      "imageCreatorNote": "The individual photo page displays a byline, recorded separately. It is not independent confirmation of photographer identity.",
+      "imageModification": "None; uploaded unchanged checked source bytes",
+      "sourceReview": {
+        "checkedAt": "2026-10-07T01:52:11.827Z",
+        "httpStatus": 200,
+        "quality": "research",
+        "scientificName": "Abelmoschus moschatus",
+        "rank": "species",
+        "taxonId": 157767,
+        "photoId": 447252274,
+        "observationId": 250118263,
+        "assetUrl": "https://inaturalist-open-data.s3.amazonaws.com/photos/447252274/large.jpeg",
+        "licenseCode": "cc0",
+        "creatorIndependentlyConfirmed": false,
+        "photoPageUrl": "https://www.inaturalist.org/photos/447252274",
+        "displayedCreator": "Agnes Trekker",
+        "licenseScope": "Individual photo CC0, not the observation-level license",
+        "browserDownloadSeconds": 105.3088
+      },
+      "visualReview": {
+        "status": "COVER_QUALITY_PASSED_BOTANICAL_REVIEW_PENDING",
+        "reason": "Attached hairy green pods and lobed leaves are visible, with natural clutter and a soft background. This view does not independently authenticate the specimen or establish food-grade seeds.",
+        "imageRetouched": false,
+        "syntheticImage": false,
+        "publicationAllowed": false
+      },
+      "cloudinary": {
+        "checkedAt": "2026-10-07T01:52:48.918Z",
+        "url": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791337598/kastuli_abelmoschus_moschatus_cc0_447252274_uppdhj.jpg",
+        "publicId": "kastuli_abelmoschus_moschatus_cc0_447252274_uppdhj",
+        "assetId": "25ff5a29f82c430f5622fb540ec59bed",
+        "cloudName": "dclqw6at7",
+        "httpStatus": 200,
+        "contentType": "image/jpeg",
+        "bytes": 488031,
+        "width": 683,
+        "height": 1024,
+        "format": "jpeg",
+        "sha256": "f1f2d159af16687339243d7711cb2a6d256696232c382ded1ce4326f597e9951",
+        "sourceSha256": "f1f2d159af16687339243d7711cb2a6d256696232c382ded1ce4326f597e9951",
+        "sourceCopyMatches": true,
+        "deliveryBytesMatch": true,
+        "fullDecodePassed": true,
+        "assetFolder": "Home",
+        "createdMinuteObserved": "2026-10-07 09:46 Asia/Manila"
+      }
+    }
+  ],
+  "decodedOriginals": [
+    {
+      "candidateId": "research-pardo-215",
+      "photoId": 688949209,
+      "observationId": 376785431,
+      "httpStatus": 200,
+      "bytes": 285322,
+      "width": 1024,
+      "height": 680,
+      "sha256": "0db20c5f1359ae69613c3855713f47b0bc5eeceffda7e1c91327e93259586f42",
+      "fullDecodePassed": true,
+      "sizeGatePassed": true
+    },
+    {
+      "candidateId": "research-pardo-032",
+      "photoId": 447252274,
+      "observationId": 250118263,
+      "httpStatus": 200,
+      "bytes": 488031,
+      "width": 683,
+      "height": 1024,
+      "sha256": "f1f2d159af16687339243d7711cb2a6d256696232c382ded1ce4326f597e9951",
+      "fullDecodePassed": true,
+      "sizeGatePassed": true
+    }
+  ],
+  "heldOrRejected": [
+    {
+      "photoId": 632519146,
+      "status": "DOWNLOAD_TIMEOUT_NO_UPLOAD",
+      "observationId": 346949665,
+      "reason": "Bottle-gourd browser download timed out; no complete accepted file and no upload. No automatic repeated retry."
+    }
+  ],
+  "limitations": [
+    "Two actual media assets uploaded to Cloudinary; no herb database write or Library publication occurred.",
+    "Prior failed downloads and historical receipt files are preserved, not rewritten.",
+    "Research-grade labels and visual quality do not establish clinical efficacy, safe dosage or beginner recipe clearance.",
+    "Existing Cloudinary assets and settings were left unchanged. No secrets read or recorded.",
+    "Full source and delivery JPEG decoding and SHA-256 equality were checked; downloaded source bytes were not modified."
+  ]
+}

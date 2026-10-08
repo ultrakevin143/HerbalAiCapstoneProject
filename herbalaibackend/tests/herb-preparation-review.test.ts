@@ -15,8 +15,13 @@ describe("sourced preparation enrichment", () => {
   it.each(batch.herbs.map(herb => herb.slug))("%s retains reviewed field citations without promoting publication", slug => {
     const herb = getHerb(slug);
     expect(herb).toMatchObject({ publicationStatus: "DRAFT", isVerified: false });
-    expect(herb.fieldSources.preparationMethod.length).toBeGreaterThan(0);
-    for (const source of herb.fieldSources.preparationMethod) expect(new URL(batch.sources[source].url).protocol).toBe("https:");
+    const preparationSources = herb.fieldSources.preparationMethod ?? [];
+    expect(preparationSources.length).toBeGreaterThan(0);
+    for (const sourceId of preparationSources) {
+      const source = batch.sources[sourceId];
+      if (!source) throw new Error(`Missing preparation citation: ${sourceId}`);
+      expect(new URL(source.url).protocol).toBe("https:");
+    }
     expect(herb.reviewGaps.length).toBeGreaterThan(0);
   });
 
@@ -84,6 +89,16 @@ describe("sourced preparation enrichment", () => {
       expect(getHerb(slug).preparationMethod).not.toMatch(/\d/);
       expect(getHerb(slug).dosage).toContain('No verified human treatment dose');
     }
+  });
+
+  it('attributes Mangosteen safety wording without turning a dengue warning into preparation evidence', () => {
+    const herb = getHerb('mangosteen');
+    expect(herb.fieldSources.preparationMethod).toEqual(['cavite-preparations-2021']);
+    expect(herb.fieldSources.warnings).toEqual(['cavite-preparations-2021', 'who-dengue-2025']);
+    expect(herb.warnings).toMatch(/does not establish effectiveness or a safe treatment dose/);
+    expect(herb.warnings).toMatch(/do not delay care.*immediate medical care/);
+    expect(herb.dosage).toBe('No verified human treatment dose is supplied.');
+    expect(batch.sources['who-dengue-2025']!.url).toBe('https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue');
   });
 
   it('withholds the inconsistent Anonas recipe rather than silently correcting its units', () => {

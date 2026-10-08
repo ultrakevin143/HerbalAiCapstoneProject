@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "status": "CURRENT_COVER_SELECTION_VALIDATED_MEDIA_RELEASE_HELD",
+  "checkedAt": "2026-10-07T01:26:39Z",
+  "branch": "codex/mvp-acceptance-ci",
+  "gitHead": "741167b",
+  "repair": "Replacement-photo research now selects missing covers from all current owning draft plans, not an older saved public preflight. Incomplete, duplicate, foreign-queue, species-mismatched, writable or publication-enabled evidence fails closed.",
+  "testSuite": {
+    "command": "npx vitest run tests/herb-current-cover-selection.test.ts tests/herb-creator-metadata-follow-up.test.ts tests/herb-oxalis-kastuli-follow-up.test.ts tests/herb-santan-kabiki-follow-up.test.ts tests/herb-balibago-tkdl-follow-up.test.ts tests/herb-expansion-media-follow-up.test.ts tests/herb-expansion-release-preflight.test.ts tests/herb-third-ten-field-drafts.test.ts tests/herb-fourth-ten-field-drafts.test.ts tests/herb-fifth-ten-field-drafts.test.ts tests/herb-expansion-review.test.ts tests/herb-expansion-staging-plan.test.ts tests/herb-expansion-field-research.test.ts tests/herb-expansion-occurrence-research.test.ts tests/herb-first-ten-content-review.test.ts tests/herb-first-ten-preparation-supplement.test.ts tests/herb-second-ten-content-review.test.ts tests/herb-second-ten-photo-review.test.ts tests/herb-identity-media-follow-up.test.ts tests/herb-fifty-live-release-audit.test.ts tests/stuartxchange-preparation-review.test.ts tests/herb-third-ten-preparation-review.test.ts tests/herb-fourth-ten-preparation-review.test.ts tests/herb-fifth-ten-preparation-review.test.ts tests/herb-cover-replacement-research.test.ts tests/herb-preparation-public-review.test.ts tests/herb-preparation-rag.test.ts tests/herb-preparation-review.test.ts tests/herb-preparation-update.test.ts tests/built-in-herb-fields.test.ts tests/herb-preparation-ci.test.ts tests/herb-preparation-isolated-runner.test.ts tests/herb-taxonomic-identity.test.ts tests/herb-remaining-photo-leads.test.ts tests/herb-remaining-thirty-intake.test.ts tests/herb-remaining-thirty-visual-review.test.ts tests/herb-seventeen-media-delivery.test.ts tests/talisay-preparation-follow-up.test.ts tests/herb-provider-target-follow-up.test.ts",
+    "files": 39,
+    "passed": 668,
+    "failed": 0,
+    "exitCode": 0,
+    "newCurrentCoverTests": 18,
+    "scope": "Focused source/media/content-contract and mocked retrieval tests, not full live MVP acceptance."
+  },
+  "targetedBeforeFinalDownloadReceipt": {
+    "files": 2,
+    "passed": 45,
+    "exitCode": 0
+  },
+  "backendTypecheck": {
+    "command": "npx tsc --noEmit",
+    "exitCode": 0
+  },
+  "strictChangedFilesTypecheck": {
+    "command": "npx tsc --noEmit --target esnext --module nodenext --moduleResolution nodenext --strict --exactOptionalPropertyTypes --noUncheckedIndexedAccess --skipLibCheck prisma/find-herb-cover-replacements.ts tests/herb-current-cover-selection.test.ts tests/herb-expansion-media-follow-up.test.ts",
+    "exitCode": 0
+  },
+  "targetedLint": {
+    "command": "npx eslint src/content/herb-cover-replacement-research.ts prisma/find-herb-cover-replacements.ts tests/herb-current-cover-selection.test.ts tests/herb-expansion-media-follow-up.test.ts",
+    "exitCode": 0
+  },
+  "gitWhitespaceCheckExitCode": 0,
+  "validationIssueRepaired": "The first broad run found one existing runner-text assertion requiring the old saved preflight filename. It now explicitly rejects that dependency and requires the current-plan selector; dynamic tests cover adding/removing a selected cover. The final broad run passed.",
+  "research": {
+    "receiptFile": "HERB_REMAINING_ELEVEN_PHOTO_RESEARCH_2026-10-07.json",
+    "checkedAt": "2026-10-07T01:18:44.096Z",
+    "candidatesChecked": 11,
+    "requests": 21,
+    "photoLeads": 21,
+    "candidatesWithLeads": 7,
+    "runnerTiming": "The bounded API search ran before the current-plan selector repair, using the saved eleven-cover list. Regression tests independently confirm that current plans produce that exact same candidate list; the repaired CLI was typechecked but not rerun against the API."
+  },
+  "download": {
+    "receiptFile": "HERB_REMAINING_ELEVEN_DOWNLOAD_CHECK_2026-10-07.json",
+    "attempted": 6,
+    "http200": 6,
+    "completeTransfers": 0,
+    "fullDecodePassed": 0,
+    "visuallyReviewed": 0,
+    "cloudinaryUploads": 0,
+    "retries": 0
+  },
+  "liveSmoke": {
+    "receiptFile": "HERB_CURRENT_COVER_LIVE_SMOKE_2026-10-07.json",
+    "publicCount": 38,
+    "nonblankPreparationFields": 38,
+    "missingImages": [
+      "Kalingag"
+    ],
+    "testedViewports": [
+      375,
+      1280
+    ],
+    "physicalDevice": false
+  },
+  "publicPreflight": {
+    "receiptFile": "HERB_CURRENT_COVER_PUBLIC_PREFLIGHT_2026-10-07.json",
+    "checkedAt": "2026-10-07T01:25:01.952Z",
+    "checkerExitCode": 2,
+    "counts": {
+      "candidates": 50,
+      "livePublicHerbs": 38,
+      "draftPlansPresent": 50,
+      "partialContentDrafts": 1,
+      "fullContentDrafts": 49,
+      "missingFullContentDrafts": 1,
+      "missingSelectedCovers": 11,
+      "heldSecondaryIdentities": 2,
+      "publicIdentityConflicts": 0,
+      "publicationCleared": 0
+    }
+  },
+  "productionWrites": 0,
+  "cloudinaryUploads": 0,
+  "aiProviderRequests": 0,
+  "gitCommits": 0,
+  "gitPushes": 0,
+  "limitations": [
+    "External image transfers returned HTTP 200 but timed out with incomplete bodies; no partial source image is acceptable for upload.",
+    "Four missing-cover candidates have no accepted lead from this bounded search: Alibangbang, Kupang, Kahel and Ayapana. This is not proof that no suitable photograph exists elsewhere.",
+    "Kahel's hybrid mapping and Lokoloko's historical identity/occurrence remain held.",
+    "The public Library still contains 38 herbs; fifty queued drafts were not imported or indexed for AI retrieval.",
+    "Category, botanical/content, genuine reviewer, source-reuse, backup and private transactional duplicate/import gates remain pending.",
+    "Docker/PostgreSQL import/rollback/concurrency, authenticated flows and full live MVP acceptance were not performed."
+  ]
+}

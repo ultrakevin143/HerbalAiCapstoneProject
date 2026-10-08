@@ -277,3 +277,58 @@ The user explicitly approved reviewing, pushing and testing this follow-up live.
 Fresh validation passed all 332 native cases across thirteen scripts, with zero failed/skipped cases, plus full frontend lint and standalone typecheck. Previously observed responsive checks cover actual widths 240, 320, 390, 768, 1242 and 1366px. Remote main, deployment and CI refs were rechecked at e6b774a before staging. Vercel production was Ready at that baseline and explicitly showed codex/readability-accessibility as its production branch. Full isolated backend/database CI for the follow-up is required before advancing main and the deployment branch; no pass or live deployment is asserted at this preflight checkpoint.
 
 A fresh build with the CI-style local API setting compiled and generated 22/22 pages. The staged manifest contains exactly five paths (610 insertions and 124 deletions before this outcome note). Bounded credential/token/private-key patterns found only the unchanged synthetic PostgreSQL URLs in the isolated CI workflow, not production credentials, email addresses or live recovery tokens. Screenshots stay outside Git. Providers rebuild from source with their existing production variables; no local build artifact is uploaded.
+
+## About follow-up released and checked live
+
+The authorized five-file commit is `58ebe66d26bde13f36fdfd5cfa3d69f231030dc1` (Use reviewed Library records on About and fix narrow layouts), containing 612 insertions and 124 deletions. Only those five paths were committed; eleven pre-existing historical documentation diffs remain untouched. No schema/backend/environment/media/fixture/build artifact was included.
+
+The CI branch was pushed first. Actual isolated CI run https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37127436464 succeeded in both jobs, including migrations against its disposable PostgreSQL service. Logs show 872 backend tests in 77 files and 332 native cases, including all 20 About regressions: 1204 passing unique cases for this SHA. Frontend/backend lint and typechecks and the 22/22-page build succeeded. Repeated local runs are not added to that count.
+
+After CI passed, main and codex/readability-accessibility were rechecked at the approved previous production SHA and advanced together with an atomic non-forced fast-forward push. All three remote refs now resolve to 58ebe66. The resulting main run https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37127639668 and deployment-branch run https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37127639899 also completed successfully.
+
+Vercel's production-specific deployment list showed Ready for 58ebe66 on codex/readability-accessibility, not merely a preview status. Production deployment: https://vercel.com/kevinmercado987-gmailcoms-projects/herbal-ai-staging/8mdzjEXQxApB2GLnJy3Kyt5fZ2RL. The overview initially retained the previous deployment while the new release settled; the production list and actual public page establish the updated release. Railway showed Online and ACTIVE for the matching commit message; its success status points to deployment `14e0c48b-3a83-49bb-966e-7669e6b7ec5c`. No provider settings or credentials changed.
+
+| Live check | Observed result |
+| --- | --- |
+| Availability/catalog | Public frontend-proxied health returned 200; reviewed DOH-listed query returned success with ten records; full catalog retained 38 records. |
+| Anonymous About | Settled public page rendered ten pressed-state selection buttons without a record-loading error. Sign In remained available for the anonymous browser. |
+| Canonical selection | Desktop Yerba Buena selection displayed Mentha × villosa, omitted the obsolete Clinopodium douglasii identity, and linked Library ID h-4daf09c5a0b641ba. Mobile Niyog-niyogan selection used its canonical repository ID. |
+| Responsive layouts | Actual live widths 240, 320, 390, 768, 1242 and 1366px each rendered ten selectors, one pressed selection, zero card-child bottom clipping and no document horizontal overflow. Browser emulation only; not physical-device acceptance or an actual zoom check. |
+| Reference disclosure | Mobile Sources & references expanded and displayed the PITAHC Directory and Plants of the World Online references. |
+| Exact Library navigation | The selected Niyog-niyogan link opened `/library?id=04d52d3b-b738-4ede-8275-46ba18758ac6`; settled Library modal showed Niyog-niyogan and Combretum indicum (Balitadham / Tartaraok). |
+| Existing contributor session | A new Mercado Chrome tab restored Release QA, loaded all ten About records and omitted the signup CTA. Its protected Suggestions page remained accessible after reload with the same account. Existing user tabs/drafts/passwords were not changed. |
+| Administrator follow-up | Original admin tab handle was no longer available. Inventory found a replacement `/admin` tab, but its automation timed out before inspection. A new admin refresh is NOT counted as passed. No password, role, logout or destructive retry was performed. |
+
+No new application defect was reproduced in these bounded About live checks. The stopped local-preview tab could not be navigated through its internal browser error page; documented troubleshooting permitted a fresh tab in the same in-app browser, which successfully loaded the public release. This browser-control issue is not a production application outage. Temporary viewport overrides were reset. No live database writes, reset emails, synthetic medicinal publication or induced production outage occurred in this follow-up acceptance.
+
+Remaining limits: the administrator-browser follow-up is unverified; genuine Suggestions focus-return evidence remains unresolved; participant UAT is deferred and physical-device results remain user reports. Railway's dashboard still shows a limited trial (15 days or $4.27 at inspection), so ongoing hosting availability is not guaranteed by this release. No upgrade/payment was attempted. This post-release evidence is saved locally after the approved source/documentation commit, without an additional documentation-only push/redeployment.
+
+Live screenshots outside Git: `C:/Users/Hp/.codex/visualizations/2026/09/09/01a08515-decf-7f51-9c41-87d224cf7dc4/58ebe66-live-about-desktop-20261003.jpg` and `C:/Users/Hp/.codex/visualizations/2026/09/09/01a08515-decf-7f51-9c41-87d224cf7dc4/58ebe66-live-about-mobile-20261003.jpg`.
+
+## Administrator and hosting follow-up
+
+At approximately 10:02–10:11 PM Asia/Manila, the user authorized the remaining administrator/hosting review. Binding the existing purple-profile admin tab again timed out. A fresh tab in the same connected Chrome profile successfully loaded the live Admin Console without signing in again or changing credentials. This closes the prior administrator-browser inspection blocker for this release; the old tab's automation failure is not counted as an application defect.
+
+| Follow-up check | Observed result |
+| --- | --- |
+| Dashboard and refresh | Admin Console loaded with 38 herbs, 0 pending reviews, 2 approved suggestions, 17 users and 33 FAQ facts. After an intentional reload, the same administrator and dashboard returned; no Forbidden or sign-in redirect appeared. |
+| Published catalog | All Herbs settled at 38 records and included Kalingag / Cinnamomum mercadoi. |
+| Suggestion review | Pending filter correctly showed no suggestions. Approved filter showed two records, including Kalingag and its review note. Dashboard showed 14 rejected suggestions. No approval/rejection action was repeated. |
+| Audit read | Administrative Audit Logs loaded. Expanding the existing APPROVE_SUGGESTION entry showed suggestion 66, Kalingag, Approved, its scientific identity and the previously recorded review metadata. This proves access to the existing audit record, not a newly generated write event. |
+| Logout control | Log out remained visible. It was not clicked, preserving the user's administrator session. |
+
+Read-only review also found a legacy Approved suggestion named `awdsawd` (submitted 6 June 2026) whose expanded stored details claimed "treats anxiety", with preparation `plawds`, dosage `awda` and source `pitahc`. It did not appear in the rendered 38-record All Herbs catalog. This is a data-quality/provenance follow-up, not a new runtime exception or verified public medicinal publication. No record was edited, rejected or deleted; historical review and retention need an explicit, scoped remediation decision.
+
+Railway remained Online on the matching release. Its workspace displayed TRIAL with 15 days or $4.27 remaining; accumulated usage was $0.73. Project costs were application $0.4380 and pgvector $0.2550. No payment or hosting changes were made, and the database service is not presumed unused. The finite trial remains a hosting-continuity risk. Current policy sources, measured costs and a concrete owner handoff/checklist are saved in `HOSTING_CONTINUITY_2026-10-03.md`.
+
+No source repair, live write, new mail request, credential change, commit or push was needed for this bounded follow-up. The new documentation and this appendix remain local. Genuine Suggestions focus-return, participant UAT and independently observed physical-device acceptance retain their existing evidence limits.
+
+Screenshot outside Git: `C:/Users/Hp/.codex/visualizations/2026/09/09/01a08515-decf-7f51-9c41-87d224cf7dc4/58ebe66-admin-refresh-20261003.jpg`.
+
+## Local publication-coverage hardening
+
+The 4 October read-only audit of the legacy `awdsawd` approval found it absent from the public catalog but structurally under-sourced for its stored public-claim fields. A local guard now requires valid review references to collectively cover identity, medicinal uses, preparation and dosage before a Pending suggestion can be approved. Partial reviewer edits remain saveable; the gate is applied only at publication. This does not judge source authority automatically and does not change or retroactively reprocess legacy data.
+
+Focused review tests passed (22), plus backend lint and TypeScript build. The database-backed suggestion-validation suite remains an environment-only local gap because PostgreSQL is unavailable; it must pass in isolated PostgreSQL CI before release. The repair, tests and detailed evidence are local in `SUGGESTION_REFERENCE_COVERAGE_2026-10-04.md`; no commit, push, provider setting or live record mutation occurred.
+
+Follow-up review strengthened this local batch at the repository transaction boundary and required source coverage for any written warnings. The old repository fallback that manufactured claim-support labels from a plain source string was removed. Three direct-call bypass cases failed before the repair and now reject before Herb/audit creation in modeled tests. The expanded final run passed 114 tests across six files, plus lint/build and separate strict typechecking of the changed database tests. Three PostgreSQL rollback cases are prepared but remain unexecuted locally; their pass is not inferred from mocks or the previous released CI. Publication/source-provenance fixtures were updated for explicit coverage. The detailed report tracks these release gates and the separate hosting, legacy-record and manual acceptance limits.

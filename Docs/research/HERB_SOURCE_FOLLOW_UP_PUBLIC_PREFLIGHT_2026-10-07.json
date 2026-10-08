@@ -1,0 +1,111 @@
+{
+  "checkerExitCode": 2,
+  "status": "HELD_EXPANSION_RELEASE_PREFLIGHT",
+  "checkedAt": "2026-10-07T00:14:54.061Z",
+  "counts": {
+    "candidates": 50,
+    "livePublicHerbs": 38,
+    "draftPlansPresent": 50,
+    "partialContentDrafts": 6,
+    "fullContentDrafts": 44,
+    "missingFullContentDrafts": 6,
+    "missingSelectedCovers": 13,
+    "heldSecondaryIdentities": 2,
+    "publicIdentityConflicts": 0,
+    "publicationCleared": 0
+  },
+  "publicationAllowed": false,
+  "writeAllowed": false,
+  "partialDrafts": [
+    {
+      "candidateId": "research-pardo-171",
+      "localName": "Lokoloko",
+      "missingFields": [
+        "regionFound"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-124",
+      "localName": "Santan",
+      "missingFields": [
+        "preparationMethod"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-138",
+      "localName": "Kabiki",
+      "missingFields": [
+        "preparationMethod"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-033",
+      "localName": "Balibago",
+      "missingFields": [
+        "preparationMethod"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-045",
+      "localName": "Oxalis corniculata",
+      "missingFields": [
+        "preparationMethod"
+      ]
+    },
+    {
+      "candidateId": "research-pardo-032",
+      "localName": "Kastuli",
+      "missingFields": [
+        "preparationMethod"
+      ]
+    }
+  ],
+  "sourceFollowUp": {
+    "candidateId": "research-pardo-003",
+    "localName": "Tsampaka",
+    "scientificName": "Magnolia champaca",
+    "batch": 5,
+    "draftPlanPresent": true,
+    "fullContentDraftPresent": true,
+    "blockers": [
+      "IDENTITY_REVIEW_PENDING",
+      "CONTENT_SAFETY_REVIEW_PENDING",
+      "HUMAN_REVIEW_NOT_RECORDED",
+      "CATEGORY_UNRESOLVED",
+      "SOURCE_TAG_REVIEW:warnings",
+      "UNCITED_FIELD:warnings",
+      "UNCITED_FIELD:dosage",
+      "DRAFT_REVIEW_GAPS_OPEN"
+    ],
+    "draftReviewNotes": [
+      "Plant-part-specific content and safety review remains pending.",
+      "Category assignment remains unresolved.",
+      "Fresh independently targeted all-state duplicate comparison is required.",
+      "Isolated import, rollback and concurrent-duplicate tests are required.",
+      "The independent flower-bud study does not resolve the original stem-bark paper's correction/retraction metadata or establish clinical safety.",
+      "Do not turn solvent-extracted bark or ornamental flower fragrance into a home tea.",
+      "Preserve the Michelia champaca historical heading without substituting Magnolia officinalis or Magnolia grandiflora.",
+      "Historical image check is not fresh taxon, license or delivery clearance."
+    ],
+    "earlierMissingFields": [],
+    "selectedCoverUrl": "https://res.cloudinary.com/dclqw6at7/image/upload/v1791176717/tsampaka_magnolia_champaca_cc0_208651812_xwj1mw.jpg",
+    "imageCheckAt": "2026-10-06T03:12:11.722Z",
+    "preparationDescription": "An independent study of Michelia champaca (Magnolia champaca) dried and powdered flower buds, compared solvent extracts with a separate boiled-water extract, and vacuum-concentrated the extracts for Wistar-rat experiments. This laboratory description is not a home recipe or treatment and supplies no validated human diabetes dose. The quarantined stem-bark source is not used; its unresolved metadata is not a confirmed retraction finding.",
+    "preparationEvidenceFile": "HERB_FIFTH_TEN_FIELD_DRAFT_PLAN_2026-10-07.json",
+    "preparationSourceIds": [
+      "champaca-flower-bud-rat-study"
+    ],
+    "medicinalInstructionsCleared": false,
+    "descriptivePreparationLeadOnly": false,
+    "sourceIdentityStatus": "SOURCE_TAXON_LOCATED_PENDING_REVIEW",
+    "matchedPublicRecords": [],
+    "publicationAllowed": false
+  },
+  "globalBlockers": [
+    "Fresh, independently targeted all-state private-database comparison is still required before any write.",
+    "A backed-up import with isolated rollback and concurrent-duplicate tests is not present.",
+    "Historical image checks do not establish fresh delivery, licensing or taxon clearance.",
+    "Secondary preparation leads do not clear beginner instructions or medicinal dosage.",
+    "This report is read-only; no publish, database or embedding operation exists."
+  ]
+}

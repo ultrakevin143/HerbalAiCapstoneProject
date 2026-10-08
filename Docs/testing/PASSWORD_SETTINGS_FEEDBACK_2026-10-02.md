@@ -32,3 +32,15 @@ This repair is local and uncommitted at this entry. Publishing and live rechecki
 ## Release authorization and scheduled follow-up
 
 The user subsequently authorized deployment of this notification fix and chose to check the notifications manually. Release only the component, regression suite, this report and NEXT_WORK_PLAN_2026-10-06.md; preserve all unrelated local evidence edits. Run isolated CI before promoting the exact tested commit to main and the deployment branch. The next-work plan is scheduled for 6 October 2026 at 8:10 PM Philippine time; its later repairs require a separate reviewed release proposal rather than an automatic push.
+
+## Observed publication and follow-up
+
+Published commit 6311d09253aa6ca552306d1d664a29c4ccad624b contains only the four reviewed files. The isolated branch CI run 36896648447 passed before promotion. Main CI run 36896986949 and deployment-branch CI run 36896985705 also passed. CI logs confirm 523 backend cases across 67 files and 135 frontend native cases passed, alongside lint, typechecking and builds. Both remote main and codex/readability-accessibility resolve to the published commit.
+
+Vercel and Railway reported successful deployment of this release. A read-only live browser check restored the contributor session after reload and found aria-busy=false on the password-link action in Account settings, the marker added by this release. No live password change or password-link request was submitted during this publication check. Incorrect-password placement and request-feedback visibility remain for the user's manual live acceptance; this entry does not claim either message was independently observed in production.
+
+The existing live-password-acceptance-checks heartbeat was successfully updated to Capstone October 6 release-readiness review, active for a single run on 6 October 2026 at 8:10 PM Asia/Manila. Its instructions follow NEXT_WORK_PLAN_2026-10-06.md and prohibit automatic publication of subsequent repairs. Local execution requires the computer and desktop app to remain running with the worktree available. Private-password and unavailable authenticated checks must remain pending rather than be invented.
+
+This post-publication evidence is saved locally after the released commit; it is not another deployment. Unrelated working-tree evidence remains untouched.
+
+A subsequent anonymous GET to the live backend /api/health returned HTTP 200 with success status. This confirms endpoint availability, not every authenticated workflow.
