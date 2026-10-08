@@ -291,15 +291,18 @@ function LibraryContent() {
                     
                     {/* DOH Badge */}
                     {herb.isDohApproved && (
-                      <Badge variant="outline" className="herb-doh-badge absolute z-10 top-2.5 left-2.5">
-                        <ShieldCheck className="h-3 w-3 text-[#74c69d]" />
-                        <span className="text-[10px] font-semibold">DOH Plant</span>
-                      </Badge>
+                      <span className="herb-doh-badge absolute top-2.5 left-2.5 z-10 inline-flex items-center gap-1 rounded-lg border border-emerald-500/30 bg-emerald-950/85 px-2.5 py-1 text-[11px] font-semibold text-emerald-200 shadow-md backdrop-blur-md">
+                        <ShieldCheck className="h-3.5 w-3.5 text-[#74c69d] shrink-0" />
+                        <span>DOH Plant</span>
+                      </span>
                     )}
 
-                    <Badge variant="outline" className="herb-figma-badge absolute z-10 bottom-2.5 left-2.5 text-[10px]">
-                      {herb.category}
-                    </Badge>
+                    <span
+                      className="herb-figma-badge absolute bottom-2.5 left-2.5 z-10 inline-flex max-w-[calc(100%-1.25rem)] items-center rounded-lg border border-white/20 bg-black/80 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-white shadow-md backdrop-blur-md"
+                      title={herb.category}
+                    >
+                      <span className="truncate">{herb.category}</span>
+                    </span>
                   </div>
 
                   {/* Info Body */}
