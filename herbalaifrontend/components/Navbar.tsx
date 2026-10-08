@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import NotificationBell from './NotificationBell';
 import ProfileEditorModal from './ProfileEditorModal';
-import DisplayPreferences from './DisplayPreferences';
+import ThemeToggle from './DisplayPreferences';
 import BrandMark from './BrandMark';
 import { ChevronDown, LogOut, Menu, Pencil, Shield, Sprout, UserRound, X } from 'lucide-react';
 import { PwaInstallButton } from './PwaInstall';
@@ -16,7 +16,6 @@ export default function Navbar() {
   const { user, logout, isAuthenticated, loading, sessionUnavailable, checkSession } = useAuth();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobileDisplayOpen, setIsMobileDisplayOpen] = useState(false);
   const [isProfileEditorOpen, setIsProfileEditorOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [logoutError, setLogoutError] = useState(false);
@@ -44,7 +43,6 @@ export default function Navbar() {
   }, [isUserMenuOpen]);
 
   const toggleMobileMenu = () => {
-    setIsMobileDisplayOpen(false);
     setIsMobileMenuOpen((prev) => !prev);
   };
 
@@ -120,6 +118,8 @@ export default function Navbar() {
 
                 <NotificationBell />
 
+                <ThemeToggle />
+
                 {/* Account / User Menu Dropdown */}
                 <div className="relative" ref={userMenuRef}>
                   <button
@@ -184,8 +184,8 @@ export default function Navbar() {
                           <span>Account settings</span>
                         </button>
 
-                        <div className="px-1 py-1">
-                          <DisplayPreferences />
+                        <div className="px-3 py-2 border-t border-black/5 dark:border-line">
+                          <ThemeToggle variant="row" />
                         </div>
                       </div>
 
@@ -209,15 +209,16 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <DisplayPreferences />
+                <ThemeToggle />
                 <Button asChild variant="ghost" size="sm"><Link href="/signin">Sign In</Link></Button>
                 <Button asChild size="sm"><Link href="/signup">Get Started</Link></Button>
               </>
             )}
           </div>
 
-          {/* Mobile hamburger button */}
+          {/* Mobile top bar buttons */}
           <div className="flex items-center gap-2 lg:hidden">
+            <ThemeToggle />
             {isAuthenticated && <NotificationBell />}
             <button
               onClick={toggleMobileMenu}
@@ -239,12 +240,8 @@ export default function Navbar() {
               aria-hidden="true"
             />
             <div className="absolute top-full left-0 right-0 z-50 lg:hidden max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-b border-line bg-panel/95 backdrop-blur-xl px-4 py-4 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
-            <div className="mb-3 flex items-center justify-between rounded-xl border border-line bg-panel px-3 py-2">
-              <span className="text-sm font-bold text-ink">Display preferences</span>
-              <DisplayPreferences
-                open={isMobileDisplayOpen}
-                onOpenChange={setIsMobileDisplayOpen}
-              />
+            <div className="mb-3 rounded-xl border border-line bg-panel px-4 py-2.5">
+              <ThemeToggle variant="row" />
             </div>
             <div className="grid grid-cols-2 gap-2">
               {allLinks.map((link) => {
