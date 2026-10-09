@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { adminEditDatabaseBoundary } from './helpers/admin-edit-database-boundary.js';
+import { knowledgeImportServerBoundary } from './helpers/knowledge-import-server-boundary.js';
 
 const state = vi.hoisted(() => ({ client: null as PrismaClient | null }));
 vi.mock('../src/lib/prisma.js', () => ({ get prisma() { return state.client; } }));
@@ -30,10 +31,8 @@ const assertRolledBack = async () => {
 describe.skipIf(!enabled)('knowledge batch record/audit rollback on isolated PostgreSQL', () => {
   beforeAll(async () => {
     pool = new pg.Pool({ connectionString: connectionUrl, options: `-c search_path=${schema}` });
-    const target = (await pool.query('SELECT current_database() AS database, inet_server_addr()::text AS host, inet_server_port() AS port')).rows[0];
-    expect(target.database).toBe('herbalai_test');
-    expect(target.host).toMatch(/^127\.0\.0\.1(?:\/32)?$/);
-    expect(Number(target.port)).toBe(Number(new URL(connectionUrl!).port || '5432'));
+    const target = (await pool.query('SELECT current_database() AS database, inet_server_addr()::text AS host, inet_server_port() AS port, current_user AS "user"')).rows[0];
+    knowledgeImportServerBoundary(target, connectionUrl!, process.env['CI'] === 'true');
     await pool.query(`CREATE SCHEMA "${schema}"`);
     await pool.query('CREATE TABLE "User" (id TEXT PRIMARY KEY)');
     await pool.query('CREATE TABLE "KnowledgeBase" (id TEXT PRIMARY KEY, question TEXT NOT NULL UNIQUE, answer TEXT NOT NULL, category TEXT, tags TEXT[] NOT NULL, metadata JSONB, "isActive" BOOLEAN NOT NULL DEFAULT true, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT NOW(), "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT NOW())');

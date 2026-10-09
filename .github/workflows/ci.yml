@@ -73,6 +73,7 @@ jobs:
           tests/api-security-boundaries.test.ts tests/api-outage-forwarding.test.ts tests/socket-security-boundaries.test.ts
           tests/knowledge-import-atomicity.test.ts tests/knowledge-import-database.test.ts tests/knowledge-authenticated-flow.test.ts
           tests/credits-config.test.ts tests/credits-database.test.ts
+          tests/knowledge-import-boundary.test.ts tests/helpers/knowledge-import-server-boundary.ts
 
       - name: Run real administrator vector and audit rollback gate
         working-directory: herbalaibackend
