@@ -16,17 +16,21 @@ export const runAuditedMutation = async <T>(
     targetId: string;
     details?: Record<string, unknown>;
   }>,
-): Promise<T> => prisma.$transaction(async (transaction) => {
-  const { result, targetId, details } = await mutate(transaction);
-  await transaction.auditLog.create({
-    data: {
-      ...audit,
-      targetId,
-      details: (details as Prisma.InputJsonValue) ?? undefined,
-    },
-  });
-  return result;
-});
+  existingTransaction?: Prisma.TransactionClient,
+): Promise<T> => {
+  const execute = async (transaction: Prisma.TransactionClient) => {
+    const { result, targetId, details } = await mutate(transaction);
+    await transaction.auditLog.create({
+      data: {
+        ...audit,
+        targetId,
+        details: (details as Prisma.InputJsonValue) ?? undefined,
+      },
+    });
+    return result;
+  };
+  return existingTransaction ? execute(existingTransaction) : prisma.$transaction(execute);
+};
 
 /**
  * Retrieves audit logs with admin details, ordered by most recent.

@@ -10,6 +10,7 @@ import rateLimit from "express-rate-limit";
 import { ENV } from "../config/env.js";
 
 const router = Router();
+router.use((_req, res, next) => { res.setHeader('Cache-Control', 'private, no-store'); next(); });
 const authController = new AuthController();
 const authMiddleware = new AuthMiddleware();
 

@@ -17,7 +17,7 @@ export default function CreditsPage() {
   }, [loading, isAuthenticated, sessionUnavailable, router]);
   if (sessionUnavailable) return <SessionUnavailable retry={checkSession} />;
   return <div className="operational-page min-h-screen"><Navbar /><main className="mx-auto max-w-xl space-y-6 px-4 py-10">
-    <Link href="/chat" className="text-sm text-accent underline underline-offset-4">Back to Dr. Ai</Link>
+    <Link href="/chat" className="inline-flex min-h-11 items-center rounded-xl border border-line px-4 text-sm font-semibold text-accent hover:bg-soft focus-visible:outline-2 focus-visible:outline-offset-2">Back to Dr. Ai</Link>
     <CreditsWallet key={user?.id ?? 'signed-out'} />
   </main><Footer /></div>;
 }

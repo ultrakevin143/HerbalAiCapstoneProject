@@ -1,9 +1,25 @@
+const unavailableDatabaseCodes = new Set(['P1001', 'P1002', 'P1008', 'P1017', 'P2024', 'P2028', 'ECONNRESET', 'ECONNREFUSED', 'ETIMEDOUT', '57P01', '53300', '08006']);
+
+export function rethrowDatabaseUnavailable(error: unknown) {
+  if (error instanceof Error && unavailableDatabaseCodes.has(databaseErrorCode(error) ?? '')) throw error;
+}
+
 export function databaseErrorCode(err: Error & { code?: unknown }) {
   return typeof err.code === 'string' && /^(P\d{4}|ECONNRESET|ECONNREFUSED|ETIMEDOUT|57P01|53300|08006)$/.test(err.code)
     ? err.code : undefined;
 }
 
-export function errorResponse(err: Error & { status?: number; code?: unknown }, production: boolean) {
+export function requestBodyErrorResponse(err: Error & { type?: unknown }) {
+  if (err.type === 'entity.parse.failed') return { status: 400, body: { status: 'error', code: 'INVALID_JSON', message: 'Request body contains invalid JSON.' } };
+  if (err.type === 'entity.too.large' || err.type === 'parameters.too.many') return { status: 413, body: { status: 'error', code: 'REQUEST_BODY_TOO_LARGE', message: 'Request body is too large.' } };
+  if (err.type === 'encoding.unsupported' || err.type === 'charset.unsupported') return { status: 415, body: { status: 'error', code: 'UNSUPPORTED_BODY_ENCODING', message: 'Request body encoding is not supported.' } };
+  if (err.type === 'request.aborted' || err.type === 'request.size.invalid') return { status: 400, body: { status: 'error', code: 'INVALID_REQUEST_BODY', message: 'Request body could not be read.' } };
+  return null;
+}
+
+export function errorResponse(err: Error & { status?: number; code?: unknown; type?: unknown }, production: boolean) {
+  const bodyError = requestBodyErrorResponse(err);
+  if (bodyError) return bodyError;
   if (err.code === 'VERIFICATION_EMAIL_UNAVAILABLE') {
     return {
       status: 503,
@@ -26,7 +42,7 @@ export function errorResponse(err: Error & { status?: number; code?: unknown }, 
   }
   const databaseCode = databaseErrorCode(err);
   if (databaseCode) {
-    const unavailable = ['P1001', 'P1002', 'P1008', 'P1017', 'P2024', 'P2028', 'ECONNRESET', 'ECONNREFUSED', 'ETIMEDOUT', '57P01', '53300', '08006'].includes(databaseCode);
+    const unavailable = unavailableDatabaseCodes.has(databaseCode);
     return {
       status: unavailable ? 503 : 500,
       body: {

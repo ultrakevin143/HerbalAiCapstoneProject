@@ -37,9 +37,9 @@ export const createTestCheckout = async (purchaseId: string, pack: z.infer<typeo
   const returnUrl = new URL('/credits', config.frontendUrl);
   if (returnUrl.protocol !== 'https:' && !['localhost', '127.0.0.1'].includes(returnUrl.hostname)) throw new CreditError(503, 'A secure return URL is required.');
   const session = await providerCall('', { data: { attributes: {
-    line_items: [{ name: `TEST ONLY ${pack.name}`, amount: pack.amountMinor, currency: 'PHP', quantity: 1 }],
+    line_items: [{ name: `${pack.name} — TEST ONLY`, amount: pack.amountMinor, currency: 'PHP', quantity: 1 }],
     payment_method_types: ['gcash'], reference_number: purchaseId,
-    success_url: returnUrl.href, cancel_url: returnUrl.href,
+    success_url: returnUrl.href, cancel_url: new URL('/chat', config.frontendUrl).href,
   } } });
   const url = new URL(session.attributes.checkout_url ?? '');
   if (url.protocol !== 'https:' || url.hostname !== 'checkout.paymongo.com' || url.username || url.password) throw new CreditError(503, 'An invalid test checkout URL was returned.');

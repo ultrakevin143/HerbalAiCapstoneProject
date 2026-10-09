@@ -19,7 +19,7 @@ const standaloneSource = await readFile(new URL('../herbalaifrontend/app/credits
 const syntax = ts.createSourceFile('credits.tsx', pageSource, ts.ScriptTarget.ES2022, true, ts.ScriptKind.TSX);
 const callbacks = new Map();
 const visit = node => {
-  if (ts.isVariableDeclaration(node) && ['buy', 'openAnswer'].includes(node.name.getText(syntax))) callbacks.set(node.name.getText(syntax), node.initializer.getText(syntax));
+  if (ts.isVariableDeclaration(node) && ['buy', 'openAnswer', 'backToChat'].includes(node.name.getText(syntax))) callbacks.set(node.name.getText(syntax), node.initializer.getText(syntax));
   if (ts.isCallExpression(node) && node.expression.getText(syntax) === 'useEffect' && node.arguments[0]?.getText(syntax).includes("api.get('/credits')")) callbacks.set('loadWallet', node.arguments[0].getText(syntax));
   if (ts.isCallExpression(node) && node.expression.getText(syntax) === 'useEffect' && node.arguments[0]?.getText(syntax).includes('refreshOnReturn')) callbacks.set('returnRefresh', node.arguments[0].getText(syntax));
   ts.forEachChild(node, visit);
@@ -28,7 +28,7 @@ visit(syntax);
 const deferred = () => { let resolve, reject; const promise = new Promise((success, failure) => { resolve = success; reject = failure; }); return { promise, resolve, reject }; };
 const purchaseId = '7a463e2d-9f94-4ed2-90ab-e29ad36e2b6e';
 const pageHarness = () => {
-  const state = { error: '', walletError: '', wallet: null, pending: false, revision: 0, answer: null, checkout: null, redirects: [], posts: [], gets: [] };
+  const state = { error: '', walletError: '', wallet: null, pending: false, revision: 0, answer: null, checkout: null, panelOwner: 'TEST-owner', redirects: [], posts: [], gets: [] };
   const post = deferred(), get = deferred();
   const context = {
     userId: 'TEST-owner', active: { current: true }, account: { current: 'TEST-owner' }, locked: { current: false }, checkoutKeys: { current: new Map() },
@@ -41,9 +41,10 @@ const pageHarness = () => {
     setWalletError: value => { state.walletError = value; }, setWallet: value => { state.wallet = value; },
     setRevision: value => { state.revision = value(state.revision); }, setAnswer: value => { state.answer = value; },
     setCheckout: value => { state.checkout = typeof value === 'function' ? value(state.checkout) : value; },
+    setPanelOwner: value => { state.panelOwner = value; },
   };
   const compile = name => new Function(...Object.keys(context), ts.transpileModule(`return (${callbacks.get(name)});`, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText)(...Object.values(context));
-  return { state, post, get, context, buy: compile('buy'), openAnswer: compile('openAnswer'), loadWallet: compile('loadWallet') };
+  return { state, post, get, context, buy: compile('buy'), openAnswer: compile('openAnswer'), backToChat: compile('backToChat'), loadWallet: compile('loadWallet') };
 };
 test('validates disabled and enabled test wallet states', () => {
   assert.equal(exports.creditWalletSchema.parse({ enabled: false, testMode: true }).enabled, false);
@@ -58,6 +59,25 @@ test('GCash checkout labels disclose simulated payments and warn against real cr
   assert.match(pageSource, /simulated Authorize or Fail controls/);
   assert.match(pageSource, /Never enter your real GCash PIN or OTP/);
   assert.doesNotMatch(pageSource, /published test card details/);
+});
+
+test('Back to Dr. Ai closes the panel without charging, redirecting or forgetting the purchase key', () => {
+  const fixture = pageHarness();
+  fixture.context.checkoutKeys.current.set('TEST-owner:test-pack', 'TEST-existing-key');
+  fixture.state.checkout = { ownerId: 'TEST-owner', purchaseId, url: 'https://checkout.paymongo.com/TEST' };
+  fixture.backToChat();
+  assert.equal(fixture.state.panelOwner, null);
+  assert.deepEqual(fixture.state.posts, []);
+  assert.deepEqual(fixture.state.redirects, []);
+  assert.equal(fixture.context.checkoutKeys.current.get('TEST-owner:test-pack'), 'TEST-existing-key');
+  assert.equal(fixture.state.checkout.purchaseId, purchaseId);
+});
+
+test('return navigation is explicit on the standalone route and inside the wallet drawer', () => {
+  assert.match(standaloneSource, /href="\/chat"[^>]+min-h-11[^>]+>Back to Dr\. Ai/);
+  assert.match(pageSource, /onClick=\{backToChat\}>Back to Dr\. Ai/);
+  assert.ok(pageSource.indexOf('onClick={backToChat}') < pageSource.indexOf('aria-label="Add test credits"'));
+  assert.match(pageSource, /Returning does not complete a payment/);
 });
 test('only redirects to HTTPS PayMongo checkout without embedded credentials', () => {
   assert.equal(exports.safeTestCheckoutUrl('https://checkout.paymongo.com/TEST'), 'https://checkout.paymongo.com/TEST');

@@ -1,4 +1,5 @@
 import { findAllKB, MAX_UNPAGED_KB_RECORDS } from "../../../repositories/knowledgebase.repository.js";
+import { rethrowDatabaseUnavailable } from '../../../utils/error-response.js';
 
 export async function GetAllKnowledgeBaseService() {
   try {
@@ -16,6 +17,7 @@ export async function GetAllKnowledgeBaseService() {
       data,
     };
   } catch (error) {
+    rethrowDatabaseUnavailable(error);
     console.error("GetAllKnowledgeBaseService Error:", error);
     return { code: 500, status: "error", message: "Unable to retrieve knowledge base entries" };
   }

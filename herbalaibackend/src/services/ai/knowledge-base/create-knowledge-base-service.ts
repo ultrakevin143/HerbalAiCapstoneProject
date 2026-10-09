@@ -1,4 +1,5 @@
 import { createKB } from "../../../repositories/knowledgebase.repository.js";
+import { rethrowDatabaseUnavailable } from '../../../utils/error-response.js';
 import { generateEmbedding } from "../core/gemini-service.js";
 import { hasPhilippineSourceMetadata } from './source-metadata.js';
 
@@ -31,6 +32,7 @@ export async function CreateKnowledgeBaseService(data: CreateKnowledgeBaseData, 
       data: created,
     };
   } catch (error) {
+    rethrowDatabaseUnavailable(error);
     console.error("CreateKnowledgeBaseService Error:", error);
     const err = error as Error & { code?: string };
 

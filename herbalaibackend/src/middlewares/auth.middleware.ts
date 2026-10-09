@@ -6,6 +6,7 @@ export type AuthenticatedRequest = Request & { user?: JwtPayload };
 
 export class AuthMiddleware {
   public execute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    res.setHeader('Cache-Control', 'private, no-store');
     const authReq = req as AuthenticatedRequest;
     
     // 1. Try to get token from Authorization Header

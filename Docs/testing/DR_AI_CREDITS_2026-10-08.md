@@ -2,6 +2,8 @@
 
 Date: 2026-10-08, Asia/Manila. Local prototype only; not released or approved for real money.
 
+10 October update: the reviewed local code now defaults to **10 one-time starting credits** when TEST credit mode is enabled. Credit enforcement still defaults to off. Existing wallets are not refilled by this change, login or refresh. The separate two-credit manual depletion profile is intentionally unchanged. Validation and release boundaries are recorded in `STARTING_CREDITS_2026-10-10.md`; this change is not yet a live deployment.
+
 ## Implemented
 
 - Owner-scoped persistent wallet, ledger, purchase history and saved completed answers; additive Prisma migration `20261008110000_add_test_credit_wallet`.
@@ -22,13 +24,13 @@ First apply the additive migration through Prisma against an explicitly verified
 
 ```dotenv
 DR_AI_CREDITS_MODE=test
-DR_AI_TRIAL_CREDITS=3
+DR_AI_TRIAL_CREDITS=10
 DR_AI_CREDIT_PACKAGES=[{"id":"test-pack","name":"TEST ONLY sample","credits":10,"amountMinor":10000}]
 PAYMONGO_TEST_SECRET_KEY=<private merchant test key>
 PAYMONGO_TEST_WEBHOOK_SECRET=<private test webhook signing secret>
 ```
 
-The sample PHP 100.00 amount is synthetic, not an approved retail price. Defaults are zero trial credits, no bundles and no secrets. Set `FRONTEND_URL` to the correct secure frontend; checkout returns to `/credits`. Register the test `checkout_session.payment.paid` webhook at the HTTPS backend `/api/credits/webhook`. Missing secrets disable checkout. Do not place keys in Git, screenshots or chat.
+The sample PHP 100.00 amount is synthetic, not an approved retail price. TEST-mode defaults are ten trial credits, no bundles and no secrets; mode still defaults to off. Set `FRONTEND_URL` to the correct secure frontend; successful checkout returns to `/credits` and cancellation returns to `/chat`. Register the test `checkout_session.payment.paid` webhook at the HTTPS backend `/api/credits/webhook`. Missing secrets disable checkout. Do not place keys in Git, screenshots or chat.
 
 The adapter uses documented POST `/v2/checkout_sessions` for creation and GET `/v1/checkout_sessions/{id}` for retrieval:
 - [Hosted checkout quick start](https://docs.paymongo.com/docs/payment-channels-hosted-checkout-quick-start)

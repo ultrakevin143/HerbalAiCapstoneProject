@@ -9,12 +9,14 @@ vi.mock('../src/services/ai/core/gemini-service.js', () => ({
 import app from '../src/app.js';
 import { prisma, closeDatabasePool } from '../src/lib/prisma.js';
 import { hashPassword } from '../src/utils/password.js';
+import { generateEmbedding } from '../src/services/ai/core/gemini-service.js';
 
 const suffix = randomUUID();
 const password = `Test-only-${randomUUID()}`;
 const adminId = `source-admin-${suffix}`;
 const contributorId = `source-contributor-${suffix}`;
 const question = `TEST ONLY source workflow ${suffix}?`;
+const importQuestions = [`TEST ONLY batch first ${suffix}?`, `TEST ONLY batch second ${suffix}?`];
 const metadata = {
   jurisdiction: 'Philippines',
   sources: [{ title: 'Test citation structure', publisher: 'Test publisher', url: 'https://example.invalid/source' }],
@@ -31,7 +33,7 @@ describe('authenticated knowledge-base flow', () => {
 
   afterAll(async () => {
     try {
-      await prisma.knowledgeBase.deleteMany({ where: { question } });
+      await prisma.knowledgeBase.deleteMany({ where: { question: { in: [question, ...importQuestions] } } });
       await prisma.user.deleteMany({ where: { id: { in: [adminId, contributorId] } } });
     } finally {
       await closeDatabasePool();
@@ -72,5 +74,30 @@ describe('authenticated knowledge-base flow', () => {
       { action: 'UPDATE_KNOWLEDGE_BASE' },
       { action: 'DELETE_KNOWLEDGE_BASE' },
     ]);
+  }, 60000);
+  it('rolls back an authenticated import on a late vector failure, then retries exactly once', async () => {
+    const admin = request.agent(app);
+    expect((await admin.post('/api/auth/login').send({ email: `source-admin-${suffix}@example.invalid`, password })).status).toBe(200);
+    const original = await prisma.knowledgeBase.create({ data: {
+      question: importQuestions[0]!, answer: 'TEST ONLY prior answer', tags: ['baseline'], metadata: { ...metadata, baseline: true },
+    } });
+    const facts = importQuestions.map(question => ({ question, answer: 'TEST ONLY imported answer', tags: ['imported'], metadata }));
+    vi.mocked(generateEmbedding)
+      .mockResolvedValueOnce(Array.from({ length: 768 }, (_, index) => index === 0 ? 1 : 0))
+      .mockResolvedValueOnce([0.1, 0.2]);
+    const failed = await admin.post('/api/knowledge-base/import').send({ facts });
+    expect(failed.status).toBe(500);
+    expect(await prisma.knowledgeBase.findUniqueOrThrow({ where: { id: original.id } })).toMatchObject({ answer: 'TEST ONLY prior answer', tags: ['baseline'], metadata: { ...metadata, baseline: true } });
+    expect(await prisma.knowledgeBase.findUnique({ where: { question: importQuestions[1]! } })).toBeNull();
+    expect(await prisma.$queryRawUnsafe('SELECT embedding::text AS embedding FROM "KnowledgeBase" WHERE id = $1', original.id)).toEqual([{ embedding: null }]);
+    expect(await prisma.auditLog.count({ where: { adminId, action: 'IMPORT_KNOWLEDGE_BASE', targetId: original.id } })).toBe(0);
+
+    const retried = await admin.post('/api/knowledge-base/import').send({ facts });
+    expect(retried.status).toBe(200);
+    expect(retried.body.data).toEqual({ total: 2, created: 1, updated: 1 });
+    const records = await prisma.knowledgeBase.findMany({ where: { question: { in: importQuestions } }, select: { id: true, question: true, answer: true } });
+    expect(records).toHaveLength(2);
+    expect(records.every(record => record.answer === 'TEST ONLY imported answer')).toBe(true);
+    expect(await prisma.auditLog.count({ where: { adminId, action: 'IMPORT_KNOWLEDGE_BASE', targetId: { in: records.map(record => record.id) } } })).toBe(2);
   }, 60000);
 });

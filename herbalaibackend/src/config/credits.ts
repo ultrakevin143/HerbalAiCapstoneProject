@@ -13,7 +13,7 @@ export const getCreditsConfig = () => {
   if (mode === 'off') return { mode, packages: [], trialCredits: 0, secretKey: '', webhookSecret: '', frontendUrl: ENV.FRONTEND_URL };
   const packages = z.array(creditPackageSchema).max(10).parse(JSON.parse(process.env['DR_AI_CREDIT_PACKAGES'] ?? '[]'));
   if (new Set(packages.map(pack => pack.id)).size !== packages.length) throw new Error('Credit package identifiers must be unique.');
-  const trialCredits = z.coerce.number().int().min(0).max(100).parse(process.env['DR_AI_TRIAL_CREDITS'] ?? '0');
+  const trialCredits = z.coerce.number().int().min(0).max(100).parse(process.env['DR_AI_TRIAL_CREDITS'] ?? '10');
   const secretKey = process.env['PAYMONGO_TEST_SECRET_KEY'] ?? '';
   if (secretKey && !secretKey.startsWith('sk_test_')) throw new Error('Only PayMongo TEST keys are accepted. Real payments are disabled.');
   return { mode, packages, trialCredits, secretKey, webhookSecret: process.env['PAYMONGO_TEST_WEBHOOK_SECRET'] ?? '', frontendUrl: ENV.FRONTEND_URL };

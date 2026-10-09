@@ -38,7 +38,7 @@ export const createKB = (data: KBData, adminId: string) => runAuditedMutation({
   return { result: created, targetId: created.id, details: { question: data.question } };
 });
 
-export const upsertKB = (data: KBData & { question: string }, adminId: string) => runAuditedMutation({
+export const upsertKB = (data: KBData & { question: string }, adminId: string, existingTransaction?: Prisma.TransactionClient) => runAuditedMutation({
   adminId,
   action: "IMPORT_KNOWLEDGE_BASE",
   targetType: "KnowledgeBase",
@@ -75,7 +75,13 @@ export const upsertKB = (data: KBData & { question: string }, adminId: string) =
   }
   const result = { ...record, created: !existing };
   return { result, targetId: record.id, details: { question: data.question, created: result.created } };
-});
+}, existingTransaction);
+
+export const upsertKBBatch = (facts: Array<KBData & { question: string }>, adminId: string) => prisma.$transaction(async (transaction) => {
+  const results = [];
+  for (const fact of facts) results.push(await upsertKB(fact, adminId, transaction));
+  return results;
+}, { timeout: 30_000 });
 
 /**
  * Update knowledge base entry, optionally updating vector embedding

@@ -1,4 +1,5 @@
-import { upsertKB } from '../../../repositories/knowledgebase.repository.js';
+import { upsertKBBatch } from '../../../repositories/knowledgebase.repository.js';
+import { rethrowDatabaseUnavailable } from '../../../utils/error-response.js';
 import { generateEmbedding } from '../core/gemini-service.js';
 import { hasPhilippineSourceMetadata } from './source-metadata.js';
 
@@ -41,8 +42,7 @@ export async function ImportKnowledgeBaseService(facts: ImportKnowledgeFact[], a
 
     let created = 0;
     let updated = 0;
-    for (const fact of prepared) {
-      const result = await upsertKB(fact, adminId);
+    for (const result of await upsertKBBatch(prepared, adminId)) {
       if (result.created) created += 1;
       else updated += 1;
     }
@@ -54,6 +54,7 @@ export async function ImportKnowledgeBaseService(facts: ImportKnowledgeFact[], a
       data: { total: facts.length, created, updated },
     };
   } catch (error) {
+    rethrowDatabaseUnavailable(error);
     console.error('ImportKnowledgeBaseService Error:', error);
     return { code: 500, status: 'error', message: 'Unable to import the knowledge base file.' };
   }

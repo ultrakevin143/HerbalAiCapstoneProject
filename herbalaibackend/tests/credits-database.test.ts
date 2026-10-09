@@ -72,6 +72,40 @@ describe.skipIf(!connectionUrl)('real PostgreSQL test wallet transactions', () =
     expect(wallets.map(wallet => wallet.balance)).toEqual([3, 3]);
     expect((await pool.query('SELECT COUNT(*)::int AS count FROM "CreditLedger"')).rows[0].count).toBe(1);
   });
+  it('grants the ten-credit default once and independently for each account', async () => {
+    vi.stubEnv('DR_AI_TRIAL_CREDITS', undefined);
+    const wallets = await Promise.all([getCreditWallet(owner), getCreditWallet(owner), getCreditWallet(other)]);
+    expect(wallets.map(wallet => wallet.balance)).toEqual([10, 10, 10]);
+    const trials = await pool.query('SELECT "userId", delta FROM "CreditLedger" WHERE kind = $1 ORDER BY "userId"', ['TRIAL']);
+    expect(trials.rows).toEqual([owner, other].sort().map(userId => ({ userId, delta: 10 })));
+    const handle = await reserveCreditRequest(owner, randomUUID(), question);
+    await completeCreditRequest(handle, response);
+    vi.stubEnv('DR_AI_TRIAL_CREDITS', '100');
+    expect(await walletBalance()).toBe(9);
+    expect((await getCreditWallet(other)).balance).toBe(10);
+    expect((await pool.query('SELECT COUNT(*)::int AS count FROM "CreditLedger" WHERE kind = $1', ['TRIAL'])).rows[0].count).toBe(2);
+  });
+  it('charges ten completed questions once each then blocks both chat endpoints without refilling', async () => {
+    vi.stubEnv('DR_AI_TRIAL_CREDITS', undefined);
+    const firstKey = randomUUID();
+    for (const index of Array.from({ length: 10 }, (_, index) => index)) {
+      const handle = await reserveCreditRequest(owner, index === 0 ? firstKey : randomUUID(), question);
+      await completeCreditRequest(handle, response);
+      expect(await walletBalance()).toBe(9 - index);
+    }
+    expect((await reserveCreditRequest(owner, firstKey, question)).replay).toEqual(response);
+    expect(await walletBalance()).toBe(0);
+    expect((await chat(randomUUID())).status).toBe(402);
+    expect((await chat(randomUUID(), '/chat/stream')).status).toBe(402);
+    expect(state.ask).not.toHaveBeenCalled();
+    expect(state.stream).not.toHaveBeenCalled();
+    const wallet = await request(app).get('/credits').set('Authorization', bearer());
+    expect(wallet.status).toBe(200);
+    expect(wallet.body.data.balance).toBe(0);
+    const ledger = await pool.query('SELECT kind, COUNT(*)::int AS count, SUM(delta)::int AS total FROM "CreditLedger" WHERE "userId" = $1 GROUP BY kind ORDER BY kind', [owner]);
+    expect(ledger.rows).toEqual([{ kind: 'RESERVE', count: 10, total: -10 }, { kind: 'TRIAL', count: 1, total: 10 }]);
+    expect((await pool.query('SELECT COUNT(*)::int AS count FROM "CreditRequest" WHERE "userId"=$1 AND status=$2', [owner, 'COMPLETED'])).rows[0].count).toBe(10);
+  });
   it('serializes simultaneous questions without allowing a negative balance', async () => {
     vi.stubEnv('DR_AI_TRIAL_CREDITS', '1');
     const results = await Promise.allSettled([reserveCreditRequest(owner, randomUUID(), question), reserveCreditRequest(owner, randomUUID(), question)]);

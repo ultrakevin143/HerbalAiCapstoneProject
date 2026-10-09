@@ -103,6 +103,8 @@ export default function CreditsWallet({ embedded = false, revision: chatRevision
     } catch (failure) { if (active.current && account.current === userId && answerRequest.current === selection) setError(requestError(failure)); }
   };
 
+  const backToChat = () => setPanelOwner(null);
+
   if (sessionUnavailable) return embedded ? null : <SessionUnavailable retry={checkSession} />;
   const current = wallet && wallet.ownerId === userId ? wallet.data : null;
   const notification = error || walletError;
@@ -111,6 +113,7 @@ export default function CreditsWallet({ embedded = false, revision: chatRevision
       <h2 className="font-serif-custom text-2xl font-bold text-ink">Dr. Ai credits</h2>
       <p className="mt-1 text-sm text-muted">Your balance and credit activity, in one place.</p>
     </div>
+    {embedded && <Button variant="outline" className="w-full" onClick={backToChat}>Back to Dr. Ai</Button>}
     <p className="rounded-xl border border-line bg-soft p-3 text-xs text-ink">Test mode only. No real-money purchases are enabled. Test amounts are not published retail prices. The Library remains free.</p>
     {notification && <p role="alert" className="rounded-xl border border-line p-3 text-sm text-ink">{notification}</p>}
     <div className="flex flex-wrap items-center justify-between gap-3">
@@ -139,6 +142,7 @@ export default function CreditsWallet({ embedded = false, revision: chatRevision
         {checkout && checkout.ownerId === userId && <div role="status" className="rounded-xl border border-line bg-soft p-3 text-sm text-ink">
           <a href={checkout.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-accent underline underline-offset-4">Continue to GCash test checkout</a>
           <p className="mt-2 text-xs text-muted">Opens a separate tab so your conversation and draft stay here.</p>
+          <p className="mt-2 text-xs text-muted">Changed your mind? Close the checkout tab and return to Dr. Ai. Returning does not complete a payment.</p>
         </div>}
         <p className="text-xs leading-relaxed text-muted">Credits update only after a verified test payment, not simply when you return. Your balance refreshes when you return to this tab; you can also use Refresh wallet.</p>
       </section>

@@ -10,6 +10,10 @@ const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'
 const parseImage = multer({
   storage: storage,
   limits: {
+    files: 1,
+    fields: 20,
+    parts: 21,
+    fieldSize: 64 * 1024,
     fileSize: 5 * 1024 * 1024, // 5 MB limit
   },
   fileFilter: (req, file, callback) => {

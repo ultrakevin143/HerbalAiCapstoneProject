@@ -153,7 +153,7 @@ export const streamMessage = async (req: Request, res: Response) => {
     lifetime.signal.throwIfAborted();
     res.status(200);
     res.setHeader("Content-Type", "text/event-stream; charset=utf-8");
-    res.setHeader("Cache-Control", "no-cache, no-transform");
+    res.setHeader("Cache-Control", "private, no-store, no-transform");
     res.setHeader("Connection", "keep-alive");
     res.setHeader("X-Accel-Buffering", "no");
     res.flushHeaders();

@@ -64,12 +64,15 @@ jobs:
         working-directory: herbalaibackend
         run: npm run lint
 
-      - name: Typecheck administrator edit acceptance fixtures
+      - name: Typecheck API and administrator acceptance fixtures
         working-directory: herbalaibackend
         run: >-
           npx tsc --noEmit --module nodenext --target esnext --strict --esModuleInterop
           --skipLibCheck --exactOptionalPropertyTypes --noUncheckedIndexedAccess
           tests/herb-admin-edit-database.test.ts tests/helpers/admin-edit-database-boundary.ts
+          tests/api-security-boundaries.test.ts tests/api-outage-forwarding.test.ts tests/socket-security-boundaries.test.ts
+          tests/knowledge-import-atomicity.test.ts tests/knowledge-import-database.test.ts tests/knowledge-authenticated-flow.test.ts
+          tests/credits-config.test.ts tests/credits-database.test.ts
 
       - name: Run real administrator vector and audit rollback gate
         working-directory: herbalaibackend
@@ -80,7 +83,7 @@ jobs:
           JWT_REFRESH_SECRET: ci_test_refresh_jwt_secret_key_1234567890
           NODE_ENV: test
           EMAIL_DELIVERY_MODE: log
-        run: npx vitest run tests/herb-admin-edit-database.test.ts --maxWorkers=1
+        run: npx vitest run tests/herb-admin-edit-database.test.ts tests/knowledge-authenticated-flow.test.ts --maxWorkers=1
 
       - name: Run isolated Vitest suites
         working-directory: herbalaibackend

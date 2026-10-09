@@ -5,7 +5,8 @@ import cookieParser from 'cookie-parser';
 import { ENV } from './config/env.js';
 import routes from './routes/index.js';
 import { requestTiming } from './middlewares/request-timing.middleware.js';
-import { databaseErrorCode, errorResponse } from './utils/error-response.js';
+import { databaseErrorCode, errorResponse, requestBodyErrorResponse } from './utils/error-response.js';
+import { requestOriginGuard } from './middlewares/request-origin.middleware.js';
 import { getDatabasePoolMetrics } from './lib/prisma.js';
 import { testCreditsWebhook } from './controllers/credits-webhook.controller.js';
 import { getCreditsConfig } from './config/credits.js';
@@ -34,6 +35,7 @@ app.use(cors({
 }));
 
 app.post('/api/credits/webhook', rateLimit({ windowMs: 60000, max: 120, standardHeaders: true, legacyHeaders: false }), express.raw({ type: 'application/json', limit: '64kb' }), testCreditsWebhook);
+app.use('/api', requestOriginGuard);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -59,9 +61,12 @@ app.use((req: Request, res: Response) => {
 });
 
 // --- Global Error Handler ---
-app.use((err: Error & { status?: number; code?: unknown }, req: Request, res: Response, _next: NextFunction) => {
+app.use((err: Error & { status?: number; code?: unknown; type?: unknown }, req: Request, res: Response, _next: NextFunction) => {
   const databaseCode = databaseErrorCode(err);
-  if (databaseCode) {
+  const bodyError = requestBodyErrorResponse(err);
+  if (bodyError) {
+    console.error(JSON.stringify({ event: 'request_body_rejected', code: bodyError.body.code, requestId: res.locals.requestId, method: req.method }));
+  } else if (databaseCode) {
     console.error(JSON.stringify({
       event: 'database_request_error', code: databaseCode,
       requestId: res.locals.requestId,

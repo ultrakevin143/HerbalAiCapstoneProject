@@ -43,11 +43,15 @@ describe('test-only credit configuration and payment verification', () => {
     vi.stubEnv('DR_AI_CREDITS_MODE', 'test'); vi.stubEnv('PAYMONGO_TEST_SECRET_KEY', 'sk_test_SYNTHETIC'); vi.stubEnv('PAYMONGO_TEST_WEBHOOK_SECRET', secret);
     const fetcher = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ data: { id: 'cs_TEST', attributes: { livemode: false, checkout_url: 'https://checkout.paymongo.com/TEST' } } }) });
     vi.stubGlobal('fetch', fetcher);
-    expect((await createTestCheckout('TEST-order', { id: 'test', name: 'Test pack', credits: 10, amountMinor: 10000 })).url).toContain('checkout.paymongo.com');
+    expect((await createTestCheckout('TEST-order', { id: 'test', name: 'Herbal-Ai Credits', credits: 10, amountMinor: 10000 })).url).toContain('checkout.paymongo.com');
     const payload = JSON.parse(fetcher.mock.calls[0]?.[1].body);
+    expect(payload.data.attributes.line_items[0].name).toBe('Herbal-Ai Credits — TEST ONLY');
     expect(payload.data.attributes.line_items[0].amount).toBe(10000);
     expect(payload.data.attributes.reference_number).toBe('TEST-order');
     expect(payload.data.attributes.payment_method_types).toEqual(['gcash']);
+    expect(new URL(payload.data.attributes.cancel_url).pathname).toBe('/chat');
+    expect(new URL(payload.data.attributes.success_url).pathname).toBe('/credits');
+    expect(new URL(payload.data.attributes.cancel_url).origin).toBe(new URL(payload.data.attributes.success_url).origin);
     expect(fetcher.mock.calls[0]?.[0]).toBe('https://api.paymongo.com/v2/checkout_sessions');
     await retrieveTestCheckout('cs_TEST');
     expect(fetcher.mock.calls[1]?.[0]).toBe('https://api.paymongo.com/v1/checkout_sessions/cs_TEST');

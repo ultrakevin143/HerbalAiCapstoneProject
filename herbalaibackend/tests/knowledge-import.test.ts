@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { readFile } from 'node:fs/promises';
 
 const mocks = vi.hoisted(() => ({ upsert: vi.fn(), embed: vi.fn() }));
-vi.mock('../src/repositories/knowledgebase.repository.js', () => ({ upsertKB: mocks.upsert }));
+vi.mock('../src/repositories/knowledgebase.repository.js', () => ({ upsertKBBatch: mocks.upsert }));
 vi.mock('../src/services/ai/core/gemini-service.js', () => ({ generateEmbedding: mocks.embed }));
 
 import { ImportKnowledgeBaseService } from '../src/services/ai/knowledge-base/import-knowledge-base-service.js';
@@ -16,9 +16,7 @@ describe('Knowledge base JSON import', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     mocks.embed.mockResolvedValue([0.1, 0.2]);
-    mocks.upsert
-      .mockResolvedValueOnce({ id: 'new-fact', created: true })
-      .mockResolvedValueOnce({ id: 'updated-fact', created: false });
+    mocks.upsert.mockResolvedValue([{ id: 'new-fact', created: true }, { id: 'updated-fact', created: false }]);
   });
 
   it('embeds and upserts every validated fact', async () => {
@@ -29,11 +27,12 @@ describe('Knowledge base JSON import', () => {
 
     expect(result).toMatchObject({ status: 'success', data: { total: 2, created: 1, updated: 1 } });
     expect(mocks.embed).toHaveBeenCalledTimes(2);
-    expect(mocks.upsert).toHaveBeenNthCalledWith(1, expect.objectContaining({
+    expect(mocks.upsert).toHaveBeenCalledTimes(1);
+    expect(mocks.upsert).toHaveBeenCalledWith(expect.arrayContaining([expect.objectContaining({
       question: 'How is Lagundi prepared?',
       tags: ['lagundi'],
       embedding: '[0.1,0.2]',
-    }), 'test-admin');
+    })]), 'test-admin');
   });
 
   it('rejects duplicate questions before generating embeddings', async () => {

@@ -6,32 +6,17 @@ import { closeDatabasePool, warmDatabasePool } from './lib/prisma.js';
 import { listen } from './lib/listen.js';
 import { onSessionInvalidated } from './lib/session-invalidation.js';
 import { validateAccessSession } from './lib/access-session.js';
+import { parseSocketCookies, socketServerOptions } from './lib/socket-boundary.js';
 
 const httpServer = createServer(app);
 
-const parseCookies = (cookieHeader?: string): Record<string, string> => {
-  if (!cookieHeader) return {};
-  return cookieHeader.split(';').reduce((res, item) => {
-    const [name, ...rest] = item.trim().split('=');
-    if (name && rest.length > 0) {
-      res[name] = decodeURIComponent(rest.join('='));
-    }
-    return res;
-  }, {} as Record<string, string>);
-};
-
-export const io = new Server(httpServer, {
-  cors: {
-    origin: ENV.FRONTEND_URL,
-    credentials: true,
-  },
-});
+export const io = new Server(httpServer, socketServerOptions);
 
 // Socket.io middleware to verify and authenticate connected users
 io.use(async (socket, next) => {
   const token =
     (socket.handshake.auth && socket.handshake.auth.token) ||
-    parseCookies(socket.handshake.headers.cookie)['accessToken'];
+    parseSocketCookies(socket.handshake.headers.cookie)['accessToken'];
 
   if (token) {
     try {

@@ -4,7 +4,7 @@ const mocks = vi.hoisted(() => ({
   createKB: vi.fn(),
   findKBById: vi.fn(),
   updateKB: vi.fn(),
-  upsertKB: vi.fn(),
+  upsertKBBatch: vi.fn(),
   generateEmbedding: vi.fn(),
 }));
 
@@ -27,7 +27,7 @@ beforeEach(() => {
   mocks.createKB.mockResolvedValue({ id: 'kb-1' });
   mocks.findKBById.mockResolvedValue({ id: 'kb-1', question: 'Question?', answer: 'Existing answer', metadata });
   mocks.updateKB.mockResolvedValue(undefined);
-  mocks.upsertKB.mockResolvedValue({ created: true });
+  mocks.upsertKBBatch.mockResolvedValue([{ created: true }]);
 });
 
 describe('knowledge-base source requirements', () => {
@@ -73,6 +73,6 @@ describe('knowledge-base source requirements', () => {
     }], 'admin-1');
     expect(result.code).toBe(400);
     expect(mocks.generateEmbedding).not.toHaveBeenCalled();
-    expect(mocks.upsertKB).not.toHaveBeenCalled();
+    expect(mocks.upsertKBBatch).not.toHaveBeenCalled();
   });
 });

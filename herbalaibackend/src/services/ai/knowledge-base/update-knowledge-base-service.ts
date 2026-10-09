@@ -1,4 +1,5 @@
 import { updateKB, findKBById } from "../../../repositories/knowledgebase.repository.js";
+import { rethrowDatabaseUnavailable } from '../../../utils/error-response.js';
 import { generateEmbedding } from "../core/gemini-service.js";
 import type { KBData } from "../../../repositories/knowledgebase.repository.js";
 import { hasPhilippineSourceMetadata } from './source-metadata.js';
@@ -51,6 +52,7 @@ export async function UpdateKnowledgeBaseService(data: UpdateKnowledgeBaseData, 
       message: "Knowledge base entry updated successfully",
     };
   } catch (error) {
+    rethrowDatabaseUnavailable(error);
     console.error("UpdateKnowledgeBaseService Error:", error);
     return { code: 500, status: "error", message: "Unable to update knowledge base entry" };
   }

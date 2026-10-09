@@ -1,4 +1,5 @@
 import { deleteKB, findKBById } from "../../../repositories/knowledgebase.repository.js";
+import { rethrowDatabaseUnavailable } from '../../../utils/error-response.js';
 
 export async function DeleteKnowledgeBaseService(id: string, adminId: string) {
   try {
@@ -15,6 +16,7 @@ export async function DeleteKnowledgeBaseService(id: string, adminId: string) {
       message: "Knowledge base entry deleted successfully",
     };
   } catch (error) {
+    rethrowDatabaseUnavailable(error);
     console.error("DeleteKnowledgeBaseService Error:", error);
     return { code: 500, status: "error", message: "Unable to delete knowledge base entry" };
   }
