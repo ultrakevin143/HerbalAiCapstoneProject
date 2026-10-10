@@ -82,6 +82,12 @@ const matchesHerbName = (normalizedText: string, herb: HerbQueryResult | Catalog
 
 const NO_MATCH_CONTEXT = "No specific knowledge base or verified herb documents found matching this query in the database.";
 const NO_MATCH_REPLY = "I could not find a verified Herbal-Ai source for this question. I cannot confirm treatment or cure claims without a documented record. Please consult a licensed health professional for medical decisions.";
+const INTRODUCTION_REPLY = "Hi! I'm Dr. Ai, Herbal-Ai's AI assistant for Philippine medicinal-plant information. I can help you explore documented uses, preparation methods, and safety notes from the Herbal Library. Try asking, \"What are the documented uses of Lagundi?\" My answers are educational, not a diagnosis or prescription.";
+const isIntroductionQuestion = (question: string) => {
+  const message = question.normalize('NFKC').trim().replace(/\s+/gu, ' ');
+  return /^(?:hi|hey|hello|good morning|good afternoon|good evening|kumusta|kamusta)(?:[, ]+(?:there|dr\.?\s*ai|herbal[- ]ai))?[.!?]*$/iu.test(message)
+    || /^(?:who are you|what (?:is your name|can you do)|introduce yourself|tell me about yourself|sino ka)[.!?]*$/iu.test(message);
+};
 export const withoutPediatricQuantities = (value: string) => value.split(/(?<=[.!?])\s+(?=[A-Z])|\r?\n/u)
   .map((sentence) => /\b(?:age-based|ages?\s+\d|children?\s+\d|\d+\s*(?:[-–]\s*\d+\s*)?(?:years?|yrs?)\b)/i.test(sentence)
     && /\d/.test(sentence)
@@ -174,6 +180,13 @@ const formatKBContext = (entries: RetrievedKB[]) => entries.map((entry, index) =
 ).join('\n\n');
 
 async function prepareDrAiContext(question: string, history: Content[], pediatricRequest: boolean, options: AiRequestOptions): Promise<PreparedDrAiContext> {
+  options.signal?.throwIfAborted();
+  if (isIntroductionQuestion(question)) {
+    return {
+      context: '', fallbackReply: INTRODUCTION_REPLY, sources: [], embeddingMs: 0, retrievalMs: 0,
+      herbSourceCount: 0, knowledgeBaseSourceCount: 0, bestDistance: 1,
+    };
+  }
   const catalogStartedAt = performance.now();
   const { herbs } = await awaitAiOperation(() => findAllHerbs(), options.signal);
   const catalog = herbs.filter(herb => herb.isVerified !== false && (herb.publicationStatus === undefined || herb.publicationStatus === 'PUBLISHED'));

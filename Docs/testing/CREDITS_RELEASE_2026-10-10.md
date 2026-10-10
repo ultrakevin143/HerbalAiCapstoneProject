@@ -2,6 +2,37 @@
 
 The user authorized the reviewed CI/public-release sequence with “proceed.” Real payments remain disabled; local fixtures, runtime profiles, generated SQL, reduced schemas and credentials are excluded.
 
+## Successful release and live acceptance — supersedes the earlier checkpoint below
+
+Release SHA: `2c98492b426b246cacd69327f33803763672b0c4`. The focused CI fixture repair was committed to the existing CI branch; only after both workflows passed was the watched `codex/readability-accessibility` branch fast-forwarded to that exact SHA. No force push was used. `main` remains at `245dafcc0977f1991e4d4156be70edaa52765f91`.
+
+- [Main CI 37960910810](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37960910810) passed: 2,352 backend cases across 155 files, 399 frontend Node cases, builds, lint, typechecks and migration checks. The dedicated vector/audit selection also passed its ten cases; these overlap the full backend suite and must not be counted again.
+- [Preparation PostgreSQL CI 37960910934](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/37960910934) passed its 284 cases across eight files. This is a separate overlapping gate, not another unique-case total.
+- Vercel Production deployment `8F4CBqffPVgjJXzuDyMbh7HXYy2o` is Ready for `herbalaiph.vercel.app`, displaying the exact release SHA and watched branch.
+- Railway deployment `06802f35-6615-40fd-a80e-6e466294b6fa` succeeded at the same SHA. Actual pre-deploy logs applied `20261008110000_add_test_credit_wallet` to the existing Neon `neondb`; all migrations completed successfully and the production backend started. No local bootstrap, seed or reduced schema was imported.
+- After code/migration readiness, exactly two approved service variables were deployed: `DR_AI_CREDITS_MODE=test` and `DR_AI_TRIAL_CREDITS=10`. Configuration redeploy `5e18ddfb-9410-4fe5-b1ef-b78b167e412a` succeeded on the same code release. The pooled application and matching direct migration database targets were left unchanged.
+
+Observed authenticated browser checks, 10 October 2026, approximately 00:53–01:00 Manila:
+
+| Check | Actual result |
+| --- | --- |
+| One-time starting wallet | The existing signed-in account's newly initialized wallet displayed ten test credits. This was not a fresh-signup acceptance check. |
+| Actual Dr. Ai generation | One educational Lagundi preparation question completed with recorded steps, cited sources and warnings. The balance changed from ten to nine, exactly one credit. |
+| Saved answer replay | Open saved answer displayed the same completed answer without a new generation; balance remained nine. |
+| Back to Dr. Ai | Closed the credit drawer and preserved the mounted original question, answer and nine-credit composer balance. |
+| Independent tab and full refresh | A fresh credits tab restored the authenticated account and nine-credit wallet. Reloading that tab kept login and nine credits; no repeated trial grant occurred. |
+| Visible credit activity | Exactly one `TRIAL +10` entry and one `RESERVE -1` entry were displayed for this check. No second debit appeared after replay or refresh. |
+| Anonymous smoke after activation | Health and catalog HTTP 200; 88 unique catalog IDs. Credits HTTP 401 with `private, no-store`; foreign-origin login HTTP 403 `UNTRUSTED_REQUEST_ORIGIN`; trusted malformed JSON HTTP 400 `INVALID_JSON`. No credentials were submitted by these probes. |
+| Payment safety | UI explicitly displayed TEST ONLY, GCash checkout not configured and no test packages. No PayMongo key/webhook secret or package was installed on Railway; no payment was submitted. |
+
+The single controlled live question used one credit from the already authenticated administrator wallet; nine remain. The account was not depleted, its password was not changed and no moderation/content write was made. Browser evidence is saved outside Git as `live-ten-credit-wallet-20261010.png`, `live-credit-answer-nine-20261010.png` and `live-credit-wallet-refresh-20261010.png` in the calling task workspace. Anonymous receipt: `live-credit-release-smoke-results-20261010.json`.
+
+### Remaining gates, not counted as live passes
+
+Actual live zero-balance blocking and failure/refund behavior remain unobserved in this release: the administrator's remaining credits were deliberately preserved and no provider outage was manufactured. Authentic isolated PostgreSQL tests cover ten-to-zero, both endpoints' zero-balance rejection, concurrency, replay and refunds; the earlier local two-to-zero generation receipt is separate. New live signup/verification/recovery were not repeated. Genuine PayMongo TEST signed-webhook delivery and persistent wallet settlement still require configured test packages/provider integration. Real-money purchases remain disabled. Physical-device and participant checks are not invented or replaced by this acceptance.
+
+The following sections retain historical pre-release observations and pending steps as they stood at those checkpoints; they do not override the successful release receipt above.
+
 ## Reviewed candidate
 
 - The explicit 46-file source/test/config/documentation allowlist was committed and pushed only to `codex/mvp-acceptance-ci` at `0e7783e7688ec8a5e838b563e315440afc756230`.
