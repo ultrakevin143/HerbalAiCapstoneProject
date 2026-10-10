@@ -74,7 +74,7 @@ jobs:
           tests/knowledge-import-atomicity.test.ts tests/knowledge-import-database.test.ts tests/knowledge-authenticated-flow.test.ts
           tests/credits-config.test.ts tests/credits-database.test.ts
           tests/knowledge-import-boundary.test.ts tests/helpers/knowledge-import-server-boundary.ts
-          tests/dr-ai-introduction.test.ts
+          tests/dr-ai-introduction.test.ts tests/dr-ai-local-language-retrieval.test.ts
 
       - name: Run real administrator vector and audit rollback gate
         working-directory: herbalaibackend

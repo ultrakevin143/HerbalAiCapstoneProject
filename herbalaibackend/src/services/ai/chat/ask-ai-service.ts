@@ -12,13 +12,22 @@ const STOP_WORDS = new Set([
   "a", "about", "and", "are", "dose", "dosage", "for", "from", "guidance", "herb", "herbal", "how", "is", "it",
   "medicine", "of", "on", "or", "plant", "preparation", "prepare", "safety", "should", "take", "the", "this", "to",
   "traditional", "use", "used", "uses", "what", "with",
+  "suggest", "recommend", "ano", "anong", "ang", "bang", "gamot", "halamang", "mag", "may", "mga", "nang",
+  "nga", "para", "po", "pwede", "puwede", "tanom", "unsa", "unsay",
+]);
+
+const RETRIEVAL_TERM_ALIASES = new Map([
+  ['lagnat', 'fever'],
+  ['hilanat', 'fever'],
 ]);
 
 const normalize = (value: string) =>
   value.toLowerCase().normalize("NFKD").replace(/[^a-z0-9\s-]/g, " ").replace(/\s+/g, " ").trim();
 
 const meaningfulTokens = (value: string) =>
-  new Set(normalize(value).split(" ").filter((token) => token.length > 2 && !STOP_WORDS.has(token)));
+  new Set(normalize(value).split(" ")
+    .map(token => RETRIEVAL_TERM_ALIASES.get(token) ?? token)
+    .filter((token) => token.length > 2 && !STOP_WORDS.has(token)));
 
 const lexicalOverlap = (question: string, candidate: string) => {
   const questionTokens = meaningfulTokens(question);
