@@ -189,11 +189,13 @@ test('unmounted wallet pages do not redirect or reveal saved answers', async () 
   assert.equal(fixture.state.checkout, null);
 });
 
-test('credits live above the composer, not in either header, and open an accessible drawer', () => {
+test('credits live above and outside the chat panel, not in the composer or global navbar', () => {
   const marker = '<DrAiCreditsStatus revision={creditRevision} />';
   assert.equal(chatSource.split(marker).length, 2);
-  assert.ok(chatSource.indexOf(marker) > chatSource.indexOf('className="chat-composer'));
-  assert.ok(chatSource.indexOf(marker) < chatSource.indexOf('<form onSubmit={handleSubmit}'));
+  assert.ok(chatSource.indexOf(marker) > chatSource.indexOf('className="chat-workspace"'));
+  assert.ok(chatSource.indexOf(marker) < chatSource.indexOf('className="chat-panel'));
+  assert.doesNotMatch(chatSource.slice(chatSource.indexOf('className="chat-composer')), /<DrAiCreditsStatus/);
+  assert.match(styleSource, /\.chat-workspace\s*\{[^}]*min-height: 0;[^}]*min-width: 0;/);
   assert.match(pageSource, /aria-haspopup="dialog"/);
   assert.match(pageSource, /panelOwner === userId/);
   assert.match(pageSource, /variant="drawer"/);
@@ -212,7 +214,7 @@ test('checkout opens only through a safe new-tab link and never navigates away f
 test('mobile bottom sheet and desktop drawer keep test disclosures, zero-credit guidance and collapsed history', () => {
   assert.match(styleSource, /credits-drawer[^}]+height: 100dvh/);
   assert.match(styleSource, /credits-drawer[^}]+max-height: 85dvh/);
-  assert.match(styleSource, /not\(\.dr-ai-credit-summary\)/);
+  assert.doesNotMatch(styleSource, /\.chat-composer\s*>\s*div:first-child[^}]*display:\s*none/);
   assert.match(pageSource, /No real-money purchases are enabled/);
   assert.match(pageSource, /current\.balance === 0/);
   assert.match(pageSource, /your typed question stays here/);
@@ -239,10 +241,13 @@ const renderWallet = ({ ownerId = 'TEST-owner', userId = 'TEST-owner', enabled =
   return require('react-dom/server').renderToStaticMarkup(module.exports.default({ embedded: true }));
 };
 
-test('rendered composer summary shows balance and zero-credit recovery without opening the panel', () => {
+test('rendered upper credit control shows balance and zero-credit recovery without opening the panel', () => {
   const normal = renderWallet();
   assert.match(normal, /3 test credits available/);
   assert.match(normal, /Manage credits/);
+  assert.match(normal, /min-h-11/);
+  assert.match(normal, /tabular-nums/);
+  assert.match(normal, /aria-live="polite"/);
   assert.doesNotMatch(normal, /role="dialog"/);
   const empty = renderWallet({ balance: 0 });
   assert.match(empty, /Add test credits/);

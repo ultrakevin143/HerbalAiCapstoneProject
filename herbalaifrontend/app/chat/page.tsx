@@ -372,171 +372,173 @@ function ChatContent() {
         </aside>
 
         {/* Right column: Active Chat Box */}
-        <section className="chat-panel glass-card bg-white/55 dark:bg-panel/85 backdrop-blur-md border border-black/10 dark:border-line shadow-sm">
-          {/* Header */}
-          <header className="px-5 py-4 border-b border-black/10 dark:border-line flex items-center justify-between gap-2 bg-white/70 dark:bg-panel/90 shrink-0">
-            <div>
-              <h2 className="font-extrabold text-[#1b4332] dark:text-ink text-base">Ask Dr. Ai</h2>
-              <p className="text-xs text-gray-600 dark:text-muted">Ask about a plant, preparation method, or safety note</p>
-            </div>
-            <button
-              onClick={() => {
-                setMessages([
-                  {
-                    id: 'welcome',
-                    role: 'model',
-                    text: "Hello! I am Dr. Ai, your Philippine medicinal-plant assistant. I can help you find documented uses, preparation methods, and safety notes from the herbal library. My answers are educational, not medical advice.",
-                  }
-                ]);
-                setHistory([]);
-                setChatError(null);
-              }}
-              className="text-xs text-[#2d6a4f] dark:text-[#74c69d] hover:underline font-bold"
-            >
-              Reset Chat
-            </button>
-          </header>
+        <div className="chat-workspace">
+          <DrAiCreditsStatus revision={creditRevision} />
+          <section className="chat-panel glass-card bg-white/55 dark:bg-panel/85 backdrop-blur-md border border-black/10 dark:border-line shadow-sm">
+            {/* Header */}
+            <header className="px-5 py-4 border-b border-black/10 dark:border-line flex items-center justify-between gap-2 bg-white/70 dark:bg-panel/90 shrink-0">
+              <div>
+                <h2 className="font-extrabold text-[#1b4332] dark:text-ink text-base">Ask Dr. Ai</h2>
+                <p className="text-xs text-gray-600 dark:text-muted">Ask about a plant, preparation method, or safety note</p>
+              </div>
+              <button
+                onClick={() => {
+                  setMessages([
+                    {
+                      id: 'welcome',
+                      role: 'model',
+                      text: "Hello! I am Dr. Ai, your Philippine medicinal-plant assistant. I can help you find documented uses, preparation methods, and safety notes from the herbal library. My answers are educational, not medical advice.",
+                    }
+                  ]);
+                  setHistory([]);
+                  setChatError(null);
+                }}
+                className="text-xs text-[#2d6a4f] dark:text-[#74c69d] hover:underline font-bold"
+              >
+                Reset Chat
+              </button>
+            </header>
 
-          {/* Message List Area */}
-          <div ref={messageListRef} aria-label="Conversation messages" role="log" aria-live="polite" className="chat-messages p-4 md:p-5 space-y-4 bg-transparent">
-            {/* Quick Prompts */}
-            <div className="flex items-center flex-wrap gap-2 pb-2">
-              <span className="text-[10px] font-bold text-gray-500 dark:text-muted uppercase tracking-wider mr-1">
-                Suggested Prompts:
-              </span>
-              {QUICK_PROMPTS.map((prompt) => (
-                <button
-                  key={prompt}
-                  type="button"
-                  disabled={isSending}
-                  onClick={() => handleSendQuery(prompt)}
-                  className="bg-white/80 dark:bg-soft border border-[#2d6a4f]/20 dark:border-line text-[#2d6a4f] dark:text-ink text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-[#eef5f0] dark:hover:bg-panel transition-all shadow-xs cursor-pointer"
-                >
-                  {prompt}
-                </button>
-              ))}
-            </div>
+            {/* Message List Area */}
+            <div ref={messageListRef} aria-label="Conversation messages" role="log" aria-live="polite" className="chat-messages p-4 md:p-5 space-y-4 bg-transparent">
+              {/* Quick Prompts */}
+              <div className="flex items-center flex-wrap gap-2 pb-2">
+                <span className="text-[10px] font-bold text-gray-500 dark:text-muted uppercase tracking-wider mr-1">
+                  Suggested Prompts:
+                </span>
+                {QUICK_PROMPTS.map((prompt) => (
+                  <button
+                    key={prompt}
+                    type="button"
+                    disabled={isSending}
+                    onClick={() => handleSendQuery(prompt)}
+                    className="bg-white/80 dark:bg-soft border border-[#2d6a4f]/20 dark:border-line text-[#2d6a4f] dark:text-ink text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-[#eef5f0] dark:hover:bg-panel transition-all shadow-xs cursor-pointer"
+                  >
+                    {prompt}
+                  </button>
+                ))}
+              </div>
 
-            {messages.map((msg) => {
-              const isBot = msg.role === 'model';
-              return (
-                <div key={msg.id} data-message-role={msg.role} data-message-id={msg.id} className={`flex gap-3 ${isBot ? 'justify-start' : 'justify-end'}`}>
-                  {isBot && (
-                    <DrAiAvatar className="h-8 w-8 shrink-0 mt-0.5 text-[#1b4332] dark:text-[#e6f1e7]" />
-                  )}
+              {messages.map((msg) => {
+                const isBot = msg.role === 'model';
+                return (
+                  <div key={msg.id} data-message-role={msg.role} data-message-id={msg.id} className={`flex gap-3 ${isBot ? 'justify-start' : 'justify-end'}`}>
+                    {isBot && (
+                      <DrAiAvatar className="h-8 w-8 shrink-0 mt-0.5 text-[#1b4332] dark:text-[#e6f1e7]" />
+                    )}
 
-                  <div className="max-w-[85%] flex flex-col gap-1.5">
-                    {/* Bubble */}
-                    <div
-                      className={`p-4 rounded-3xl ${
-                        isBot
-                          ? 'bg-white dark:bg-soft border border-gray-200/80 dark:border-line rounded-tl-sm text-[#1b4332] dark:text-ink shadow-sm'
-                          : 'bg-[#2d6a4f] text-white rounded-tr-sm shadow-sm'
-                      }`}
-                    >
-                      {isBot ? (
-                        renderFormattedText(msg.text)
-                      ) : (
-                        <p className="text-sm font-semibold leading-relaxed font-sans">{msg.text}</p>
+                    <div className="max-w-[85%] flex flex-col gap-1.5">
+                      {/* Bubble */}
+                      <div
+                        className={`p-4 rounded-3xl ${
+                          isBot
+                            ? 'bg-white dark:bg-soft border border-gray-200/80 dark:border-line rounded-tl-sm text-[#1b4332] dark:text-ink shadow-sm'
+                            : 'bg-[#2d6a4f] text-white rounded-tr-sm shadow-sm'
+                        }`}
+                      >
+                        {isBot ? (
+                          renderFormattedText(msg.text)
+                        ) : (
+                          <p className="text-sm font-semibold leading-relaxed font-sans">{msg.text}</p>
+                        )}
+                      </div>
+
+                      {/* Sources (Bot only) */}
+                      {isBot && msg.sources && msg.sources.length > 0 && (
+                        <div className="flex flex-wrap gap-2 px-2 mt-1 items-center">
+                          <span className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-muted font-extrabold mr-1">
+                            Sources Cited:
+                          </span>
+                          {msg.sources.map((src, sIdx) => {
+                            const normalizedTitle = src.title.toLowerCase().trim();
+                            const matchedId = herbMap[normalizedTitle];
+
+                            if (src.type === 'herb' && matchedId) {
+                              return (
+                                <button
+                                  key={sIdx}
+                                  onClick={() => router.push(`/library?id=${matchedId}`)}
+                                  className="inline-flex items-center gap-1 text-[10px] font-extrabold text-[#2d6a4f] dark:text-[#74c69d] bg-[#eef5f0] dark:bg-soft border border-[#2d6a4f]/25 dark:border-line px-2.5 py-0.5 rounded-full hover:bg-[#2d6a4f] hover:text-white transition-all cursor-pointer"
+                                >
+                                {src.title}
+                                </button>
+                              );
+                            }
+
+                            return (
+                              <span
+                                key={sIdx}
+                                className="inline-flex items-center gap-1 text-[10px] font-bold text-gray-600 dark:text-muted bg-gray-100 dark:bg-soft border border-gray-200 dark:border-line px-2 py-0.5 rounded-full"
+                              >
+                                <BookOpen className="h-3 w-3" aria-hidden="true" /> {src.title}
+                              </span>
+                            );
+                          })}
+                        </div>
                       )}
                     </div>
 
-                    {/* Sources (Bot only) */}
-                    {isBot && msg.sources && msg.sources.length > 0 && (
-                      <div className="flex flex-wrap gap-2 px-2 mt-1 items-center">
-                        <span className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-muted font-extrabold mr-1">
-                          Sources Cited:
-                        </span>
-                        {msg.sources.map((src, sIdx) => {
-                          const normalizedTitle = src.title.toLowerCase().trim();
-                          const matchedId = herbMap[normalizedTitle];
-
-                          if (src.type === 'herb' && matchedId) {
-                            return (
-                              <button
-                                key={sIdx}
-                                onClick={() => router.push(`/library?id=${matchedId}`)}
-                                className="inline-flex items-center gap-1 text-[10px] font-extrabold text-[#2d6a4f] dark:text-[#74c69d] bg-[#eef5f0] dark:bg-soft border border-[#2d6a4f]/25 dark:border-line px-2.5 py-0.5 rounded-full hover:bg-[#2d6a4f] hover:text-white transition-all cursor-pointer"
-                              >
-                              {src.title}
-                              </button>
-                            );
-                          }
-
-                          return (
-                            <span
-                              key={sIdx}
-                              className="inline-flex items-center gap-1 text-[10px] font-bold text-gray-600 dark:text-muted bg-gray-100 dark:bg-soft border border-gray-200 dark:border-line px-2 py-0.5 rounded-full"
-                            >
-                              <BookOpen className="h-3 w-3" aria-hidden="true" /> {src.title}
-                            </span>
-                          );
-                        })}
+                    {!isBot && (
+                      <div className="h-8 w-8 rounded-full bg-[#2d6a4f]/20 text-[#1b4332] dark:text-ink text-xs flex items-center justify-center font-extrabold shadow-sm border border-[#2d6a4f]/10 shrink-0 mt-0.5">
+                        {user?.avatar?.startsWith('http') ? (
+                          <img src={user.avatar} alt="Avatar" className="h-full w-full rounded-full object-cover" />
+                        ) : (
+                          <span>{user?.avatar || '🌱'}</span>
+                        )}
                       </div>
                     )}
                   </div>
+                );
+              })}
 
-                  {!isBot && (
-                    <div className="h-8 w-8 rounded-full bg-[#2d6a4f]/20 text-[#1b4332] dark:text-ink text-xs flex items-center justify-center font-extrabold shadow-sm border border-[#2d6a4f]/10 shrink-0 mt-0.5">
-                      {user?.avatar?.startsWith('http') ? (
-                        <img src={user.avatar} alt="Avatar" className="h-full w-full rounded-full object-cover" />
-                      ) : (
-                        <span>{user?.avatar || '🌱'}</span>
-                      )}
-                    </div>
-                  )}
+              {isSending && (
+                <div className="flex gap-3 justify-start">
+                  <DrAiAvatar animated className="h-8 w-8 shrink-0 text-[#1b4332] dark:text-[#e6f1e7]" />
+                  <div className="p-3.5 rounded-2xl bg-white dark:bg-soft border border-gray-200/80 dark:border-line text-xs font-semibold text-[#2d6a4f] dark:text-[#74c69d] flex items-center gap-2 shadow-sm">
+                    <div className="h-2 w-2 rounded-full bg-[#40916c] animate-ping" />
+                    <span>Dr. Ai is checking source-linked herbal records...</span>
+                  </div>
                 </div>
-              );
-            })}
+              )}
+            </div>
 
-            {isSending && (
-              <div className="flex gap-3 justify-start">
-                <DrAiAvatar animated className="h-8 w-8 shrink-0 text-[#1b4332] dark:text-[#e6f1e7]" />
-                <div className="p-3.5 rounded-2xl bg-white dark:bg-soft border border-gray-200/80 dark:border-line text-xs font-semibold text-[#2d6a4f] dark:text-[#74c69d] flex items-center gap-2 shadow-sm">
-                  <div className="h-2 w-2 rounded-full bg-[#40916c] animate-ping" />
-                  <span>Dr. Ai is checking source-linked herbal records...</span>
+            {/* Input Area */}
+            <div className="chat-composer border-t border-black/10 dark:border-line bg-white/70 dark:bg-panel/90">
+              {chatError && (
+                <div role="alert" className="mb-3 p-3 rounded-xl border border-rose-200 bg-rose-50 text-rose-800 text-xs font-semibold flex items-center gap-2">
+                  <ShieldAlert className="h-4 w-4 shrink-0 text-rose-600" />
+                  <span>{chatError}</span>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
 
-          {/* Input Area */}
-          <div className="chat-composer border-t border-black/10 dark:border-line bg-white/70 dark:bg-panel/90">
-            <DrAiCreditsStatus revision={creditRevision} />
-            {chatError && (
-              <div role="alert" className="mb-3 p-3 rounded-xl border border-rose-200 bg-rose-50 text-rose-800 text-xs font-semibold flex items-center gap-2">
-                <ShieldAlert className="h-4 w-4 shrink-0 text-rose-600" />
-                <span>{chatError}</span>
-              </div>
-            )}
+              <form onSubmit={handleSubmit} className="flex gap-2">
+                <input
+                  id="chat-question"
+                  type="text"
+                  maxLength={1000}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Ask Dr. Ai about a plant, preparation, or safety warning..."
+                  disabled={isSending}
+                  className="flex-1 bg-white dark:bg-soft border border-black/10 dark:border-line rounded-full px-5 py-3 text-sm text-[#1b4332] dark:text-ink placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#40916c]"
+                  aria-label="Type message"
+                />
+                <button
+                  type="submit"
+                  disabled={isSending || !input.trim()}
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#2d6a4f] text-white shadow-sm transition-colors hover:bg-[#1b4332] disabled:cursor-not-allowed disabled:opacity-50"
+                  aria-label="Send message"
+                >
+                  <Send className="h-4 w-4" />
+                </button>
+              </form>
 
-            <form onSubmit={handleSubmit} className="flex gap-2">
-              <input
-                id="chat-question"
-                type="text"
-                maxLength={1000}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask Dr. Ai about a plant, preparation, or safety warning..."
-                disabled={isSending}
-                className="flex-1 bg-white dark:bg-soft border border-black/10 dark:border-line rounded-full px-5 py-3 text-sm text-[#1b4332] dark:text-ink placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#40916c]"
-                aria-label="Type message"
-              />
-              <button
-                type="submit"
-                disabled={isSending || !input.trim()}
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#2d6a4f] text-white shadow-sm transition-colors hover:bg-[#1b4332] disabled:cursor-not-allowed disabled:opacity-50"
-                aria-label="Send message"
-              >
-                <Send className="h-4 w-4" />
-              </button>
-            </form>
-
-            <p className="text-[10px] text-gray-500 dark:text-muted mt-2 text-center">
-              Disclaimer: Herbal-Ai references Philippine medicinal plant records and is intended for educational purposes only. Always consult a healthcare professional for medical conditions.
-            </p>
-          </div>
-        </section>
+              <p className="text-[10px] text-gray-500 dark:text-muted mt-2 text-center">
+                Disclaimer: Herbal-Ai references Philippine medicinal plant records and is intended for educational purposes only. Always consult a healthcare professional for medical conditions.
+              </p>
+            </div>
+          </section>
+        </div>
       </main>
     </div>
   );

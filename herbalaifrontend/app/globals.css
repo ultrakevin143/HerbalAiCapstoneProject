@@ -541,6 +541,7 @@ button:disabled { cursor: not-allowed; }
 .herb-detail-dialog h3 { font-size: 1.125rem; font-weight: 700; margin-bottom: .5rem; }
 .chat-page { position: fixed; inset: 0; height: var(--chat-height, 100dvh); display: flex; flex-direction: column; overflow: hidden; }
 .chat-main { display: flex; flex: 1; min-height: 0; width: 100%; max-width: 76rem; margin: 0 auto; padding: .75rem 1rem 1rem; gap: 1rem; }
+.chat-workspace { display: flex; flex: 1; flex-direction: column; min-height: 0; min-width: 0; }
 .chat-panel { display: flex; flex: 1; flex-direction: column; min-height: 0; min-width: 0; overflow: hidden; border-radius: 1rem; }
 .chat-panel > header { padding: .75rem 1rem; }
 .chat-panel > header p { font-size: .8125rem; }
@@ -575,7 +576,7 @@ dialog.credits-drawer .dialog-close-button { position: absolute; top: 1rem; righ
 @media (max-height: 500px) {
   .chat-main { padding-block: 0; }
   .chat-panel > header { padding-block: .25rem; }
-  .chat-panel > header p, .chat-composer > div:first-child:not(.dr-ai-credit-summary) { display: none; }
+  .chat-panel > header p { display: none; }
   .chat-composer { padding-block: .375rem; }
 }
 .chat-messages p, .chat-messages ul, .chat-messages ol { font-size: var(--reading-text-size); line-height: 1.65; }

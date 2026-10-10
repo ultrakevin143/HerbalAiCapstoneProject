@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { ChevronDown, Coins } from 'lucide-react';
 import { z } from 'zod';
 import { useAuth } from '../context/AuthContext';
 import SessionUnavailable from './SessionUnavailable';
@@ -171,9 +172,13 @@ export default function CreditsWallet({ embedded = false, revision: chatRevision
   if (!embedded) return content;
   if (!userId || (!current?.enabled && !walletError)) return null;
   return <>
-    <div className="dr-ai-credit-summary mb-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-xs">
-      <span aria-live="polite" className="text-muted">{walletError ? 'Credit balance unavailable' : `${current?.balance ?? 0} test credits available · 1 per completed answer`}</span>
-      <button type="button" aria-haspopup="dialog" aria-expanded={panelOwner === userId} onClick={() => setPanelOwner(userId)} className="min-h-9 font-semibold text-accent underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2">{current?.balance === 0 ? 'Add test credits' : 'Manage credits'}</button>
+    <div className="dr-ai-credit-summary mb-3 flex shrink-0 flex-wrap items-center justify-end gap-3 text-xs">
+      <span className="hidden text-muted sm:inline">1 per completed answer</span>
+      <button type="button" aria-label={current?.balance === 0 ? 'Add test credits: 0 available' : 'Manage credits'} aria-haspopup="dialog" aria-expanded={panelOwner === userId} onClick={() => setPanelOwner(userId)} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-panel px-3.5 text-sm font-semibold text-ink transition-colors hover:bg-soft focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2">
+        <Coins aria-hidden="true" className="h-4 w-4 shrink-0 text-accent" />
+        <span aria-live="polite" className="tabular-nums">{walletError ? 'Credit balance unavailable' : `${current?.balance ?? 0} test credits available`}</span>
+        <ChevronDown aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-muted" />
+      </button>
     </div>
     {current?.enabled && current.balance === 0 && <p role="status" className="mb-2 text-xs text-muted">No test credits left. Add credits to continue; your typed question stays here.</p>}
     {panelOwner === userId && <AccessibleDialog label="Dr. Ai credits" variant="drawer" onClose={() => setPanelOwner(null)}>{content}</AccessibleDialog>}
