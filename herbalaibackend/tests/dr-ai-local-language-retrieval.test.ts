@@ -24,7 +24,7 @@ const history: ChatTurn[] = [
 
 beforeEach(() => {
   vi.resetAllMocks();
-  mocks.catalog.mockResolvedValue({ herbs: [herb] });
+  mocks.catalog.mockResolvedValue({ herbs: [] });
   mocks.herbs.mockResolvedValue([herb]);
   mocks.kb.mockResolvedValue([]);
   mocks.exactKb.mockResolvedValue([]);
@@ -45,6 +45,40 @@ const run = async (streaming: boolean, message: string, turns: ChatTurn[] = []) 
 };
 
 describe.each([false, true])('local-language relevance (streaming=%s)', streaming => {
+  it.each(questions.slice(0, 4))('finds a published documented-use match even when vectors omit it: %s', async message => {
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    mocks.herbs.mockResolvedValue([]);
+    const result = await run(streaming, message);
+    expect(result.sources).toEqual([{ type: 'herb', title: herb.localName, distance: 0 }]);
+    expect(result.reply).toContain('Grounded fixture answer');
+    expect(mocks.embed).not.toHaveBeenCalled();
+    expect(mocks.herbs).not.toHaveBeenCalled();
+    const generation = streaming ? mocks.stream : mocks.answer;
+    expect(generation).toHaveBeenCalledWith(message, expect.stringContaining('not prescribe a fever treatment'), [], {});
+    expect(generation.mock.calls[0]?.[1]).toContain(herb.medicinalUses);
+  });
+
+  it('does not discover unpublished/unverified records or matches only in warnings/preparation', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [
+      { ...herb, id: 'draft', publicationStatus: 'DRAFT' },
+      { ...herb, id: 'unverified', isVerified: false },
+      { ...herb, id: 'warning-only', medicinalUses: 'Traditional wound care.', warnings: 'Seek care for fever.', preparationMethod: 'Fever preparation not established.' },
+    ] });
+    mocks.herbs.mockResolvedValue([]);
+    const result = await run(streaming, question);
+    expect(result.sources).toEqual([]);
+    expect(mocks.answer).not.toHaveBeenCalled();
+    expect(mocks.stream).not.toHaveBeenCalled();
+  });
+
+  it('does not turn a mixed unrelated topic into a fever-discovery match', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    mocks.herbs.mockResolvedValue([]);
+    const result = await run(streaming, 'fever and quantum mechanics');
+    expect(result.sources).toEqual([]);
+    expect(mocks.embed).toHaveBeenCalledOnce();
+  });
+
   it.each(questions)('accepts a close English source for the equivalent query: %s', async message => {
     const result = await run(streaming, message);
     expect(result.sources).toEqual([{ type: 'herb', title: herb.localName, distance: herb.distance }]);

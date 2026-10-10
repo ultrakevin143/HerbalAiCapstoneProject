@@ -213,26 +213,33 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
     }
   }
 
-  if (namedHerbs.length > 0) {
-    const exactTerms = [...new Set(namedHerbs.flatMap(herb => [
+  const retrievalTokens = meaningfulTokens(question);
+  const feverDiscovery = namedHerbs.length === 0 && retrievalTokens.size === 1 && retrievalTokens.has('fever');
+  const matchedHerbs = feverDiscovery
+    ? catalog.filter(herb => meaningfulTokens(herb.medicinalUses).has('fever')).slice(0, 2)
+    : namedHerbs;
+
+  if (matchedHerbs.length > 0) {
+    const exactTerms = [...new Set(matchedHerbs.flatMap(herb => [
       ...herbNames(herb),
       ...normalize(herb.localName).split(' '),
     ]))];
     const namedKnowledge = pediatricRequest ? [] : await awaitAiOperation(() => findActiveKBByTerms(exactTerms, 3), options.signal);
     const context = [
-      namedHerbs.map((herb, index) => formatHerbContext(herb, index, question, pediatricRequest)).join("\n\n"),
+      feverDiscovery ? 'Condition lookup: These published records mention fever in documented uses. This is not evidence that they are effective or appropriate for the user. Explain reported uses and limitations; do not prescribe a fever treatment or invent preparation/dosage.' : '',
+      matchedHerbs.map((herb, index) => formatHerbContext(herb, index, question, pediatricRequest)).join("\n\n"),
       namedKnowledge.length > 0 && !pediatricRequest ? `General Knowledge Base / FAQs:\n${formatKBContext(namedKnowledge)}` : '',
     ].filter(Boolean).join('\n\n');
     return {
       context,
-      fallbackReply: buildSourceFallback(namedHerbs, namedKnowledge, pediatricRequest, question, history),
+      fallbackReply: buildSourceFallback(matchedHerbs, namedKnowledge, pediatricRequest, question, history),
       sources: [
-        ...namedHerbs.map((herb) => ({ type: "herb" as const, title: herb.localName, distance: 0 })),
+        ...matchedHerbs.map((herb) => ({ type: "herb" as const, title: herb.localName, distance: 0 })),
         ...namedKnowledge.map((entry) => ({ type: "kb" as const, title: entry.question, distance: 0 })),
       ],
       embeddingMs: 0,
       retrievalMs: performance.now() - catalogStartedAt,
-      herbSourceCount: namedHerbs.length,
+      herbSourceCount: matchedHerbs.length,
       knowledgeBaseSourceCount: namedKnowledge.length,
       bestDistance: 0,
     };
