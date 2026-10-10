@@ -38,7 +38,7 @@ const pageHarness = () => {
     requestError: () => 'TEST ONLY checkout failure.',
     window: { location: { assign: url => state.redirects.push(url) } },
     setError: value => { state.error = value; }, setPending: value => { state.pending = value; },
-    setWalletError: value => { state.walletError = value; }, setWallet: value => { state.wallet = value; },
+    setWalletError: value => { state.walletError = value; }, setWallet: value => { state.wallet = typeof value === 'function' ? value(state.wallet) : value; },
     setRevision: value => { state.revision = value(state.revision); }, setAnswer: value => { state.answer = value; },
     setCheckout: value => { state.checkout = typeof value === 'function' ? value(state.checkout) : value; },
     setPanelOwner: value => { state.panelOwner = value; }, setPurchaseNotice: value => { state.purchaseNotice = value; },
@@ -460,4 +460,64 @@ test('history exposes status recovery for unresolved orders but not paid or expi
   const purchase = { id: purchaseId, credits: 10, amountMinor: 10000, status: 'PENDING', createdAt: '2026-10-10T00:00:00Z' };
   for (const status of ['PENDING', 'CREATING', 'UNCERTAIN']) assert.match(renderWallet({ open: true, purchases: [{ ...purchase, status }] }), /Check payment status/);
   for (const status of ['PAID', 'EXPIRED']) assert.doesNotMatch(renderWallet({ open: true, purchases: [{ ...purchase, status }] }), /Check payment status/);
+});
+
+test('verified settlement releases only its checkout key before a failed wallet refresh', async () => {
+  for (const status of ['EXPIRED', 'PAID']) {
+    const fixture = pageHarness();
+    fixture.state.wallet = { ownerId: 'TEST-owner', data: exports.creditWalletSchema.parse({ enabled: true, testMode: true, balance: 3, purchases: [{ id: purchaseId, credits: 10, amountMinor: 10000, status: 'PENDING', checkoutUrl: 'https://checkout.paymongo.com/TEST', createdAt: '2026-10-10T00:00:00Z' }] }) };
+    fixture.context.checkoutKeys.current.set('TEST-owner:test-pack', 'TEST-old-key');
+    fixture.context.checkoutPurchases.current.set('TEST-owner:test-pack', purchaseId);
+    fixture.context.checkoutKeys.current.set('TEST-owner:other-pack', 'TEST-other-key');
+    fixture.context.checkoutPurchases.current.set('TEST-owner:other-pack', '8b2f0d33-9b44-4cd2-b893-53e33c105f38');
+    fixture.context.checkoutKeys.current.set('TEST-other:test-pack', 'TEST-other-owner-key');
+    fixture.context.checkoutPurchases.current.set('TEST-other:test-pack', purchaseId);
+    fixture.state.checkout = { ownerId: 'TEST-owner', purchaseId, url: 'https://checkout.paymongo.com/TEST' };
+    const checking = fixture.checkPurchase(purchaseId);
+    fixture.post.resolve({ data: { data: { purchaseId, status, message: 'TEST confirmed terminal order.' } } });
+    await checking;
+    fixture.loadWallet();
+    fixture.get.reject(new Error('TEST transient wallet failure'));
+    await new Promise(resolve => setImmediate(resolve));
+    assert.equal(fixture.context.checkoutKeys.current.has('TEST-owner:test-pack'), false);
+    assert.equal(fixture.context.checkoutPurchases.current.has('TEST-owner:test-pack'), false);
+    assert.equal(fixture.context.checkoutKeys.current.get('TEST-owner:other-pack'), 'TEST-other-key');
+    assert.equal(fixture.context.checkoutKeys.current.get('TEST-other:test-pack'), 'TEST-other-owner-key');
+    assert.equal(fixture.state.checkout, null);
+    assert.equal(fixture.state.wallet.data.purchases[0].status, status);
+    assert.equal(exports.resumableCheckoutUrl(fixture.state.wallet.data.purchases[0]), null);
+    assert.equal(fixture.state.wallet.data.balance, 3);
+    assert.equal(fixture.state.walletError, 'The wallet could not be loaded. Please try Refresh.');
+    await fixture.buy('test-pack');
+    assert.notEqual(fixture.state.posts[1][1].requestId, 'TEST-old-key');
+  }
+});
+
+test('unconfirmed status recovery retains the existing checkout key and link', async () => {
+  for (const status of ['PENDING', 'UNCERTAIN', 'CREATING']) {
+    const fixture = pageHarness();
+    fixture.context.checkoutKeys.current.set('TEST-owner:test-pack', 'TEST-old-key');
+    fixture.context.checkoutPurchases.current.set('TEST-owner:test-pack', purchaseId);
+    const checkout = { ownerId: 'TEST-owner', purchaseId, url: 'https://checkout.paymongo.com/TEST' };
+    fixture.state.checkout = checkout;
+    const checking = fixture.checkPurchase(purchaseId);
+    fixture.post.resolve({ data: { data: { purchaseId, status, message: 'TEST still unresolved.' } } });
+    await checking;
+    assert.equal(fixture.context.checkoutKeys.current.get('TEST-owner:test-pack'), 'TEST-old-key');
+    assert.equal(fixture.context.checkoutPurchases.current.get('TEST-owner:test-pack'), purchaseId);
+    assert.equal(fixture.state.checkout, checkout);
+  }
+});
+
+test('unmounted status recovery cannot release checkout keys or expose feedback', async () => {
+  const fixture = pageHarness();
+  fixture.context.checkoutKeys.current.set('TEST-owner:test-pack', 'TEST-old-key');
+  fixture.context.checkoutPurchases.current.set('TEST-owner:test-pack', purchaseId);
+  const checking = fixture.checkPurchase(purchaseId);
+  fixture.context.active.current = false;
+  fixture.post.resolve({ data: { data: { purchaseId, status: 'EXPIRED', message: 'TEST old component.' } } });
+  await checking;
+  assert.equal(fixture.context.checkoutKeys.current.get('TEST-owner:test-pack'), 'TEST-old-key');
+  assert.equal(fixture.state.purchaseNotice, null);
+  assert.equal(fixture.state.revision, 0);
 });

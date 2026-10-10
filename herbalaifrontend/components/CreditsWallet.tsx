@@ -114,6 +114,19 @@ export default function CreditsWallet({ embedded = false, revision: chatRevision
       if (active.current && account.current === userId) {
         const data = z.object({ purchaseId: z.uuid(), status: z.enum(['CREATING', 'PENDING', 'UNCERTAIN', 'PAID', 'EXPIRED']), message: z.string().min(1).max(500) }).parse(response.data.data);
         if (data.purchaseId !== purchaseId) throw new Error('The purchase confirmation did not match.');
+        if (data.status === 'PAID' || data.status === 'EXPIRED') {
+          for (const [key, trackedPurchase] of checkoutPurchases.current) {
+            if (key.startsWith(`${userId}:`) && trackedPurchase === purchaseId) {
+              checkoutKeys.current.delete(key);
+              checkoutPurchases.current.delete(key);
+            }
+          }
+          setCheckout(current => current?.ownerId === userId && current.purchaseId === purchaseId ? null : current);
+          setWallet(current => current?.ownerId === userId ? {
+            ...current,
+            data: { ...current.data, purchases: current.data.purchases.map(purchase => purchase.id === purchaseId ? { ...purchase, status: data.status } : purchase) },
+          } : current);
+        }
         setPurchaseNotice({ ownerId: userId, message: data.message });
         setRevision(value => value + 1);
       }

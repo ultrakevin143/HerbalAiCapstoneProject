@@ -4,6 +4,8 @@ Date: 10 October 2026, Asia/Manila.
 
 ## Release boundary
 
+**Latest checkpoint: the reviewed bundle is now deployed at `39a364341765eb4d8e5dccaa336494a654ebad3f` and the bounded live acceptance below passed.** Earlier local/uncommitted statements describe the pre-release checkpoints, not the current deployed source. This post-release receipt remains local until a later documentation publication.
+
 The successful payment checks below ran against the deployed `6578969cdb83e9fbe47c3b3e75e412866f2e9e2d` release. The new reconciliation API, wallet action and additive migration described here remain **local, uncommitted and NOT deployed**. No new push, provider variable change, production migration or real-money payment was made in this continuation. Existing unrelated working-tree documents were preserved.
 
 ## Reproduced recovery gap and focused repair
@@ -90,3 +92,48 @@ Only the owned local fixture, preview and portable database are stopped after va
 ## Authorized release preflight
 
 The user authorized the release-validation plan on 10 October: review, complete isolated CI, deploy only on success, and perform bounded live acceptance. Remote refs were refreshed; both the watched live branch and CI branch were still at `6578969`, while `main` remained at `245dafc`. The candidate includes only eleven reviewed code/test/migration files, this receipt, the existing zero-credit acceptance receipt referenced by the root review, and `PROJECT_REVIEW.md`. Other pending toolbar, local-language, PWA and checkout-receipt changes remain unstaged. No private QA helper, credential, runtime, screenshot or frontend build is part of the candidate. Full CI and production deployment are pending at this checkpoint; no passing outcome is implied by pushing the CI branch.
+
+## Released exact-SHA acceptance
+
+### CI and deployment receipts
+
+- Reviewed 14-file commit: `39a364341765eb4d8e5dccaa336494a654ebad3f`. General [CI run 38049678619](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/38049678619) passed both backend and frontend jobs; [preparation PostgreSQL run 38049678636](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/38049678636) passed. The general workflow applies all migrations to isolated pgvector PostgreSQL before the complete backend suite. These are fresh remote results for this exact commit, not the previous release's CI.
+- After those passes, only the watched `codex/readability-accessibility` ref was fast-forwarded. Its [CI run 38049918457](https://github.com/ultrakevin143/HerbalAiCapstoneProject/actions/runs/38049918457) also passed. `main` remained `245dafcc0977f1991e4d4156be70edaa52765f91`.
+- Vercel Production deployment `Gbo38nLeguKZZou5zdiWwMfDeRac` was Ready and showed the exact `39a3643` commit on the watched branch. Railway deployment `d5768121-1321-41cc-b463-c1d85ccde42a` was Active/successful; its Details linked the exact same commit.
+- Existing Railway pooled/direct URLs still identify the same Neon `ep-icy-sound-aqfe958d` database, `neondb`. No provider variables, database target, root directory or application settings were changed. Deployment logs showed `npm run deploy:migrate`, application of only `20261010120000_add_expired_credit_purchase`, then successful startup. Independent Neon reads verified the finished migration and EXPIRED status constraint.
+- Railway displayed approximately eight trial days and $3.92 remaining at preflight. This is a hosting-lifetime warning, not a reproduced application bug; no plan purchase or upgrade was made.
+
+### Observed live checks
+
+All authenticated checks used the existing **TEST ONLY Credit Exhaustion QA** contributor. Ordinary sign-in through the live browser form succeeded using its existing private QA credentials; no cookie replacement, fabricated JWT, new account or password change was needed. The administrator was not used for chat or payments.
+
+| Check | Observed result |
+| --- | --- |
+| Public health/catalog | HTTP 200; catalog returned 138 distinct record IDs |
+| Anonymous wallet | HTTP 401, `private, no-store` |
+| Untrusted login origin / malformed JSON | HTTP 403 / sanitized HTTP 400 |
+| Exact composed greeting in browser | Introduced Dr. Ai instead of medical no-source fallback; QA balance 8 → 7 |
+| Exact composed greeting through live streaming API | Completed introduction, empty sources; balance 7 → 6 |
+| Source-backed clinical path | One actual Lagundi educational answer with herb/PITAHC knowledge references; balance 6 → 5 |
+| Five bounded source-free identity/greeting checks | Alternating JSON/streaming completed introductions; balance 5 → 0, avoiding repeated provider generation |
+| Paid reconciliation twice | Both HTTP 200 / PAID; no new TOPUP, wallet or purchase change |
+| Existing failed-active checkout reconciliation | HTTP 200 / PENDING, correctly resumable; no false EXPIRED status |
+| Unknown purchase / forged status body | HTTP 404 / HTTP 400; no wallet write |
+| Fresh JSON and streaming request at zero | Both HTTP 402 with exact no-credit message |
+| Completed request replay / saved answer at zero | Both HTTP 200; original Lagundi answer readable; balance stays zero |
+| Browser full reload | Retained contributor login and zero balance; no new trial grant |
+| Browser submit at zero | Displayed no-credit error and retained the exact editable question; no generated answer |
+| Live wallet Check payment status | Pending feedback visible, controls re-enabled, Resume retained; no new checkout or credits |
+| Wallet Back to Dr. Ai | Closed drawer and preserved the rejected question |
+| Ledger | One +10 TRIAL, one +10 TOPUP, twenty -1 RESERVE = zero; no extra grant |
+| Administrator isolation | Database balance remained ten; no admin account/password/session change |
+
+Eight completed QA answers were added by this release acceptance: one browser introduction and seven API answers. The preceding ledger entries and genuine sandbox top-up remain intact. No new checkout, provider authorization, simulated payment, real GCash payment, forged webhook or direct credit grant occurred in this release check. The previous genuine sandbox top-up is the payment evidence; this continuation tests its existing order's recovery and idempotency.
+
+### Cleanup and remaining boundaries
+
+Revoked sessions only for the exact labeled QA contributor. A freshly issued ordinary-login token returned 200 before revocation and 401 afterward; account, two orders, zero balance and immutable ledger were retained. No other account was updated. Temporary browser test tabs are closed and private in-memory credentials cleared; the original signed-out user tabs are preserved. Admin sign-in is still required if the user wants further authenticated admin checks.
+
+Saved outside Git: `credit-reconciliation-live-acceptance-results-20261010.json`, public smoke receipt, and screenshots `live-composed-introduction-39a3643-20261010.png`, `live-zero-credit-39a3643-20261010.png`, `live-payment-status-39a3643-20261010.png`.
+
+No live expired order or unknown creation was manufactured. Expired-unpaid unlocking, stale-expiry/payment races, unknown-ID locking, outage behavior and malformed payment evidence are covered by real isolated PostgreSQL and controlled browser regressions; **not newly certified as genuine live provider scenarios**. Real-money merchant readiness, physical-device acceptance of this batch, participant UAT, every language/AI intent and all unrelated MVP workflows remain outside this release's acceptance claim. No new functional defect was reproduced in the bounded live checks.
