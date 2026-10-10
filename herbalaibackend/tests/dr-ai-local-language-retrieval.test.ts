@@ -107,7 +107,7 @@ describe.each([false, true])('local-language relevance (streaming=%s)', streamin
     mocks.herbs.mockResolvedValue([{ ...herb, distance: 0.9 }]);
     const result = await run(streaming, question);
     expect(result.sources).toEqual([]);
-    expect(result.reply).toContain('could not find a verified');
+    expect(result.reply).toMatch(/hindi ako nakahanap ng beripikadong|could not find a verified/i);
     expect(mocks.answer).not.toHaveBeenCalled();
     expect(mocks.stream).not.toHaveBeenCalled();
   });
@@ -116,7 +116,7 @@ describe.each([false, true])('local-language relevance (streaming=%s)', streamin
     mocks.herbs.mockResolvedValue([{ ...herb, medicinalUses: 'Traditional wound care.', warnings: 'Review skin safety.' }]);
     const result = await run(streaming, question);
     expect(result.sources).toEqual([]);
-    expect(result.reply).toContain('could not find a verified');
+    expect(result.reply).toMatch(/hindi ako nakahanap ng beripikadong|could not find a verified/i);
   });
 
   it('does not translate a substring into a fever match', async () => {
@@ -146,7 +146,35 @@ describe.each([false, true])('local-language relevance (streaming=%s)', streamin
     mocks.embed.mockRejectedValue(new Error('isolated embedding failure'));
     const result = await run(streaming, question);
     expect(result.sources).toEqual([]);
-    expect(result.reply).toContain('could not check the Herbal-Ai sources');
+    expect(result.reply).toMatch(/hindi ko masuri ang mga source|could not check the Herbal-Ai sources/i);
     expect(mocks.herbs).not.toHaveBeenCalled();
+  });
+
+  it('inherits herb context for follow-up question "Safe po ba yan?"', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    mocks.herbs.mockResolvedValue([]);
+    const followUpResult = await run(streaming, 'Safe po ba yan?', [
+      { role: 'user', parts: [{ text: 'Para saan ang Fixture herb?' }] },
+      { role: 'model', parts: [{ text: 'Grounded fixture answer.' }] },
+    ]);
+    expect(followUpResult.sources).toEqual([{ type: 'herb', title: herb.localName, distance: 0 }]);
+    const generation = streaming ? mocks.stream : mocks.answer;
+    expect(generation).toHaveBeenCalled();
+  });
+
+  it('returns Tagalog fallback when no source is found for "Safe po ba yan?" without prior herb', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [] });
+    mocks.herbs.mockResolvedValue([]);
+    const result = await run(streaming, 'Safe po ba yan?');
+    expect(result.sources).toEqual([]);
+    expect(result.reply).toContain('Hindi ako nakahanap ng beripikadong Herbal-Ai source');
+  });
+
+  it('returns Cebuano fallback for a Cebuano question with no sources', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [] });
+    mocks.herbs.mockResolvedValue([]);
+    const result = await run(streaming, 'Luwas ba kini?');
+    expect(result.sources).toEqual([]);
+    expect(result.reply).toContain('Wala koy nakit-an nga kumpirmadong Herbal-Ai source');
   });
 });

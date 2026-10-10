@@ -16,18 +16,78 @@ const STOP_WORDS = new Set([
   "nga", "para", "po", "pwede", "puwede", "tanom", "unsa", "unsay",
 ]);
 
-const RETRIEVAL_TERM_ALIASES = new Map([
-  ['lagnat', 'fever'],
-  ['hilanat', 'fever'],
-]);
-
 const normalize = (value: string) =>
   value.toLowerCase().normalize("NFKD").replace(/[^a-z0-9\s-]/g, " ").replace(/\s+/g, " ").trim();
 
-const meaningfulTokens = (value: string) =>
-  new Set(normalize(value).split(" ")
-    .map(token => RETRIEVAL_TERM_ALIASES.get(token) ?? token)
-    .filter((token) => token.length > 2 && !STOP_WORDS.has(token)));
+const HEALTH_CONCEPTS: Array<{ id: string; pattern: RegExp }> = [
+  { id: 'fever', pattern: /\b(?:fever|fevers|lagnat|nilalagnat|hilanat|gihilanat|antipyretic)\b/i },
+  { id: 'cough', pattern: /\b(?:cough|coughs|ubo|inuubo|giubo|antitussive|expectorant)\b/i },
+  { id: 'cold', pattern: /\b(?:cold|colds|sipon|sinisipon|sip-on|gisip-on|flu|trankaso)\b/i },
+  { id: 'wound', pattern: /\b(?:wound|wounds|sugat|nasugatan|samad|antiseptic)\b/i },
+  { id: 'headache', pattern: /\b(?:headache|headaches|pananakit ng ulo|sakit sa ulo|sakit ng ulo|labad sa ulo|analgesic)\b/i },
+  { id: 'stomach', pattern: /\b(?:stomach|stomachache|pananakit ng tiyan|sakit sa tiyan|sakit ng tiyan|diarrhea|pagtatae|kalibanga|kabag)\b/i },
+  { id: 'asthma', pattern: /\b(?:asthma|hika|hinihika|hubak|bronchial)\b/i },
+  { id: 'hypertension', pattern: /\b(?:hypertension|high blood|highblood|altapresyon|presyon)\b/i },
+  { id: 'diabetes', pattern: /\b(?:diabetes|diabetic|asukal sa dugo|blood sugar)\b/i },
+];
+
+const meaningfulTokens = (value: string) => {
+  const normalized = normalize(value);
+  const words = normalized.split(" ").filter((token) => token.length > 2 && !STOP_WORDS.has(token));
+  const tokens = new Set<string>(words);
+  for (const concept of HEALTH_CONCEPTS) {
+    if (concept.pattern.test(normalized)) {
+      tokens.add(concept.id);
+    }
+  }
+  return tokens;
+};
+
+export type SupportedLanguage = 'en' | 'tl' | 'ceb';
+
+export const detectQuestionLanguage = (question: string): SupportedLanguage => {
+  const normalized = normalize(question);
+  const cebPattern = /\b(?:unsa|unsay|unsaon|ngano|kanus-a|asa|kinsa|tanom|tambal|hilanat|sip-on|samad|imnon|luwas|kuyaw|dili|naa|kini|kana|kadto|ani|ana|adto|nako|nimo|palihug|daghang|salamat)\b/i;
+  const tlPattern = /\b(?:po|opo|ba|ano|anong|paano|bakit|kailan|saan|sino|gamot|halaman|halamang|lagnat|ubo|sipon|sakit|tiyan|inumin|ligtas|pwede|puwede|nito|niyan|niyon|iyan|iyon|ito|yan|yun|kumusta|kamusta|maraming|salamat|bata|anak|sanggol|subukan|pakuluan)\b/i;
+
+  if (cebPattern.test(normalized)) return 'ceb';
+  if (tlPattern.test(normalized)) return 'tl';
+  return 'en';
+};
+
+interface HealthConditionDiscovery {
+  label: string;
+  queryKeywords: RegExp;
+  targetCondition: string;
+  instruction: string;
+}
+
+const HEALTH_CONDITION_DISCOVERIES: HealthConditionDiscovery[] = [
+  {
+    label: 'fever',
+    queryKeywords: /\b(?:fever|fevers|lagnat|nilalagnat|hilanat|gihilanat)\b/i,
+    targetCondition: 'fever',
+    instruction: 'Condition lookup: These published records mention fever in documented uses. This is not evidence that they are effective or appropriate for the user. Explain reported uses and limitations; do not prescribe a fever treatment or invent preparation/dosage.',
+  },
+  {
+    label: 'cough',
+    queryKeywords: /\b(?:cough|coughs|ubo|inuubo|giubo)\b/i,
+    targetCondition: 'cough',
+    instruction: 'Condition lookup: These published records mention cough in documented uses. This is not evidence that they are effective or appropriate for the user. Explain reported uses and limitations; do not prescribe a treatment or invent preparation/dosage.',
+  },
+  {
+    label: 'cold',
+    queryKeywords: /\b(?:cold|colds|sipon|sinisipon|sip-on|gisip-on)\b/i,
+    targetCondition: 'cold',
+    instruction: 'Condition lookup: These published records mention cold or respiratory symptoms in documented uses. This is not evidence that they are effective or appropriate for the user. Explain reported uses and limitations; do not prescribe a treatment or invent preparation/dosage.',
+  },
+  {
+    label: 'wound',
+    queryKeywords: /\b(?:wound|wounds|sugat|nasugatan|samad)\b/i,
+    targetCondition: 'wound',
+    instruction: 'Condition lookup: These published records mention wound care in documented uses. This is not evidence that they are effective or appropriate for the user. Explain reported uses and limitations; do not prescribe a treatment or invent preparation/dosage.',
+  },
+];
 
 const lexicalOverlap = (question: string, candidate: string) => {
   const questionTokens = meaningfulTokens(question);
@@ -91,6 +151,18 @@ const matchesHerbName = (normalizedText: string, herb: HerbQueryResult | Catalog
 
 const NO_MATCH_CONTEXT = "No specific knowledge base or verified herb documents found matching this query in the database.";
 const NO_MATCH_REPLY = "I could not find a verified Herbal-Ai source for this question. I cannot confirm treatment or cure claims without a documented record. Please consult a licensed health professional for medical decisions.";
+
+export const getNoMatchReply = (question: string): string => {
+  const lang = detectQuestionLanguage(question);
+  if (lang === 'tl') {
+    return "Hindi ako nakahanap ng beripikadong Herbal-Ai source para sa katanungang ito. Hindi ko makukumpirma ang impormasyon sa paggamot o lunas nang walang nakatalang rekord. Mangyaring kumonsulta sa isang lisensyadong propesyonal sa kalusugan para sa mga medikal na desisyon.";
+  }
+  if (lang === 'ceb') {
+    return "Wala koy nakit-an nga kumpirmadong Herbal-Ai source alang niini nga pangutana. Dili nako makumpirma ang impormasyon sa pagtambal kung walay narekord nga dokumento. Palihug pakigkita sa usa ka lisensyadong propesyonal sa panglawas alang sa mga medikal nga desisyon.";
+  }
+  return NO_MATCH_REPLY;
+};
+
 const INTRODUCTION_REPLY = "Hi! I'm Dr. Ai, Herbal-Ai's AI assistant for Philippine medicinal-plant information. I can help you explore documented uses, preparation methods, and safety notes from the Herbal Library. Try asking, \"What are the documented uses of Lagundi?\" My answers are educational, not a diagnosis or prescription.";
 const isIntroductionQuestion = (question: string) => {
   const message = question.normalize('NFKC').trim().replace(/\s+/gu, ' ');
@@ -106,8 +178,19 @@ export const withoutPediatricQuantities = (value: string) => value.split(/(?<=[.
 const RETRIEVAL_UNAVAILABLE_CONTEXT = "Herbal-Ai could not complete repository retrieval for this question.";
 const RETRIEVAL_UNAVAILABLE_REPLY = "I could not check the Herbal-Ai sources right now, so I cannot verify this claim or recommend a treatment. Please try again later or browse the library directly. Consult a licensed health professional for medical decisions.";
 
+export const getRetrievalUnavailableReply = (question: string): string => {
+  const lang = detectQuestionLanguage(question);
+  if (lang === 'tl') {
+    return "Hindi ko masuri ang mga source ng Herbal-Ai sa ngayon, kaya hindi ko makukumpirma ang impormasyong ito o makapagrekomenda ng paggamot. Pakisubukan muli mamaya o bisitahin ang library. Kumonsulta sa isang lisensyadong propesyonal sa kalusugan para sa mga medikal na desisyon.";
+  }
+  if (lang === 'ceb') {
+    return "Dili nako masusi ang mga tinubdan sa Herbal-Ai karon, busa dili nako makumpirma kining maong impormasyon o makarekomenda og pagtambal. Palihug sulayi pag-usab unya o tan-awa ang library. Pakigkita sa usa ka lisensyadong propesyonal sa panglawas alang sa mga medikal nga desisyon.";
+  }
+  return RETRIEVAL_UNAVAILABLE_REPLY;
+};
+
 const buildSourceFallback = (herbs: Array<CatalogHerb | HerbQueryResult>, entries: RetrievedKB[], pediatricRequest: boolean, question: string, history: Content[]) => {
-  if (herbs.length === 0 && entries.length === 0) return NO_MATCH_REPLY;
+  if (herbs.length === 0 && entries.length === 0) return getNoMatchReply(question);
   if (pediatricRequest) {
     const records = herbs.slice(0, 2).map(herb => {
       const references = 'sources' in herb ? [...new Set(herb.sources.map(source => source.title))].slice(0, 3) : [];
@@ -209,14 +292,29 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
         if (previousHerbs.length === 1) namedHerbs = previousHerbs;
         break;
       }
+      const prevCondition = HEALTH_CONDITION_DISCOVERIES.find(d => d.queryKeywords.test(normalize(previousQuestion)));
+      if (prevCondition) {
+        namedHerbs = catalog.filter(herb => meaningfulTokens(herb.medicinalUses).has(prevCondition.targetCondition)).slice(0, 2);
+        if (namedHerbs.length > 0) break;
+      }
       if (!isContextFollowUp(previousQuestion)) break;
     }
   }
 
-  const retrievalTokens = meaningfulTokens(question);
-  const feverDiscovery = namedHerbs.length === 0 && retrievalTokens.size === 1 && retrievalTokens.has('fever');
-  const matchedHerbs = feverDiscovery
-    ? catalog.filter(herb => meaningfulTokens(herb.medicinalUses).has('fever')).slice(0, 2)
+  let conditionDiscovery: HealthConditionDiscovery | undefined;
+  if (namedHerbs.length === 0) {
+    const active = HEALTH_CONDITION_DISCOVERIES.find(d => d.queryKeywords.test(normalizedQuestion));
+    if (active) {
+      const tokens = meaningfulTokens(question);
+      const nonConditionTokens = [...tokens].filter(token => !active.queryKeywords.test(token));
+      if (nonConditionTokens.length === 0) {
+        conditionDiscovery = active;
+      }
+    }
+  }
+
+  const matchedHerbs = conditionDiscovery
+    ? catalog.filter(herb => meaningfulTokens(herb.medicinalUses).has(conditionDiscovery.targetCondition)).slice(0, 2)
     : namedHerbs;
 
   if (matchedHerbs.length > 0) {
@@ -226,7 +324,7 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
     ]))];
     const namedKnowledge = pediatricRequest ? [] : await awaitAiOperation(() => findActiveKBByTerms(exactTerms, 3), options.signal);
     const context = [
-      feverDiscovery ? 'Condition lookup: These published records mention fever in documented uses. This is not evidence that they are effective or appropriate for the user. Explain reported uses and limitations; do not prescribe a fever treatment or invent preparation/dosage.' : '',
+      conditionDiscovery ? conditionDiscovery.instruction : '',
       matchedHerbs.map((herb, index) => formatHerbContext(herb, index, question, pediatricRequest)).join("\n\n"),
       namedKnowledge.length > 0 && !pediatricRequest ? `General Knowledge Base / FAQs:\n${formatKBContext(namedKnowledge)}` : '',
     ].filter(Boolean).join('\n\n');
@@ -254,7 +352,7 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
     console.warn('Dr. Ai embedding unavailable; repository retrieval could not finish.');
     return {
       context: RETRIEVAL_UNAVAILABLE_CONTEXT,
-      fallbackReply: RETRIEVAL_UNAVAILABLE_REPLY,
+      fallbackReply: getRetrievalUnavailableReply(question),
       sources: [],
       embeddingMs: performance.now() - embeddingStartedAt,
       retrievalMs: 0,
