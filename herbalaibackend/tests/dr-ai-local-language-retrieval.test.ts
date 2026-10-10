@@ -216,4 +216,21 @@ describe.each([false, true])('local-language relevance (streaming=%s)', streamin
     expect(result.reply).toContain(`[${herb.localName}](/library?id=${herb.id})`);
     expect(result.reply).toContain('I-klik ang link aron direkta nimong maablihan ang ilang library card');
   });
+
+  it('handles colloquial Cebuano link query "link bi kay akong guide"', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    mocks.herbs.mockResolvedValue([]);
+    const result = await run(streaming, 'link bi kay akong guide', [
+      { role: 'user', parts: [{ text: 'unsay tambal sa hilanat?' }] },
+      { role: 'model', parts: [{ text: 'Alang sa hilanat, ania ang mga tanom:\n\nSOURCES CITED: Fixture herb' }] },
+    ]);
+    expect(result.sources).toEqual([{ type: 'herb', title: herb.localName, distance: 0 }]);
+    const generation = streaming ? mocks.stream : mocks.answer;
+    expect(generation).toHaveBeenCalledWith(
+      'link bi kay akong guide',
+      expect.stringContaining('Cebuano/Bisaya'),
+      expect.any(Array),
+      {}
+    );
+  });
 });

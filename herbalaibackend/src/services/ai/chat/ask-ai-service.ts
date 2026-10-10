@@ -95,8 +95,8 @@ export type SupportedLanguage = 'en' | 'tl' | 'ceb';
 
 export const detectQuestionLanguage = (question: string): SupportedLanguage => {
   const normalized = normalize(question);
-  const cebPattern = /\b(?:unsa|unsay|unsaon|ngano|kanus-a|asa|kinsa|tanom|tambal|hilanat|sip-on|samad|imnon|luwas|kuyaw|dili|naa|kini|kana|kadto|ani|ana|adto|nako|nimo|palihug|daghang|salamat)\b/i;
-  const tlPattern = /\b(?:po|opo|ba|ano|anong|paano|bakit|kailan|saan|sino|gamot|halaman|halamang|lagnat|ubo|sipon|sakit|tiyan|inumin|ligtas|pwede|puwede|nito|niyan|niyon|iyan|iyon|ito|yan|yun|kumusta|kamusta|maraming|salamat|bata|anak|sanggol|subukan|pakuluan)\b/i;
+  const cebPattern = /\b(?:unsa|unsay|unsaon|ngano|kanus-a|asa|kinsa|tanom|tambal|hilanat|sip-on|samad|imnon|luwas|kuyaw|dili|naa|kini|kining|kana|kanang|kadto|kadtong|kato|katong|ani|aning|ana|anang|adto|adtong|dinhi|diha|didto|nako|nimo|namo|nato|nila|niya|akong|ako|atong|ato|imong|inyong|iyang|ilahang|kay|aron|bi|gyud|gud|jud|sad|sab|hatagi|tagai|palihug|daghang|salamat)\b/i;
+  const tlPattern = /\b(?:po|opo|ba|ano|anong|paano|bakit|kailan|saan|sino|gamot|halaman|halamang|lagnat|ubo|sipon|sakit|tiyan|inumin|ligtas|pwede|puwede|nito|nitong|niyan|niyang|niyon|niyong|iyan|iyang|iyon|iyong|ito|itong|yan|yun|yung|kumusta|kamusta|maraming|salamat|bata|anak|sanggol|subukan|pakuluan|pahingi)\b/i;
 
   if (cebPattern.test(normalized)) return 'ceb';
   if (tlPattern.test(normalized)) return 'tl';

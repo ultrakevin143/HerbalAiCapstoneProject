@@ -20,16 +20,17 @@ const isExplicitAdultQuestion = (question: string) => !/\b(him|her|them)\b/i.tes
 export const isLinkOrLibraryQuestion = (question: string) =>
   /\b(?:links?|urls?|cards?|kards?|library|aklatan|libreriya)\b/i.test(question)
   || /\b(?:patingin|tan-aw|tan-awa|tan-awon|ipakita|makita|i-link|ilink)\b/i.test(question)
-  || /\b(?:asa\s+(?:ang|nako\s+makita)|nasaan|saan\s+makikita)\b/i.test(question);
+  || /\b(?:asa\s+(?:ang|nako\s+makita|dapit)|nasaan|saan\s+makikita)\b/i.test(question)
+  || /\b(?:link\s+bi|tagai\s+kog\s+link|hatagi\s+kog\s+link)\b/i.test(question);
 
 export const isContextFollowUp = (question: string) => {
   const directQuestion = question.split(/[.!?]|\b(?:if|unless|kung|basta)\b/i, 1)[0] ?? '';
-  return /\b(it|its|that|this|those|them|him|her|they|their|yan|iyan|iyang|yun|yung|iyon|iyong|ito|itong|nito|nitong|niyan|niyang|niyon|niyong|diyan|doon|dito|kini|kining|kana|kanang|kadto|kadtong|kato|katong|ani|aning|ana|anang|adto|adtong|dinhi|diha|didto)\b/i.test(directQuestion)
+  return /\b(it|its|that|this|those|them|him|her|they|their|yan|iyan|iyang|yun|yung|iyon|iyong|ito|itong|nito|nitong|niyan|niyang|niyon|niyong|diyan|doon|dito|kini|kining|kana|kanang|kadto|kadtong|kato|katong|ani|aning|ana|anang|adto|adtong|dinhi|diha|didto|bi)\b/i.test(directQuestion)
     || isLinkOrLibraryQuestion(directQuestion)
     || /^(?:(?:and|then|at|ug)\s+)?how (?:much|often)\s*$/i.test(directQuestion.trim())
     || /^(?:(?:safe|ligtas|epektibo|luwas|kuyaw)\s+(?:po\s+)?ba(?:\s+(?:yan|iyan|iyang|yun|yung|iyon|iyong|ito|itong|kini|kining|kana|kanang|kadto|kadtong))?|[¿?]?\s*(?:safe|ligtas|luwas)\s*)/i.test(directQuestion.trim())
     || /^(?:(?:paano|unsaon)\s+(?:po\s+)?(?:inumin|gamitin|ihanda|i-take|imnon|gamiton))/i.test(directQuestion.trim())
-    || /^(?:(?:pwede|puwede|paki|pahingi|hatagi)\s+(?:po\s+)?(?:kanang|kining|yung|ang|ug|og)?\s*(?:link|kard|card|library))/i.test(directQuestion.trim());
+    || /^(?:(?:pwede|puwede|paki|pahingi|hatagi|tagai|i-send|isend)\s+(?:po\s+)?(?:kanang|kining|yung|ang|ug|og)?\s*(?:link|kard|card|library))/i.test(directQuestion.trim());
 };
 const preservesPatientContext = (question: string) => isClinicalQuestion(question) || isContextFollowUp(question) || isHerbInformationQuestion(question);
 
