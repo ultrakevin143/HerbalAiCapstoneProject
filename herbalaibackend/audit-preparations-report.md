@@ -1,0 +1,602 @@
+# Full Audit of 100 Added Herbs - Preparation Methods & Dosage
+
+### 1. Abukado (*Persea americana*) - Digestive & Gastrointestinal
+- **Uses**: Decoction of leaves used for diarrhea, abdominal discomfort, and mild hypertension; seed paste traditionally applied for skin eruptions.
+- **Preparation**: Boil 5-7 clean mature leaves in 2 cups of water for 10-15 minutes. Cool and strain.
+- **Dosage**: Drink 1/2 cup twice daily after meals.
+- **Warnings**: Avoid excessive intake during pregnancy. Leaves contain persin; consult healthcare provider if taking blood thinners.
+
+### 2. Adgaw (*Premna odorata*) - Respiratory
+- **Uses**: Infusion or decoction of leaves used for cough, bronchitis, fever, gas pain in infants, and as a mouthwash for toothache.
+- **Preparation**: Boil 8-10 fresh leaves in 3 cups of water for 15 minutes. Strain before drinking.
+- **Dosage**: Drink 1/2 to 1 cup 3 times a day for cough and fever.
+- **Warnings**: Safe for general adult use; prepare fresh daily.
+
+### 3. Agas-ahas (*Euphorbia tirucalli*) - Dermatological (Caution)
+- **Uses**: Diluted latex traditionally applied topically with extreme care for stubborn warts, calluses, and ringworm.
+- **Preparation**: External only: Apply a minute drop of fresh milky sap directly onto the wart with a cotton bud, avoiding surrounding healthy skin.
+- **Dosage**: Once daily topically until lesion dries up. Wash thoroughly after 15 minutes.
+- **Warnings**: HIGHLY IRRITANT AND TOXIC: Never ingest. Keep strictly away from eyes to avoid corneal ulceration and temporary blindness.
+
+### 4. Agosip (*Symplocos cochinchinensis*) - Oral & Antiseptic Care
+- **Uses**: Bark and leaf decoctions used as an astringent gargle for bleeding gums, oral aphthae, and washing chronic ulcers.
+- **Preparation**: Boil 10g dried shredded bark in 2 cups of water for 15 minutes. Use cooled liquid as mouthwash.
+- **Dosage**: Gargle 1/4 cup 2-3 times daily. Do not swallow large amounts.
+- **Warnings**: Astringent: may cause mild constipation if swallowed repeatedly.
+
+### 5. Alang-ilang de China (*Desmos chinensis*) - Pain Relief & Anti-inflammatory
+- **Uses**: Roots and aromatic flowers used as a calming herbal wash and postpartum bath to alleviate muscular soreness.
+- **Preparation**: Simmer roots and floral bracts in warm bath water for postpartum recovery wash.
+- **Dosage**: Warm topical wash once daily for postpartum recuperation.
+- **Warnings**: External use preferred. Do not apply directly over fresh surgical wounds.
+
+### 6. Alipata (*Excoecaria agallocha*) - Dermatological (Caution)
+- **Uses**: Historical coastal folk application for persistent ulcers and parasitic skin infections.
+- **Preparation**: Decoction of bark used strictly externally as an astringent wash.
+- **Dosage**: External wash only: rinse affected skin surface once daily.
+- **Warnings**: DANGEROUS: Sap causes severe chemical conjunctivitis and temporary blindness. Ingestion is toxic.
+
+### 7. Alpasotes (*Dysphania ambrosioides*) - Digestive & Gastrointestinal
+- **Uses**: Traditional carminative for flatulence, stomach cramps, and historical anthelmintic for intestinal roundworms.
+- **Preparation**: Infuse 1-2 small fresh leaves in 1 cup of boiling water for 10 minutes. Strain carefully.
+- **Dosage**: Drink 1/2 cup once daily for digestive spasms for no more than 3 consecutive days.
+- **Warnings**: TOXIC IN HIGH DOSES: Essential oil (ascaridole) is toxic. Strictly contraindicated in pregnancy and lactation.
+
+### 8. Anibong (*Oncosperma tigillarium*) - Renal & Diuretic
+- **Uses**: Young shoot decoctions traditionally used as a mild cooling diuretic and tonic.
+- **Preparation**: Boil fresh palm hearts or tender shoots in 3 cups of water for 20 minutes.
+- **Dosage**: Drink 1/2 cup twice daily for mild urinary discomfort.
+- **Warnings**: Mild diuretic effect. Ensure adequate hydration.
+
+### 9. Anito (*Emilia sonchifolia*) - Pain Relief & Anti-inflammatory
+- **Uses**: Fresh crushed leaves applied topically to soothe fevers, boils, and eye inflammation; leaf tea taken for cough.
+- **Preparation**: Crush fresh whole plant into a clean poultice, or boil 15g in 2 cups of water for 10 minutes.
+- **Dosage**: Apply poultice for 20 minutes; drink 1/2 cup decoction twice daily for sore throat.
+- **Warnings**: Contains trace pyrrolizidine alkaloids; do not consume continuously for prolonged periods.
+
+### 10. Apan-apan (*Sida acuta*) - Fevers & Gastrointestinal
+- **Uses**: Roots and leaves boiled for fevers, headaches, dysentery, and poulticed on insect stings and boils.
+- **Preparation**: Boil 10g cleaned roots and leaves in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/2 cup 3 times daily during febrile episodes.
+- **Warnings**: Avoid in pregnancy; monitor blood pressure if taking hypertensive medication.
+
+### 11. Apis (*Elephantopus tomentosus*) - Renal & Diuretic
+- **Uses**: Decoction of root and leaves taken to stimulate urination, relieve edema, and reduce fever.
+- **Preparation**: Boil 10g dried herb in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/2 cup twice daily.
+- **Warnings**: Do not use in severe kidney impairment without medical supervision.
+
+### 12. Apitong (*Dipterocarpus grandiflorus*) - Dermatological & Skin Care
+- **Uses**: Balsamic oleoresin historically applied topically as an antiseptic dressing for chronic indolent sores and ringworm.
+- **Preparation**: Apply a thin layer of refined resin or bark tincture to cleansed abrasions.
+- **Dosage**: External dressing once daily covered with sterile gauze.
+- **Warnings**: For external use only. Discontinue if contact dermatitis occurs.
+
+### 13. Asistasya (*Asystasia gangetica*) - Respiratory
+- **Uses**: Leaf juice and decoction used for asthma, bronchial spasms, rheumatism, and soothing dry coughs.
+- **Preparation**: Boil a handful of leaves in 2 cups of water for 10 minutes, or extract fresh juice.
+- **Dosage**: Drink 1/2 cup twice daily for bronchial spasms.
+- **Warnings**: Safe culinary green in small amounts; avoid excessive quantities during early pregnancy.
+
+### 14. Bagtikan (*Parashorea malaanonan*) - Digestive & Gastrointestinal
+- **Uses**: Astringent bark decoction traditionally used by indigenous communities for acute dysentery and diarrhea.
+- **Preparation**: Boil 15g dried shredded bark in 3 cups of water down to 2 cups.
+- **Dosage**: Drink 1/3 cup every 4-6 hours for acute diarrhea.
+- **Warnings**: Do not use for more than 48 hours without medical consultation.
+
+### 15. Bakawan (*Rhizophora mucronata*) - Oral & Antiseptic Care
+- **Uses**: Rich in condensed tannins: bark decoction used as an antiseptic gargle, astringent wound wash, and for diarrhea.
+- **Preparation**: Boil 10g bark in 2 cups of water for 15 minutes. Use for wash or gargle.
+- **Dosage**: Gargle 1/4 cup 3 times daily; rinse skin sores twice daily.
+- **Warnings**: Astringent: internal intake should be strictly limited to prevent gastric irritation.
+
+### 16. Balanoy-parang (*Ocimum americanum*) - Digestive & Gastrointestinal
+- **Uses**: Aromatic leaf tea relieves flatulence, dyspepsia, stomach cramps, and provides mild fever relief.
+- **Preparation**: Steep 1 tablespoon fresh leaves in 1 cup boiling water for 10 minutes.
+- **Dosage**: Drink 1 cup warm after meals.
+- **Warnings**: Generally safe as culinary herb. Avoid therapeutic megadoses during pregnancy.
+
+### 17. Balete (*Ficus benjamina*) - Pain Relief & Anti-inflammatory
+- **Uses**: Crushed leaves and bark poultice applied to relieve rheumatic joint pain, sprains, and contusions.
+- **Preparation**: Pound fresh leaves with coconut oil into a warm poultice and bind over affected joints.
+- **Dosage**: Apply once daily for 30 minutes.
+- **Warnings**: External only. Sap may trigger latex allergic reactions.
+
+### 18. Balitbitan (*Cynometra ramiflora*) - Dermatological & Skin Care
+- **Uses**: Seed oil and leaf paste traditionally applied to treat scabies, cutaneous herpes, and chronic eczema.
+- **Preparation**: Mix crushed seeds with neutral oil and apply topically to skin lesions.
+- **Dosage**: Apply topically once daily at night. Wash off in the morning.
+- **Warnings**: For topical use only. Do not ingest seed preparations.
+
+### 19. Bamban (*Donax canniformis*) - Dermatological & Skin Care
+- **Uses**: Fresh stem sap squeezed into eyes for mild conjunctival irritation; leaf decoction used for cooling fever baths.
+- **Preparation**: Boil clean leaves in bath water for cooling febrifuge soak.
+- **Dosage**: Use warm bath water once daily during febrile restlessness.
+- **Warnings**: Ensure strict sterility if using stem sap near ophthalmic tissues.
+
+### 20. Bangkal (*Nauclea orientalis*) - Fevers & Gastrointestinal
+- **Uses**: Bitter bark decoction used as an antimalarial and febrifuge tonic, and as an antiseptic wash for infected wounds.
+- **Preparation**: Boil 10g dried shredded bark in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/4 cup twice daily for fever; use externally as wound wash.
+- **Warnings**: Bitter tonic: high doses may cause nausea. Avoid during pregnancy.
+
+### 21. Bara-baras (*Gomphrena celosioides*) - Respiratory
+- **Uses**: Decoction of flowers and leaves used for bronchial catarrh, stubborn cough, and mild urinary infections.
+- **Preparation**: Boil 10g floral heads in 2 cups of water for 10 minutes.
+- **Dosage**: Drink 1/2 cup twice daily.
+- **Warnings**: Safe in standard traditional amounts. Avoid in acute renal failure.
+
+### 22. Barit (*Pinus kesiya*) - Respiratory
+- **Uses**: Pine needles and oleoresin steam inhalation used for chest congestion, bronchitis, and topical antiseptic balms.
+- **Preparation**: Add a handful of fresh pine needles to a basin of boiling water and inhale the steam under a towel.
+- **Dosage**: Steam inhalation for 10 minutes twice daily.
+- **Warnings**: Do not ingest pure pine oil. Avoid direct skin contact with undiluted resin in patients with eczema.
+
+### 23. Batino (*Alstonia macrophylla*) - Cardiovascular
+- **Uses**: Alkaloid-rich bark decoction used traditionally to lower blood pressure, soothe fevers, and stimulate appetite.
+- **Preparation**: Boil 5g dried bark in 2 cups of water for 15 minutes. Strain carefully.
+- **Dosage**: Drink 1/4 cup twice daily before meals.
+- **Warnings**: Potent alkaloid content: strictly adhere to dosage. Contraindicated with synthetic hypotensive drugs without monitoring.
+
+### 24. Bayag-usa (*Voacanga globosa*) - Oral & Antiseptic Care
+- **Uses**: Latex used as a toothache soother; bark decoction used as an antiseptic wash for stubborn ulcers.
+- **Preparation**: Apply a small dab of latex on a cotton pellet directly into carious tooth cavity.
+- **Dosage**: Apply topically for 10 minutes for acute toothache. Spit out saliva.
+- **Warnings**: Toxic if swallowed in large quantities: for topical dental application only.
+
+### 25. Bikas (*Mikania cordata*) - Wound Care & Astringent
+- **Uses**: Pounded fresh leaves applied directly as a potent hemostatic poultice on fresh cuts and venomous insect bites.
+- **Preparation**: Crush clean fresh leaves thoroughly to release green juice and apply directly over the wound.
+- **Dosage**: Apply poultice for 15-30 minutes. Bind with clean cloth.
+- **Warnings**: Clean wound thoroughly with antiseptic water before application.
+
+### 26. Binunga (*Macaranga tanarius*) - Oral & Antiseptic Care
+- **Uses**: Astringent bark and leaf decoction used as a gargle for mouth ulcers, sore throat, and to wash fungal skin sores.
+- **Preparation**: Boil 10g bark or 5 large leaves in 3 cups of water for 15 minutes.
+- **Dosage**: Gargle warm liquid 3 times daily; use as skin wash twice daily.
+- **Warnings**: Safe for topical gargle and wash. Do not swallow large concentrated quantities.
+
+### 27. Bogo (*Garuga floribunda*) - Respiratory
+- **Uses**: Bark decoction used for asthma, bronchial cough, and cooling pulmonary congestion; leaf juice for eye irritation.
+- **Preparation**: Boil 10g bark in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/2 cup twice daily.
+- **Warnings**: Prepare fresh decoctions daily; avoid in pregnant patients.
+
+### 28. Buntot-pusa (*Acalypha hispida*) - Renal & Diuretic
+- **Uses**: Floral spikes and leaves boiled as a diuretic, expectorant for asthma, and soothing wash for skin rashes.
+- **Preparation**: Boil 10g floral spikes in 2 cups of water for 10 minutes.
+- **Dosage**: Drink 1/2 cup twice daily; use as topical wash for rashes.
+- **Warnings**: Ingestion of excessive raw leaves can cause mild stomach upset.
+
+### 29. Buyo-buyo (*Piper sarmentosum*) - Digestive & Gastrointestinal
+- **Uses**: Aromatic leaves chewed or brewed for stomach ache, toothache, flatulence, and pleurisy.
+- **Preparation**: Steep 5 fresh leaves in 1 cup of boiling water for 10 minutes.
+- **Dosage**: Drink 1 cup warm after meals for indigestion.
+- **Warnings**: Safe culinary green. Moderation recommended for individuals prone to calcium oxalate kidney stones.
+
+### 30. Dadap (*Erythrina variegata*) - Pain Relief & Anti-inflammatory
+- **Uses**: Leaves and bark poultice applied to relieve joint inflammation, rheumatic pain, and insomnia.
+- **Preparation**: Warm bruised fresh leaves over coals and wrap around painful joints.
+- **Dosage**: Apply warm leaf compress twice daily for 20 minutes.
+- **Warnings**: Contains alkaloids: strictly avoid ingesting raw seeds or concentrated bark extracts.
+
+### 31. Dampol (*Glochidion album*) - Oral & Antiseptic Care
+- **Uses**: Bark and leaf decoctions used as an astringent rinse for sore gums, throat inflammation, and skin eczema.
+- **Preparation**: Boil 10g dried leaves in 2 cups of water for 15 minutes. Cool and strain.
+- **Dosage**: Use as mouth rinse or skin wash 2-3 times daily.
+- **Warnings**: External rinse preferred. May cause mild nausea if ingested in high amounts.
+
+### 32. Dilang-aso (*Elephantopus scaber*) - Renal & Diuretic
+- **Uses**: Plant decoction taken as a diuretic to treat edema, urinary discomfort, fevers, and post-partum recovery.
+- **Preparation**: Boil 10g whole dried plant in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/2 cup twice daily.
+- **Warnings**: Consult healthcare practitioner if taking prescription diuretic drugs.
+
+### 33. Dita-ditahan (*Rauvolfia serpentina*) - Cardiovascular (Strict Warnings)
+- **Uses**: Historically documented source of reserpine, used for severe hypertension and nervous restlessness.
+- **Preparation**: Strict medical standardization required: raw home brewing is not advised due to potent hypotension risks.
+- **Dosage**: Use strictly under qualified clinical supervision.
+- **Warnings**: POTENT MEDICATION: Causes severe bradycardia, mental depression, and hypotension. Never self-prescribe.
+
+### 34. Dita-kanding (*Alstonia spectabilis*) - Fevers & Gastrointestinal
+- **Uses**: Bark decoction traditionally used as an antimalarial, fever remedy, and bitter digestive tonic.
+- **Preparation**: Boil 5g dried bark in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/4 cup twice daily for fever.
+- **Warnings**: Do not exceed recommended dose; avoid in pregnancy.
+
+### 35. Dungon (*Heritiera littoralis*) - Digestive & Gastrointestinal
+- **Uses**: Tannin-rich seed and bark extract used for diarrhea, dysentery, and as a mouthwash for toothache.
+- **Preparation**: Boil 10g dried bark in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/4 cup twice daily for diarrhea; use as oral rinse for toothache.
+- **Warnings**: Astringent: avoid excessive consumption.
+
+### 36. Dungon-late (*Heritiera sylvatica*) - Wound Care & Astringent
+- **Uses**: Bark decoction applied to clean bleeding wounds, ulcers, and hemorrhoids.
+- **Preparation**: Boil 15g bark in 3 cups of water for 20 minutes. Use as warm wash.
+- **Dosage**: Rinse affected area twice daily.
+- **Warnings**: For topical cleansing and wash only.
+
+### 37. Gagabutan (*Eleusine indica*) - Renal & Diuretic
+- **Uses**: Whole plant decoction extensively used in Philippine folk medicine for diuretic support, kidney stone clearance, fevers, and cystitis.
+- **Preparation**: Boil 50g cleaned whole plant (including roots) in 1 liter of water for 15 minutes. Strain.
+- **Dosage**: Drink 1 cup 2-3 times daily for urinary comfort.
+- **Warnings**: Mild diuretic. Not a replacement for emergency dialysis or acute kidney care.
+
+### 38. Gatas-gatas (*Euphorbia thymifolia*) - Digestive & Gastrointestinal
+- **Uses**: Astringent whole plant tea used for dysentery, diarrhea in children, and ringworm poultice.
+- **Preparation**: Boil 10g fresh plant in 1.5 cups of water for 10 minutes.
+- **Dosage**: Drink 1/3 cup twice daily for mild diarrhea.
+- **Warnings**: Contains milky latex: discontinue if gastric burning or nausea occurs.
+
+### 39. Gumamela-asul (*Hibiscus syriacus*) - Dermatological & Skin Care
+- **Uses**: Flowers and leaves boiled as a demulcent, soothing irritated skin, boils, and reducing feverish thirst.
+- **Preparation**: Crush fresh flower petals into a paste and apply over skin boils; or infuse in warm water.
+- **Dosage**: Apply petal poultice for 20 minutes twice daily.
+- **Warnings**: Safe emollient. Wash flowers clean of dust before use.
+
+### 40. Guyod (*Derris elliptica*) - Dermatological (Caution)
+- **Uses**: Diluted root extract historically applied externally for severe scabies, lice, and cutaneous parasites.
+- **Preparation**: Extract root juice and dilute heavily with coconut oil for topical scalp rinse.
+- **Dosage**: Apply to affected area for 15 minutes, then shampoo thoroughly. Avoid eyes and mouth.
+- **Warnings**: HIGHLY TOXIC (Rotenone): Lethal if ingested. Toxic to aquatic life. Strictly external use with gloves.
+
+### 41. Hagakhak (*Dipterocarpus kerrii*) - Respiratory
+- **Uses**: Aromatic wood resin historically used in chest plasters and vapors for chronic bronchitis and ulcers.
+- **Preparation**: Inhale steam infused with a small piece of resin, or apply resin-infused oil topically on chest.
+- **Dosage**: Steam inhalation for 10 minutes once daily before sleep.
+- **Warnings**: Do not ingest raw resin. Discontinue if bronchial irritation increases.
+
+### 42. Hamindang (*Macaranga bicolor*) - Wound Care & Astringent
+- **Uses**: Bark and leaf decoction used as an astringent antiseptic wash for chronic sores and postpartum healing.
+- **Preparation**: Boil 10g dried leaves in 2 cups of water for 15 minutes.
+- **Dosage**: Apply as warm wash twice daily over affected skin.
+- **Warnings**: For topical use only.
+
+### 43. Hangod (*Laportea meyeniana*) - Pain Relief & Anti-inflammatory (Caution)
+- **Uses**: Carefully administered traditional counter-irritant for chronic rheumatic pain; boiled roots for epistaxis.
+- **Preparation**: Boil 5g cleaned roots in 2 cups of water for 10 minutes for nosebleeds.
+- **Dosage**: Drink 1/4 cup decoction once daily.
+- **Warnings**: Leaves have severe stinging hairs that cause acute burning pain and dermatitis. Handle with heavy gloves.
+
+### 44. Hauili (*Ficus septica*) - Dermatological & Skin Care
+- **Uses**: Leaves applied as a poultice on rheumatic joints and headache; milky sap applied to herpes, boils, and ringworm.
+- **Preparation**: Wilt fresh leaves over low heat and apply as a warm poultice to the forehead or joints.
+- **Dosage**: Apply for 30 minutes twice daily.
+- **Warnings**: Sap can cause contact dermatitis in sensitive skin. Wash hands after handling.
+
+### 45. Hibau (*Aglaia harmsiana*) - Fevers & Gastrointestinal
+- **Uses**: Bark decoction traditionally used by indigenous healers for fevers, chills, and restoring physical vigor.
+- **Preparation**: Boil 10g dried bark in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/4 cup twice daily.
+- **Warnings**: Use in moderation; avoid during pregnancy.
+
+### 46. Iba (*Phyllanthus acidus*) - Dermatological & Skin Care
+- **Uses**: Leaves boiled as an antipruritic wash for urticaria, eczema, and psoriasis; bark used for bronchial congestion.
+- **Preparation**: Boil a handful of leaves in 3 cups of water for 15 minutes. Use cooled liquid as skin bath.
+- **Dosage**: Wash affected skin 1-2 times daily.
+- **Warnings**: Roots are toxic and must never be consumed. Leaves and fruit are safe.
+
+### 47. Inyam (*Antidesma ghaesembilla*) - Fevers & Gastrointestinal
+- **Uses**: Aromatic leaves and fruit decoction taken for fevers, headache, and as a digestive appetizer.
+- **Preparation**: Boil 10g leaves in 2 cups of water for 10 minutes.
+- **Dosage**: Drink 1/2 cup twice daily.
+- **Warnings**: Safe in standard dietary amounts.
+
+### 48. Kaburaw (*Citrus hystrix*) - Oral & Antiseptic Care
+- **Uses**: Rind and leaves rich in citronellal: used for oral hygiene, shampoo for dandruff, and digestive carminative.
+- **Preparation**: Rub fresh fruit rind or juice onto scalp for dandruff; steep leaves for digestive tea.
+- **Dosage**: Scalp rinse 2-3 times a week; drink 1/2 cup leaf tea after heavy meals.
+- **Warnings**: Citrus juice may cause photosensitivity if left exposed to bright sunlight.
+
+### 49. Kalabasa (*Cucurbita moschata*) - Digestive & Parasitic
+- **Uses**: Fresh seeds are an effective, safe natural anthelmintic (cucurbitacin) against tapeworms and roundworms; fruit pulp soothes burns.
+- **Preparation**: Crush 30-50g peeled raw seeds into a paste with honey or water and consume on an empty stomach.
+- **Dosage**: Take once in the morning, followed 2 hours later by a mild natural laxative (e.g., castor oil or prune juice).
+- **Warnings**: Safe and gentle. Ensure seeds are unsalted and unroasted for anthelmintic efficacy.
+
+### 50. Kalamias-gubat (*Ailanthus triphysa*) - Digestive & Gastrointestinal
+- **Uses**: Bitter resinous bark used for dyspepsia, diarrhea, and asthma; aromatic resin burned as soothing incense.
+- **Preparation**: Boil 5g dried bark in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/4 cup twice daily before meals.
+- **Warnings**: Bitter: excessive doses cause nausea. Avoid in pregnant women.
+
+### 51. Kalatsutsing-gubat (*Tabernaemontana pandacaqui*) - Wound Care & Hemostatic
+- **Uses**: Milky sap and leaf poultice applied to stop bleeding, disinfect lacerations, and relieve toothache.
+- **Preparation**: Pound fresh leaves into a poultice and bind over cuts; drop sap on sterile gauze for minor scrapes.
+- **Dosage**: Apply topically once daily.
+- **Warnings**: External use only. Avoid ingestion; keep away from eyes.
+
+### 52. Kalios (*Streblus asper*) - Oral & Antiseptic Care
+- **Uses**: Twigs traditionally chewed for dental hygiene and toothache relief; bark decoction used for dysentery and gingivitis.
+- **Preparation**: Boil 10g shredded bark in 2 cups of water for 15 minutes. Use cooled liquid as antibacterial mouthwash.
+- **Dosage**: Gargle 1/4 cup 3 times daily after brushing.
+- **Warnings**: Demonstrated antibacterial efficacy against Streptococcus mutans. Do not swallow large amounts.
+
+### 53. Kalumpit (*Terminalia microcarpa*) - Oral & Antiseptic Care
+- **Uses**: Astringent fruit and bark decoction used for throat inflammation, eye wash, and chronic diarrhea.
+- **Preparation**: Boil 10g bark in 2 cups of water for 15 minutes.
+- **Dosage**: Gargle 3 times daily; drink 1/4 cup twice daily for diarrhea.
+- **Warnings**: Rich in tannins: avoid prolonged continuous consumption.
+
+### 54. Kamagsa (*Rourea minor*) - Postpartum & Rheumatic
+- **Uses**: Root decoction used by traditional midwives as a depurative and tonic after childbirth.
+- **Preparation**: Boil 10g cleaned roots in 3 cups of water for 20 minutes.
+- **Dosage**: Drink 1/3 cup twice daily for 3 days postpartum.
+- **Warnings**: Do NOT use during active pregnancy: possesses uterine stimulating properties.
+
+### 55. Kamas (*Pachyrhizus erosus*) - Dermatological & Hydration
+- **Uses**: Cooling tuber slices applied on sunburnt skin, prickly heat, and feverish brows; high water and inulin content.
+- **Preparation**: Apply freshly sliced chilled tuber directly to sunburnt skin or blend into cooling face mask.
+- **Dosage**: Apply for 15-20 minutes as needed.
+- **Warnings**: Only the tuber is edible/medicinal. Seeds, leaves, and pods contain toxic rotenone and are dangerous.
+
+### 56. Kamatsile (*Pithecellobium dulce*) - Oral & Antiseptic Care
+- **Uses**: Astringent bark and leaf decoction used for mouth ulcers, toothache, dysentery, and washing chronic sores.
+- **Preparation**: Boil 10g bark in 2 cups of water for 15 minutes. Use for mouth rinse or wash.
+- **Dosage**: Rinse mouth 3 times daily; drink 1/4 cup twice daily for mild diarrhea.
+- **Warnings**: High tannin content. Avoid excessive internal consumption.
+
+### 57. Kanya-pistula (*Cassia fistula*) - Digestive & Gastrointestinal
+- **Uses**: Ripe pod pulp used as a safe, mild laxative for habitual constipation; leaves applied on ringworm.
+- **Preparation**: Dissolve 5-10g of black pod pulp in warm water or milk.
+- **Dosage**: Take at bedtime for constipation.
+- **Warnings**: Do not exceed 15g to avoid abdominal cramping. Contraindicated in bowel obstruction.
+
+### 58. Kariskis (*Albizia lebbekoides*) - Respiratory
+- **Uses**: Bark decoction used for persistent cough, bronchitis, and as an astringent wash for scabies.
+- **Preparation**: Boil 10g dried bark in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/3 cup twice daily for bronchial cough.
+- **Warnings**: Safe in moderate traditional doses.
+
+### 59. Katilbuk (*Impatiens platypetala*) - Dermatological & Skin Care
+- **Uses**: Crushed succulent stems and leaves applied to minor thermal burns, scalds, and insect stings.
+- **Preparation**: Crush clean stems to extract cooling gelatinous juice and apply to unbroken skin.
+- **Dosage**: Apply topically every 2 hours until burning sensation subsides.
+- **Warnings**: For superficial burns only; do not apply to open 3rd-degree burns.
+
+### 60. Katutay (*Bauhinia purpurea*) - Oral & Antiseptic Care
+- **Uses**: Astringent bark and flower decoction used as a gargle for sore throat, tonsillitis, and ulcers.
+- **Preparation**: Boil 10g dried bark in 2 cups of water for 15 minutes.
+- **Dosage**: Gargle warm liquid 3 times daily.
+- **Warnings**: Non-toxic gargle; avoid consuming excessive quantities.
+
+### 61. Kayoman (*Ficus ulmifolia*) - Oral & Antiseptic Care
+- **Uses**: Rough sandpaper-like leaves used for dental hygiene; leaf decoction used for washing ringworm and cuts.
+- **Preparation**: Boil a handful of leaves in 2 cups of water for 10 minutes. Use as topical wash.
+- **Dosage**: Wash affected skin twice daily.
+- **Warnings**: Gentle antiseptic wash; avoid contact with sensitive mucosal tissues.
+
+### 62. Kolowratia (*Alpinia elegans*) - Pain Relief & Anti-inflammatory
+- **Uses**: Aromatic rhizomes and leaves pounded and applied as a warm poultice for rheumatism, muscle aches, and headache.
+- **Preparation**: Crush fresh rhizome and warm with coconut oil; apply as poultice over stiff joints.
+- **Dosage**: Apply once daily for 30 minutes.
+- **Warnings**: For external use; perform patch test on sensitive skin.
+
+### 63. Kubili (*Cubilia cubili*) - Nutritional & General Wellness
+- **Uses**: Boiled seeds are nourishing and soothing for gastrointestinal catarrh and convalescent recovery.
+- **Preparation**: Boil peeled seeds thoroughly in water until tender.
+- **Dosage**: Eat 5-10 boiled seeds as nutritional supplement.
+- **Warnings**: Must be boiled thoroughly before consumption.
+
+### 64. Kudzu-gubat (*Pueraria phaseoloides*) - Dermatological & Skin Care
+- **Uses**: Leaf decoction applied as a soothing wash for boils, infected skin eruptions, and ulcerations.
+- **Preparation**: Boil 20g fresh leaves in 3 cups of water for 15 minutes.
+- **Dosage**: Wash affected skin surfaces twice daily.
+- **Warnings**: Topical use recommended.
+
+### 65. Kulipapa (*Vitex parviflora*) - Wound Care & Astringent
+- **Uses**: Astringent wood infusion and bark decoction used as a wound wash, febrifuge, and poison antidote wash.
+- **Preparation**: Boil 10g dried wood chips or bark in 2 cups of water for 20 minutes.
+- **Dosage**: Use as wound wash twice daily; drink 1/4 cup twice daily for fevers.
+- **Warnings**: Protected indigenous tree; harvest only sustainably fallen wood or pruned branches.
+
+### 66. Kulitis-parang (*Celosia argentea*) - Renal & Diuretic
+- **Uses**: Seeds and flowers brewed to clear heat, promote urination, soothe eye inflammation, and relieve painful micturition.
+- **Preparation**: Boil 10g dried seeds or floral heads in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/2 cup twice daily.
+- **Warnings**: Mild hypotensive effect. Caution in patients with glaucoma (mydriatic effect).
+
+### 67. Lagundi-dagat (*Vitex trifolia*) - Respiratory
+- **Uses**: Coastal relative of Lagundi: leaves boiled for cough, fever, headache, and rheumatic muscle pains.
+- **Preparation**: Boil 8-10 leaves in 2 cups of water for 15 minutes. Strain.
+- **Dosage**: Drink 1/2 cup 3 times daily for cough.
+- **Warnings**: Avoid excessive intake during pregnancy. Similar profile to Vitex negundo.
+
+### 68. Lamio (*Dracontomelon dao*) - Digestive & Gastrointestinal
+- **Uses**: Bark decoction used as an astringent for dysentery and diarrhea, and topically for cicatrizing sores.
+- **Preparation**: Boil 10g dried bark in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/4 cup twice daily for acute diarrhea.
+- **Warnings**: High in tannins: not for long-term daily use.
+
+### 69. Libas (*Spondias pinnata*) - Digestive & Gastrointestinal
+- **Uses**: Bark and leaves boiled for acute diarrhea, dysentery, mouth ulcers, and poulticed over burns.
+- **Preparation**: Boil 10g bark in 2 cups of water for 15 minutes. Cool before drinking or gargling.
+- **Dosage**: Drink 1/3 cup twice daily for diarrhea; gargle for mouth sores.
+- **Warnings**: Safe astringent; reduce dose once diarrhea subsides.
+
+### 70. Ligao (*Ziziphus talanai*) - Digestive & Gastrointestinal
+- **Uses**: Bark decoction used as an astringent stomachic, diarrhea remedy, and febrifuge.
+- **Preparation**: Boil 10g dried shredded bark in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/3 cup twice daily.
+- **Warnings**: Safe in standard traditional amounts.
+
+### 71. Linti (*Gnetum gnemon*) - Nutritional & General Wellness
+- **Uses**: High resveratrol content: leaves and nuts eaten for antioxidant protection, eye comfort, and physical endurance.
+- **Preparation**: Boil young leaves and seeds in vegetable soups or decoct 15g leaves in 2 cups of water.
+- **Dosage**: Consume as dietary vegetable 2-3 times weekly; drink 1 cup leaf tea.
+- **Warnings**: Individuals with hyperuricemia (gout) should consume seeds in moderation.
+
+### 72. Lumbang (*Aleurites moluccanus*) - Dermatological & Scalp
+- **Uses**: Expressed seed oil applied to stimulate hair growth, treat dandruff, and as a strong purgative (caution).
+- **Preparation**: Apply cold-pressed candlenut oil directly to scalp; massage gently.
+- **Dosage**: Apply to hair and scalp 2 times weekly, leave for 30 minutes, then wash.
+- **Warnings**: Raw seeds are TOXIC and purgative. Do NOT ingest raw nuts.
+
+### 73. Lunas (*Lunasia amara*) - Digestive & Gastrointestinal
+- **Uses**: Extremely bitter bark and leaves used as a digestive stomachic, febrifuge, and topical snakebite poultice.
+- **Preparation**: Boil 3-5g dried bark in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 2 tablespoons before meals for stomachic stimulation.
+- **Warnings**: Contains lunasine and potent alkaloids. Strict dosage adherence required. Do not use in pregnancy.
+
+### 74. Lupa (*Boehmeria nivea*) - Renal & Diuretic
+- **Uses**: Roots and leaves decocted as a diuretic, cooling febrifuge, and hemostatic for threatened miscarriage.
+- **Preparation**: Boil 15g roots in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/2 cup twice daily.
+- **Warnings**: Consult healthcare provider for obstetric complications.
+
+### 75. Malabulak (*Bombax ceiba*) - Digestive & Gastrointestinal
+- **Uses**: Astringent resin and gum (mocharas) used for dysentery, diarrhea, hemoptysis, and skin burns.
+- **Preparation**: Boil 5g dried bark or resin in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/3 cup twice daily for diarrhea.
+- **Warnings**: Astringent: use for short durations during acute bowel looseness.
+
+### 76. Malunggay-gubat (*Radermachera pinnata*) - Fevers & Gastrointestinal
+- **Uses**: Bark decoction used by indigenous mountain communities as an antipyretic tonic and body ache soother.
+- **Preparation**: Boil 10g dried bark in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/4 cup twice daily.
+- **Warnings**: Avoid in pregnancy; prepare fresh daily.
+
+### 77. Mamalis (*Pittosporum pentandrum*) - Fevers & Postpartum
+- **Uses**: Aromatic bark decoction given as a febrifuge and in aromatic baths for women recovering from childbirth.
+- **Preparation**: Boil 10g bark in 3 cups of water for 20 minutes for postpartum herbal bath.
+- **Dosage**: Drink 1/4 cup decoction twice daily for fever; use warm bath water daily.
+- **Warnings**: Aromatic principles may cause nausea if taken in large doses on an empty stomach.
+
+### 78. Marang (*Artocarpus odoratissimus*) - Nutritional & General Wellness
+- **Uses**: Nutrient-dense fruit pulp provides rich energy, potassium, and demulcent fiber for convalescent individuals.
+- **Preparation**: Eat fresh ripe fruit segments directly.
+- **Dosage**: 1-2 servings daily as nutritional recovery food.
+- **Warnings**: High in natural sugars: diabetic patients should consume in controlled portions.
+
+### 79. Mirasol (*Helianthus annuus*) - Renal & Diuretic
+- **Uses**: Seed decoction taken as a gentle diuretic, expectorant for bronchial coughs, and febrifuge.
+- **Preparation**: Boil 20g crushed seeds in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/2 cup twice daily.
+- **Warnings**: Safe and gentle. Shell seeds before decocting.
+
+### 80. Nangka-nangka (*Annona glabra*) - Dermatological (Caution)
+- **Uses**: Seeds and leaves traditionally used as an external pediculicide (lice killer) and parasitic skin wash.
+- **Preparation**: Boil leaves in water for external antiparasitic wash.
+- **Dosage**: Apply to scalp or skin for 15 minutes, then rinse thoroughly.
+- **Warnings**: Seeds contain toxic annonaceous acetogenins. Do NOT ingest seeds.
+
+### 81. Ngipin-ngipin (*Pseudarthria viscida*) - Pain Relief & Anti-inflammatory
+- **Uses**: Roots boiled to treat rheumatism, chronic fever, asthma, and nerve weakness.
+- **Preparation**: Boil 10g dried roots in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/2 cup twice daily.
+- **Warnings**: Safe in standard traditional amounts.
+
+### 82. Pahutan (*Mangifera altissima*) - Oral & Antiseptic Care
+- **Uses**: Astringent bark and seed kernel decoctions used for dysentery, diarrhea, and aphthous stomatitis.
+- **Preparation**: Boil 10g bark in 2 cups of water for 15 minutes. Use for mouth rinse or drink.
+- **Dosage**: Gargle 3 times daily; drink 1/4 cup twice daily for diarrhea.
+- **Warnings**: Astringent tannins: discontinue when diarrhea resolves.
+
+### 83. Palasan (*Calamus merrillii*) - Ophthalmic & Dermatological
+- **Uses**: Clear stem sap dripped into eyes for redness and conjunctival heat; root decoction for chronic skin sores.
+- **Preparation**: Collect fresh sterile exudate from freshly cut vine stem and apply with sterile dropper.
+- **Dosage**: 1 drop in irritated eye once daily; or wash sores with root decoction.
+- **Warnings**: Ensure absolute cleanliness of collection point to avoid secondary eye infection.
+
+### 84. Palawan (*Cyrtosperma merkusii*) - Nutritional & Demulcent
+- **Uses**: Starchy corm boiled as a gentle demulcent food for gastric irritation and convalescence.
+- **Preparation**: Boil corm thoroughly in multiple changes of water until soft to eliminate calcium oxalate raphides.
+- **Dosage**: Eat boiled corm as mild digestible starch.
+- **Warnings**: Must be cooked thoroughly to neutralize acrid calcium oxalate crystals.
+
+### 85. Pandakaki (*Tabernaemontana divaricata*) - Pain Relief & Anti-inflammatory
+- **Uses**: Milky sap applied to wounds to prevent infection; root decoction chewed for toothache relief.
+- **Preparation**: Crush leaves into a poultice or apply dab of milky sap directly onto minor abrasions.
+- **Dosage**: Apply topically once daily.
+- **Warnings**: For external use only. Ingestion of raw plant causes nausea and sedation.
+
+### 86. Pangi (*Pangium edule*) - Dermatological (Caution)
+- **Uses**: Boiled leaves used strictly as an antiseptic wash for stubborn skin parasites and maggot-infested wounds.
+- **Preparation**: Boil clean leaves in water for 15 minutes. Use cooled liquid strictly as an external wash.
+- **Dosage**: Wash affected skin once daily.
+- **Warnings**: HIGHLY TOXIC (Hydrogen cyanide in raw seeds): Seeds are deadly without extensive fermentation. Never ingest raw seeds.
+
+### 87. Pasau (*Corchorus olitorius*) - Nutritional & General Wellness
+- **Uses**: Mucilaginous leaves provide rich iron, calcium, demulcent protection for gastric mucosa, and mild laxative action.
+- **Preparation**: Cook fresh leaves into broth or steep 10g dried leaves in 1 cup boiling water.
+- **Dosage**: Eat in meals or drink 1 cup leaf tea daily.
+- **Warnings**: Safe and wholesome nutritional green.
+
+### 88. Pastores (*Euphorbia pulcherrima*) - Dermatological (Caution)
+- **Uses**: Folk poultice of crushed leaves applied to erysipelas and skin swellings.
+- **Preparation**: Crush clean leaves and apply topically over closed swelling with sterile bandage.
+- **Dosage**: Apply for 15 minutes once daily.
+- **Warnings**: Milky sap is irritating to skin and mucous membranes. Never ingest.
+
+### 89. Pata (*Bauhinia acuminata*) - Dermatological & Skin Care
+- **Uses**: Leaves and bark boiled as a wash for skin diseases, ulcers, and gargled for throat catarrh.
+- **Preparation**: Boil 10g dried leaves in 2 cups of water for 15 minutes.
+- **Dosage**: Wash affected skin twice daily; gargle for sore throat.
+- **Warnings**: Safe topical wash. Discontinue if redness occurs.
+
+### 90. Pili (*Canarium ovatum*) - Nutritional & Dermatological
+- **Uses**: Nutrient-rich kernel oil used as an emollient for dry skin; resin (Manila elemi) used in healing ointments for indolent ulcers.
+- **Preparation**: Apply cold-pressed pili nut oil directly to dry skin; refine resin into soothing balm.
+- **Dosage**: Apply topically once daily.
+- **Warnings**: Nut allergy warning for individuals allergic to tree nuts.
+
+### 91. Pipisik (*Avicennia marina*) - Dermatological & Skin Care
+- **Uses**: Astringent bark and resin used topically for scabies, boils, ulcers, and chronic skin sores.
+- **Preparation**: Boil 10g bark in 2 cups of water for 15 minutes. Use for cleansing skin sores.
+- **Dosage**: Apply as wash twice daily.
+- **Warnings**: External use only. Avoid open bleeding lacerations.
+
+### 92. Rimas (*Artocarpus altilis*) - Cardiovascular & Dermatological
+- **Uses**: Yellowing leaf tea traditionally taken for mild hypertension; milky sap applied to skin infections and ringworm.
+- **Preparation**: Boil 1 fallen yellowed leaf in 4 cups of water for 15 minutes. Strain.
+- **Dosage**: Drink 1/2 cup twice daily for mild blood pressure management.
+- **Warnings**: Monitor blood pressure regularly. Do not discontinue prescribed hypertensive medications without physician guidance.
+
+### 93. Siniguelas (*Spondias purpurea*) - Oral & Antiseptic Care
+- **Uses**: Bark and leaf decoctions used as an astringent rinse for sore throat, stomatitis, and acute diarrhea.
+- **Preparation**: Boil 10g bark in 2 cups of water for 15 minutes.
+- **Dosage**: Gargle warm liquid 3 times daily; drink 1/4 cup twice daily for diarrhea.
+- **Warnings**: Safe astringent. Discontinue when diarrhea resolves.
+
+### 94. Saging (*Musa acuminata*) - Digestive & Gastrointestinal
+- **Uses**: Unripe green banana decoction is a potent astringent for acute diarrhea; sap applied to minor thermal burns.
+- **Preparation**: Boil 1 sliced green unripe banana in 2 cups of water for 10 minutes. Strain liquid.
+- **Dosage**: Drink 1/2 cup every 4-6 hours for acute diarrhea.
+- **Warnings**: Rich in pectin and resistant starch. Avoid in chronic constipation.
+
+### 95. Salingbobog (*Crateva religiosa*) - Renal & Diuretic
+- **Uses**: Bark decoction used as a traditional lithontriptic for urinary gravel, burning urination, and fevers.
+- **Preparation**: Boil 10g dried bark in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/2 cup twice daily.
+- **Warnings**: Stimulates urination: ensure sufficient water intake.
+
+### 96. Salomague-gubat (*Intsia bijuga*) - Wound Care & Astringent
+- **Uses**: Astringent bark decoction used as a cleansing wash for ulcers and relieving urinary catarrh.
+- **Preparation**: Boil 10g dried bark in 2 cups of water for 15 minutes.
+- **Dosage**: Use as external wash; drink 1/4 cup once daily.
+- **Warnings**: Protected hardwood tree; harvest only sustainably.
+
+### 97. Sinamay (*Musa textilis*) - Wound Care & Astringent
+- **Uses**: Root decoction used as an antiseptic wash for chronic ulcers; central stem pith sap applied on minor scalds.
+- **Preparation**: Boil 15g roots in 2 cups of water for 15 minutes for antiseptic wash.
+- **Dosage**: Apply topically over clean gauze.
+- **Warnings**: For topical use.
+
+### 98. Tangan-tangan (*Ricinus communis*) - Pain Relief & Anti-inflammatory
+- **Uses**: Warmed fresh leaves applied as a poultice for rheumatic swellings and headaches; cold-pressed castor oil used for constipation.
+- **Preparation**: Warm fresh leaves over fire and bind over painful joints; or apply 1 teaspoon refined oil for constipation.
+- **Dosage**: Topical poultice for 30 minutes; oral oil maximum 1 teaspoon for adults.
+- **Warnings**: FATAL TOXICITY WARNING: Raw seeds contain ricin, a lethal cytotoxin. NEVER ingest raw seeds.
+
+### 99. Tagbak-gubat (*Alpinia haenkei*) - Digestive & Gastrointestinal
+- **Uses**: Rhizome infusion taken for flatulence, indigestion, and as a warming tea for colds.
+- **Preparation**: Boil 10g sliced rhizome in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/2 cup warm after meals.
+- **Warnings**: Avoid in acute peptic ulcer flare-ups.
+
+### 100. Tambabalisa (*Cassia sophera*) - Respiratory
+- **Uses**: Bark and leaves boiled for bronchial asthma, bronchitis, and ringworm poultice.
+- **Preparation**: Boil 8-10 leaves in 2 cups of water for 15 minutes.
+- **Dosage**: Drink 1/2 cup twice daily for bronchial spasms.
+- **Warnings**: Mild laxative effect. Avoid in pregnancy.
+
