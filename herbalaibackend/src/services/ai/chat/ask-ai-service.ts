@@ -6,7 +6,7 @@ import type { HerbQueryResult } from "../../../repositories/herb.repository.js";
 import type { KBQueryResult } from "../../../repositories/knowledgebase.repository.js";
 import { awaitAiOperation, iterateAiOperation } from "../core/request-lifetime.js";
 import type { AiRequestOptions } from "../core/request-lifetime.js";
-import { isPreparationQuestion, isPediatricQuestion, isPediatricRequest, isContextFollowUp, userQuestionsNewestFirst } from './conversation-context.js';
+import { isPreparationQuestion, isPediatricQuestion, isPediatricRequest, isContextFollowUp, isLinkOrLibraryQuestion, userQuestionsNewestFirst } from './conversation-context.js';
 
 const STOP_WORDS = new Set([
   // English grammatical & conversational words
@@ -288,6 +288,33 @@ const buildSourceFallback = (herbs: Array<CatalogHerb | HerbQueryResult>, entrie
     ].join('\n\n');
   }
 
+  if (isLinkOrLibraryQuestion(question) && herbs.length > 0) {
+    const lang = detectQuestionLanguage(question);
+    const links = herbs.slice(0, 2).map(herb => `- [${herb.localName}](/library?id=${herb.id}) (${herb.scientificName})`).join('\n');
+    if (lang === 'ceb') {
+      return [
+        'Ania ang mga link sa atong Herbal Library alang sa gihisgotan nga mga tanom:',
+        links,
+        'I-klik ang link aron direkta nimong maablihan ang ilang library card ug makita ang kumpletong impormasyon, pag-andam, ug mga pahimangno.',
+        'Pahinumdom: Impormasyong pang-edukasyon lamang kini, dili medikal nga reseta. Pakigkita sa usa ka lisensyadong propesyonal sa panglawas alang sa mga medikal nga desisyon.'
+      ].join('\n\n');
+    }
+    if (lang === 'tl') {
+      return [
+        'Narito ang mga link sa ating Herbal Library para sa mga nabanggit na halaman:',
+        links,
+        'I-click ang link upang direktang mabuksan ang library card nito at mabasa ang kumpletong impormasyon, paghahanda, at mga babala.',
+        'Paunawa: Pang-edukasyon lamang ang impormasyong ito, hindi medikal na reseta. Kumonsulta sa isang lisensyadong propesyonal sa kalusugan para sa mga medikal na desisyon.'
+      ].join('\n\n');
+    }
+    return [
+      'Here are the links to the Herbal Library for the discussed herbs:',
+      links,
+      'Click the link to open the herb\'s card in the Herbal Library and view complete details, preparation, and safety warnings.',
+      'Educational information only. Consult a licensed clinician for medical decisions.'
+    ].join('\n\n');
+  }
+
   const herbRecords = herbs.slice(0, 2).map((herb) => [
     `${herb.localName} (${herb.scientificName})`,
     `Documented uses: ${herb.medicinalUses || 'Not documented in this record.'}`,
@@ -309,8 +336,10 @@ const buildSourceFallback = (herbs: Array<CatalogHerb | HerbQueryResult>, entrie
 
 const formatHerbContext = (herb: HerbQueryResult | CatalogHerb, index: number, question: string, pediatricRequest: boolean) =>
   `[Herb ${index + 1}] Repository record (reviewed content; not a claim of clinical proof):\n${JSON.stringify({
+    id: herb.id,
     localName: herb.localName,
     scientificName: herb.scientificName,
+    libraryUrl: `/library?id=${herb.id}`,
     medicinalUses: herb.medicinalUses,
     preparation: pediatricRequest ? 'Pediatric preparation instructions withheld; consult a licensed clinician.' : withoutPediatricQuantities(herb.preparationMethod || 'Not documented in this record.'),
     ...((isPreparationQuestion(question) || /\b(dose|dosage|amount|how much|frequency|how often)\b/i.test(question)) && !pediatricRequest
@@ -361,18 +390,41 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
   let namedHerbs = catalog.filter(herb => matchesHerbName(normalizedQuestion, herb)).slice(0, 2);
 
   if (namedHerbs.length === 0 && isContextFollowUp(question)) {
-    for (const previousQuestion of userQuestionsNewestFirst(history)) {
-      const previousHerbs = catalog.filter(herb => matchesHerbName(normalize(previousQuestion), herb));
-      if (previousHerbs.length > 0) {
-        if (previousHerbs.length === 1) namedHerbs = previousHerbs;
+    const recentModelReplies = [...history].reverse()
+      .filter(turn => turn.role === 'model')
+      .map(turn => turn.parts.map(p => p.text ?? '').join(' '));
+
+    for (const reply of recentModelReplies) {
+      const sourcesMatch = reply.match(/(?:sources(?:\s+cited)?|mga\s+tinubdan|mga\s+sanggunian)\s*:\s*([^\n]+)/i);
+      if (sourcesMatch && sourcesMatch[1]) {
+        const citedText = normalize(sourcesMatch[1]);
+        const citedHerbs = catalog.filter(herb => matchesHerbName(citedText, herb));
+        if (citedHerbs.length > 0) {
+          namedHerbs = citedHerbs.slice(0, 2);
+          break;
+        }
+      }
+      const mentionedHerbs = catalog.filter(herb => matchesHerbName(normalize(reply), herb));
+      if (mentionedHerbs.length > 0) {
+        namedHerbs = mentionedHerbs.slice(0, 2);
         break;
       }
-      const prevCondition = HEALTH_CONDITION_DISCOVERIES.find(d => d.queryKeywords.test(normalize(previousQuestion)));
-      if (prevCondition) {
-        namedHerbs = catalog.filter(herb => meaningfulTokens(herb.medicinalUses).has(prevCondition.targetCondition)).slice(0, 2);
-        if (namedHerbs.length > 0) break;
+    }
+
+    if (namedHerbs.length === 0) {
+      for (const previousQuestion of userQuestionsNewestFirst(history)) {
+        const previousHerbs = catalog.filter(herb => matchesHerbName(normalize(previousQuestion), herb));
+        if (previousHerbs.length > 0) {
+          namedHerbs = previousHerbs.slice(0, 2);
+          break;
+        }
+        const prevCondition = HEALTH_CONDITION_DISCOVERIES.find(d => d.queryKeywords.test(normalize(previousQuestion)));
+        if (prevCondition) {
+          namedHerbs = catalog.filter(herb => meaningfulTokens(herb.medicinalUses).has(prevCondition.targetCondition)).slice(0, 2);
+          if (namedHerbs.length > 0) break;
+        }
+        if (!isContextFollowUp(previousQuestion)) break;
       }
-      if (!isContextFollowUp(previousQuestion)) break;
     }
   }
 
@@ -400,6 +452,9 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
     const namedKnowledge = pediatricRequest ? [] : await awaitAiOperation(() => findActiveKBByTerms(exactTerms, 3), options.signal);
     const context = [
       conditionDiscovery ? conditionDiscovery.instruction : '',
+      isLinkOrLibraryQuestion(question)
+        ? 'Link request: The user is requesting a link, URL, or library card to view/read about the herb in Herbal-Ai. Provide clickable Markdown links formatted as `[<LocalName>](/library?id=<id>)`. Answer in the user\'s language (e.g. Cebuano/Bisaya) and invite them to click the link to open the herb\'s card in the library.'
+        : '',
       matchedHerbs.map((herb, index) => formatHerbContext(herb, index, question, pediatricRequest)).join("\n\n"),
       namedKnowledge.length > 0 && !pediatricRequest ? `General Knowledge Base / FAQs:\n${formatKBContext(namedKnowledge)}` : '',
     ].filter(Boolean).join('\n\n');
@@ -477,6 +532,9 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
   const contextualHerbs = relevantHerbs.map((herb) => catalog.find((entry) => entry.id === herb.id) ?? herb);
   let context = "";
   if (relevantHerbs.length > 0) {
+    if (isLinkOrLibraryQuestion(question)) {
+      context += "Link request: The user is requesting a link, URL, or library card to view/read about the herb in Herbal-Ai. Provide clickable Markdown links formatted as `[<LocalName>](/library?id=<id>)`. Answer in the user's language (e.g. Cebuano/Bisaya) and invite them to click the link to open the herb's card in the library.\n\n";
+    }
     context += contextualHerbs.map((herb, index) =>
       formatHerbContext(herb, index, question, pediatricRequest)
     ).join("\n\n") + "\n\n";

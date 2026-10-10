@@ -7,9 +7,10 @@ import Navbar from '../../components/Navbar';
 import SessionUnavailable from '../../components/SessionUnavailable';
 import DrAiAvatar from '../../components/DrAiAvatar';
 import DrAiCreditsStatus from '../../components/DrAiCreditsStatus';
+import Link from 'next/link';
 import { cachedApiGet } from '../../lib/request-cache';
 import { DrAiCreditError, streamDrAiResponse } from '../../lib/dr-ai-stream';
-import { Send, Sparkles, BookOpen, AlertCircle, ShieldAlert } from 'lucide-react';
+import { Send, Sparkles, BookOpen, AlertCircle, ShieldAlert, Leaf, ExternalLink } from 'lucide-react';
 
 interface ChatTurn {
   role: 'user' | 'model';
@@ -286,7 +287,8 @@ function ChatContent() {
 
   const renderInline = (text: string) => {
     const parts: React.ReactNode[] = [];
-    const pattern = /(\*\*|__)(.*?)\1|(\*|_)(.*?)\3/g;
+    // Matches markdown links [text](url), bold **text** or __text__, italic *text* or _text_, and inline code `code`
+    const pattern = /\[([^\]]+)\]\(([^)]+)\)|(\*\*|__)(.*?)\3|(\*|_)(.*?)\5|`([^`]+)`/g;
     let match;
     let lastIndex = 0;
     let keyIdx = 0;
@@ -296,14 +298,54 @@ function ChatContent() {
         parts.push(text.substring(lastIndex, match.index));
       }
 
-      if (match[1]) {
+      if (match[1] && match[2]) {
+        const linkText = match[1];
+        const rawUrl = match[2].trim();
+        const isInternal = rawUrl.startsWith('/') || rawUrl.startsWith('#');
+
+        if (isInternal) {
+          parts.push(
+            <Link
+              key={keyIdx++}
+              href={rawUrl}
+              className="inline-flex items-center gap-1 font-bold text-[#2d6a4f] dark:text-[#74c69d] bg-[#eef5f0] dark:bg-soft border border-[#2d6a4f]/25 dark:border-line px-2.5 py-0.5 rounded-full hover:bg-[#2d6a4f] hover:text-white dark:hover:bg-[#2d6a4f] transition-all cursor-pointer underline decoration-[#2d6a4f]/30 hover:no-underline align-baseline my-0.5 text-xs shadow-xs"
+            >
+              <Leaf className="h-3 w-3 inline shrink-0" aria-hidden="true" />
+              <span>{linkText}</span>
+            </Link>
+          );
+        } else {
+          parts.push(
+            <a
+              key={keyIdx++}
+              href={rawUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 font-bold text-[#2d6a4f] dark:text-[#74c69d] hover:underline cursor-pointer"
+            >
+              <span>{linkText}</span>
+              <ExternalLink className="h-3 w-3 inline shrink-0" aria-hidden="true" />
+            </a>
+          );
+        }
+      } else if (match[3]) {
         parts.push(
           <strong key={keyIdx++} className="font-extrabold text-[#1b4332] dark:text-ink">
-            {match[2]}
+            {match[4]}
           </strong>
         );
-      } else if (match[3]) {
-        parts.push(<em key={keyIdx++} className="italic text-[#2d6a4f] dark:text-[#74c69d]">{match[4]}</em>);
+      } else if (match[5]) {
+        parts.push(
+          <em key={keyIdx++} className="italic text-[#2d6a4f] dark:text-[#74c69d]">
+            {match[6]}
+          </em>
+        );
+      } else if (match[7]) {
+        parts.push(
+          <code key={keyIdx++} className="bg-gray-100 dark:bg-soft text-[#1b4332] dark:text-ink px-1.5 py-0.5 rounded text-xs font-mono">
+            {match[7]}
+          </code>
+        );
       }
 
       lastIndex = pattern.lastIndex;

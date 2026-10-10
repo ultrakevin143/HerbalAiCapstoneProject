@@ -3,7 +3,7 @@ import { MAX_CHAT_HISTORY_CHARACTERS, MAX_CHAT_TURN_CHARACTERS } from '../../../
 
 export const isPreparationQuestion = (question: string) => /\b(prepare|prepared|preparing|preparations?|step[- ]by[- ]step|walk me through|beginner(?:['’]s)? guide|how (?:do i|to) make|ihanda|paghahanda|pag-andam|andamon|paano\s+(?:ihanda|gawin|gamitin|inumin|pakuluan)|unsaon\s+(?:pag-andam|paghimo|paggamit|pag-inom))\b/i.test(question);
 const isClinicalQuestion = (question: string) => isPreparationQuestion(question) || /\b(dose|dosage|amount|frequency|how much|how often|give|inumin|dosis|dami|gaano kadalas|pila|unsaon pag-inom)\b/i.test(question);
-const isHerbInformationQuestion = (question: string) => /\b(?:scientific|botanical|local) names?\b|\b(sources?|references?|citations?|warnings?|safety|evidence|safe|ligtas|luwas|kuyaw|babala|epekto)\b/i.test(question);
+const isHerbInformationQuestion = (question: string) => /\b(?:scientific|botanical|local) names?\b|\b(sources?|references?|citations?|warnings?|safety|evidence|safe|ligtas|luwas|kuyaw|babala|epekto|links?|cards?|kards?|library|libreriya)\b/i.test(question);
 const numericAges = (question: string) => [...question.matchAll(/\b(\d{1,3})(?:[-\s]*(years?|months?)[-\s]*old|[-\s]*(yo|y\/o|mo|taong gulang))\b/gi)].map(match => {
   const quantity = Number(match[1]);
   const unit = (match[2] ?? match[3] ?? '').toLowerCase();
@@ -17,12 +17,19 @@ export const userQuestionsNewestFirst = (history: Content[]) => [...history].rev
 const isExplicitAdultQuestion = (question: string) => !/\b(him|her|them)\b/i.test(question)
   && (/\b(?:for (?:an? )?(?:adult|grown-up)|(?:adult|grown-up) (?:beginner |educational )?guide)\b/i.test(question)
     || numericAges(question).some(age => age.years >= 18 && /\bfor\s+(?:an?\s+)?$/i.test(question.slice(0, age.index))));
+export const isLinkOrLibraryQuestion = (question: string) =>
+  /\b(?:links?|urls?|cards?|kards?|library|aklatan|libreriya)\b/i.test(question)
+  || /\b(?:patingin|tan-aw|tan-awa|tan-awon|ipakita|makita|i-link|ilink)\b/i.test(question)
+  || /\b(?:asa\s+(?:ang|nako\s+makita)|nasaan|saan\s+makikita)\b/i.test(question);
+
 export const isContextFollowUp = (question: string) => {
   const directQuestion = question.split(/[.!?]|\b(?:if|unless|kung|basta)\b/i, 1)[0] ?? '';
-  return /\b(it|its|that|this|those|them|him|her|they|their|yan|iyan|yun|iyon|ito|nito|niyan|niyon|diyan|doon|dito|kini|kana|kadto|ani|ana|adto)\b/i.test(directQuestion)
+  return /\b(it|its|that|this|those|them|him|her|they|their|yan|iyan|iyang|yun|yung|iyon|iyong|ito|itong|nito|nitong|niyan|niyang|niyon|niyong|diyan|doon|dito|kini|kining|kana|kanang|kadto|kadtong|kato|katong|ani|aning|ana|anang|adto|adtong|dinhi|diha|didto)\b/i.test(directQuestion)
+    || isLinkOrLibraryQuestion(directQuestion)
     || /^(?:(?:and|then|at|ug)\s+)?how (?:much|often)\s*$/i.test(directQuestion.trim())
-    || /^(?:(?:safe|ligtas|epektibo|luwas|kuyaw)\s+(?:po\s+)?ba(?:\s+(?:yan|iyan|yun|iyon|ito|kini|kana|kadto))?|[¿?]?\s*(?:safe|ligtas|luwas)\s*)/i.test(directQuestion.trim())
-    || /^(?:(?:paano|unsaon)\s+(?:po\s+)?(?:inumin|gamitin|ihanda|i-take|imnon|gamiton))/i.test(directQuestion.trim());
+    || /^(?:(?:safe|ligtas|epektibo|luwas|kuyaw)\s+(?:po\s+)?ba(?:\s+(?:yan|iyan|iyang|yun|yung|iyon|iyong|ito|itong|kini|kining|kana|kanang|kadto|kadtong))?|[¿?]?\s*(?:safe|ligtas|luwas)\s*)/i.test(directQuestion.trim())
+    || /^(?:(?:paano|unsaon)\s+(?:po\s+)?(?:inumin|gamitin|ihanda|i-take|imnon|gamiton))/i.test(directQuestion.trim())
+    || /^(?:(?:pwede|puwede|paki|pahingi|hatagi)\s+(?:po\s+)?(?:kanang|kining|yung|ang|ug|og)?\s*(?:link|kard|card|library))/i.test(directQuestion.trim());
 };
 const preservesPatientContext = (question: string) => isClinicalQuestion(question) || isContextFollowUp(question) || isHerbInformationQuestion(question);
 

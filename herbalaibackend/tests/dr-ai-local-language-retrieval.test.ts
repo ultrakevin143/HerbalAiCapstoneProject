@@ -185,4 +185,35 @@ describe.each([false, true])('local-language relevance (streaming=%s)', streamin
     expect(result.sources).toEqual([{ type: 'herb', title: herb.localName, distance: 0 }]);
     expect(result.reply).toContain('Grounded fixture answer');
   });
+
+  it('inherits cited herbs and supplies library link instructions for Cebuano query "pwede kanang link sa library nimo"', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    mocks.herbs.mockResolvedValue([]);
+    const result = await run(streaming, 'pwede kanang link sa library nimo', [
+      { role: 'user', parts: [{ text: 'unsay maayong herbal sa hilanat?' }] },
+      { role: 'model', parts: [{ text: 'Alang sa hilanat, ania ang mga tanom:\n\nSOURCES CITED: Fixture herb' }] },
+    ]);
+    expect(result.sources).toEqual([{ type: 'herb', title: herb.localName, distance: 0 }]);
+    const generation = streaming ? mocks.stream : mocks.answer;
+    expect(generation).toHaveBeenCalledWith(
+      'pwede kanang link sa library nimo',
+      expect.stringContaining('/library?id=isolated-fever-record'),
+      expect.any(Array),
+      {}
+    );
+  });
+
+  it('provides Cebuano markdown links in fallback mode when generation fails for link request', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    mocks.herbs.mockResolvedValue([]);
+    mocks.answer.mockRejectedValue(new Error('isolated generation failure'));
+    mocks.stream.mockImplementation(async function* () { throw new Error('isolated generation failure'); });
+    const result = await run(streaming, 'pwede kanang link sa library nimo', [
+      { role: 'user', parts: [{ text: 'unsay maayong herbal sa hilanat?' }] },
+      { role: 'model', parts: [{ text: 'Alang sa hilanat, ania ang mga tanom:\n\nSOURCES CITED: Fixture herb' }] },
+    ]);
+    expect(result.sources).toEqual([{ type: 'herb', title: herb.localName, distance: 0 }]);
+    expect(result.reply).toContain(`[${herb.localName}](/library?id=${herb.id})`);
+    expect(result.reply).toContain('I-klik ang link aron direkta nimong maablihan ang ilang library card');
+  });
 });
