@@ -27,7 +27,7 @@ export const ENV = {
   FRONTEND_URL: process.env['FRONTEND_URL'] || 'http://localhost:3000',
   BACKEND_URL: process.env['BACKEND_URL'] || 'http://localhost:5000',
   GEMINI_API_KEY: process.env['GEMINI_API_KEY'],
-  DR_AI_CHAT_MODELS: (process.env['DR_AI_CHAT_MODELS'] || 'gemini-3.1-flash-lite,gemini-3.5-flash-lite,gemini-3.8-flash,gemini-3.7-flash,gemini-3.6-flash')
+  DR_AI_CHAT_MODELS: (process.env['DR_AI_CHAT_MODELS'] || 'gemini-3.6-flash,gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.7-flash')
     .split(',')
     .map((model) => model.trim())
     .filter((model, index, models) => Boolean(model) && models.indexOf(model) === index),

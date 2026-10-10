@@ -37,7 +37,7 @@ services:
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
       GEMINI_API_KEY: ${GEMINI_API_KEY}
       DR_AI_MAX_COSINE_DISTANCE: ${DR_AI_MAX_COSINE_DISTANCE:-0.52}
-      DR_AI_CHAT_MODELS: ${DR_AI_CHAT_MODELS:-gemini-3.1-flash-lite,gemini-3.5-flash-lite,gemini-3.8-flash,gemini-3.7-flash,gemini-3.6-flash}
+      DR_AI_CHAT_MODELS: ${DR_AI_CHAT_MODELS:-gemini-3.6-flash,gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.7-flash}
       DR_AI_MODEL_TIMEOUT_MS: ${DR_AI_MODEL_TIMEOUT_MS:-15000}
       HERB_CACHE_TTL_MS: ${HERB_CACHE_TTL_MS:-300000}
       SLOW_REQUEST_THRESHOLD_MS: ${SLOW_REQUEST_THRESHOLD_MS:-1000}

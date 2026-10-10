@@ -54,7 +54,7 @@ graph TD
 | **Frontend** | Next.js 16 (React 19), TypeScript, Vanilla CSS, Lucide Icons, Socket.io-Client, Recharts |
 | **Backend** | Node.js 22, Express 5, TypeScript, Prisma ORM, Socket.io, Nodemailer, Bcrypt, Zod |
 | **Database** | PostgreSQL 16 with `pgvector` extension |
-| **AI / NLP** | Google Gemini API (`gemini-embedding-2`; configurable Flash models, default `gemini-3.5-flash-lite`) |
+| **AI / NLP** | Google Gemini API (`gemini-embedding-2`; configurable Flash models, default `gemini-3.6-flash`) |
 | **Testing** | Vitest, Supertest |
 | **DevOps & CI/CD** | Docker, Docker Compose, GitHub Actions |
 
@@ -93,7 +93,7 @@ JWT_SECRET="your-super-secret-jwt-key"
 JWT_REFRESH_SECRET="your-super-secret-refresh-key"
 FRONTEND_URL="http://localhost:3000"
 GEMINI_API_KEY="your-gemini-api-key"
-DR_AI_CHAT_MODELS="gemini-3.5-flash-lite,gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.7-flash,gemini-3.6-flash,gemini-2.5-flash-lite"
+DR_AI_CHAT_MODELS="gemini-3.6-flash,gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.7-flash"
 DR_AI_MODEL_TIMEOUT_MS=7000
 DR_AI_MAX_MODEL_ATTEMPTS=4
 DR_AI_MODEL_COOLDOWN_MS=60000
