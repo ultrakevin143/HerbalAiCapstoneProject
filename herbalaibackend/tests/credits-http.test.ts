@@ -3,8 +3,8 @@ import express from 'express';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const mocks = vi.hoisted(() => ({ wallet: vi.fn(), purchase: vi.fn(), answer: vi.fn(), fulfill: vi.fn() }));
-vi.mock('../src/repositories/credits.repository.js', () => ({ getCreditWallet: mocks.wallet, createCreditPurchase: mocks.purchase, getCompletedCreditResponse: mocks.answer, fulfillTestPurchase: mocks.fulfill }));
+const mocks = vi.hoisted(() => ({ wallet: vi.fn(), purchase: vi.fn(), answer: vi.fn(), fulfill: vi.fn(), reconcile: vi.fn() }));
+vi.mock('../src/repositories/credits.repository.js', () => ({ getCreditWallet: mocks.wallet, createCreditPurchase: mocks.purchase, getCompletedCreditResponse: mocks.answer, fulfillTestPurchase: mocks.fulfill, reconcileTestPurchase: mocks.reconcile }));
 vi.mock('../src/middlewares/auth.middleware.js', () => ({ AuthMiddleware: class {
   execute(req: express.Request, res: express.Response, next: express.NextFunction) {
     const userId = req.get('X-TEST-User');
@@ -35,6 +35,7 @@ describe('test wallet HTTP boundaries', () => {
     mocks.purchase.mockResolvedValue({ checkoutUrl: 'https://checkout.paymongo.com/TEST', testMode: true });
     mocks.answer.mockResolvedValue({ reply: 'TEST saved answer.' });
     mocks.fulfill.mockResolvedValue({ credited: true });
+    mocks.reconcile.mockResolvedValue({ purchaseId: key, status: 'PENDING', message: 'Awaiting test payment.' });
   });
   afterEach(() => vi.unstubAllEnvs());
   it.each(['/credits', `/credits/answers/${key}`])('requires authentication at %s', async path => {
@@ -61,6 +62,24 @@ describe('test wallet HTTP boundaries', () => {
   it('scopes saved-answer reads to the authenticated account', async () => {
     expect((await request(app).get(`/credits/answers/${key}?userId=TEST-other`).set('X-TEST-User', 'TEST-owner')).status).toBe(200);
     expect(mocks.answer).toHaveBeenCalledWith('TEST-owner', key);
+  });
+  it('requires authentication to reconcile a purchase', async () => {
+    expect((await request(app).post(`/credits/purchases/${key}/reconcile`).send({})).status).toBe(401);
+    expect(mocks.reconcile).not.toHaveBeenCalled();
+  });
+  it('checks a purchase only for its authenticated owner and never caches the result', async () => {
+    const response = await request(app).post(`/credits/purchases/${key}/reconcile?userId=TEST-other`).set('X-TEST-User', 'TEST-owner').send({});
+    expect(response.status).toBe(200);
+    expect(response.body.data.status).toBe('PENDING');
+    expect(response.headers['cache-control']).toBe('private, no-store');
+    expect(mocks.reconcile).toHaveBeenCalledWith('TEST-owner', key);
+  });
+  it('rejects purchase reconciliation overrides, invalid identifiers and disabled credits', async () => {
+    expect((await request(app).post(`/credits/purchases/${key}/reconcile`).set('X-TEST-User', 'TEST-owner').send({ status: 'EXPIRED', userId: 'TEST-other' })).status).toBe(400);
+    expect((await request(app).post('/credits/purchases/not-a-uuid/reconcile').set('X-TEST-User', 'TEST-owner').send({})).status).toBe(400);
+    vi.stubEnv('DR_AI_CREDITS_MODE', 'off');
+    expect((await request(app).post(`/credits/purchases/${key}/reconcile`).set('X-TEST-User', 'TEST-owner').send({})).status).toBe(404);
+    expect(mocks.reconcile).not.toHaveBeenCalled();
   });
   it('never fulfills unsigned, altered or non-JSON events', async () => {
     const raw = JSON.stringify(event);

@@ -239,10 +239,13 @@ export const getNoMatchReply = (question: string): string => {
 };
 
 const INTRODUCTION_REPLY = "Hi! I'm Dr. Ai, Herbal-Ai's AI assistant for Philippine medicinal-plant information. I can help you explore documented uses, preparation methods, and safety notes from the Herbal Library. Try asking, \"What are the documented uses of Lagundi?\" My answers are educational, not a diagnosis or prescription.";
+const INTRODUCTION_GREETING = /^(?:hi|hey|hello|good morning|good afternoon|good evening|kumusta|kamusta)(?:[, ]+(?:there|dr\.?\s*ai|herbal[- ]ai))?(?=$|[\s,.!?])/iu;
+const INTRODUCTION_QUESTION = /^(?:who are you|what (?:is your name|can you (?:do|help me with))|how can you help(?: me)?|introduce yourself|tell me about yourself|sino ka)[.!?]*$/iu;
 const isIntroductionQuestion = (question: string) => {
   const message = question.normalize('NFKC').trim().replace(/\s+/gu, ' ');
-  return /^(?:hi|hey|hello|good morning|good afternoon|good evening|kumusta|kamusta)(?:[, ]+(?:there|dr\.?\s*ai|herbal[- ]ai))?[.!?]*$/iu.test(message)
-    || /^(?:who are you|what (?:is your name|can you do)|introduce yourself|tell me about yourself|sino ka)[.!?]*$/iu.test(message);
+  const hasGreeting = INTRODUCTION_GREETING.test(message);
+  const remainder = (hasGreeting ? message.replace(INTRODUCTION_GREETING, '') : message).replace(/^[\s,.!?]+/u, '');
+  return (hasGreeting && !remainder) || INTRODUCTION_QUESTION.test(remainder);
 };
 export const withoutPediatricQuantities = (value: string) => value.split(/(?<=[.!?])\s+(?=[A-Z])|\r?\n/u)
   .map((sentence) => /\b(?:age-based|ages?\s+\d|children?\s+\d|\d+\s*(?:[-–]\s*\d+\s*)?(?:years?|yrs?)\b)/i.test(sentence)

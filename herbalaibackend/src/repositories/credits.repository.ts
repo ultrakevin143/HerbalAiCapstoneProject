@@ -2,7 +2,8 @@ import { createHash, randomUUID } from 'node:crypto';
 import { Prisma } from '@prisma/client';
 import { prisma } from '../lib/prisma.js';
 import { CreditError, getCreditsConfig } from '../config/credits.js';
-import { createTestCheckout, retrieveTestCheckout } from '../services/paymongo-test.service.js';
+import { checkoutSessionSchema, createTestCheckout, retrieveTestCheckout } from '../services/paymongo-test.service.js';
+import type { z } from 'zod';
 
 type Transaction = Prisma.TransactionClient;
 type Usage = { id: string; userId: string; requestKey: string; inputHash: string; status: string; response: unknown; expiresAt: Date };
@@ -118,11 +119,9 @@ export const createCreditPurchase = async (userId: string, packageId: string, re
   }
 };
 
-export const fulfillTestPurchase = async (checkoutId: string) => {
-  const session = await retrieveTestCheckout(checkoutId);
-  const candidates = await prisma.$queryRaw<Purchase[]>`SELECT * FROM "CreditPurchase" WHERE "checkoutId" = ${checkoutId}`;
-  const purchase = candidates[0];
-  if (!purchase || session.attributes.reference_number !== purchase.id) throw new CreditError(400, 'The test checkout does not match an order.');
+const settleTestPurchase = async (purchase: Purchase, session: z.infer<typeof checkoutSessionSchema>) => {
+  const checkoutId = purchase.checkoutId;
+  if (!checkoutId || session.id !== checkoutId || session.attributes.reference_number !== purchase.id) throw new CreditError(400, 'The test checkout does not match an order.');
   const payments = session.attributes.payments?.filter(payment => payment.attributes.status === 'paid') ?? [];
   if (payments.length !== 1) throw new CreditError(400, 'Exactly one confirmed test payment is required.');
   const payment = payments[0]!;
@@ -135,11 +134,57 @@ export const fulfillTestPurchase = async (checkoutId: string) => {
       if (current.paymentId !== payment.id) throw new CreditError(409, 'A different payment was already recorded.');
       return { credited: false, duplicate: true };
     }
-    if (current.status !== 'PENDING') throw new CreditError(409, 'This order is not awaiting payment.');
+    if (!['PENDING', 'EXPIRED'].includes(current.status)) throw new CreditError(409, 'This order is not awaiting payment.');
     const changed = await transaction.$executeRaw`UPDATE "CreditWallet" SET balance = balance + ${current.credits} WHERE "userId" = ${current.userId} AND balance <= 1000000000 - ${current.credits}`;
     if (changed !== 1) throw new CreditError(409, 'The test credit balance limit was reached.');
     await transaction.$executeRaw`UPDATE "CreditPurchase" SET status = 'PAID', "paymentId" = ${payment.id} WHERE id = ${current.id}`;
     await transaction.$executeRaw`INSERT INTO "CreditLedger" (id, "userId", "operationKey", kind, delta) VALUES (${randomUUID()}, ${current.userId}, ${`purchase:${current.id}`}, 'TOPUP', ${current.credits})`;
     return { credited: true, duplicate: false };
+  });
+};
+
+export const fulfillTestPurchase = async (checkoutId: string) => {
+  const session = await retrieveTestCheckout(checkoutId);
+  const candidates = await prisma.$queryRaw<Purchase[]>`SELECT * FROM "CreditPurchase" WHERE "checkoutId" = ${checkoutId}`;
+  const purchase = candidates[0];
+  if (!purchase) throw new CreditError(400, 'The test checkout does not match an order.');
+  return settleTestPurchase(purchase, session);
+};
+
+const purchaseStatus = (purchaseId: string, status: string) => ({
+  purchaseId, status,
+  message: status === 'PAID' ? 'Test payment confirmed. Your wallet has been updated.'
+    : status === 'EXPIRED' ? 'PayMongo confirmed this checkout is closed and unpaid. You can start a new test checkout.'
+    : status === 'PENDING' ? 'Payment is not confirmed. An open checkout can be resumed; processing or unconfirmed payments remain locked. No new checkout or credits were created.'
+    : 'The provider has not confirmed this checkout. It remains locked to prevent duplicate payments; contact support.',
+});
+
+export const reconcileTestPurchase = async (userId: string, purchaseId: string) => {
+  if (getCreditsConfig().mode !== 'test') throw new CreditError(404, 'Test purchase not available.');
+  const candidates = await prisma.$queryRaw<Purchase[]>`SELECT * FROM "CreditPurchase" WHERE id = ${purchaseId} AND "userId" = ${userId}`;
+  const purchase = candidates[0];
+  if (!purchase) throw new CreditError(404, 'Test purchase not available.');
+  if (purchase.status === 'PAID' || purchase.status === 'EXPIRED' || !purchase.checkoutId) return purchaseStatus(purchaseId, purchase.status);
+  const result = checkoutSessionSchema.safeParse(await retrieveTestCheckout(purchase.checkoutId));
+  if (!result.success || result.data.id !== purchase.checkoutId || result.data.attributes.reference_number !== purchase.id) throw new CreditError(503, 'The provider could not confirm this order. Its checkout remains locked; no credits were added.');
+  const session = result.data;
+  if (session.attributes.payments?.some(payment => payment.attributes.status === 'paid')) {
+    await settleTestPurchase(purchase, session);
+    return purchaseStatus(purchaseId, 'PAID');
+  }
+  const attributes = session.attributes;
+  const intent = attributes.payment_intent;
+  const closedAndUnpaid = attributes.status === 'expired' && attributes.payments !== undefined
+    && attributes.payments.every(payment => payment.attributes.status === 'failed')
+    && (intent === null || intent?.attributes.status === 'awaiting_payment_method');
+  return walletTransaction(userId, async transaction => {
+    const orders = await transaction.$queryRaw<Purchase[]>`SELECT * FROM "CreditPurchase" WHERE id = ${purchaseId} AND "userId" = ${userId} FOR UPDATE`;
+    const current = orders[0];
+    if (!current || current.checkoutId !== purchase.checkoutId) throw new CreditError(409, 'The test order changed. Refresh your purchase history.');
+    if (closedAndUnpaid && current.status === 'PENDING') {
+      await transaction.$executeRaw`UPDATE "CreditPurchase" SET status = 'EXPIRED' WHERE id = ${purchaseId} AND "userId" = ${userId} AND status = 'PENDING'`;
+      return purchaseStatus(purchaseId, 'EXPIRED');
+    }
+    return purchaseStatus(purchaseId, current.status);
   });
 };

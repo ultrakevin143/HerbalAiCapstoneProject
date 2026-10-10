@@ -7,6 +7,8 @@ export const checkoutSessionSchema = z.object({
   id: z.string().regex(/^cs_[A-Za-z0-9]+$/),
   attributes: z.object({
     livemode: z.literal(false),
+    status: z.enum(['active', 'expired']).optional(),
+    payment_intent: z.object({ attributes: z.object({ livemode: z.literal(false), status: z.string() }) }).nullable().optional(),
     checkout_url: z.url().optional(),
     reference_number: z.string().optional(),
     payments: z.array(z.object({ id: z.string().min(1), attributes: z.object({ status: z.string(), livemode: z.literal(false), amount: z.number().int(), currency: z.string(), refunds: z.array(z.unknown()).optional(), disputed: z.boolean().optional() }) })).optional(),

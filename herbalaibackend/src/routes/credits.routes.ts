@@ -4,7 +4,7 @@ import rateLimit from 'express-rate-limit';
 import { AuthMiddleware } from '../middlewares/auth.middleware.js';
 import type { AuthenticatedRequest } from '../middlewares/auth.middleware.js';
 import { CreditError, getCreditsConfig } from '../config/credits.js';
-import { createCreditPurchase, getCompletedCreditResponse, getCreditWallet } from '../repositories/credits.repository.js';
+import { createCreditPurchase, getCompletedCreditResponse, getCreditWallet, reconcileTestPurchase } from '../repositories/credits.repository.js';
 
 const router = Router();
 router.use(new AuthMiddleware().execute);
@@ -25,6 +25,14 @@ router.post('/checkout', async (req, res, next) => {
     if (!body.success) throw new CreditError(400, 'A valid test package and purchase request identifier are required.');
     const result = await createCreditPurchase((req as AuthenticatedRequest).user!.userId, body.data.packageId, body.data.requestId);
     res.status(201).json({ status: 'success', data: result });
+  } catch (error) { next(error); }
+});
+router.post('/purchases/:purchaseId/reconcile', async (req, res, next) => {
+  try {
+    if (getCreditsConfig().mode !== 'test') throw new CreditError(404, 'Test purchase not available.');
+    if (!z.uuid().safeParse(req.params['purchaseId']).success || !z.strictObject({}).safeParse(req.body).success) throw new CreditError(400, 'A valid purchase identifier and empty request body are required.');
+    const result = await reconcileTestPurchase((req as AuthenticatedRequest).user!.userId, String(req.params['purchaseId']));
+    res.json({ status: 'success', data: result });
   } catch (error) { next(error); }
 });
 router.get('/answers/:requestId', async (req, res, next) => {

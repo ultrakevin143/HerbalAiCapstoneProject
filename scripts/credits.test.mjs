@@ -19,7 +19,7 @@ const standaloneSource = await readFile(new URL('../herbalaifrontend/app/credits
 const syntax = ts.createSourceFile('credits.tsx', pageSource, ts.ScriptTarget.ES2022, true, ts.ScriptKind.TSX);
 const callbacks = new Map();
 const visit = node => {
-  if (ts.isVariableDeclaration(node) && ['buy', 'openAnswer', 'backToChat'].includes(node.name.getText(syntax))) callbacks.set(node.name.getText(syntax), node.initializer.getText(syntax));
+  if (ts.isVariableDeclaration(node) && ['buy', 'checkPurchase', 'openAnswer', 'backToChat'].includes(node.name.getText(syntax))) callbacks.set(node.name.getText(syntax), node.initializer.getText(syntax));
   if (ts.isCallExpression(node) && node.expression.getText(syntax) === 'useEffect' && node.arguments[0]?.getText(syntax).includes("api.get('/credits')")) callbacks.set('loadWallet', node.arguments[0].getText(syntax));
   if (ts.isCallExpression(node) && node.expression.getText(syntax) === 'useEffect' && node.arguments[0]?.getText(syntax).includes('refreshOnReturn')) callbacks.set('returnRefresh', node.arguments[0].getText(syntax));
   ts.forEachChild(node, visit);
@@ -41,10 +41,10 @@ const pageHarness = () => {
     setWalletError: value => { state.walletError = value; }, setWallet: value => { state.wallet = value; },
     setRevision: value => { state.revision = value(state.revision); }, setAnswer: value => { state.answer = value; },
     setCheckout: value => { state.checkout = typeof value === 'function' ? value(state.checkout) : value; },
-    setPanelOwner: value => { state.panelOwner = value; },
+    setPanelOwner: value => { state.panelOwner = value; }, setPurchaseNotice: value => { state.purchaseNotice = value; },
   };
   const compile = name => new Function(...Object.keys(context), ts.transpileModule(`return (${callbacks.get(name)});`, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText)(...Object.values(context));
-  return { state, post, get, context, buy: compile('buy'), openAnswer: compile('openAnswer'), backToChat: compile('backToChat'), loadWallet: compile('loadWallet') };
+  return { state, post, get, context, buy: compile('buy'), checkPurchase: compile('checkPurchase'), openAnswer: compile('openAnswer'), backToChat: compile('backToChat'), loadWallet: compile('loadWallet') };
 };
 test('validates disabled and enabled test wallet states', () => {
   assert.equal(exports.creditWalletSchema.parse({ enabled: false, testMode: true }).enabled, false);
@@ -400,4 +400,64 @@ test('wallet recovery replaces an untracked rejected key but never changes an in
   assert.equal(inFlight.context.checkoutKeys.current.get('TEST-owner:test-pack'), originalKey);
   inFlight.post.resolve({ data: { data: { purchaseId, checkoutUrl: 'https://checkout.paymongo.com/TEST' } } });
   await pending;
+});
+
+test('status checks are owner-bound, serialized and do not create or cancel checkouts', async () => {
+  const fixture = pageHarness();
+  const pending = fixture.checkPurchase(purchaseId);
+  await fixture.checkPurchase(purchaseId);
+  await fixture.buy('test-pack');
+  assert.deepEqual(fixture.state.posts, [[`/credits/purchases/${purchaseId}/reconcile`, {}]]);
+  fixture.post.resolve({ data: { data: { purchaseId, status: 'PAID', message: 'TEST payment confirmed.' } } });
+  await pending;
+  assert.deepEqual(fixture.state.purchaseNotice, { ownerId: 'TEST-owner', message: 'TEST payment confirmed.' });
+  assert.equal(fixture.state.revision, 1);
+  assert.equal(fixture.state.pending, false);
+});
+
+test('late status checks do not disclose a former account purchase', async () => {
+  const fixture = pageHarness();
+  const pending = fixture.checkPurchase(purchaseId);
+  fixture.context.account.current = 'TEST-other';
+  fixture.post.resolve({ data: { data: { purchaseId, status: 'PAID', message: 'PRIVATE previous owner.' } } });
+  await pending;
+  assert.equal(fixture.state.purchaseNotice, null);
+  assert.equal(fixture.state.revision, 0);
+  assert.match(pageSource, /purchaseNotice\.ownerId === userId/);
+});
+
+test('failed or mismatched confirmation never drops the existing checkout key', async () => {
+  for (const mismatch of ['provider', 'identity', 'status']) {
+    const fixture = pageHarness();
+    fixture.context.checkoutKeys.current.set('TEST-owner:test-pack', 'TEST-existing-key');
+    const pending = fixture.checkPurchase(purchaseId);
+    if (mismatch === 'provider') fixture.post.reject(new Error('TEST provider unavailable'));
+    else fixture.post.resolve({ data: { data: { purchaseId: mismatch === 'identity' ? '8b2f0d33-9b44-4cd2-b893-53e33c105f38' : purchaseId, status: mismatch === 'status' ? 'CANCELLED' : 'EXPIRED', message: 'TEST ONLY' } } });
+    await pending;
+    assert.equal(fixture.state.error, 'TEST ONLY checkout failure.');
+    assert.equal(fixture.state.purchaseNotice, null);
+    assert.equal(fixture.context.checkoutKeys.current.get('TEST-owner:test-pack'), 'TEST-existing-key');
+    assert.equal(fixture.state.pending, false);
+  }
+});
+
+test('verified expiry clears only the matching package key and never resumes the closed checkout', async () => {
+  const fixture = pageHarness();
+  fixture.context.checkoutKeys.current.set('TEST-owner:test-pack', 'TEST-expired-key');
+  fixture.context.checkoutPurchases.current.set('TEST-owner:test-pack', purchaseId);
+  fixture.context.checkoutKeys.current.set('TEST-owner:other-pack', 'TEST-other-key');
+  fixture.state.checkout = { ownerId: 'TEST-owner', purchaseId, url: 'https://checkout.paymongo.com/TEST' };
+  fixture.loadWallet();
+  fixture.get.resolve({ data: { data: { enabled: true, testMode: true, balance: 0, purchases: [{ id: purchaseId, credits: 10, amountMinor: 10000, status: 'EXPIRED', checkoutUrl: 'https://checkout.paymongo.com/TEST', createdAt: '2026-10-10T00:00:00Z' }] } } });
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(fixture.context.checkoutKeys.current.has('TEST-owner:test-pack'), false);
+  assert.equal(fixture.context.checkoutKeys.current.get('TEST-owner:other-pack'), 'TEST-other-key');
+  assert.equal(fixture.state.checkout, null);
+  assert.equal(exports.resumableCheckoutUrl({ status: 'EXPIRED', checkoutUrl: 'https://checkout.paymongo.com/TEST' }), null);
+});
+
+test('history exposes status recovery for unresolved orders but not paid or expired ones', () => {
+  const purchase = { id: purchaseId, credits: 10, amountMinor: 10000, status: 'PENDING', createdAt: '2026-10-10T00:00:00Z' };
+  for (const status of ['PENDING', 'CREATING', 'UNCERTAIN']) assert.match(renderWallet({ open: true, purchases: [{ ...purchase, status }] }), /Check payment status/);
+  for (const status of ['PAID', 'EXPIRED']) assert.doesNotMatch(renderWallet({ open: true, purchases: [{ ...purchase, status }] }), /Check payment status/);
 });

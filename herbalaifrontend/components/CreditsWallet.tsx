@@ -29,6 +29,7 @@ export default function CreditsWallet({ embedded = false, revision: chatRevision
   const [checkout, setCheckout] = useState<{ ownerId: string; purchaseId: string; url: string } | null>(null);
   const lastRefresh = useRef(0);
   const [answer, setAnswer] = useState<{ ownerId: string; reply: string } | null>(null);
+  const [purchaseNotice, setPurchaseNotice] = useState<{ ownerId: string; message: string } | null>(null);
   const active = useRef(true);
   const account = useRef(userId);
   useEffect(() => { account.current = userId; return () => { account.current = undefined; }; }, [userId]);
@@ -44,9 +45,9 @@ export default function CreditsWallet({ embedded = false, revision: chatRevision
     api.get('/credits').then(response => {
       if (cancelled) return;
       const data = creditWalletSchema.parse(response.data.data);
-      const paid = new Set(data.purchases.filter(purchase => purchase.status === 'PAID').map(purchase => purchase.id));
+      const settled = new Set(data.purchases.filter(purchase => ['PAID', 'EXPIRED'].includes(purchase.status)).map(purchase => purchase.id));
       for (const [key, purchaseId] of checkoutPurchases.current) {
-        if (key.startsWith(`${userId}:`) && paid.has(purchaseId)) {
+        if (key.startsWith(`${userId}:`) && settled.has(purchaseId)) {
           checkoutKeys.current.delete(key);
           checkoutPurchases.current.delete(key);
         }
@@ -59,7 +60,7 @@ export default function CreditsWallet({ embedded = false, revision: chatRevision
           checkoutPurchases.current.set(key, purchase.id);
         }
       }
-      setCheckout(current => current?.ownerId === userId && paid.has(current.purchaseId) ? null : current);
+      setCheckout(current => current?.ownerId === userId && settled.has(current.purchaseId) ? null : current);
       setWallet({ ownerId: userId, data });
       setWalletError('');
     }).catch(() => { if (!cancelled) setWalletError('The wallet could not be loaded. Please try Refresh.'); });
@@ -85,6 +86,7 @@ export default function CreditsWallet({ embedded = false, revision: chatRevision
     locked.current = true;
     setPending(true);
     setError('');
+    setPurchaseNotice(null);
     setCheckout(null);
     const key = `${userId}:${packageId}`;
     const requestId = checkoutKeys.current.get(key) ?? crypto.randomUUID();
@@ -98,6 +100,24 @@ export default function CreditsWallet({ embedded = false, revision: chatRevision
         setCheckout({ ownerId: userId, purchaseId: data.purchaseId, url });
       }
     } catch (failure) { if (active.current && account.current === userId) { setError(requestError(failure)); setRevision(value => value + 1); } }
+    finally { locked.current = false; if (active.current) setPending(false); }
+  };
+
+  const checkPurchase = async (purchaseId: string) => {
+    if (locked.current || !userId) return;
+    locked.current = true;
+    setPending(true);
+    setError('');
+    setPurchaseNotice(null);
+    try {
+      const response = await api.post(`/credits/purchases/${encodeURIComponent(purchaseId)}/reconcile`, {});
+      if (active.current && account.current === userId) {
+        const data = z.object({ purchaseId: z.uuid(), status: z.enum(['CREATING', 'PENDING', 'UNCERTAIN', 'PAID', 'EXPIRED']), message: z.string().min(1).max(500) }).parse(response.data.data);
+        if (data.purchaseId !== purchaseId) throw new Error('The purchase confirmation did not match.');
+        setPurchaseNotice({ ownerId: userId, message: data.message });
+        setRevision(value => value + 1);
+      }
+    } catch (failure) { if (active.current && account.current === userId) setError(requestError(failure)); }
     finally { locked.current = false; if (active.current) setPending(false); }
   };
 
@@ -125,6 +145,7 @@ export default function CreditsWallet({ embedded = false, revision: chatRevision
     {embedded && <Button variant="outline" className="w-full" onClick={backToChat}>Back to Dr. Ai</Button>}
     <p className="rounded-xl border border-line bg-soft p-3 text-xs text-ink">Test mode only. No real-money purchases are enabled. Test amounts are not published retail prices. The Library remains free.</p>
     {notification && <p role="alert" className="rounded-xl border border-line p-3 text-sm text-ink">{notification}</p>}
+    {purchaseNotice && purchaseNotice.ownerId === userId && <p role="status" className="rounded-xl border border-line bg-soft p-3 text-sm text-ink">{purchaseNotice.message}</p>}
     <div className="flex flex-wrap items-center justify-between gap-3">
       <p className="text-sm text-muted">{current?.enabled ? 'One credit per completed answer.' : 'Wallet status'}</p>
       <Button variant="ghost" size="sm" onClick={() => { setError(''); setRevision(value => value + 1); }} disabled={pending || loading || !userId}>Refresh wallet</Button>
@@ -165,6 +186,8 @@ export default function CreditsWallet({ embedded = false, revision: chatRevision
               <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block font-semibold text-accent underline underline-offset-4">Resume GCash test checkout</a>
               <p className="mt-1 text-xs text-muted">Awaiting payment. A failed attempt can be retried in the same checkout; closing its tab does not complete payment.</p>
             </>}
+            {['CREATING', 'PENDING', 'UNCERTAIN'].includes(purchase.status) && <Button variant="outline" size="sm" className="mt-2" onClick={() => checkPurchase(purchase.id)} disabled={pending}>Check payment status</Button>}
+            {purchase.status === 'EXPIRED' && <p className="mt-1 text-xs text-muted">Confirmed closed and unpaid. A new checkout is available.</p>}
           </div>;
         })}</div>
       </details>

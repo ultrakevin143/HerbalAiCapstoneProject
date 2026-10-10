@@ -39,6 +39,13 @@ describe('test-only credit configuration and payment verification', () => {
     await expect(retrieveTestCheckout('cs_TEST')).rejects.toThrow();
     expect(fetcher).not.toHaveBeenCalled();
   });
+  it('retains checkout lifecycle evidence and refuses live or malformed payment intents', () => {
+    const attributes = { livemode: false, status: 'expired', payment_intent: null, payments: [] };
+    expect(checkoutSessionSchema.parse({ id: 'cs_TEST', attributes }).attributes).toEqual(attributes);
+    expect(checkoutSessionSchema.safeParse({ id: 'cs_TEST', attributes: { ...attributes, status: 'unknown' } }).success).toBe(false);
+    expect(checkoutSessionSchema.safeParse({ id: 'cs_TEST', attributes: { ...attributes, payment_intent: { attributes: { livemode: true, status: 'processing' } } } }).success).toBe(false);
+    expect(checkoutSessionSchema.safeParse({ id: 'cs_TEST', attributes: { ...attributes, payment_intent: {} } }).success).toBe(false);
+  });
   it('creates only a bounded server-priced GCash test checkout and rejects unsafe redirects', async () => {
     vi.stubEnv('DR_AI_CREDITS_MODE', 'test'); vi.stubEnv('PAYMONGO_TEST_SECRET_KEY', 'sk_test_SYNTHETIC'); vi.stubEnv('PAYMONGO_TEST_WEBHOOK_SECRET', secret);
     const fetcher = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ data: { id: 'cs_TEST', attributes: { livemode: false, checkout_url: 'https://checkout.paymongo.com/TEST' } } }) });

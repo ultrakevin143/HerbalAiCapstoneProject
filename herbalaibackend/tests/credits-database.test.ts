@@ -12,7 +12,7 @@ const state = vi.hoisted(() => ({ client: null as PrismaClient | null, create: v
 vi.mock('../src/lib/prisma.js', () => ({ get prisma() { return state.client; } }));
 vi.mock('../src/services/paymongo-test.service.js', async importOriginal => ({ ...await importOriginal<typeof import('../src/services/paymongo-test.service.js')>(), createTestCheckout: state.create, retrieveTestCheckout: state.retrieve }));
 vi.mock('../src/services/chat.service.js', () => ({ askDrAi: state.ask, streamDrAi: state.stream }));
-import { completeCreditRequest, createCreditPurchase, fulfillTestPurchase, getCompletedCreditResponse, getCreditWallet, releaseCreditRequest, reserveCreditRequest } from '../src/repositories/credits.repository.js';
+import { completeCreditRequest, createCreditPurchase, fulfillTestPurchase, getCompletedCreditResponse, getCreditWallet, reconcileTestPurchase, releaseCreditRequest, reserveCreditRequest } from '../src/repositories/credits.repository.js';
 import creditsRouter from '../src/routes/credits.routes.js';
 import chatRouter from '../src/routes/chat.routes.js';
 import { testCreditsWebhook } from '../src/controllers/credits-webhook.controller.js';
@@ -46,6 +46,7 @@ describe.skipIf(!connectionUrl)('real PostgreSQL test wallet transactions', () =
     await pool.query(`CREATE SCHEMA "${schema}"`);
     await pool.query(`CREATE TABLE "User" (id TEXT PRIMARY KEY, role TEXT NOT NULL DEFAULT 'contributor', session_version INTEGER NOT NULL DEFAULT 0, "isBanned" BOOLEAN NOT NULL DEFAULT false, "banExpiresAt" TIMESTAMP(3), "banReason" VARCHAR(500))`);
     await pool.query(await readFile(new URL('../prisma/migrations/20261008110000_add_test_credit_wallet/migration.sql', import.meta.url), 'utf8'));
+    await pool.query(await readFile(new URL('../prisma/migrations/20261010120000_add_expired_credit_purchase/migration.sql', import.meta.url), 'utf8'));
     state.client = new PrismaClient({ adapter: new PrismaPg(pool, { schema }) });
   });
   beforeEach(async () => {
@@ -261,6 +262,151 @@ describe.skipIf(!connectionUrl)('real PostgreSQL test wallet transactions', () =
     await createCreditPurchase(owner, 'test-pack', randomUUID());
     expect(state.create).toHaveBeenCalledTimes(2);
     expect(await walletBalance()).toBe(13);
+  });
+  it('recovers a paid checkout without a webhook and races settlement without double crediting', async () => {
+    const purchase = await createCreditPurchase(owner, 'test-pack', randomUUID());
+    state.retrieve.mockResolvedValue(paidSession(purchase.purchaseId));
+    const outcomes = await Promise.all([reconcileTestPurchase(owner, purchase.purchaseId), fulfillTestPurchase('cs_TEST'), reconcileTestPurchase(owner, purchase.purchaseId)]);
+    expect(outcomes[0]).toMatchObject({ status: 'PAID' });
+    expect(outcomes[2]).toMatchObject({ status: 'PAID' });
+    expect(await walletBalance()).toBe(13);
+    expect((await pool.query('SELECT COUNT(*)::int AS count FROM "CreditLedger" WHERE kind=\'TOPUP\'')).rows[0].count).toBe(1);
+  });
+  it('unlocks a new checkout only after provider-confirmed expiration with no payment attempt', async () => {
+    const requestKey = randomUUID();
+    const purchase = await createCreditPurchase(owner, 'test-pack', requestKey);
+    state.retrieve.mockResolvedValue({ id: 'cs_TEST', attributes: { livemode: false, reference_number: purchase.purchaseId, status: 'expired', payment_intent: null, payments: [] } });
+    expect(await reconcileTestPurchase(owner, purchase.purchaseId)).toMatchObject({ status: 'EXPIRED' });
+    expect(await reconcileTestPurchase(owner, purchase.purchaseId)).toMatchObject({ status: 'EXPIRED' });
+    expect(await walletBalance()).toBe(3);
+    await expect(createCreditPurchase(owner, 'test-pack', requestKey)).rejects.toMatchObject({ status: 409 });
+    state.create.mockResolvedValue({ id: 'cs_NEXT', url: 'https://checkout.paymongo.com/NEXT' });
+    await createCreditPurchase(owner, 'test-pack', randomUUID());
+    expect(state.create).toHaveBeenCalledTimes(2);
+  });
+  it('does not treat a failed payment attempt on an active checkout as expiry', async () => {
+    const purchase = await createCreditPurchase(owner, 'test-pack', randomUUID());
+    const session = paidSession(purchase.purchaseId);
+    session.attributes.payments[0]!.attributes.status = 'failed';
+    state.retrieve.mockResolvedValue({ ...session, attributes: { ...session.attributes, status: 'active', payment_intent: { attributes: { status: 'awaiting_payment_method', livemode: false } } } });
+    expect(await reconcileTestPurchase(owner, purchase.purchaseId)).toMatchObject({ status: 'PENDING' });
+    await expect(createCreditPurchase(owner, 'test-pack', randomUUID())).rejects.toMatchObject({ status: 409 });
+    expect(await walletBalance()).toBe(3);
+  });
+  it('accepts failed-only expiration only when the last intent is not processing', async () => {
+    const purchase = await createCreditPurchase(owner, 'test-pack', randomUUID());
+    const session = paidSession(purchase.purchaseId);
+    session.attributes.payments[0]!.attributes.status = 'failed';
+    state.retrieve.mockResolvedValue({ ...session, attributes: { ...session.attributes, status: 'expired', payment_intent: { attributes: { status: 'awaiting_payment_method', livemode: false } } } });
+    expect(await reconcileTestPurchase(owner, purchase.purchaseId)).toMatchObject({ status: 'EXPIRED' });
+    expect(await walletBalance()).toBe(3);
+  });
+  it.each(['processing', 'awaiting_next_action', 'succeeded', 'unknown'])('does not unlock an expired checkout with %s intent', async intentStatus => {
+    const purchase = await createCreditPurchase(owner, 'test-pack', randomUUID());
+    state.retrieve.mockResolvedValue({ id: 'cs_TEST', attributes: { livemode: false, reference_number: purchase.purchaseId, status: 'expired', payment_intent: { attributes: { status: intentStatus, livemode: false } }, payments: [] } });
+    expect(await reconcileTestPurchase(owner, purchase.purchaseId)).toMatchObject({ status: 'PENDING' });
+    await expect(createCreditPurchase(owner, 'test-pack', randomUUID())).rejects.toMatchObject({ status: 409 });
+  });
+  it.each(['missing-intent', 'missing-payments', 'processing-payment', 'live', 'wrong-reference', 'wrong-identity'])('fails closed on %s expiration evidence', async mismatch => {
+    const purchase = await createCreditPurchase(owner, 'test-pack', randomUUID());
+    const attributes: Record<string, unknown> = { livemode: false, reference_number: purchase.purchaseId, status: 'expired', payment_intent: null, payments: [] };
+    if (mismatch === 'missing-intent') delete attributes['payment_intent'];
+    if (mismatch === 'missing-payments') delete attributes['payments'];
+    if (mismatch === 'processing-payment') attributes['payments'] = [{ id: 'pay_TEST', attributes: { livemode: false, status: 'processing', amount: 10000, currency: 'PHP' } }];
+    if (mismatch === 'live') attributes['livemode'] = true;
+    if (mismatch === 'wrong-reference') attributes['reference_number'] = 'OTHER-order';
+    state.retrieve.mockResolvedValue({ id: mismatch === 'wrong-identity' ? 'cs_OTHER' : 'cs_TEST', attributes });
+    if (['live', 'wrong-reference', 'wrong-identity'].includes(mismatch)) await expect(reconcileTestPurchase(owner, purchase.purchaseId)).rejects.toMatchObject({ status: 503 });
+    else expect(await reconcileTestPurchase(owner, purchase.purchaseId)).toMatchObject({ status: 'PENDING' });
+    await expect(createCreditPurchase(owner, 'test-pack', randomUUID())).rejects.toMatchObject({ status: 409 });
+    expect(await walletBalance()).toBe(3);
+  });
+  it('does not expose another owner purchase or query the provider for it', async () => {
+    const purchase = await createCreditPurchase(owner, 'test-pack', randomUUID());
+    await expect(reconcileTestPurchase(other, purchase.purchaseId)).rejects.toMatchObject({ status: 404 });
+    expect(state.retrieve).not.toHaveBeenCalled();
+  });
+  it.each(['amount', 'currency', 'refunded', 'disputed', 'multiple-paid', 'live-payment'])('does not settle invalid %s payment through status recovery', async mismatch => {
+    const purchase = await createCreditPurchase(owner, 'test-pack', randomUUID());
+    const session = paidSession(purchase.purchaseId);
+    if (mismatch === 'amount') session.attributes.payments[0]!.attributes.amount = 1;
+    if (mismatch === 'currency') session.attributes.payments[0]!.attributes.currency = 'USD';
+    if (mismatch === 'refunded') Object.assign(session.attributes.payments[0]!.attributes, { refunds: [{}] });
+    if (mismatch === 'disputed') session.attributes.payments[0]!.attributes.disputed = true;
+    if (mismatch === 'multiple-paid') session.attributes.payments.push({ ...session.attributes.payments[0]!, id: 'pay_SECOND' });
+    if (mismatch === 'live-payment') session.attributes.payments[0]!.attributes.livemode = true;
+    state.retrieve.mockResolvedValue(session);
+    await expect(reconcileTestPurchase(owner, purchase.purchaseId)).rejects.toMatchObject({ status: mismatch === 'live-payment' ? 503 : 400 });
+    expect(await walletBalance()).toBe(3);
+    expect((await pool.query('SELECT status FROM "CreditPurchase" WHERE id=$1', [purchase.purchaseId])).rows[0].status).toBe('PENDING');
+    expect((await pool.query('SELECT COUNT(*)::int AS count FROM "CreditLedger" WHERE kind=\'TOPUP\'')).rows[0].count).toBe(0);
+  });
+  it('rolls back failed recovery settlement and grants exactly once on retry', async () => {
+    const purchase = await createCreditPurchase(owner, 'test-pack', randomUUID());
+    state.retrieve.mockResolvedValue(paidSession(purchase.purchaseId));
+    await pool.query('ALTER TABLE "CreditLedger" ADD CONSTRAINT test_block_recovered_topup CHECK (kind <> \'TOPUP\')');
+    try { await expect(reconcileTestPurchase(owner, purchase.purchaseId)).rejects.toThrow(); }
+    finally { await pool.query('ALTER TABLE "CreditLedger" DROP CONSTRAINT test_block_recovered_topup'); }
+    expect(await walletBalance()).toBe(3);
+    expect((await pool.query('SELECT status FROM "CreditPurchase" WHERE id=$1', [purchase.purchaseId])).rows[0].status).toBe('PENDING');
+    expect(await reconcileTestPurchase(owner, purchase.purchaseId)).toMatchObject({ status: 'PAID' });
+    expect(await reconcileTestPurchase(owner, purchase.purchaseId)).toMatchObject({ status: 'PAID' });
+    expect(await walletBalance()).toBe(13);
+    expect((await pool.query('SELECT COUNT(*)::int AS count FROM "CreditLedger" WHERE kind=\'TOPUP\'')).rows[0].count).toBe(1);
+  });
+  it('runs status recovery through authenticated HTTP without trusting an owner query parameter', async () => {
+    const purchase = await createCreditPurchase(owner, 'test-pack', randomUUID());
+    state.retrieve.mockResolvedValue({ id: 'cs_TEST', attributes: { livemode: false, reference_number: purchase.purchaseId, status: 'expired', payment_intent: null, payments: [] } });
+    expect((await request(app).post(`/credits/purchases/${purchase.purchaseId}/reconcile`).send({})).status).toBe(401);
+    expect((await request(app).post(`/credits/purchases/${purchase.purchaseId}/reconcile?userId=${owner}`).set('Authorization', bearer(other)).send({})).status).toBe(404);
+    expect(state.retrieve).not.toHaveBeenCalled();
+    const checked = await request(app).post(`/credits/purchases/${purchase.purchaseId}/reconcile`).set('Authorization', bearer()).send({});
+    expect(checked.status).toBe(200);
+    expect(checked.headers['cache-control']).toBe('private, no-store');
+    expect(checked.body.data.status).toBe('EXPIRED');
+    expect(await walletBalance()).toBe(3);
+  });
+  it('keeps unknown provider creations locked without inventing a checkout identifier', async () => {
+    state.create.mockRejectedValue(new Error('TEST ONLY timeout'));
+    await expect(createCreditPurchase(owner, 'test-pack', randomUUID())).rejects.toThrow();
+    const purchase = (await pool.query('SELECT id FROM "CreditPurchase" WHERE "userId"=$1', [owner])).rows[0];
+    expect(await reconcileTestPurchase(owner, purchase.id)).toMatchObject({ status: 'UNCERTAIN' });
+    expect(state.retrieve).not.toHaveBeenCalled();
+    await expect(createCreditPurchase(owner, 'test-pack', randomUUID())).rejects.toMatchObject({ status: 409 });
+  });
+  it('keeps provider timeouts locked without modifying the wallet or purchase', async () => {
+    const purchase = await createCreditPurchase(owner, 'test-pack', randomUUID());
+    state.retrieve.mockRejectedValue(new Error('TEST ONLY unavailable'));
+    await expect(reconcileTestPurchase(owner, purchase.purchaseId)).rejects.toThrow();
+    expect((await pool.query('SELECT status FROM "CreditPurchase" WHERE id=$1', [purchase.purchaseId])).rows[0].status).toBe('PENDING');
+    expect(await walletBalance()).toBe(3);
+  });
+  it('does not let stale expiry overwrite a racing paid webhook', async () => {
+    const purchase = await createCreditPurchase(owner, 'test-pack', randomUUID());
+    let finishRead!: (value: unknown) => void;
+    let reportRead!: () => void;
+    const started = new Promise<void>(resolve => { reportRead = resolve; });
+    state.retrieve.mockImplementationOnce(() => { reportRead(); return new Promise(resolve => { finishRead = resolve; }); });
+    const pending = reconcileTestPurchase(owner, purchase.purchaseId);
+    await started;
+    try {
+      state.retrieve.mockResolvedValue(paidSession(purchase.purchaseId));
+      await fulfillTestPurchase('cs_TEST');
+    } finally {
+      finishRead({ id: 'cs_TEST', attributes: { livemode: false, reference_number: purchase.purchaseId, status: 'expired', payment_intent: null, payments: [] } });
+    }
+    expect(await pending).toMatchObject({ status: 'PAID' });
+    expect(await walletBalance()).toBe(13);
+  });
+  it('settles a late authoritative payment after expiry exactly once rather than losing paid credits', async () => {
+    const purchase = await createCreditPurchase(owner, 'test-pack', randomUUID());
+    state.retrieve.mockResolvedValue({ id: 'cs_TEST', attributes: { livemode: false, reference_number: purchase.purchaseId, status: 'expired', payment_intent: null, payments: [] } });
+    await reconcileTestPurchase(owner, purchase.purchaseId);
+    state.retrieve.mockResolvedValue(paidSession(purchase.purchaseId));
+    await fulfillTestPurchase('cs_TEST');
+    await fulfillTestPurchase('cs_TEST');
+    expect(await walletBalance()).toBe(13);
+    expect((await pool.query('SELECT COUNT(*)::int AS count FROM "CreditLedger" WHERE kind=\'TOPUP\'')).rows[0].count).toBe(1);
   });
   it('rolls back a failed refund and recovers it exactly once afterward', async () => {
     const handle = await reserveCreditRequest(owner, randomUUID(), question);
