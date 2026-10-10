@@ -1,4 +1,5 @@
 import axios from 'axios';
+import type { InternalAxiosRequestConfig } from 'axios';
 
 const api = axios.create({
   baseURL: '/api',
@@ -10,6 +11,11 @@ const api = axios.create({
 });
 
 let isRefreshing = false;
+let sessionGeneration = 0;
+let authenticationGeneration: number | null = null;
+let refreshController: AbortController | null = null;
+type SessionRequestConfig = InternalAxiosRequestConfig & { _sessionGeneration?: number };
+const isSessionBoundary = (config: InternalAxiosRequestConfig) => ['/auth/login', '/auth/logout'].includes(config.url?.split('?')[0] ?? '');
 let failedQueue: Array<{
   resolve: (value?: unknown) => void;
   reject: (reason?: unknown) => void;
@@ -27,10 +33,43 @@ const processQueue = (error: unknown, token: string | null = null) => {
   });
 };
 
+api.interceptors.request.use((config) => {
+  const request = config as SessionRequestConfig;
+  if (request._sessionGeneration === undefined) {
+    if (isSessionBoundary(request)) {
+      sessionGeneration += 1;
+      authenticationGeneration = sessionGeneration;
+      refreshController?.abort();
+      refreshController = null;
+      isRefreshing = false;
+      processQueue(new axios.CanceledError('The authentication session changed.'));
+    }
+    request._sessionGeneration = sessionGeneration;
+  }
+  if (request._sessionGeneration !== sessionGeneration) {
+    throw new axios.CanceledError('The authentication session changed.', request);
+  }
+  if (authenticationGeneration !== null && !isSessionBoundary(request)) {
+    throw new axios.CanceledError('Authentication is still being confirmed.', request);
+  }
+  return request;
+});
+
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    if ((response.config as SessionRequestConfig)._sessionGeneration !== sessionGeneration) {
+      throw new axios.CanceledError('The authentication session changed.', response.config);
+    }
+    if (isSessionBoundary(response.config)) authenticationGeneration = null;
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
+
+    if (originalRequest && originalRequest._sessionGeneration !== sessionGeneration) {
+      throw new axios.CanceledError('The authentication session changed.', originalRequest);
+    }
+    if (originalRequest && isSessionBoundary(originalRequest)) authenticationGeneration = null;
 
     // Check if error response is 401 (Unauthorized) and request hasn't been retried yet
     if (!error.response || error.response.status !== 401 || !originalRequest || originalRequest._retry) {
@@ -75,12 +114,17 @@ api.interceptors.response.use(
 
     if (!isRefreshing) {
       isRefreshing = true;
+      const generation = sessionGeneration;
+      const controller = new AbortController();
+      refreshController = controller;
       void (async () => {
         try {
-          await api.post('/auth/refresh-token', undefined, { timeout: 10_000 });
+          await api.post('/auth/refresh-token', undefined, { timeout: 10_000, signal: controller.signal });
+          if (generation !== sessionGeneration) return;
           isRefreshing = false;
           processQueue(null);
         } catch (refreshError) {
+          if (generation !== sessionGeneration) return;
           isRefreshing = false;
           const refreshStatus = axios.isAxiosError(refreshError) ? refreshError.response?.status : undefined;
           const sessionExpired = refreshStatus === 400 || refreshStatus === 401 || refreshStatus === 403;
@@ -90,6 +134,8 @@ api.interceptors.response.use(
               !originalRequest.url?.startsWith('/auth/me')) {
             window.dispatchEvent(new Event('auth-logout'));
           }
+        } finally {
+          if (refreshController === controller) refreshController = null;
         }
       })();
     }

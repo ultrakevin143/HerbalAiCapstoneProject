@@ -55,6 +55,227 @@ test('shared requests have a finite default while retaining cookies and caller t
   assert.equal(fixture.requests[0].timeout, 10_000);
 });
 
+test('a login boundary cancels an old checkout instead of replaying it with the new session', async () => {
+  const gate = deferred();
+  let checkoutAttempts = 0;
+  const fixture = client(async config => {
+    if (config.url === '/auth/refresh-token') { await gate.promise; return response(config); }
+    if (config.url === '/auth/login') return response(config);
+    checkoutAttempts += 1;
+    if (!config._retry) throw httpError(config, 401);
+    return response(config);
+  });
+  const pending = Promise.allSettled([fixture.api.post('/credits/checkout', { packageId: 'TEST-only', requestId: 'TEST-old-owner' })]);
+  await flush();
+  await fixture.api.post('/auth/login', { identifier: 'TEST-new-owner', password: 'TEST ONLY fixture, not credentials' });
+  gate.resolve();
+  const [result] = await pending;
+  assert.equal(result.status, 'rejected');
+  assert.ok(axios.isCancel(result.reason));
+  assert.equal(checkoutAttempts, 1);
+  assert.deepEqual(fixture.events, []);
+});
+
+test('a stale failed refresh cannot sign out a newly logged-in account', async () => {
+  const gate = deferred();
+  const fixture = client(async config => {
+    if (config.url === '/auth/login') return response(config);
+    if (config.url === '/auth/refresh-token') { await gate.promise; throw httpError(config, 401); }
+    throw httpError(config, 401);
+  });
+  const pending = Promise.allSettled([fixture.api.get('/credits')]);
+  await flush();
+  await fixture.api.post('/auth/login', { identifier: 'TEST-new-owner', password: 'TEST ONLY fixture, not credentials' });
+  gate.resolve();
+  await pending;
+  await flush();
+  assert.deepEqual(fixture.events, []);
+});
+
+test('an old saved-answer response is canceled after logout even if the request succeeds', async () => {
+  const gate = deferred();
+  const fixture = client(async config => {
+    if (config.url === '/auth/logout') return response(config);
+    await gate.promise;
+    return { ...response(config), data: { reply: 'TEST ONLY former-account answer.' } };
+  });
+  const pending = Promise.allSettled([fixture.api.get('/credits/answers/TEST-old-answer')]);
+  await flush();
+  await fixture.api.post('/auth/logout');
+  gate.resolve();
+  const [result] = await pending;
+  assert.equal(result.status, 'rejected');
+  assert.ok(axios.isCancel(result.reason));
+});
+
+test('protected requests cannot use the former cookies while a login is still pending', async () => {
+  const gate = deferred();
+  const fixture = client(async config => {
+    if (config.url === '/auth/login') await gate.promise;
+    return response(config);
+  });
+  const login = fixture.api.post('/auth/login', { identifier: 'TEST-new-owner', password: 'TEST ONLY fixture, not credentials' });
+  await flush();
+  const [blocked] = await Promise.allSettled([fixture.api.get('/credits')]);
+  gate.resolve();
+  await login;
+  await fixture.api.get('/credits');
+  assert.equal(blocked.status, 'rejected');
+  assert.ok(axios.isCancel(blocked.reason));
+  assert.equal(fixture.requests.filter(config => config.url === '/credits').length, 1);
+});
+
+test('a former refresh cannot flush the new account refresh queue', async () => {
+  const oldGate = deferred(), newGate = deferred();
+  let refreshes = 0;
+  const fixture = client(async config => {
+    if (config.url === '/auth/login') return response(config);
+    if (config.url === '/auth/refresh-token') {
+      refreshes += 1;
+      if (refreshes === 1) { await oldGate.promise; throw httpError(config, 401); }
+      await newGate.promise;
+      return response(config);
+    }
+    if (!config._retry) throw httpError(config, 401);
+    return response(config);
+  });
+  const former = Promise.allSettled([fixture.api.get('/credits/answers/TEST-old')]);
+  await flush();
+  await fixture.api.post('/auth/login', { identifier: 'TEST-new-owner', password: 'TEST ONLY fixture, not credentials' });
+  let completed = false;
+  const current = Promise.allSettled([fixture.api.get('/credits')]).then(results => { completed = true; return results; });
+  await flush();
+  oldGate.resolve();
+  await former;
+  await flush();
+  assert.equal(completed, false);
+  newGate.resolve();
+  assert.equal((await current)[0].status, 'fulfilled');
+  assert.equal(refreshes, 2);
+  assert.deepEqual(fixture.events, []);
+});
+
+test('failed credential submission releases the boundary without suppressing its error', async () => {
+  const fixture = client(async config => {
+    if (config.url === '/auth/login') throw httpError(config, 401);
+    return response(config);
+  });
+  const [login] = await Promise.allSettled([fixture.api.post('/auth/login', { identifier: 'TEST-owner', password: 'TEST ONLY invalid fixture' })]);
+  assert.equal(login.status, 'rejected');
+  assert.equal(login.reason.response.status, 401);
+  await fixture.api.get('/credits');
+  assert.equal(fixture.requests.filter(config => config.url === '/auth/refresh-token').length, 0);
+  assert.deepEqual(fixture.events, []);
+});
+
+test('a former unauthorized response cannot start refresh after a newer login', async () => {
+  const gate = deferred();
+  const fixture = client(async config => {
+    if (config.url === '/auth/login') return response(config);
+    await gate.promise;
+    throw httpError(config, 401);
+  });
+  const pending = Promise.allSettled([fixture.api.get('/credits')]);
+  await flush();
+  await fixture.api.post('/auth/login', { identifier: 'TEST-new-owner' });
+  gate.resolve();
+  const [result] = await pending;
+  assert.equal(result.status, 'rejected');
+  assert.ok(axios.isCancel(result.reason));
+  assert.equal(fixture.requests.filter(config => config.url === '/auth/refresh-token').length, 0);
+  assert.deepEqual(fixture.events, []);
+});
+
+test('superseded login completion cannot release a newer pending authentication boundary', async () => {
+  const formerGate = deferred(), currentGate = deferred();
+  let loginAttempts = 0;
+  const fixture = client(async config => {
+    if (config.url === '/auth/login') {
+      loginAttempts += 1;
+      await (loginAttempts === 1 ? formerGate.promise : currentGate.promise);
+    }
+    return response(config);
+  });
+  const former = Promise.allSettled([fixture.api.post('/auth/login', { identifier: 'TEST-former-owner' })]);
+  await flush();
+  const current = fixture.api.post('/auth/login', { identifier: 'TEST-new-owner' });
+  await flush();
+  formerGate.resolve();
+  assert.ok(axios.isCancel((await former)[0].reason));
+  const [blocked] = await Promise.allSettled([fixture.api.get('/credits')]);
+  assert.equal(blocked.status, 'rejected');
+  assert.ok(axios.isCancel(blocked.reason));
+  assert.equal(fixture.requests.filter(config => config.url === '/credits').length, 0);
+  currentGate.resolve();
+  await current;
+  assert.equal((await fixture.api.get('/credits')).status, 200);
+});
+
+for (const endpoint of ['/auth/login', '/auth/logout']) {
+  for (const failure of ['unavailable', 'timeout', 'canceled']) {
+    test(`${endpoint} ${failure} releases its boundary without creating a refresh or logout event`, async () => {
+      const fixture = client(config => {
+        if (config.url === endpoint) {
+          if (failure === 'unavailable') throw httpError(config, 503);
+          if (failure === 'timeout') throw new axios.AxiosError('TEST ONLY timeout', 'ECONNABORTED', config);
+          throw new axios.CanceledError('TEST ONLY canceled submission', config);
+        }
+        return response(config);
+      });
+      const [result] = await Promise.allSettled([fixture.api.post(endpoint)]);
+      assert.equal(result.status, 'rejected');
+      if (failure === 'unavailable') assert.equal(result.reason.response.status, 503);
+      if (failure === 'timeout') assert.equal(result.reason.code, 'ECONNABORTED');
+      if (failure === 'canceled') assert.ok(axios.isCancel(result.reason));
+      assert.equal((await fixture.api.get('/credits')).status, 200);
+      assert.equal(fixture.requests.filter(config => config.url === '/auth/refresh-token').length, 0);
+      assert.deepEqual(fixture.events, []);
+    });
+  }
+}
+
+test('a real loopback login aborts the former refresh transport without replaying checkout', { timeout: 5000 }, async () => {
+  const sockets = new Set();
+  const refreshStarted = deferred(), refreshClosed = deferred();
+  let checkoutAttempts = 0;
+  const server = createServer((request, reply) => {
+    request.resume();
+    if (request.url === '/api/auth/refresh-token') {
+      reply.on('close', () => refreshClosed.resolve());
+      refreshStarted.resolve();
+      return;
+    }
+    const checkout = request.url === '/api/credits/checkout';
+    if (checkout) checkoutAttempts += 1;
+    reply.writeHead(checkout ? 401 : 200, { 'Content-Type': 'application/json' });
+    reply.end(JSON.stringify({ status: checkout ? 'error' : 'success' }));
+  });
+  server.on('connection', socket => { sockets.add(socket); socket.on('close', () => sockets.delete(socket)); });
+  server.listen(0, '127.0.0.1');
+  await once(server, 'listening');
+  const fixture = client();
+  fixture.api.defaults.baseURL = `http://127.0.0.1:${server.address().port}/api`;
+  const adapter = axios.getAdapter('http');
+  fixture.api.defaults.adapter = config => adapter({ ...config, proxy: false });
+  let pending;
+  try {
+    pending = Promise.allSettled([fixture.api.post('/credits/checkout', { packageId: 'TEST-only' })]);
+    await refreshStarted.promise;
+    await fixture.api.post('/auth/login', { identifier: 'TEST-mock-user' });
+    const [result] = await pending;
+    assert.equal(result.status, 'rejected');
+    assert.ok(axios.isCancel(result.reason));
+    await refreshClosed.promise;
+    assert.equal(checkoutAttempts, 1);
+    assert.equal((await fixture.api.get('/credits')).status, 200);
+    assert.deepEqual(fixture.events, []);
+  } finally {
+    for (const socket of sockets) socket.destroy();
+    server.close();
+    if (pending) await pending;
+  }
+});
+
 test('concurrent unauthorized requests share one refresh and each retry once', async () => {
   const gate = deferred();
   const attempts = new Map();
