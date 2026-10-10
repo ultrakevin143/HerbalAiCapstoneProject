@@ -1,22 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
-import { Download } from 'lucide-react';
-
-interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
-}
-
-function subscribeToDisplayMode(listener: () => void) {
-  const media = window.matchMedia('(display-mode: standalone)');
-  media.addEventListener('change', listener);
-  return () => media.removeEventListener('change', listener);
-}
-
-function getStandaloneSnapshot() {
-  return window.matchMedia('(display-mode: standalone)').matches;
-}
+import { useEffect, useRef, useState } from 'react';
+import { Download, X } from 'lucide-react';
+import { createInstallNotice, type InstallNoticeState } from '../lib/pwa-install';
 
 export function PwaRegistration() {
   useEffect(() => {
@@ -46,65 +32,63 @@ export function PwaRegistration() {
   return null;
 }
 
-export function PwaInstallButton({ onComplete }: { onComplete?: () => void }) {
-  const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [installAccepted, setInstallAccepted] = useState(false);
-  const [showInstructions, setShowInstructions] = useState(false);
-  const isStandalone = useSyncExternalStore(subscribeToDisplayMode, getStandaloneSnapshot, () => false);
-  const isInstalled = isStandalone || installAccepted;
+export function PwaInstallNotice() {
+  const controller = useRef<ReturnType<typeof createInstallNotice> | null>(null);
+  const [notice, setNotice] = useState<InstallNoticeState>({ mode: null, visible: false, pending: false, instructions: false, error: '' });
 
   useEffect(() => {
-    const handleInstallPrompt = (event: Event) => {
-      event.preventDefault();
-      setInstallPrompt(event as BeforeInstallPromptEvent);
-      setShowInstructions(false);
-    };
-    const handleInstalled = () => {
-      setInstallAccepted(true);
-      setInstallPrompt(null);
-      setShowInstructions(false);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleInstallPrompt);
-    window.addEventListener('appinstalled', handleInstalled);
+    const current = createInstallNotice(window, setNotice);
+    controller.current = current;
+    current.start();
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
-      window.removeEventListener('appinstalled', handleInstalled);
+      current.dispose();
+      controller.current = null;
     };
   }, []);
 
-  const install = useCallback(async () => {
-    if (!installPrompt) {
-      setShowInstructions(true);
-      return;
-    }
-
-    await installPrompt.prompt();
-    const choice = await installPrompt.userChoice;
-    if (choice.outcome === 'accepted') {
-      setInstallAccepted(true);
-      onComplete?.();
-    }
-    setInstallPrompt(null);
-  }, [installPrompt, onComplete]);
-
-  if (isInstalled) return null;
+  if (!notice.visible) return null;
 
   return (
-    <div className="space-y-2">
+    <aside
+      aria-label="Add Herbal-Ai to your home screen"
+      className="fixed z-40 w-[calc(100%_-_2rem)] max-w-sm rounded-2xl bg-panel p-4 text-ink shadow-[0_8px_32px_rgba(0,0,0,0.18)]"
+      style={{ left: 'max(1rem, env(safe-area-inset-left))', bottom: 'max(1rem, env(safe-area-inset-bottom))', maxHeight: 'calc(100dvh - 2rem)', overflowY: 'auto' }}
+    >
       <button
         type="button"
-        onClick={install}
-        className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#40916c]/25 px-3 py-2.5 text-sm font-extrabold text-[#2d6a4f] transition-colors hover:bg-[#eef5f0] dark:text-[#74c69d] dark:hover:bg-soft"
+        aria-label="Dismiss installation suggestion"
+        onClick={() => controller.current?.dismiss()}
+        className="absolute right-1 top-1 flex min-h-11 min-w-11 items-center justify-center rounded-xl text-muted hover:bg-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
-        <Download size={16} aria-hidden="true" />
-        Install Herbal-Ai
+        <X size={18} aria-hidden="true" />
       </button>
-      {showInstructions && (
-        <p role="status" className="px-2 text-center text-xs font-semibold leading-relaxed text-[#2d6a4f]/80 dark:text-muted">
-          In Chrome, open the three-dot menu and choose Add to Home screen or Install app.
+      <div role="status" aria-live="polite" className="pr-8">
+        <p className="text-sm font-extrabold">Keep Herbal-Ai within reach</p>
+        <p className="mt-1 text-sm leading-relaxed text-muted">
+          {notice.instructions ? 'In Safari, tap Share, then Add to Home Screen and confirm Add.' : 'Add Herbal-Ai to your home screen for quick access?'}
         </p>
-      )}
-    </div>
+      </div>
+      {notice.error && <p role="alert" className="mt-2 text-sm leading-relaxed text-ink">{notice.error}</p>}
+      <div className="mt-3 flex items-center gap-2">
+        {!notice.instructions && !notice.error && (
+          <button
+            type="button"
+            disabled={notice.pending}
+            onClick={() => { void controller.current?.add(); }}
+            className="flex min-h-11 items-center gap-2 rounded-xl bg-[#2d6a4f] px-4 text-sm font-bold text-white transition-colors hover:bg-[#1b4332] disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          >
+            <Download size={16} aria-hidden="true" />
+            {notice.pending ? 'Opening…' : 'Add'}
+          </button>
+        )}
+        <button
+          type="button"
+          onClick={() => controller.current?.dismiss()}
+          className="min-h-11 rounded-xl px-3 text-sm font-semibold text-ink hover:bg-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        >
+          {notice.instructions ? 'Got it' : 'Not now'}
+        </button>
+      </div>
+    </aside>
   );
 }

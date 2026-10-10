@@ -4,7 +4,7 @@ import "./globals.css";
 import "./auth-layout.css";
 import { AuthProvider } from "../context/AuthContext";
 import { DisplayPreferenceSync } from "../components/DisplayPreferences";
-import { PwaRegistration } from "../components/PwaInstall";
+import { PwaInstallNotice, PwaRegistration } from "../components/PwaInstall";
 
 const newsreader = localFont({
   src: [
@@ -78,6 +78,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: `try{const preferences=JSON.parse(localStorage.getItem('herbal-ai-display')||'{}');const isDark=preferences?.theme==='dark';document.documentElement.dataset.theme=isDark?'dark':'light';document.documentElement.classList.toggle('dark',isDark);document.documentElement.dataset.textSize=['large','extra-large'].includes(preferences?.size)?preferences.size:'normal'}catch{}` }} />
         <DisplayPreferenceSync />
         <PwaRegistration />
+        <PwaInstallNotice />
         <AuthProvider>
           {children}
         </AuthProvider>

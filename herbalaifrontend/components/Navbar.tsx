@@ -9,7 +9,6 @@ import ProfileEditorModal from './ProfileEditorModal';
 import ThemeToggle from './DisplayPreferences';
 import BrandMark from './BrandMark';
 import { ChevronDown, LogOut, Menu, Pencil, Shield, Sprout, UserRound, X } from 'lucide-react';
-import { PwaInstallButton } from './PwaInstall';
 import { Button } from './ui/button';
 
 export default function Navbar() {
@@ -264,7 +263,6 @@ export default function Navbar() {
             </div>
 
             <div className="mt-3 space-y-2 border-t border-black/10 pt-3 dark:border-line">
-              <PwaInstallButton onComplete={() => setIsMobileMenuOpen(false)} />
               {loading ? (
                 <span role="status" className="block text-center text-sm text-muted">Checking session…</span>
               ) : sessionUnavailable && !isAuthenticated ? (

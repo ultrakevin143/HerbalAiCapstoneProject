@@ -150,6 +150,10 @@ jobs:
         working-directory: herbalaifrontend
         run: node --test ../scripts/credits.test.mjs
 
+      - name: Run home-screen installation notice regressions
+        working-directory: herbalaifrontend
+        run: node --test ../scripts/pwa-install.test.mjs
+
       - name: Run custom user ban regressions
         working-directory: herbalaifrontend
         run: node --test ../scripts/user-ban.test.mjs
