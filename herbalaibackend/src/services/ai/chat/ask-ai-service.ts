@@ -388,6 +388,7 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
   const catalog = herbs.filter(herb => herb.isVerified !== false && (herb.publicationStatus === undefined || herb.publicationStatus === 'PUBLISHED'));
   const normalizedQuestion = normalize(question);
   let namedHerbs = catalog.filter(herb => matchesHerbName(normalizedQuestion, herb)).slice(0, 2);
+  let ambiguousFollowUp = false;
 
   if (namedHerbs.length === 0 && isContextFollowUp(question)) {
     const recentModelReplies = [...history].reverse()
@@ -400,21 +401,24 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
         const citedText = normalize(sourcesMatch[1]);
         const citedHerbs = catalog.filter(herb => matchesHerbName(citedText, herb));
         if (citedHerbs.length > 0) {
+          if (citedHerbs.length > 1 && !isLinkOrLibraryQuestion(question)) { ambiguousFollowUp = true; break; }
           namedHerbs = citedHerbs.slice(0, 2);
           break;
         }
       }
       const mentionedHerbs = catalog.filter(herb => matchesHerbName(normalize(reply), herb));
       if (mentionedHerbs.length > 0) {
+        if (mentionedHerbs.length > 1 && !isLinkOrLibraryQuestion(question)) { ambiguousFollowUp = true; break; }
         namedHerbs = mentionedHerbs.slice(0, 2);
         break;
       }
     }
 
-    if (namedHerbs.length === 0) {
+    if (namedHerbs.length === 0 && !ambiguousFollowUp) {
       for (const previousQuestion of userQuestionsNewestFirst(history)) {
         const previousHerbs = catalog.filter(herb => matchesHerbName(normalize(previousQuestion), herb));
         if (previousHerbs.length > 0) {
+          if (previousHerbs.length > 1 && !isLinkOrLibraryQuestion(question)) { ambiguousFollowUp = true; break; }
           namedHerbs = previousHerbs.slice(0, 2);
           break;
         }
@@ -426,6 +430,13 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
         if (!isContextFollowUp(previousQuestion)) break;
       }
     }
+  }
+
+  if (ambiguousFollowUp) {
+    return {
+      context: NO_MATCH_CONTEXT, fallbackReply: getNoMatchReply(question), sources: [], embeddingMs: 0,
+      retrievalMs: performance.now() - catalogStartedAt, herbSourceCount: 0, knowledgeBaseSourceCount: 0, bestDistance: 1,
+    };
   }
 
   let conditionDiscovery: HealthConditionDiscovery | undefined;

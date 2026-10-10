@@ -76,7 +76,7 @@ export const releaseCreditRequest = (handle: CreditHandle) => walletTransaction(
 export const getCreditWallet = (userId: string) => walletTransaction(userId, async transaction => {
   const wallets = await transaction.$queryRaw<{ balance: number }[]>`SELECT balance FROM "CreditWallet" WHERE "userId" = ${userId}`;
   const ledger = await transaction.$queryRaw`SELECT id, kind, delta, "createdAt" FROM "CreditLedger" WHERE "userId" = ${userId} ORDER BY "createdAt" DESC, id DESC LIMIT 50`;
-  const purchases = await transaction.$queryRaw`SELECT id, "packageId", credits, "amountMinor", currency, status, "createdAt" FROM "CreditPurchase" WHERE "userId" = ${userId} ORDER BY "createdAt" DESC, id DESC LIMIT 50`;
+  const purchases = await transaction.$queryRaw`SELECT id, "packageId", "requestKey", "checkoutUrl", credits, "amountMinor", currency, status, "createdAt" FROM "CreditPurchase" WHERE "userId" = ${userId} ORDER BY "createdAt" DESC, id DESC LIMIT 50`;
   const requests = await transaction.$queryRaw`SELECT "requestKey", status, "createdAt" FROM "CreditRequest" WHERE "userId" = ${userId} ORDER BY "createdAt" DESC, id DESC LIMIT 20`;
   return { balance: wallets[0]!.balance, ledger, purchases, requests };
 });
@@ -97,6 +97,8 @@ export const createCreditPurchase = async (userId: string, packageId: string, re
       if (prior[0].packageId !== packageId) throw new CreditError(409, 'This purchase identifier belongs to another package.');
       return { ...prior[0], fresh: false };
     }
+    const unresolved = await transaction.$queryRaw<{ id: string }[]>`SELECT id FROM "CreditPurchase" WHERE "userId" = ${userId} AND "packageId" = ${packageId} AND status IN ('CREATING', 'PENDING', 'UNCERTAIN') LIMIT 1`;
+    if (unresolved.length) throw new CreditError(409, 'An existing checkout for this package is awaiting payment or confirmation. Refresh your wallet and resume it from purchase history; no duplicate checkout was created.');
     const id = randomUUID();
     await transaction.$executeRaw`INSERT INTO "CreditPurchase" (id, "userId", "requestKey", "packageId", credits, "amountMinor", status) VALUES (${id}, ${userId}, ${requestKey}, ${pack.id}, ${pack.credits}, ${pack.amountMinor}, 'CREATING')`;
     return { id, fresh: true, status: 'CREATING', checkoutUrl: null as string | null };

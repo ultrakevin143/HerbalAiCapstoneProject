@@ -259,11 +259,23 @@ describe('helpful pediatric conversation without recipe or dose leakage', () => 
     expect(result.data?.sources).toEqual([{ type: 'herb', title: 'Lagundi', distance: 0.01 }]);
   });
 
-  it('does not guess a previous herb when the last named turn contains two herbs', async () => {
+  it.each(['user', 'model', 'cited'])('does not guess a previous herb from an ambiguous %s turn', async origin => {
     mocks.catalog.mockResolvedValue({ herbs: [herb, { ...herb, id: 'bayabas', localName: 'Bayabas', scientificName: 'Psidium guajava' }] });
-    const result = await AskAIService('Explain its preparation.', asHistory('Tell me about Lagundi and Bayabas.'));
+    const history: Content[] = origin === 'user'
+      ? asHistory('Tell me about Lagundi and Bayabas.')
+      : [{ role: 'model', parts: [{ text: origin === 'cited' ? 'SOURCES CITED: Lagundi, Bayabas' : 'Lagundi and Bayabas are in the Library.' }] }];
+    const result = await AskAIService('Explain its preparation.', history);
     expect(result.data?.sources).toEqual([]);
     expect(mocks.answer).not.toHaveBeenCalled();
+    expect(mocks.exactKb).not.toHaveBeenCalled();
+    expect(mocks.embed).not.toHaveBeenCalled();
+  });
+
+  it('still provides library links for explicitly requested multiple previous herbs', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [herb, { ...herb, id: 'bayabas', localName: 'Bayabas', scientificName: 'Psidium guajava' }] });
+    const result = await AskAIService('Show their library links.', asHistory('Tell me about Lagundi and Bayabas.'));
+    expect(result.data?.sources.filter(source => source.type === 'herb').map(source => source.title)).toEqual(['Lagundi', 'Bayabas']);
+    expect(mocks.answer).toHaveBeenCalled();
   });
 
   it.each(['/chat', '/chat/stream'])('returns a full long answer but replayable history through %s', async endpoint => {

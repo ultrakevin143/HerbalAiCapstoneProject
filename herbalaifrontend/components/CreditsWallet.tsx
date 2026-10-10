@@ -8,7 +8,7 @@ import SessionUnavailable from './SessionUnavailable';
 import AccessibleDialog from './AccessibleDialog';
 import { Button } from './ui/button';
 import api from '../lib/axios';
-import { creditWalletSchema, safeTestCheckoutUrl } from '../lib/credits';
+import { creditWalletSchema, resumableCheckoutUrl, safeTestCheckoutUrl } from '../lib/credits';
 import type { CreditWallet } from '../lib/credits';
 
 const amount = (minor: number) => new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(minor / 100);
@@ -49,6 +49,14 @@ export default function CreditsWallet({ embedded = false, revision: chatRevision
         if (key.startsWith(`${userId}:`) && paid.has(purchaseId)) {
           checkoutKeys.current.delete(key);
           checkoutPurchases.current.delete(key);
+        }
+      }
+      for (const purchase of data.purchases) {
+        if (purchase.status !== 'PENDING' || !purchase.packageId || !purchase.requestKey || locked.current) continue;
+        const key = `${userId}:${purchase.packageId}`;
+        if (!checkoutPurchases.current.has(key)) {
+          checkoutKeys.current.set(key, purchase.requestKey);
+          checkoutPurchases.current.set(key, purchase.id);
         }
       }
       setCheckout(current => current?.ownerId === userId && paid.has(current.purchaseId) ? null : current);
@@ -149,7 +157,16 @@ export default function CreditsWallet({ embedded = false, revision: chatRevision
       </section>
       <details className="rounded-xl border border-line p-4">
         <summary className="cursor-pointer text-sm font-semibold text-ink">Purchase history</summary>
-        <div className="mt-3 space-y-3">{!current.purchases.length && <p className="text-sm text-muted">No test purchases yet.</p>}{current.purchases.map(purchase => <p key={purchase.id} className="text-sm text-ink">{purchase.credits} credits · {amount(purchase.amountMinor)} test amount · {purchase.status}<span className="mt-1 block text-xs text-muted">{new Date(purchase.createdAt).toLocaleString()}</span></p>)}</div>
+        <div className="mt-3 space-y-3">{!current.purchases.length && <p className="text-sm text-muted">No test purchases yet.</p>}{current.purchases.map(purchase => {
+          const resumeUrl = resumableCheckoutUrl(purchase);
+          return <div key={purchase.id} className="text-sm text-ink">
+            <p>{purchase.credits} credits · {amount(purchase.amountMinor)} test amount · {purchase.status}<span className="mt-1 block text-xs text-muted">{new Date(purchase.createdAt).toLocaleString()}</span></p>
+            {resumeUrl && <>
+              <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block font-semibold text-accent underline underline-offset-4">Resume GCash test checkout</a>
+              <p className="mt-1 text-xs text-muted">Awaiting payment. A failed attempt can be retried in the same checkout; closing its tab does not complete payment.</p>
+            </>}
+          </div>;
+        })}</div>
       </details>
       <details className="rounded-xl border border-line p-4">
         <summary className="cursor-pointer text-sm font-semibold text-ink">Credit activity</summary>

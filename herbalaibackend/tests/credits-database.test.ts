@@ -197,6 +197,22 @@ describe.skipIf(!connectionUrl)('real PostgreSQL test wallet transactions', () =
     expect((await pool.query('SELECT status, "paymentId" FROM "CreditPurchase"')).rows[0]).toEqual({ status: 'PENDING', paymentId: null });
     await fulfillTestPurchase('cs_TEST'); expect(await walletBalance()).toBe(13);
   });
+  it('blocks another request identifier while the same package has an unpaid checkout', async () => {
+    const first = await createCreditPurchase(owner, 'test-pack', randomUUID());
+    state.create.mockResolvedValue({ id: 'cs_SECOND', url: 'https://checkout.paymongo.com/SECOND' });
+    await expect(createCreditPurchase(owner, 'test-pack', randomUUID())).rejects.toMatchObject({ status: 409 });
+    expect(state.create).toHaveBeenCalledOnce();
+    const wallet = await getCreditWallet(owner);
+    expect(wallet.purchases).toEqual([expect.objectContaining({ id: first.purchaseId, requestKey: expect.any(String), checkoutUrl: first.checkoutUrl, packageId: 'test-pack', status: 'PENDING' })]);
+    expect(wallet.balance).toBe(3);
+  });
+  it('blocks a fresh identifier after uncertain creation instead of creating a second checkout', async () => {
+    state.create.mockRejectedValue(new Error('TEST ambiguous provider timeout'));
+    await expect(createCreditPurchase(owner, 'test-pack', randomUUID())).rejects.toThrow();
+    state.create.mockResolvedValue({ id: 'cs_SECOND', url: 'https://checkout.paymongo.com/SECOND' });
+    await expect(createCreditPurchase(owner, 'test-pack', randomUUID())).rejects.toMatchObject({ status: 409 });
+    expect(state.create).toHaveBeenCalledOnce();
+  });
   it('rejects the same payment on another order without a partial grant', async () => {
     const first = await createCreditPurchase(owner, 'test-pack', randomUUID());
     state.retrieve.mockResolvedValue(paidSession(first.purchaseId)); await fulfillTestPurchase('cs_TEST');
@@ -206,6 +222,45 @@ describe.skipIf(!connectionUrl)('real PostgreSQL test wallet transactions', () =
     await expect(fulfillTestPurchase('cs_OTHER')).rejects.toThrow();
     expect((await getCreditWallet(other)).balance).toBe(3);
     expect((await pool.query('SELECT status FROM "CreditPurchase" WHERE id = $1', [second.purchaseId])).rows[0].status).toBe('PENDING');
+  });
+  it('serializes fresh checkout identifiers while provider creation is in flight', async () => {
+    let finishCheckout!: (value: { id: string; url: string }) => void;
+    let reportStarted!: () => void;
+    const started = new Promise<void>(resolve => { reportStarted = resolve; });
+    state.create.mockImplementation(() => { reportStarted(); return new Promise(resolve => { finishCheckout = resolve; }); });
+    const first = createCreditPurchase(owner, 'test-pack', randomUUID());
+    await started;
+    try {
+      await expect(createCreditPurchase(owner, 'test-pack', randomUUID())).rejects.toMatchObject({ status: 409 });
+      expect(state.create).toHaveBeenCalledOnce();
+    } finally {
+      finishCheckout({ id: 'cs_TEST', url: 'https://checkout.paymongo.com/TEST' });
+      await first;
+    }
+    expect((await getCreditWallet(owner)).purchases).toHaveLength(1);
+  });
+  it('keeps checkout metadata private and scopes the unresolved guard to owner and package', async () => {
+    vi.stubEnv('DR_AI_CREDIT_PACKAGES', '[{"id":"test-pack","name":"TEST ONLY","credits":10,"amountMinor":10000},{"id":"other-pack","name":"OTHER TEST ONLY","credits":20,"amountMinor":20000}]');
+    await createCreditPurchase(owner, 'test-pack', randomUUID());
+    expect((await getCreditWallet(other)).purchases).toEqual([]);
+    state.create.mockResolvedValue({ id: 'cs_OTHER', url: 'https://checkout.paymongo.com/OTHER' });
+    await createCreditPurchase(other, 'test-pack', randomUUID());
+    state.create.mockResolvedValue({ id: 'cs_PACKAGE', url: 'https://checkout.paymongo.com/PACKAGE' });
+    await createCreditPurchase(owner, 'other-pack', randomUUID());
+    expect((await getCreditWallet(owner)).purchases).toHaveLength(2);
+    expect((await getCreditWallet(other)).purchases).toHaveLength(1);
+    expect(state.create).toHaveBeenCalledTimes(3);
+  });
+  it('allows a deliberate new purchase only after the previous one is paid', async () => {
+    const key = randomUUID();
+    const first = await createCreditPurchase(owner, 'test-pack', key);
+    state.retrieve.mockResolvedValue(paidSession(first.purchaseId));
+    await fulfillTestPurchase('cs_TEST');
+    await expect(createCreditPurchase(owner, 'test-pack', key)).rejects.toMatchObject({ status: 409 });
+    state.create.mockResolvedValue({ id: 'cs_NEXT', url: 'https://checkout.paymongo.com/NEXT' });
+    await createCreditPurchase(owner, 'test-pack', randomUUID());
+    expect(state.create).toHaveBeenCalledTimes(2);
+    expect(await walletBalance()).toBe(13);
   });
   it('rolls back a failed refund and recovers it exactly once afterward', async () => {
     const handle = await reserveCreditRequest(owner, randomUUID(), question);

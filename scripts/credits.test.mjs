@@ -221,9 +221,9 @@ test('mobile bottom sheet and desktop drawer keep test disclosures, zero-credit 
   for (const label of ['Purchase history', 'Credit activity', 'Saved answers']) assert.match(pageSource, new RegExp(`<summary[^>]+>${label}</summary>`));
 });
 
-const renderWallet = ({ ownerId = 'TEST-owner', userId = 'TEST-owner', enabled = true, balance = 3, open = false, walletLoaded = true, walletError = '', checkout = null, answer = null, sessionUnavailable = false } = {}) => {
+const renderWallet = ({ ownerId = 'TEST-owner', userId = 'TEST-owner', enabled = true, balance = 3, purchases = [], open = false, walletLoaded = true, walletError = '', checkout = null, answer = null, sessionUnavailable = false } = {}) => {
   const react = require('react');
-  const states = [walletLoaded ? { ownerId, data: exports.creditWalletSchema.parse({ enabled, balance, testMode: true }) } : null, 0, '', walletError, false, open ? ownerId : null, checkout, answer];
+  const states = [walletLoaded ? { ownerId, data: exports.creditWalletSchema.parse({ enabled, balance, purchases, testMode: true }) } : null, 0, '', walletError, false, open ? ownerId : null, checkout, answer];
   let stateIndex = 0;
   const module = { exports: {} };
   const source = ts.transpileModule(pageSource, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
@@ -354,4 +354,50 @@ test('wallet loads wait during a recoverable authentication outage', async () =>
   const load = new Function(...Object.keys(context), ts.transpileModule(`return (${callbacks.get('loadWallet')});`, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText)(...Object.values(context));
   load();
   assert.equal(fixture.state.gets.length, 0);
+});
+
+test('a reloaded wallet recovers the original unpaid purchase key instead of creating a duplicate', async () => {
+  const fixture = pageHarness();
+  const requestKey = '8b2f0d33-9b44-4cd2-b893-53e33c105f38';
+  fixture.loadWallet();
+  fixture.get.resolve({ data: { data: { enabled: true, testMode: true, balance: 0, purchases: [{ id: purchaseId, packageId: 'test-pack', requestKey, checkoutUrl: 'https://checkout.paymongo.com/TEST', credits: 10, amountMinor: 10000, status: 'PENDING', createdAt: new Date().toISOString() }] } } });
+  await new Promise(resolve => setImmediate(resolve));
+  const purchase = fixture.buy('test-pack');
+  assert.equal(fixture.state.posts[0][1].requestId, requestKey);
+  fixture.post.resolve({ data: { data: { purchaseId, checkoutUrl: 'https://checkout.paymongo.com/TEST' } } });
+  await purchase;
+});
+
+test('purchase history resumes only safe unpaid checkouts and stays private on account switches', () => {
+  const purchase = { id: purchaseId, credits: 10, amountMinor: 10000, status: 'PENDING', checkoutUrl: 'https://checkout.paymongo.com/TEST', createdAt: '2026-10-10T00:00:00Z' };
+  const markup = renderWallet({ open: true, purchases: [purchase] });
+  assert.match(markup, /Resume GCash test checkout/);
+  assert.match(markup, /href="https:\/\/checkout.paymongo.com\/TEST" target="_blank" rel="noopener noreferrer"/);
+  assert.match(markup, /failed attempt can be retried in the same checkout/);
+  assert.equal(renderWallet({ userId: 'TEST-other', open: true, purchases: [purchase] }), '');
+  for (const checkoutUrl of ['javascript:alert(1)', 'http://checkout.paymongo.com/TEST', 'https://user:pass@checkout.paymongo.com/TEST', 'https://checkout.paymongo.com.evil.invalid/TEST', null]) {
+    assert.equal(exports.resumableCheckoutUrl({ ...purchase, checkoutUrl }), null);
+    assert.doesNotMatch(renderWallet({ open: true, purchases: [{ ...purchase, checkoutUrl }] }), /Resume GCash test checkout/);
+  }
+  for (const status of ['PAID', 'CREATING', 'UNCERTAIN']) assert.equal(exports.resumableCheckoutUrl({ ...purchase, status }), null);
+});
+
+test('wallet recovery replaces an untracked rejected key but never changes an in-flight key', async () => {
+  const requestKey = '8b2f0d33-9b44-4cd2-b893-53e33c105f38';
+  const data = { enabled: true, testMode: true, purchases: [{ id: purchaseId, packageId: 'test-pack', requestKey, credits: 10, amountMinor: 10000, status: 'PENDING', createdAt: '2026-10-10T00:00:00Z' }] };
+  const fixture = pageHarness();
+  fixture.context.checkoutKeys.current.set('TEST-owner:test-pack', 'TEST-rejected-key');
+  fixture.loadWallet();
+  fixture.get.resolve({ data: { data } });
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(fixture.context.checkoutKeys.current.get('TEST-owner:test-pack'), requestKey);
+  const inFlight = pageHarness();
+  const pending = inFlight.buy('test-pack');
+  const originalKey = inFlight.state.posts[0][1].requestId;
+  inFlight.loadWallet();
+  inFlight.get.resolve({ data: { data } });
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(inFlight.context.checkoutKeys.current.get('TEST-owner:test-pack'), originalKey);
+  inFlight.post.resolve({ data: { data: { purchaseId, checkoutUrl: 'https://checkout.paymongo.com/TEST' } } });
+  await pending;
 });
