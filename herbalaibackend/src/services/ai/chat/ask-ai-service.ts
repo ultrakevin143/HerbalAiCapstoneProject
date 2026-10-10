@@ -96,7 +96,7 @@ export type SupportedLanguage = 'en' | 'tl' | 'ceb';
 export const detectQuestionLanguage = (question: string): SupportedLanguage => {
   const normalized = normalize(question);
   const cebPattern = /\b(?:unsa|unsay|unsaon|ngano|kanus-a|asa|kinsa|tanom|tambal|hilanat|sip-on|samad|imnon|luwas|kuyaw|dili|naa|kini|kining|kana|kanang|kadto|kadtong|kato|katong|ani|aning|ana|anang|adto|adtong|dinhi|diha|didto|nako|nimo|namo|nato|nila|niya|akong|ako|atong|ato|imong|inyong|iyang|ilahang|kay|aron|bi|gyud|gud|jud|sad|sab|hatagi|tagai|palihug|daghang|salamat)\b/i;
-  const tlPattern = /\b(?:po|opo|ba|ano|anong|paano|bakit|kailan|saan|sino|gamot|halaman|halamang|lagnat|ubo|sipon|sakit|tiyan|inumin|ligtas|pwede|puwede|nito|nitong|niyan|niyang|niyon|niyong|iyan|iyang|iyon|iyong|ito|itong|yan|yun|yung|kumusta|kamusta|maraming|salamat|bata|anak|sanggol|subukan|pakuluan|pahingi)\b/i;
+  const tlPattern = /\b(?:po|opo|ba|ano|anong|paano|bakit|kailan|saan|sino|gamot|halaman|halamang|lagnat|ubo|sipon|sakit|tiyan|inumin|ligtas|pwede|puwede|nito|nitong|niyan|niyang|niyon|niyong|iyan|iyang|iyon|iyong|ito|itong|yan|yun|yung|kumusta|kamusta|maraming|salamat|bata|anak|sanggol|subukan|pakuluan|pahingi|nga|patingin|tingnan|ipakita|para|aking|akin|natin|ating)\b/i;
 
   if (cebPattern.test(normalized)) return 'ceb';
   if (tlPattern.test(normalized)) return 'tl';
@@ -453,7 +453,7 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
     const context = [
       conditionDiscovery ? conditionDiscovery.instruction : '',
       isLinkOrLibraryQuestion(question)
-        ? 'Link request: The user is requesting a link, URL, or library card to view/read about the herb in Herbal-Ai. Provide clickable Markdown links formatted as `[<LocalName>](/library?id=<id>)`. Answer in the user\'s language (e.g. Cebuano/Bisaya) and invite them to click the link to open the herb\'s card in the library.'
+        ? `Link request: The user is requesting a link, URL, or library card to view/read about the herb in Herbal-Ai. Provide clickable Markdown links formatted as \`[<LocalName>](/library?id=<id>)\`. Answer in the user's language (${detectQuestionLanguage(question) === 'ceb' ? 'Cebuano/Bisaya' : detectQuestionLanguage(question) === 'tl' ? 'Tagalog/Filipino' : 'English'}) and invite them to click the link to open the herb's card in the library.`
         : '',
       matchedHerbs.map((herb, index) => formatHerbContext(herb, index, question, pediatricRequest)).join("\n\n"),
       namedKnowledge.length > 0 && !pediatricRequest ? `General Knowledge Base / FAQs:\n${formatKBContext(namedKnowledge)}` : '',
@@ -533,7 +533,8 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
   let context = "";
   if (relevantHerbs.length > 0) {
     if (isLinkOrLibraryQuestion(question)) {
-      context += "Link request: The user is requesting a link, URL, or library card to view/read about the herb in Herbal-Ai. Provide clickable Markdown links formatted as `[<LocalName>](/library?id=<id>)`. Answer in the user's language (e.g. Cebuano/Bisaya) and invite them to click the link to open the herb's card in the library.\n\n";
+      const langLabel = detectQuestionLanguage(question) === 'ceb' ? 'Cebuano/Bisaya' : detectQuestionLanguage(question) === 'tl' ? 'Tagalog/Filipino' : 'English';
+      context += `Link request: The user is requesting a link, URL, or library card to view/read about the herb in Herbal-Ai. Provide clickable Markdown links formatted as \`[<LocalName>](/library?id=<id>)\`. Answer in the user's language (${langLabel}) and invite them to click the link to open the herb's card in the library.\n\n`;
     }
     context += contextualHerbs.map((herb, index) =>
       formatHerbContext(herb, index, question, pediatricRequest)

@@ -233,4 +233,38 @@ describe.each([false, true])('local-language relevance (streaming=%s)', streamin
       {}
     );
   });
+
+  it('handles Tagalog link query "pahingi ng link para sa guide ko"', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    mocks.herbs.mockResolvedValue([]);
+    const result = await run(streaming, 'pahingi ng link para sa guide ko', [
+      { role: 'user', parts: [{ text: 'ano ang gamot sa lagnat?' }] },
+      { role: 'model', parts: [{ text: 'Para sa lagnat, narito ang halaman:\n\nSOURCES CITED: Fixture herb' }] },
+    ]);
+    expect(result.sources).toEqual([{ type: 'herb', title: herb.localName, distance: 0 }]);
+    const generation = streaming ? mocks.stream : mocks.answer;
+    expect(generation).toHaveBeenCalledWith(
+      'pahingi ng link para sa guide ko',
+      expect.stringContaining('Tagalog/Filipino'),
+      expect.any(Array),
+      {}
+    );
+  });
+
+  it('handles English link query "can you give me the link as my guide"', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    mocks.herbs.mockResolvedValue([]);
+    const result = await run(streaming, 'can you give me the link as my guide', [
+      { role: 'user', parts: [{ text: 'what herb can you suggest for fever?' }] },
+      { role: 'model', parts: [{ text: 'For fever, here are the documented herbs:\n\nSOURCES CITED: Fixture herb' }] },
+    ]);
+    expect(result.sources).toEqual([{ type: 'herb', title: herb.localName, distance: 0 }]);
+    const generation = streaming ? mocks.stream : mocks.answer;
+    expect(generation).toHaveBeenCalledWith(
+      'can you give me the link as my guide',
+      expect.stringContaining('English'),
+      expect.any(Array),
+      {}
+    );
+  });
 });
