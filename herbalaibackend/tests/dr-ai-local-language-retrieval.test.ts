@@ -177,4 +177,12 @@ describe.each([false, true])('local-language relevance (streaming=%s)', streamin
     expect(result.sources).toEqual([]);
     expect(result.reply).toContain('Wala koy nakit-an nga kumpirmadong Herbal-Ai source');
   });
+
+  it('matches condition discovery for conversational phrasing with intent and reading requests', async () => {
+    mocks.catalog.mockResolvedValue({ herbs: [herb] });
+    mocks.herbs.mockResolvedValue([]);
+    const result = await run(streaming, 'im having a fever. what herb can you suggest? and also give me a steps because i dont know how to read');
+    expect(result.sources).toEqual([{ type: 'herb', title: herb.localName, distance: 0 }]);
+    expect(result.reply).toContain('Grounded fixture answer');
+  });
 });

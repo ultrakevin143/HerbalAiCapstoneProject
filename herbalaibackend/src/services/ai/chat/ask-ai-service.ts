@@ -9,11 +9,58 @@ import type { AiRequestOptions } from "../core/request-lifetime.js";
 import { isPreparationQuestion, isPediatricQuestion, isPediatricRequest, isContextFollowUp, userQuestionsNewestFirst } from './conversation-context.js';
 
 const STOP_WORDS = new Set([
-  "a", "about", "and", "are", "dose", "dosage", "for", "from", "guidance", "herb", "herbal", "how", "is", "it",
-  "medicine", "of", "on", "or", "plant", "preparation", "prepare", "safety", "should", "take", "the", "this", "to",
-  "traditional", "use", "used", "uses", "what", "with",
-  "suggest", "recommend", "ano", "anong", "ang", "bang", "gamot", "halamang", "mag", "may", "mga", "nang",
-  "nga", "para", "po", "pwede", "puwede", "tanom", "unsa", "unsay",
+  // English grammatical & conversational words
+  "a", "about", "also", "am", "an", "and", "any", "are", "as", "at",
+  "be", "because", "been", "being", "best", "but", "by",
+  "can", "could", "did", "do", "does", "doing", "dont", "don't", "dose", "dosage",
+  "feel", "feeling", "find", "for", "from", "get", "getting", "give", "good", "got", "guidance",
+  "had", "has", "have", "having", "help", "helping", "her", "herb", "herbal", "here", "him", "his", "how",
+  "i", "im", "i'm", "if", "in", "into", "is", "it", "its", "just",
+  "know", "knowing", "like", "look", "looking",
+  "may", "me", "medicine", "might", "more", "most", "much", "must", "my",
+  "need", "needed", "needs", "no", "not", "now", "of", "off", "on", "once", "only", "or", "other", "our", "out",
+  "people", "plant", "plants", "please", "preparation", "prepare",
+  "read", "reading", "recommend", "recommended",
+  "safety", "said", "same", "say", "see", "should", "so", "some", "step", "steps", "suggest", "suggested",
+  "take", "taking", "tell", "than", "that", "the", "their", "them", "then", "there", "these", "they", "this", "those", "to", "too", "traditional",
+  "up", "us", "use", "used", "uses", "using",
+  "very", "want", "wanted", "was", "way", "we", "well", "were", "what", "when", "where", "which", "while", "who", "whom", "why", "will", "with", "would",
+  "you", "your", "yours",
+
+  // Tagalog conversational words
+  "ako", "akong", "alam", "amin", "aming", "ang", "ano", "anong", "atin", "ating",
+  "ba", "bago", "bakit", "bale", "bang", "basa", "bata", "bawat", "bigay", "bigyan",
+  "dahil", "dapat", "din", "dito", "doon",
+  "gamot", "gusto",
+  "habang", "halaman", "halamang",
+  "iba", "ikaw", "inumin", "isa", "isang", "ito", "itong", "iyon", "iyong",
+  "ka", "kahit", "kailan", "kailangan", "kami", "kanila", "kanilang", "kanya", "kanyang", "kasi", "kay", "kayo", "ko", "kong", "kung",
+  "lahat", "lang", "loob",
+  "mag", "magsabi", "maging", "mahalaga", "makikita", "marami", "maraming", "may", "mayroon", "meron", "mga", "mo", "mong", "mula",
+  "na", "nahanap", "naka", "nakita", "naman", "naming", "namin", "nang", "nariyan", "natin", "nating", "nawala", "nga", "ng", "ngayon", "nila", "nilang", "ninyo", "nito", "nitong", "niya", "niyang", "noon",
+  "oo", "opo",
+  "pa", "paano", "paki", "pakisabi", "palang", "para", "parang", "pero", "pili", "po", "pumili", "puwede", "pwede", "pwedeng",
+  "sa", "saan", "sabi", "sabihin", "saka", "san", "sarili", "si", "sila", "silang", "sina", "sino", "sinong", "subalit",
+  "taga", "talaga", "tayo", "tayong", "tingin", "totoo", "tulad", "tulong",
+  "wala", "walang",
+
+  // Cebuano conversational words
+  "ako", "akong", "aling", "ana", "ani", "ano", "asa",
+  "ba", "baga", "basin", "bisan",
+  "daghan", "dako", "dili", "dinhi", "diha", "didto", "duna",
+  "gani", "gikan",
+  "hangtod", "hinoon",
+  "ikaw", "imong", "imon", "ingon", "ini", "inita", "isip", "ito",
+  "ka", "kadtong", "kadto", "kaha", "kamo", "kana", "kanang", "kaniadto", "kanunay", "karon", "kato", "kay", "kini", "kining", "kinsa", "ko", "kong", "kuno",
+  "lang",
+  "maayo", "man", "manang", "mas", "may", "mo", "mong",
+  "na", "nako", "namo", "nana", "nani", "niana", "niini", "nimo", "ninyo", "niya",
+  "og", "oo",
+  "pa", "palihug", "para", "pero",
+  "sa", "sab", "sad", "samtang", "si", "sila", "silang",
+  "tambal", "tanan", "tanom", "tawo", "tua", "tudlo",
+  "ug", "unya", "unsa", "unsay", "unsaon", "upod",
+  "wala", "way",
 ]);
 
 const normalize = (value: string) =>
@@ -29,6 +76,7 @@ const HEALTH_CONCEPTS: Array<{ id: string; pattern: RegExp }> = [
   { id: 'asthma', pattern: /\b(?:asthma|hika|hinihika|hubak|bronchial)\b/i },
   { id: 'hypertension', pattern: /\b(?:hypertension|high blood|highblood|altapresyon|presyon)\b/i },
   { id: 'diabetes', pattern: /\b(?:diabetes|diabetic|asukal sa dugo|blood sugar)\b/i },
+  { id: 'kidney', pattern: /\b(?:kidney|kidneys|kidney stone|kidney stones|bato sa bato|bato sa pantog|nephrolithiasis|urolithiasis|citrate|buko water|coconut water|tubig ng buko)\b/i },
 ];
 
 const meaningfulTokens = (value: string) => {
@@ -87,6 +135,12 @@ const HEALTH_CONDITION_DISCOVERIES: HealthConditionDiscovery[] = [
     targetCondition: 'wound',
     instruction: 'Condition lookup: These published records mention wound care in documented uses. This is not evidence that they are effective or appropriate for the user. Explain reported uses and limitations; do not prescribe a treatment or invent preparation/dosage.',
   },
+  {
+    label: 'kidney',
+    queryKeywords: /\b(?:kidney|kidneys|kidney stone|kidney stones|bato sa bato|bato sa pantog|nephrolithiasis|urolithiasis|citrate)\b/i,
+    targetCondition: 'kidney',
+    instruction: 'Condition lookup: These published records mention urinary or kidney support in documented traditional or clinical uses (e.g. Sambong, Niog / coconut water for urinary citrate support, Sampa-sampalukan). Clarify that herbal options support prevention and urinary flow, but cannot replace emergency or surgical urology care for obstructing stones. Remind users with renal impairment/CKD to exercise caution with coconut water due to potassium.',
+  },
 ];
 
 const lexicalOverlap = (question: string, candidate: string) => {
@@ -139,12 +193,33 @@ interface PreparedDrAiContext {
 
 type CatalogHerb = Awaited<ReturnType<typeof findAllHerbs>>['herbs'][number];
 
-const herbNames = (herb: HerbQueryResult | CatalogHerb) => [
-  herb.localName,
-  herb.scientificName,
-  ...('sourceScientificName' in herb ? [herb.sourceScientificName] : []),
-  ...('cebuanoName' in herb ? [herb.cebuanoName] : []),
-].filter((name): name is string => typeof name === 'string' && name.trim().length > 0).map(normalize);
+const HERB_COMMON_ALIASES: Record<string, string[]> = {
+  'niog': ['niyog', 'buko', 'butong', 'coconut', 'coconut water', 'buko water', 'buko juice', 'tubig ng buko'],
+  'kalamansi': ['calamansi', 'kalamunding', 'limonsito', 'calamondin'],
+  'tawa-tawa': ['tawatawa', 'gatas-gatas', 'gatas gatas', 'bobi', 'boto-botonis'],
+  'madre de cacao': ['kakawate', 'gliricidia'],
+  'guyabano': ['soursop', 'babana', 'bayubana'],
+  'siling labuyo': ['katumbal', 'siling pasitis', 'labuyo', 'wild chili'],
+  'sampa-sampalukan': ['sampasampalukan', 'chanca piedra', 'stonebreaker', 'stone breaker', 'kurukalunggay'],
+  'alugbati': ['malabar spinach'],
+  'dita': ['alstonia', 'white cheesewood'],
+  'kabling': ['patchouli'],
+  'sibukao': ['sappanwood', 'sapang', 'sibukaw'],
+  'bignay': ['bugnay', 'antidesma'],
+  'mansanilya': ['manzanilla', 'chrysanthemum'],
+};
+
+const herbNames = (herb: HerbQueryResult | CatalogHerb) => {
+  const normLocal = normalize(herb.localName);
+  const aliases = HERB_COMMON_ALIASES[normLocal] || [];
+  return [
+    herb.localName,
+    herb.scientificName,
+    ...('sourceScientificName' in herb ? [herb.sourceScientificName] : []),
+    ...('cebuanoName' in herb ? [herb.cebuanoName] : []),
+    ...aliases,
+  ].filter((name): name is string => typeof name === 'string' && name.trim().length > 0).map(normalize);
+};
 
 const matchesHerbName = (normalizedText: string, herb: HerbQueryResult | CatalogHerb) =>
   herbNames(herb).some(name => name.length > 2 && new RegExp(`(^|[^a-z0-9])${name}(?=$|[^a-z0-9])`).test(normalizedText));
@@ -386,16 +461,16 @@ async function prepareDrAiContext(question: string, history: Content[], pediatri
     .map(({ entry }) => entry);
   const hasStrongKBMatch = strongestKBScore >= 0.3;
 
-  const semanticallyCloseHerbs = selectCloseMatches(rawHerbs, 2).filter((herb) =>
-    lexicalOverlap(
-      question,
-      `${herb.localName} ${herb.scientificName} ${herb.medicinalUses} ${herb.preparationMethod ?? ""} ${herb.warnings ?? ""}`
-    ) >= 0.2
-  );
+  const semanticallyCloseHerbs = selectCloseMatches(rawHerbs, 2).filter((herb) => {
+    const herbText = `${herb.localName} ${herb.scientificName} ${herb.medicinalUses} ${herb.preparationMethod ?? ""} ${herb.warnings ?? ""}`;
+    const overlap = lexicalOverlap(question, herbText);
+    const hasConceptMatch = HEALTH_CONCEPTS.some(c => c.pattern.test(normalizedQuestion) && c.pattern.test(herbText));
+    return overlap >= 0.15 || hasConceptMatch;
+  });
 
   const relevantHerbs = explicitlyNamedHerbs.length > 0
     ? explicitlyNamedHerbs.slice(0, 2)
-    : hasStrongKBMatch
+    : (hasStrongKBMatch && semanticallyCloseHerbs.every(h => Number(h.distance) > 0.25))
       ? []
       : semanticallyCloseHerbs;
 

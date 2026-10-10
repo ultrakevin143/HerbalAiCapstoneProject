@@ -687,13 +687,13 @@ export const REGIONAL_HERB_REGISTRY: Record<string, RegionalHerbInfo> = {
   "niog": {
     "canonicalLocalName": "Niog",
     "scientificName": "Cocos nucifera",
-    "english": "Coconut Tree",
-    "tagalog": "Niyog, Niog",
-    "cebuano": "Lubi",
+    "english": "Coconut, Coconut Tree, Young Coconut, Coconut Water",
+    "tagalog": "Niyog, Niog, Buko",
+    "cebuano": "Lubi, Butong",
     "ilocano": "Niog",
     "bikol": "Niyog",
-    "hiligaynon": "Lubi",
-    "otherDialects": "Ongot (Chamorro/Fil.)",
+    "hiligaynon": "Lubi, Butong",
+    "otherDialects": "Ongot (Chamorro/Fil.), Buko water, Tubig ng buko",
     "stuartUrl": "https://www.stuartxchange.org/Niog.html"
   },
   "nipa": {
