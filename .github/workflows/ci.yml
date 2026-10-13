@@ -2,7 +2,7 @@ name: Herbal AI Continuous Integration (CI)
 
 on:
   push:
-    branches: [ "main", "master", "develop", "codex/readability-accessibility", "codex/mvp-acceptance-ci" ]
+    branches: [ "main", "master", "develop", "codex/readability-accessibility", "codex/mvp-acceptance-ci", "codex/preview-origin-support-20261013" ]
   pull_request:
     branches: [ "main", "master", "develop" ]
 
@@ -77,6 +77,7 @@ jobs:
           --skipLibCheck --exactOptionalPropertyTypes --noUncheckedIndexedAccess
           tests/herb-admin-edit-database.test.ts tests/helpers/admin-edit-database-boundary.ts
           tests/api-security-boundaries.test.ts tests/api-outage-forwarding.test.ts tests/socket-security-boundaries.test.ts
+          tests/frontend-origins.test.ts tests/preview-origin-access.test.ts
           tests/knowledge-import-atomicity.test.ts tests/knowledge-import-database.test.ts tests/knowledge-authenticated-flow.test.ts
           tests/knowledge-page-filters-database.test.ts
           tests/review-concurrency-database.test.ts tests/suggestion-review-email.test.ts

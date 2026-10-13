@@ -3,6 +3,7 @@ import type { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { ENV } from './config/env.js';
+import { trustedRequestOrigins } from './config/frontend-origins.js';
 import routes from './routes/index.js';
 import { requestTiming } from './middlewares/request-timing.middleware.js';
 import { databaseErrorCode, errorResponse, requestBodyErrorResponse } from './utils/error-response.js';
@@ -29,10 +30,10 @@ app.use((_req: Request, res: Response, next: NextFunction) => {
 
 // --- Core Middleware ---
 getCreditsConfig();
-const localOrigins = [ENV.FRONTEND_URL, 'http://localhost:3000', 'http://localhost:3001', 'http://127.0.0.1:3000', 'http://127.0.0.1:3001'];
+const localOrigins = trustedRequestOrigins(ENV.FRONTEND_URL, ENV.FRONTEND_ADDITIONAL_ORIGINS);
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || localOrigins.includes(origin)) {
+    if (!origin || localOrigins.has(origin)) {
       callback(null, true);
     } else {
       callback(null, false);
