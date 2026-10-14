@@ -56,3 +56,41 @@ test('users request failures expose retry without pretending the database is emp
   const fixture = load('UsersSection');
   assert.match(renderToStaticMarkup(fixture.render({ usersLoadFailed: true })), /Retry/);
 });
+
+test('Knowledge Base initial and refresh requests both fetch only three facts', () => {
+  const source = readFileSync(new URL('../herbalaifrontend/src/features/admin/useAdminWorkspace.ts', import.meta.url), 'utf8');
+  const requests = [...source.matchAll(/api\.get\('\/knowledge-base\/page',\s*\{\s*params:\s*\{([\s\S]*?)\}\s*\}/g)];
+  assert.equal(requests.length, 2);
+  for (const request of requests) assert.match(request[1], /page: kbPage, limit: 3,/);
+});
+
+test('Knowledge Base navigation uses three-fact pages including an incomplete last page', () => {
+  const fixture = load('KnowledgeBaseSection');
+  const children = element => React.isValidElement(element) ? React.Children.toArray(element.props.children) : [];
+  const text = element => typeof element === 'string' ? element : children(element).map(text).join('');
+  const findButton = (element, label) => {
+    if (!React.isValidElement(element)) return undefined;
+    if (element.type === 'button' && text(element) === label) return element;
+    for (const child of children(element)) {
+      const found = findButton(child, label);
+      if (found) return found;
+    }
+  };
+  for (const [kbPage, kbTotal, pages, previousDisabled, nextDisabled] of [
+    [1, 0, 1, true, true], [1, 3, 1, true, true], [1, 4, 2, true, false],
+    [2, 4, 2, false, true], [2, 40, 14, false, false], [14, 40, 14, false, true],
+  ]) {
+    const tree = fixture.render({ kbPage, kbTotal });
+    assert.match(renderToStaticMarkup(tree), new RegExp(`Page ${kbPage} of ${pages}`));
+    assert.equal(findButton(tree, 'Previous').props.disabled, previousDisabled);
+    assert.equal(findButton(tree, 'Next').props.disabled, nextDisabled);
+  }
+  const loadingTree = fixture.render({ kbPage: 2, kbTotal: 40, kbLoading: true });
+  assert.equal(findButton(loadingTree, 'Previous').props.disabled, true);
+  assert.equal(findButton(loadingTree, 'Next').props.disabled, true);
+  const tree = fixture.render({ kbPage: 2, kbTotal: 40 });
+  findButton(tree, 'Next').props.onClick();
+  assert.equal(fixture.calls[0][0], 'setKbPage');
+  assert.equal(fixture.calls[0][1](2), 3);
+  assert.deepEqual(fixture.calls[1], ['setKbLoading', true]);
+});

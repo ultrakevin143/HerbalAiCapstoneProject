@@ -209,7 +209,7 @@ test('KB refresh sends global filters and accepts clamped page and global catego
   });
   await handler();
   assert.deepEqual(requests[0], { url: '/knowledge-base/page', config: { params: {
-    page: 2, limit: 25, search: 'care', category: 'coordinated-care', status: 'INACTIVE',
+    page: 2, limit: 3, search: 'care', category: 'coordinated-care', status: 'INACTIVE',
   } } });
   assert.equal(values.page, 1);
   assert.equal(values.total, 2);

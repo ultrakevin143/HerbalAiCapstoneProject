@@ -239,7 +239,7 @@ export function useAdminWorkspace() {
 
   const refreshKbPage = async () => {
     const response = await api.get('/knowledge-base/page', { params: {
-      page: kbPage, limit: 25, search: debouncedKbSearch,
+      page: kbPage, limit: 3, search: debouncedKbSearch,
       category: kbCategoryFilter === 'ALL' ? undefined : kbCategoryFilter, status: kbStatusFilter,
     } });
     if (response.data?.status === 'success') {
@@ -296,7 +296,7 @@ export function useAdminWorkspace() {
         if (activeTab === 'knowledgebase') {
           setKbLoading(true);
           const kbRes = await api.get('/knowledge-base/page', { params: {
-            page: kbPage, limit: 25, search: debouncedKbSearch,
+            page: kbPage, limit: 3, search: debouncedKbSearch,
             category: kbCategoryFilter === 'ALL' ? undefined : kbCategoryFilter, status: kbStatusFilter,
           } });
           if (cancelled) return;

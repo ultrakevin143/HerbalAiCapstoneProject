@@ -398,10 +398,10 @@ export default function KnowledgeBaseSection({
                 </div>
               )}
               <div className="mt-4 flex items-center justify-between text-sm text-ink">
-                <span>Page {kbPage} of {Math.max(1, Math.ceil(kbTotal / 25))}</span>
+                <span>Page {kbPage} of {Math.max(1, Math.ceil(kbTotal / 3))}</span>
                 <div className="flex gap-2">
                   <button type="button" disabled={kbLoading || kbPage === 1} onClick={() => { setKbPage((page) => page - 1); setKbLoading(true); }} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Previous</button>
-                  <button type="button" disabled={kbLoading || kbPage * 25 >= kbTotal} onClick={() => { setKbPage((page) => page + 1); setKbLoading(true); }} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Next</button>
+                  <button type="button" disabled={kbLoading || kbPage * 3 >= kbTotal} onClick={() => { setKbPage((page) => page + 1); setKbLoading(true); }} className="rounded-lg border px-3 py-1.5 disabled:opacity-40">Next</button>
                 </div>
               </div>
             </div>
