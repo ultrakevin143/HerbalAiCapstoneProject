@@ -2,7 +2,7 @@ name: Herbal AI Continuous Integration (CI)
 
 on:
   push:
-    branches: [ "main", "master", "develop", "codex/readability-accessibility", "codex/mvp-acceptance-ci", "codex/preview-origin-support-20261013" ]
+    branches: [ "main", "master", "develop", "codex/readability-accessibility", "codex/mvp-acceptance-ci", "codex/preview-origin-support-20261013", "codex/live-audit-repairs-20261015" ]
   pull_request:
     branches: [ "main", "master", "develop" ]
 
@@ -82,6 +82,8 @@ jobs:
           tests/knowledge-page-filters-database.test.ts
           tests/review-concurrency-database.test.ts tests/suggestion-review-email.test.ts
           tests/admin-user-page-database.test.ts tests/list-pagination.test.ts
+          tests/audit-pagination-http.test.ts tests/audit-search-database.test.ts
+          tests/stuart-source-links-database.test.ts
           tests/forum-like-notification-database.test.ts tests/forum-like-notification-http.test.ts
           tests/credits-config.test.ts tests/credits-database.test.ts
           tests/knowledge-import-boundary.test.ts tests/helpers/knowledge-import-server-boundary.ts
@@ -177,13 +179,17 @@ jobs:
         working-directory: herbalaifrontend
         run: node --test ../scripts/admin-logout.test.mjs ../scripts/workflow-integrations.test.mjs
 
+      - name: Run audit history paging and search regressions
+        working-directory: herbalaifrontend
+        run: node --test ../scripts/audit-log-controls.test.mjs
+
       - name: Run library keyboard regressions
         working-directory: herbalaifrontend
         run: node --test ../scripts/library-accessibility.test.mjs
 
       - name: Run footer and sources regressions
         working-directory: herbalaifrontend
-        run: node --test scripts/footer.test.mjs ../scripts/sources-methodology.test.mjs
+        run: node --test scripts/footer.test.mjs ../scripts/sources-methodology.test.mjs ../scripts/herb-reference-review.test.mjs
 
       - name: Run library reply retention regressions
         working-directory: herbalaifrontend

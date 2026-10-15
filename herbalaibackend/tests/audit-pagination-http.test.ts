@@ -4,10 +4,11 @@ import type { NextFunction, Request, Response } from 'express';
 import request from 'supertest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const mocks = vi.hoisted(() => ({ account: vi.fn(), list: vi.fn(), count: vi.fn(), create: vi.fn() }));
+const mocks = vi.hoisted(() => ({ account: vi.fn(), list: vi.fn(), count: vi.fn(), create: vi.fn(), raw: vi.fn() }));
 vi.mock('../src/lib/prisma.js', () => ({ prisma: {
   user: { findUnique: mocks.account },
   auditLog: { findMany: mocks.list, count: mocks.count, create: mocks.create },
+  $queryRaw: mocks.raw,
 } }));
 
 import auditRoutes from '../src/routes/audit.routes.js';
@@ -34,7 +35,7 @@ const log = { id: 9, adminId: 'qa-audit-actor', action: 'TEST ONLY', targetType:
     email: 'audit@example.invalid', username: 'qa_only', avatar: null } };
 const read = (query: Record<string, string> = {}) => request(app).get('/api/admin/audit-logs').query(query).set(headers);
 const assertNoAuditAccess = () => {
-  for (const dependency of [mocks.list, mocks.count, mocks.create]) expect(dependency).not.toHaveBeenCalled();
+  for (const dependency of [mocks.list, mocks.count, mocks.create, mocks.raw]) expect(dependency).not.toHaveBeenCalled();
 };
 
 describe('Administrator audit pagination and access', () => {
@@ -90,7 +91,7 @@ describe('Administrator audit pagination and access', () => {
     expect(response.body.data).toEqual({ logs: [log], total: 500, limit, offset });
     expect(mocks.list).toHaveBeenCalledExactlyOnceWith({
       include: { admin: { select: { id: true, name: true, email: true, username: true, avatar: true } } },
-      orderBy: { createdAt: 'desc' }, take: limit, skip: offset,
+      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }], take: limit, skip: offset,
     });
     expect(mocks.count).toHaveBeenCalledExactlyOnceWith();
     expect(mocks.create).not.toHaveBeenCalled();
@@ -101,6 +102,43 @@ describe('Administrator audit pagination and access', () => {
     const response = await read({ offset: '500' });
     expect(response.status).toBe(200);
     expect(response.body.data).toEqual({ logs: [], total: 500, limit: 50, offset: 500 });
+  });
+
+  it.each([{ search: ['one', 'two'] }, { search: 'x'.repeat(201) }])('rejects invalid search before audit queries: %j', async query => {
+    const response = await request(app).get('/api/admin/audit-logs').query(query).set(headers);
+    expect(response.status).toBe(400);
+    assertNoAuditAccess();
+  });
+
+  it('treats whitespace search as the existing unfiltered page', async () => {
+    expect((await read({ search: '   ' })).status).toBe(200);
+    expect(mocks.raw).not.toHaveBeenCalled();
+    expect(mocks.count).toHaveBeenCalledOnce();
+  });
+
+  it('searches before pagination and returns matching metadata without altering records', async () => {
+    mocks.raw.mockResolvedValueOnce([{ id: log.id }]).mockResolvedValueOnce([{ total: 1 }]);
+    const response = await read({ search: '  QA-ONLY  ', limit: '1', offset: '0' });
+    expect(response.status).toBe(200);
+    expect(response.body.data).toEqual({ logs: [log], total: 1, limit: 1, offset: 0 });
+    expect(mocks.raw.mock.calls[0]?.[0].values).toEqual(['qa-only', 1, 0]);
+    expect(mocks.list.mock.calls[0]?.[0].where).toEqual({ id: { in: [9] } });
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+
+  it('returns an explicit empty search result without fetching unrelated logs', async () => {
+    mocks.raw.mockResolvedValueOnce([]).mockResolvedValueOnce([{ total: 0 }]);
+    const response = await read({ search: 'no such record' });
+    expect(response.body.data).toEqual({ logs: [], total: 0, limit: 50, offset: 0 });
+    expect(mocks.list).not.toHaveBeenCalled();
+  });
+
+  it('fails closed when the search query fails', async () => {
+    mocks.raw.mockRejectedValue(Object.assign(new Error('TEST private search failure'), { code: 'P1001' }));
+    const response = await read({ search: 'needle' });
+    expect(response.status).toBe(503);
+    expect(response.body.data).toBeUndefined();
+    expect(JSON.stringify(response.body)).not.toContain('TEST private');
   });
 
   it('ignores unrelated query fields without adding filters or selecting secrets', async () => {
