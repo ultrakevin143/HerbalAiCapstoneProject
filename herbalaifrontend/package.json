@@ -25,6 +25,10 @@
     "socket.io-client": "^4.8.3",
     "zod": "^4.4.3"
   },
+  "overrides": {
+    "sharp": "0.35.5",
+    "source-map-js": "1.2.2"
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",

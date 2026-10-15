@@ -2,9 +2,19 @@
 
 This repository is a monorepo. Deploy the backend and frontend as separate services from the same GitHub branch. Keep the root-level capstone documents and `Docs/` as references; do not delete them to prepare a deployment. Neither service should use the repository root as its application root.
 
+## Active production account (confirmed 15 October 2026)
+
+Use the **purple Chrome profile named Gina** for Railway and Herbal-Ai administrator checks. The user explicitly confirmed this profile. The Mercado profile is the old setup and must not be used for production deployments.
+
+- Railway workspace: `herbalai23's Projects`; project: `sparkling-perfection` (`a8bdda23-dcc3-4977-b41b-480b544ce6e7`).
+- Environment: `production` (`602c21f2-65b6-4469-9ed6-e6c34ce51062`); service: `HerbalAiCapstoneProject` (`2bb17632-b634-40fc-9286-1e4261629be1`).
+- Backend: `https://herbalaicapstoneproject-production.up.railway.app`; public site: `https://www.herbalai.site`.
+- The live backend tracks `main` with **Wait for CI enabled**. Preserve its newer security, connection-pool and architecture changes when applying focused repairs.
+- The old Mercado project `herbal-ai-staging` is separate. Its application was offline while its pgvector database was online when inspected. Do not reactivate or remove either as part of a production release.
+
 ## Before creating services
 
-1. Select the intended release branch in both platforms. For the current release, that is `codex/readability-accessibility`, not the older `main` branch. Verify the deployed commit matches the branch head before testing.
+1. Select the intended release branch in both platforms. The active Gina Railway production service tracks `main`; `codex/readability-accessibility` is an older parallel branch. Verify each deployed commit and domain before testing.
 2. Choose a database: use a separate staging database for rehearsals, or back up and review migration status before connecting an existing database. A new Railway database will **not** contain the local Neon users, suggestions, or other data automatically.
 3. Use Railway's **pgvector template**, not its standard PostgreSQL service. The schema's migrations create the `vector` extension and vector columns; the standard image does not include pgvector.
 4. Create fresh production credentials. Do not copy local `.env` files into either platform or reuse secrets from a deleted deployment. Enter credentials directly in the provider's protected environment-variable UI.

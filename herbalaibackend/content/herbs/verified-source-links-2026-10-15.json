@@ -1,0 +1,675 @@
+{
+  "verifiedOn": "2026-10-15",
+  "scope": "URL precision only. Botanical identity checked against the named source page; medicinal claims and dosages were not re-reviewed.",
+  "verified": [
+    {
+      "scientificName": "Acalypha hispida",
+      "localName": "Buntot-pusa",
+      "url": "https://www.stuartxchange.org/Chenile",
+      "checkedAt": "2026-10-15T14:07:07.901Z",
+      "identityExcerpt": "Chenile plant, Acalypha hispida, Buntot-pusa,Red cat's t"
+    },
+    {
+      "scientificName": "Albizia lebbekoides",
+      "localName": "Kariskis",
+      "url": "https://www.stuartxchange.org/Kariskis.html",
+      "checkedAt": "2026-10-15T13:57:55.318Z",
+      "identityExcerpt": "Kariskis, Albizia lebbekoides, INDIAN ALBIZIA / Altern"
+    },
+    {
+      "scientificName": "Aleurites moluccanus",
+      "localName": "Lumbang",
+      "url": "https://www.stuartxchange.org/Lumbang.html",
+      "checkedAt": "2026-10-15T13:59:00.680Z",
+      "identityExcerpt": " Sol. ex Seem. Aleurites moluccanus (L.) Willd. is an accept"
+    },
+    {
+      "scientificName": "Alpinia elegans",
+      "localName": "Kolowratia",
+      "url": "https://www.stuartxchange.org/Tagbak",
+      "checkedAt": "2026-10-15T13:57:58.894Z",
+      "identityExcerpt": "Tagbak / Alpinia elegans / Kolowratia elegans Pre"
+    },
+    {
+      "scientificName": "Alpinia haenkei",
+      "localName": "Tagbak-gubat",
+      "url": "https://www.stuartxchange.org/Bagumbung",
+      "checkedAt": "2026-10-15T14:05:13.701Z",
+      "identityExcerpt": "Tagbak-babae / Alpinia haenkei / Yanguas: Philippine Me"
+    },
+    {
+      "scientificName": "Alstonia macrophylla",
+      "localName": "Batino",
+      "url": "https://www.stuartxchange.org/Batino.html",
+      "checkedAt": "2026-10-15T13:57:14.903Z",
+      "identityExcerpt": "Batino / Alstonia macrophylla / DEVIL TREE / HARD ALST"
+    },
+    {
+      "scientificName": "Alstonia spectabilis",
+      "localName": "Dita-kanding",
+      "url": "https://www.stuartxchange.org/KuyauKuyau",
+      "checkedAt": "2026-10-15T14:04:58.382Z",
+      "identityExcerpt": "Kuyau-kuyau, Alstonia spectabilis, HARD MILKWOOD / Alterna"
+    },
+    {
+      "scientificName": "Annona glabra",
+      "localName": "Nangka-nangka",
+      "url": "https://www.stuartxchange.org/PondApple",
+      "checkedAt": "2026-10-15T13:59:15.465Z",
+      "identityExcerpt": ", Swamp apple, Annona glabra/ Alternative Medicine HO"
+    },
+    {
+      "scientificName": "Antidesma ghaesembilla",
+      "localName": "Inyam",
+      "url": "https://www.stuartxchange.org/Binayuyo",
+      "checkedAt": "2026-10-15T13:57:45.928Z",
+      "identityExcerpt": "Binayuyo, Antidesma ghaesembilla, BLACK CURRANT TREE / Al"
+    },
+    {
+      "scientificName": "Artocarpus altilis",
+      "localName": "Rimas",
+      "url": "https://www.stuartxchange.org/Rimas.html",
+      "checkedAt": "2026-10-15T13:59:22.435Z",
+      "identityExcerpt": "Rimas / artocarpus altilis / breadruit / Luo mi shu"
+    },
+    {
+      "scientificName": "Artocarpus odoratissimus",
+      "localName": "Marang",
+      "url": "https://www.stuartxchange.org/Marang.html",
+      "checkedAt": "2026-10-15T13:59:10.028Z",
+      "identityExcerpt": "Marang, Artocarpus odoratissimus Blanco, JOHEY OAK: Phili"
+    },
+    {
+      "scientificName": "Asystasia gangetica",
+      "localName": "Asistasya",
+      "url": "https://www.stuartxchange.org/Asistasia",
+      "checkedAt": "2026-10-15T13:57:06.310Z",
+      "identityExcerpt": "Asistasia, Asystasia gangetica, Zamboangenita, chinese "
+    },
+    {
+      "scientificName": "Avicennia marina",
+      "localName": "Pipisik",
+      "url": "https://www.stuartxchange.org/BungalonPuti",
+      "checkedAt": "2026-10-15T14:05:10.983Z",
+      "identityExcerpt": "Bungalon-puti,Avicennia marina, OLIVE MANGROVE / Altern"
+    },
+    {
+      "scientificName": "Bauhinia acuminata",
+      "localName": "Pata",
+      "url": "https://www.stuartxchange.org/Bambang.html",
+      "checkedAt": "2026-10-15T14:05:10.643Z",
+      "identityExcerpt": "Bambang , Bauhinia acuminata, WHITE BAUHINIA: Philipp"
+    },
+    {
+      "scientificName": "Bauhinia purpurea",
+      "localName": "Katutay",
+      "url": "https://www.stuartxchange.org/ButterflyTree.html",
+      "checkedAt": "2026-10-15T14:05:08.527Z",
+      "identityExcerpt": "utterfly tree, Bauhinia purpurea, PURPLE ORCHID TREE, Zi "
+    },
+    {
+      "scientificName": "Boehmeria nivea",
+      "localName": "Lupa",
+      "url": "https://www.stuartxchange.org/Ramie",
+      "checkedAt": "2026-10-15T13:59:10.222Z",
+      "identityExcerpt": "Ramie:, Boehmeria nivea, China grass: Philippine"
+    },
+    {
+      "scientificName": "Bombax ceiba",
+      "localName": "Malabulak",
+      "url": "https://www.stuartxchange.org/Buboi-gubat",
+      "checkedAt": "2026-10-15T13:59:08.287Z",
+      "identityExcerpt": "Buboi-gubat, Bombax ceiba Linn., RED SILK COTTON T"
+    },
+    {
+      "scientificName": "Canarium ovatum",
+      "localName": "Pili",
+      "url": "https://www.stuartxchange.org/Pili.html",
+      "checkedAt": "2026-10-15T13:59:19.511Z",
+      "identityExcerpt": "Pili / Canarium ovatum / Philippine nut: Philip"
+    },
+    {
+      "scientificName": "Cassia fistula",
+      "localName": "Kanya-pistula",
+      "url": "https://www.stuartxchange.org/KanyaPistula",
+      "checkedAt": "2026-10-15T14:07:13.280Z",
+      "identityExcerpt": "anya pistula / Cassia fistula / Golden Shower: Philipp"
+    },
+    {
+      "scientificName": "Cassia sophera",
+      "localName": "Tambabalisa",
+      "url": "https://www.stuartxchange.org/Andadasi",
+      "checkedAt": "2026-10-15T14:05:13.913Z",
+      "identityExcerpt": "Andadasi, Cassia sophera, SENNA, Huai ye jue ming"
+    },
+    {
+      "scientificName": "Celosia argentea",
+      "localName": "Kulitis-parang",
+      "url": "https://www.stuartxchange.org/Kindayohan",
+      "checkedAt": "2026-10-15T14:30:34.226Z",
+      "identityExcerpt": "ong-manok Celosia argentea L. RED COCKSCOMB Chi ku"
+    },
+    {
+      "scientificName": "Citrus hystrix",
+      "localName": "Kaburaw",
+      "url": "https://www.stuartxchange.org/Kabuyaw",
+      "checkedAt": "2026-10-15T14:07:05.506Z",
+      "identityExcerpt": "Kabuyaw / Citrus hystrix: Philippine Medicinal He"
+    },
+    {
+      "scientificName": "Corchorus olitorius",
+      "localName": "Pasau",
+      "url": "https://www.stuartxchange.org/Pasau.html",
+      "checkedAt": "2026-10-15T13:59:18.880Z",
+      "identityExcerpt": "asau-na-haba / Corchorus olitorius / Jew's mallow / - Phili"
+    },
+    {
+      "scientificName": "Crateva religiosa",
+      "localName": "Salingbobog",
+      "url": "https://www.stuartxchange.org/Salingbobog.html",
+      "checkedAt": "2026-10-15T13:59:21.510Z",
+      "identityExcerpt": "Salingbobog, Crateva religiosa Forst. f., THREE-LEAVED "
+    },
+    {
+      "scientificName": "Cynometra ramiflora",
+      "localName": "Balitbitan",
+      "url": "https://www.stuartxchange.org/Oringen",
+      "checkedAt": "2026-10-15T14:04:55.656Z",
+      "identityExcerpt": "Oringen, Cynometra ramiflora, balitbitan, CYNOMETRA: "
+    },
+    {
+      "scientificName": "Cyrtosperma merkusii",
+      "localName": "Palawan",
+      "url": "https://www.stuartxchange.org/Palauan",
+      "checkedAt": "2026-10-15T14:05:08.590Z",
+      "identityExcerpt": "Palauan, Cyrtosperma merkusii, SWAMP TARO: Philippine "
+    },
+    {
+      "scientificName": "Derris elliptica",
+      "localName": "Guyod",
+      "url": "https://www.stuartxchange.org/Tubli",
+      "checkedAt": "2026-10-15T13:57:33.643Z",
+      "identityExcerpt": "Tubli / Derris elliptica Benth / poison vine / tu"
+    },
+    {
+      "scientificName": "Dipterocarpus grandiflorus",
+      "localName": "Apitong",
+      "url": "https://www.stuartxchange.org/Apitong.html",
+      "checkedAt": "2026-10-15T13:57:03.292Z",
+      "identityExcerpt": "Apitong, Dipterocarpus grandiflorus: Philippine Medicinal He"
+    },
+    {
+      "scientificName": "Donax canniformis",
+      "localName": "Bamban",
+      "url": "https://www.stuartxchange.org/Bamban.html",
+      "checkedAt": "2026-10-15T13:57:10.149Z",
+      "identityExcerpt": "ntaceae Bamban Donax canniformis (G.Forst. ) K. Schum. CO"
+    },
+    {
+      "scientificName": "Dracontomelon dao",
+      "localName": "Lamio",
+      "url": "https://www.stuartxchange.org/Dao",
+      "checkedAt": "2026-10-15T13:58:57.174Z",
+      "identityExcerpt": "Dao, Dracontomelon dao (Blanco) Merr. & Rolfe, "
+    },
+    {
+      "scientificName": "Dysphania ambrosioides",
+      "localName": "Alpasotes",
+      "url": "https://www.stuartxchange.org/Alpasotis.html",
+      "checkedAt": "2026-10-15T13:57:01.715Z",
+      "identityExcerpt": "ceae Alpasotis Dysphania ambrosioides (L.) Mosyakin &amp; Clem"
+    },
+    {
+      "scientificName": "Elephantopus scaber",
+      "localName": "Dilang-aso",
+      "url": "https://www.stuartxchange.org/DilaDila.html",
+      "checkedAt": "2026-10-15T14:05:18.453Z",
+      "identityExcerpt": "Dila-dila / Elephantopus scaber / Prickly-leaved elephan"
+    },
+    {
+      "scientificName": "Elephantopus tomentosus",
+      "localName": "Apis",
+      "url": "https://www.stuartxchange.org/Malatabako.html",
+      "checkedAt": "2026-10-15T14:04:55.889Z",
+      "identityExcerpt": "p 184-197. (4) Elephantopus tomentosus L. / Catalogue of Life, "
+    },
+    {
+      "scientificName": "Eleusine indica",
+      "localName": "Gagabutan",
+      "url": "https://www.stuartxchange.org/Paragis.html",
+      "checkedAt": "2026-10-15T13:57:35.706Z",
+      "identityExcerpt": "Paragis / Eleusine indica / wire grass: Philippine"
+    },
+    {
+      "scientificName": "Emilia sonchifolia",
+      "localName": "Anito",
+      "url": "https://www.stuartxchange.org/Tagulinaw",
+      "checkedAt": "2026-10-15T13:57:03.767Z",
+      "identityExcerpt": "Tagulinaw / Emilia sonchifolia/ Yang-t'i Ts'ao: Philipp"
+    },
+    {
+      "scientificName": "Erythrina variegata",
+      "localName": "Dadap",
+      "url": "https://www.stuartxchange.org/Karapdap",
+      "checkedAt": "2026-10-15T14:07:17.411Z",
+      "identityExcerpt": "pdap, Dapdap / Erythrina variegata / Indian coral tree: Phi"
+    },
+    {
+      "scientificName": "Euphorbia pulcherrima",
+      "localName": "Pastores",
+      "url": "https://www.stuartxchange.org/Poinsettia",
+      "checkedAt": "2026-10-15T13:59:20.986Z",
+      "identityExcerpt": "Poinsettia / Euphorbia pulcherrima / Christmas flower: Phil"
+    },
+    {
+      "scientificName": "Euphorbia thymifolia",
+      "localName": "Gatas-gatas",
+      "url": "https://www.stuartxchange.org/Makikitot",
+      "checkedAt": "2026-10-15T13:57:48.134Z",
+      "identityExcerpt": "Makikitot / Euphorbia thymifolia / Chicken weed: Philippi"
+    },
+    {
+      "scientificName": "Euphorbia tirucalli",
+      "localName": "Agas-ahas",
+      "url": "https://www.stuartxchange.org/Bali-bali",
+      "checkedAt": "2026-10-15T13:56:57.740Z",
+      "identityExcerpt": "Bali-bali / Euphorbia tirucalli / Indian tree spurge / M"
+    },
+    {
+      "scientificName": "Excoecaria agallocha",
+      "localName": "Alipata",
+      "url": "https://www.stuartxchange.org/Buta-buta",
+      "checkedAt": "2026-10-15T13:56:56.633Z",
+      "identityExcerpt": "Buta-buta, Excoecaria Agallocha, BLINDING TREE, Hai qi :"
+    },
+    {
+      "scientificName": "Ficus benjamina",
+      "localName": "Balete",
+      "url": "https://www.stuartxchange.org/Balete.html",
+      "checkedAt": "2026-10-15T13:57:09.682Z",
+      "identityExcerpt": "Balete, Ficus benjamina, WEEPING FIG , Chui ye r"
+    },
+    {
+      "scientificName": "Ficus septica",
+      "localName": "Hauili",
+      "url": "https://www.stuartxchange.org/Hauili.html",
+      "checkedAt": "2026-10-15T13:57:39.073Z",
+      "identityExcerpt": "oraceae Hauili Ficus septica Burm. f. HAUILI FIG TRE "
+    },
+    {
+      "scientificName": "Ficus ulmifolia",
+      "localName": "Kayoman",
+      "url": "https://www.stuartxchange.org/Is-is",
+      "checkedAt": "2026-10-15T14:05:05.106Z",
+      "identityExcerpt": "Is-is, Ficus ulmifolia, SCOURING LEAF / Alterna"
+    },
+    {
+      "scientificName": "Garuga floribunda",
+      "localName": "Bogo",
+      "url": "https://www.stuartxchange.org/Bogo.html",
+      "checkedAt": "2026-10-15T13:57:19.196Z",
+      "identityExcerpt": "Bogo, Garuga floribunda, BURUS, Garuga tree / Al"
+    },
+    {
+      "scientificName": "Gnetum gnemon",
+      "localName": "Linti",
+      "url": "https://www.stuartxchange.org/Bago",
+      "checkedAt": "2026-10-15T13:59:01.104Z",
+      "identityExcerpt": "Bago, Gnetum gnemon, GNETUM TREE, Melinjo / "
+    },
+    {
+      "scientificName": "Gomphrena celosioides",
+      "localName": "Bara-baras",
+      "url": "https://www.stuartxchange.org/BotonsilyongGapang.html",
+      "checkedAt": "2026-10-15T14:04:58.062Z",
+      "identityExcerpt": "ilyong gapang, Gomphrena celosioides C. Mart., GOMPHRENA WEED"
+    },
+    {
+      "scientificName": "Helianthus annuus",
+      "localName": "Mirasol",
+      "url": "https://www.stuartxchange.org/Mirasol.html",
+      "checkedAt": "2026-10-15T13:59:15.203Z",
+      "identityExcerpt": "uart Mirasol / Helianthus annuus L. / SUN FLOWER: Philipp"
+    },
+    {
+      "scientificName": "Heritiera littoralis",
+      "localName": "Dungon",
+      "url": "https://www.stuartxchange.org/Dungon-late.html",
+      "checkedAt": "2026-10-15T14:04:59.678Z",
+      "identityExcerpt": "Dungon-late, Heritiera littoralis, LOOKING GLASS TREE: Phi"
+    },
+    {
+      "scientificName": "Hibiscus syriacus",
+      "localName": "Gumamela-asul",
+      "url": "https://www.stuartxchange.org/GumamelangAsul.html",
+      "checkedAt": "2026-10-15T14:05:02.378Z",
+      "identityExcerpt": "amelang asul / Hibiscus syriacus / SYRIAN HIBISCUS : Phil"
+    },
+    {
+      "scientificName": "Intsia bijuga",
+      "localName": "Salomague-gubat",
+      "url": "https://www.stuartxchange.org/Ipil",
+      "checkedAt": "2026-10-15T13:59:23.985Z",
+      "identityExcerpt": "c Ipil, intsia bijuga, borneo teak, sevi : Her"
+    },
+    {
+      "scientificName": "Laportea meyeniana",
+      "localName": "Hangod",
+      "url": "https://www.stuartxchange.org/Lipa.html",
+      "checkedAt": "2026-10-15T14:05:00.460Z",
+      "identityExcerpt": "Lipa / Laportea meyeniana Warb. Philippine Medicin"
+    },
+    {
+      "scientificName": "Lunasia amara",
+      "localName": "Lunas",
+      "url": "https://www.stuartxchange.org/Lunas2",
+      "checkedAt": "2026-10-15T13:59:00.782Z",
+      "identityExcerpt": "Lunas, Lunasia amara Blanco, Lamara : Philipp"
+    },
+    {
+      "scientificName": "Macaranga tanarius",
+      "localName": "Binunga",
+      "url": "https://www.stuartxchange.org/Binunga.html",
+      "checkedAt": "2026-10-15T13:57:20.101Z",
+      "identityExcerpt": "Binunga / Macaranga tanarius.: Philippine Alternative"
+    },
+    {
+      "scientificName": "Mangifera altissima",
+      "localName": "Pahutan",
+      "url": "https://www.stuartxchange.org/Paho",
+      "checkedAt": "2026-10-15T13:59:12.003Z",
+      "identityExcerpt": "Paho, Mangifera altissima, PAHUTAN MANGO / Alterna"
+    },
+    {
+      "scientificName": "Mikania cordata",
+      "localName": "Bikas",
+      "url": "https://www.stuartxchange.org/Bikas.html",
+      "checkedAt": "2026-10-15T13:57:20.749Z",
+      "identityExcerpt": "Bikas, Mikania cordata (Burm.f.) B.L. Rob., HEA"
+    },
+    {
+      "scientificName": "Musa acuminata",
+      "localName": "Saging",
+      "url": "https://stuartxchange.org/Lakatan",
+      "checkedAt": "2026-10-15T14:05:14.107Z",
+      "identityExcerpt": "Lakatan, Musa acuminata colla cv Lakatan, desser"
+    },
+    {
+      "scientificName": "Musa textilis",
+      "localName": "Sinamay",
+      "url": "https://www.stuartxchange.org/Abaca",
+      "checkedAt": "2026-10-15T13:59:26.899Z",
+      "identityExcerpt": "Abaca, Musa textilis, MANILA HEMP/ Alternativ"
+    },
+    {
+      "scientificName": "Nauclea orientalis",
+      "localName": "Bangkal",
+      "url": "https://www.stuartxchange.org/Bangkal.html",
+      "checkedAt": "2026-10-15T13:57:12.938Z",
+      "identityExcerpt": "Bangkal / Nauclea orientalis / Leichhardt pine : Phil"
+    },
+    {
+      "scientificName": "Pachyrhizus erosus",
+      "localName": "Kamas",
+      "url": "https://www.stuartxchange.org/Sinkamas.html",
+      "checkedAt": "2026-10-15T14:05:03.019Z",
+      "identityExcerpt": " / singkamas / Pachyrhizus erosus Linn, Potato bean / Bang"
+    },
+    {
+      "scientificName": "Pangium edule",
+      "localName": "Pangi",
+      "url": "https://www.stuartxchange.org/Pangi.html",
+      "checkedAt": "2026-10-15T13:59:15.306Z",
+      "identityExcerpt": "Pa�gi, Pangium edule, FOOTBAL FRUIT : Philipp"
+    },
+    {
+      "scientificName": "Persea americana",
+      "localName": "Abukado",
+      "url": "https://www.stuartxchange.org/Abukado.html",
+      "checkedAt": "2026-10-15T13:56:52.530Z",
+      "identityExcerpt": "Abukado / Persea americana/ Avocado : Philippine He"
+    },
+    {
+      "scientificName": "Phyllanthus acidus",
+      "localName": "Iba",
+      "url": "https://www.stuartxchange.org/Iba.html",
+      "checkedAt": "2026-10-15T13:57:43.805Z",
+      "identityExcerpt": "horbiaceae Iba Phyllanthus acidus (L.) Skeels OTAHEITE GOO"
+    },
+    {
+      "scientificName": "Pinus kesiya",
+      "localName": "Barit",
+      "url": "https://www.stuartxchange.org/BaguioPine",
+      "checkedAt": "2026-10-15T13:57:15.555Z",
+      "identityExcerpt": "leng (Ilokano) Pinus kesiya var. langbianensis (A.Ch"
+    },
+    {
+      "scientificName": "Pithecellobium dulce",
+      "localName": "Kamatsile",
+      "url": "https://www.stuartxchange.org/Kamatsile.html",
+      "checkedAt": "2026-10-15T13:58:00.109Z",
+      "identityExcerpt": "Kamatsile / Pithecellobium dulce / kamachile / sweet tama"
+    },
+    {
+      "scientificName": "Pittosporum pentandrum",
+      "localName": "Mamalis",
+      "url": "https://www.stuartxchange.org/Mamalis.html",
+      "checkedAt": "2026-10-15T13:59:04.930Z",
+      "identityExcerpt": "Mamalis / Pittosporum pentandrum: Philippine Medicinal He"
+    },
+    {
+      "scientificName": "Premna odorata",
+      "localName": "Adgaw",
+      "url": "https://www.stuartxchange.org/Alagaw",
+      "checkedAt": "2026-10-15T13:56:52.690Z",
+      "identityExcerpt": "Alagaw/ Premna odorata: Philippine Medicinal He"
+    },
+    {
+      "scientificName": "Pseudarthria viscida",
+      "localName": "Ngipin-ngipin",
+      "url": "https://stuartxchange.org/StickyDesmodium",
+      "checkedAt": "2026-10-15T14:05:07.424Z",
+      "identityExcerpt": "pseudarthria / Pseudarthria viscida/ Alternative Medicine HO"
+    },
+    {
+      "scientificName": "Pueraria phaseoloides",
+      "localName": "Kudzu-gubat",
+      "url": "https://www.stuartxchange.org/SingkamasAso",
+      "checkedAt": "2026-10-15T14:05:02.902Z",
+      "identityExcerpt": " Bahay (Bikol) Pueraria phaseoloides (Roxb.) Benth. Vaay (Iva"
+    },
+    {
+      "scientificName": "Rauvolfia serpentina",
+      "localName": "Dita-ditahan",
+      "url": "https://www.stuartxchange.org/Serpentina",
+      "checkedAt": "2026-10-15T14:04:57.279Z",
+      "identityExcerpt": "Serpentina, Rauvolfia serpentina, SNAKEROOT, She gen mu :"
+    },
+    {
+      "scientificName": "Rhizophora mucronata",
+      "localName": "Bakawan",
+      "url": "https://stuartxchange.org/Bakauan-babae.html",
+      "checkedAt": "2026-10-15T14:04:58.280Z",
+      "identityExcerpt": "Bakauan-babae, Rhizophora mucronata Lam., Asiatic MANGROVE �"
+    },
+    {
+      "scientificName": "Ricinus communis",
+      "localName": "Tangan-tangan",
+      "url": "https://www.stuartxchange.org/TanganTangan",
+      "checkedAt": "2026-10-15T13:59:37.977Z",
+      "identityExcerpt": "OR OIL PLANT / Ricinus communis: Philippine Herbal Medic"
+    },
+    {
+      "scientificName": "Rourea minor",
+      "localName": "Kamagsa",
+      "url": "https://www.stuartxchange.org/Kamagsa.html",
+      "checkedAt": "2026-10-15T13:57:51.372Z",
+      "identityExcerpt": "Kamagsa, Rourea minor, big leaved rourea - Phi"
+    },
+    {
+      "scientificName": "Sida acuta",
+      "localName": "Apan-apan",
+      "url": "https://www.stuartxchange.org/Ualisualisan",
+      "checkedAt": "2026-10-15T14:06:47.285Z",
+      "identityExcerpt": "Ualisualisan, Sida acuta Burm. f., BROOM WEED: Ph"
+    },
+    {
+      "scientificName": "Spondias pinnata",
+      "localName": "Libas",
+      "url": "https://www.stuartxchange.org/Libas.html",
+      "checkedAt": "2026-10-15T13:58:56.340Z",
+      "identityExcerpt": "Libas, Spondias pinnata, COMMON HOG PLUM : Phili"
+    },
+    {
+      "scientificName": "Spondias purpurea",
+      "localName": "Siniguelas",
+      "url": "https://www.stuartxchange.org/Sineguelas",
+      "checkedAt": "2026-10-15T13:59:30.023Z",
+      "identityExcerpt": "Sineguelas / Spondias purpurea Blanco / Spanish plum: P"
+    },
+    {
+      "scientificName": "Streblus asper",
+      "localName": "Kalios",
+      "url": "https://www.stuartxchange.org/Kalios.html",
+      "checkedAt": "2026-10-15T13:57:52.095Z",
+      "identityExcerpt": "Kalios / Streblus asper / Sandpaper tree / Quo s"
+    },
+    {
+      "scientificName": "Tabernaemontana divaricata",
+      "localName": "Pandakaki",
+      "url": "https://www.stuartxchange.org/Pandakaking-tsina.html",
+      "checkedAt": "2026-10-15T14:05:13.206Z",
+      "identityExcerpt": "akaking-Tsina, Tabernaemontana divaricata, WAX-FLOWER PLANT, Gou y"
+    },
+    {
+      "scientificName": "Tabernaemontana pandacaqui",
+      "localName": "Kalatsutsing-gubat",
+      "url": "https://www.stuartxchange.org/PandakakiPuti.html",
+      "checkedAt": "2026-10-15T13:57:49.103Z",
+      "identityExcerpt": " banana bush / Tabernaemontana pandacaqui / KAMPUPOT / Jian guo go"
+    },
+    {
+      "scientificName": "Terminalia microcarpa",
+      "localName": "Kalumpit",
+      "url": "https://www.stuartxchange.org/Kalumpit.html",
+      "checkedAt": "2026-10-15T13:57:50.797Z",
+      "identityExcerpt": "e Alupi (Ibn.) Terminalia microcarpa Decne Anagep (Ilk.) Bajo"
+    },
+    {
+      "scientificName": "Vitex parviflora",
+      "localName": "Kulipapa",
+      "url": "https://www.stuartxchange.org/Molave",
+      "checkedAt": "2026-10-15T13:58:02.566Z",
+      "identityExcerpt": "Molave, Vitex parviflora, SMALL-FLOWER CHASTE TRE"
+    },
+    {
+      "scientificName": "Vitex trifolia",
+      "localName": "Lagundi-dagat",
+      "url": "https://www.stuartxchange.org/Lagunding-dagat.html",
+      "checkedAt": "2026-10-15T14:05:10.720Z",
+      "identityExcerpt": "gunding-dagat, Vitex trifolia, THREE-LEAVED CHASTE TRE"
+    },
+    {
+      "scientificName": "Voacanga globosa",
+      "localName": "Bayag-usa",
+      "url": "https://www.stuartxchange.org/BayagUsa",
+      "checkedAt": "2026-10-15T13:57:17.354Z",
+      "identityExcerpt": "Bayag-usa, Voacanga globosa / Philippine Medicinal H"
+    },
+    {
+      "scientificName": "Ziziphus talanai",
+      "localName": "Ligao",
+      "url": "https://www.stuartxchange.org/Balakat",
+      "checkedAt": "2026-10-15T14:05:06.161Z",
+      "identityExcerpt": "Balakat, Ziziphus talanai, TALANAI / Alternative M"
+    }
+  ],
+  "requiresReview": [
+    {
+      "scientificName": "Aglaia harmsiana",
+      "localName": "Hibau",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Ailanthus triphysa",
+      "localName": "Kalamias-gubat",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Calamus merrillii",
+      "localName": "Palasan",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Cubilia cubili",
+      "localName": "Kubili",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Cucurbita moschata",
+      "localName": "Kalabasa",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Desmos chinensis",
+      "localName": "Alang-ilang de China",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Dipterocarpus kerrii",
+      "localName": "Hagakhak",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Glochidion album",
+      "localName": "Dampol",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Heritiera sylvatica",
+      "localName": "Dungon-late",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Impatiens platypetala",
+      "localName": "Katilbuk",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Macaranga bicolor",
+      "localName": "Hamindang",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Ocimum americanum",
+      "localName": "Balanoy-parang",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Oncosperma tigillarium",
+      "localName": "Anibong",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Parashorea malaanonan",
+      "localName": "Bagtikan",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Piper sarmentosum",
+      "localName": "Buyo-buyo",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Radermachera pinnata",
+      "localName": "Malunggay-gubat",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    },
+    {
+      "scientificName": "Symplocos cochinchinensis",
+      "localName": "Agosip",
+      "reason": "No species-specific StuartXchange page verified. Do not infer a reference from a shared common name."
+    }
+  ],
+  "reviewNotice": "Plant-specific online reference not verified on 15 October 2026. Original website URL: https://www.stuartxchange.org. The historical citation is retained; source review required."
+}

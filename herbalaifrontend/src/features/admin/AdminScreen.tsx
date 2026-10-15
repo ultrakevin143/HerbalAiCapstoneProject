@@ -146,6 +146,12 @@ export default function AdminPage() {
     kbPage,
     auditSearch,
     setAuditSearch,
+    trimmedAuditSearch,
+    auditPage,
+    setAuditPage,
+    auditTotal,
+    auditPageSize,
+    setAuditLoading,
     auditLoading,
     auditLoadFailed,
     auditLogs,
@@ -476,7 +482,7 @@ export default function AdminPage() {
 
           {/* TAB 6: AUDIT LOGS */}
           {activeTab === 'audit' && (
-<AuditLogsSection auditSearch={auditSearch} setAuditSearch={setAuditSearch} auditLoading={auditLoading} auditLoadFailed={auditLoadFailed} auditLogs={auditLogs} />
+<AuditLogsSection auditSearch={auditSearch} setAuditSearch={setAuditSearch} trimmedAuditSearch={trimmedAuditSearch} auditPage={auditPage} setAuditPage={setAuditPage} auditTotal={auditTotal} auditPageSize={auditPageSize} setAuditLoading={setAuditLoading} auditLoading={auditLoading} auditLoadFailed={auditLoadFailed} auditLogs={auditLogs} />
           )}
         </main>
       </div>
