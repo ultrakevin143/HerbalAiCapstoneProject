@@ -206,6 +206,9 @@ export default function AdminPage() {
   const [availableKbCategories, setAvailableKbCategories] = useState<string[]>([]);
   const [kbLoading, setKbLoading] = useState(true);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
+  const [auditPage, setAuditPage] = useState(1);
+  const [auditTotal, setAuditTotal] = useState(0);
+  const auditPageSize = 50;
   const [auditLoading, setAuditLoading] = useState(true);
   const [auditLoadFailed, setAuditLoadFailed] = useState(false);
   const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(null);
@@ -232,6 +235,8 @@ export default function AdminPage() {
   const [kbSearch, setKbSearch] = useState('');
   const [debouncedKbSearch, setDebouncedKbSearch] = useState('');
   const [auditSearch, setAuditSearch] = useState('');
+  const [debouncedAuditSearch, setDebouncedAuditSearch] = useState('');
+  const trimmedAuditSearch = auditSearch.trim();
 
   // Knowledge Base Modals and forms
   const [isKbModalOpen, setIsKbModalOpen] = useState(false);
@@ -305,6 +310,11 @@ export default function AdminPage() {
     const timer = window.setTimeout(() => setDebouncedKbSearch(kbSearch.trim()), 250);
     return () => window.clearTimeout(timer);
   }, [kbSearch]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedAuditSearch(trimmedAuditSearch), 250);
+    return () => window.clearTimeout(timer);
+  }, [trimmedAuditSearch]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedUserSearch(trimmedUserSearch), 350);
@@ -419,10 +429,14 @@ export default function AdminPage() {
         if (activeTab === 'audit') {
           setAuditLoading(true);
           setAuditLoadFailed(false);
-          const auditRes = await api.get('/admin/audit-logs');
+          const auditRes = await api.get('/admin/audit-logs', { params: {
+            limit: auditPageSize, offset: (auditPage - 1) * auditPageSize,
+            search: debouncedAuditSearch || undefined,
+          } });
           if (cancelled) return;
           if (auditRes.data?.status !== 'success') throw new Error('Unable to load audit logs.');
           setAuditLogs(auditRes.data.data.logs || []);
+          setAuditTotal(auditRes.data.data.total || 0);
         }
       } catch (error: unknown) {
         if (!cancelled) {
@@ -435,6 +449,7 @@ export default function AdminPage() {
       }
     };
 
+    if (activeTab === 'audit' && trimmedAuditSearch !== debouncedAuditSearch) return;
     if (!loading) {
       if (!isAuthenticated && !sessionUnavailable) {
         router.push('/signin');
@@ -446,7 +461,7 @@ export default function AdminPage() {
     return () => {
       cancelled = true;
     };
-  }, [loading, isAuthenticated, sessionUnavailable, user?.role, router, activeTab, herbsPage, debouncedLibrarySearch, kbPage, debouncedKbSearch, kbCategoryFilter, kbStatusFilter, refreshSuggestions]);
+  }, [loading, isAuthenticated, sessionUnavailable, user?.role, router, activeTab, herbsPage, debouncedLibrarySearch, kbPage, debouncedKbSearch, kbCategoryFilter, kbStatusFilter, refreshSuggestions, auditPage, auditPageSize, trimmedAuditSearch, debouncedAuditSearch]);
 
   const handleApprove = async (id: number) => {
     if (actioningId !== null) return;
@@ -2171,10 +2186,11 @@ export default function AdminPage() {
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
                   <input name="auditSearch"
                     type="text"
-                    placeholder="Filter audit logs..."
+                    placeholder="Search audit records..."
                     aria-label="Filter audit logs"
+                    maxLength={200}
                     value={auditSearch}
-                    onChange={(e) => setAuditSearch(e.target.value)}
+                    onChange={(e) => { if (e.target.value.trim() !== trimmedAuditSearch || auditPage !== 1) setAuditLoading(true); setAuditSearch(e.target.value); setAuditPage(1); }}
                     className="w-full rounded-xl border border-input bg-panel py-2 pl-9 pr-4 text-sm font-semibold text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   />
                 </div>
@@ -2183,7 +2199,10 @@ export default function AdminPage() {
               {auditLoading || auditLoadFailed || auditLogs.length === 0 ? (
                 <div className="bg-panel p-12 text-center rounded-2xl border border-line shadow-sm flex flex-col items-center gap-3">
                   <ClipboardList className="h-10 w-10 text-muted stroke-[1.5]" />
-                  <p role="status" className="text-sm font-bold text-muted">{auditLoading ? 'Loading audit logs…' : auditLoadFailed ? 'Audit logs could not be loaded. Please try again.' : 'No audit logs recorded yet'}</p>
+                  <p role="status" className="text-sm font-bold text-muted">{auditLoading ? 'Loading audit logs…' : auditLoadFailed ? 'Audit logs could not be loaded. Please try again.' : trimmedAuditSearch ? 'No audit records match this search.' : 'No audit logs recorded yet'}</p>
+                  {!auditLoading && !auditLoadFailed && trimmedAuditSearch && (
+                    <button type="button" onClick={() => { setAuditSearch(''); setAuditPage(1); setAuditLoading(true); }} className="min-h-11 rounded-lg border border-line px-4 font-semibold">Clear search</button>
+                  )}
                 </div>
               ) : (
                 <div className="bg-panel rounded-2xl border border-line shadow-sm overflow-x-auto">
@@ -2198,18 +2217,7 @@ export default function AdminPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-line text-xs font-semibold text-ink">
-                      {auditLogs
-                        .filter((log) => {
-                          const query = auditSearch.toLowerCase();
-                          return (
-                            log.action.toLowerCase().includes(query) ||
-                            log.targetType.toLowerCase().includes(query) ||
-                            log.admin.name.toLowerCase().includes(query) ||
-                            (log.admin.email && log.admin.email.toLowerCase().includes(query)) ||
-                            (log.details && JSON.stringify(log.details).toLowerCase().includes(query))
-                          );
-                        })
-                        .map((log) => {
+                      {auditLogs.map((log) => {
                           const getBadgeColor = (action: string) => {
                             if (action.includes('APPROVE')) return 'bg-emerald-50 text-emerald-700 border-emerald-200';
                             if (action.includes('REJECT')) return 'bg-amber-50 text-amber-700 border-amber-200';
@@ -2274,6 +2282,16 @@ export default function AdminPage() {
                     </tbody>
                   </table>
                 </div>
+              )}
+              {!auditLoadFailed && (
+                <nav aria-label="Audit log pages" className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-muted">
+                  <p role="status" aria-live="polite">{auditLoading ? 'Loading audit records…' : `Showing ${auditTotal ? (auditPage - 1) * auditPageSize + 1 : 0}–${Math.min(auditPage * auditPageSize, auditTotal)} of ${auditTotal}${trimmedAuditSearch ? ' matching' : ''} records`}</p>
+                  <div className="flex items-center gap-3">
+                    <button type="button" disabled={auditLoading || auditPage <= 1} onClick={() => { setAuditPage(page => page - 1); setAuditLoading(true); }} className="min-h-11 rounded-lg border border-line px-3 disabled:opacity-40">Previous</button>
+                    <span>Page {auditPage} of {Math.max(1, Math.ceil(auditTotal / auditPageSize))}</span>
+                    <button type="button" disabled={auditLoading || auditPage * auditPageSize >= auditTotal || auditPage * auditPageSize > 10000} onClick={() => { setAuditPage(page => page + 1); setAuditLoading(true); }} className="min-h-11 rounded-lg border border-line px-3 disabled:opacity-40">Next</button>
+                  </div>
+                </nav>
               )}
             </div>
           )}

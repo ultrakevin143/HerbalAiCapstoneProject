@@ -1,5 +1,12 @@
 import { prisma } from '../src/lib/prisma.js';
 import { proposedHerbs } from './verify-proposed-herbs.js';
+import { readFileSync } from 'node:fs';
+
+const sourceReview = JSON.parse(readFileSync(new URL('../content/herbs/verified-source-links-2026-10-15.json', import.meta.url), 'utf8')) as {
+  verified: Array<{ scientificName: string; url: string }>;
+  reviewNotice: string;
+};
+const sourceUrlBySpecies = new Map(sourceReview.verified.map(source => [source.scientificName.toLowerCase().trim(), source.url]));
 
 async function importApprovedHerbs() {
   console.log('--- Starting Ingestion of Approved 100 Philippine Herbs ---');
@@ -60,8 +67,9 @@ async function importApprovedHerbs() {
             {
               title: `StuartXchange Philippine Medicinal Plants (${item.scientificName})`,
               publisher: 'StuartXchange / Philippine Ethnobotanical Compendium',
-              url: 'https://www.stuartxchange.org',
-              citation: item.informationSource,
+              url: sourceUrlBySpecies.get(sLower) ?? null,
+              citation: sourceUrlBySpecies.has(sLower) ? item.informationSource
+                : `${item.informationSource}\n${sourceReview.reviewNotice}`,
               supports: ['medicinalUses', 'preparationMethod', 'dosage'],
               accessedAt: new Date(),
             },

@@ -22,7 +22,13 @@ export class AuditController {
         return;
       }
 
-      const { logs, total } = await auditRepo.findAuditLogs(limit, offset);
+      const requestedSearch = req.query["search"];
+      if (requestedSearch !== undefined && (typeof requestedSearch !== 'string' || requestedSearch.length > 200)) {
+        res.status(400).json({ status: 'error', code: 400, message: 'Invalid audit search. Use at most 200 characters.' });
+        return;
+      }
+
+      const { logs, total } = await auditRepo.findAuditLogs(limit, offset, requestedSearch?.trim());
 
       res.status(200).json({
         status: "success",
