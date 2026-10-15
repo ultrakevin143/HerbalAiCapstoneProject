@@ -67,6 +67,9 @@ export function useAdminWorkspace() {
   const [kbLoading, setKbLoading] = useState(true);
 
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
+  const [auditPage, setAuditPage] = useState(1);
+  const [auditTotal, setAuditTotal] = useState(0);
+  const auditPageSize = 50;
 
   const [auditLoading, setAuditLoading] = useState(true);
 
@@ -109,6 +112,8 @@ export function useAdminWorkspace() {
   const [debouncedKbSearch, setDebouncedKbSearch] = useState('');
 
   const [auditSearch, setAuditSearch] = useState('');
+  const [debouncedAuditSearch, setDebouncedAuditSearch] = useState('');
+  const trimmedAuditSearch = auditSearch.trim();
 
   const [isKbModalOpen, setIsKbModalOpen] = useState(false);
 
@@ -203,6 +208,11 @@ export function useAdminWorkspace() {
     const timer = window.setTimeout(() => setDebouncedUserSearch(trimmedUserSearch), 350);
     return () => window.clearTimeout(timer);
   }, [trimmedUserSearch]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedAuditSearch(trimmedAuditSearch), 250);
+    return () => window.clearTimeout(timer);
+  }, [trimmedAuditSearch]);
 
   useEffect(() => {
     if (loading || !isAuthenticated || sessionUnavailable || user?.role !== 'admin' || activeTab !== 'users'
@@ -312,10 +322,14 @@ export function useAdminWorkspace() {
         if (activeTab === 'audit') {
           setAuditLoading(true);
           setAuditLoadFailed(false);
-          const auditRes = await api.get('/admin/audit-logs');
+          const auditRes = await api.get('/admin/audit-logs', { params: {
+            limit: auditPageSize, offset: (auditPage - 1) * auditPageSize,
+            search: debouncedAuditSearch || undefined,
+          } });
           if (cancelled) return;
           if (auditRes.data?.status !== 'success') throw new Error('Unable to load audit logs.');
           setAuditLogs(auditRes.data.data.logs || []);
+          setAuditTotal(auditRes.data.data.total || 0);
         }
       } catch (error: unknown) {
         if (!cancelled) {
@@ -328,6 +342,7 @@ export function useAdminWorkspace() {
       }
     };
 
+    if (activeTab === 'audit' && trimmedAuditSearch !== debouncedAuditSearch) return;
     if (!loading) {
       if (!isAuthenticated && !sessionUnavailable) {
         router.push('/signin');
@@ -339,7 +354,7 @@ export function useAdminWorkspace() {
     return () => {
       cancelled = true;
     };
-  }, [loading, isAuthenticated, sessionUnavailable, user?.role, router, activeTab, herbsPage, debouncedLibrarySearch, kbPage, debouncedKbSearch, kbCategoryFilter, kbStatusFilter, refreshSuggestions]);
+  }, [loading, isAuthenticated, sessionUnavailable, user?.role, router, activeTab, herbsPage, debouncedLibrarySearch, kbPage, debouncedKbSearch, kbCategoryFilter, kbStatusFilter, refreshSuggestions, auditPage, auditPageSize, trimmedAuditSearch, debouncedAuditSearch]);
 
   const { handleApprove, handleRequestChanges, handleReject } = createReviewActions({ actioningId, setActioningId, setError, setSuccessMsg, evidenceClassById, suggestions, reviewNotesById, refreshSuggestions, setDashboardStats });
 
@@ -465,6 +480,12 @@ export function useAdminWorkspace() {
     kbPage,
     auditSearch,
     setAuditSearch,
+    trimmedAuditSearch,
+    auditPage,
+    setAuditPage,
+    auditTotal,
+    auditPageSize,
+    setAuditLoading,
     auditLoading,
     auditLoadFailed,
     auditLogs,
