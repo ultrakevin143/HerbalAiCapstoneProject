@@ -304,7 +304,16 @@ export const deleteThread = async (id: number, adminId?: string) => {
         where: { id, isDeleted: false },
         data: { isDeleted: true },
       });
-      return { result, targetId: String(id) };
+      return {
+        result,
+        targetId: String(id),
+        details: {
+          title: result.title,
+          category: result.category,
+          authorId: result.authorId,
+          isDeleted: result.isDeleted,
+        },
+      };
     });
   }
   return prisma.thread.update({

@@ -98,7 +98,16 @@ describe('isolated authenticated community moderation flow', () => {
     expect(recovered.body.data.threads.some((thread: { id: number }) => thread.id === threadId)).toBe(false);
     const auditPage = await admin.get('/api/admin/audit-logs');
     expect(auditPage.status).toBe(200);
-    expect(auditPage.body.data.logs).toEqual(expect.arrayContaining([expect.objectContaining({ action: 'DELETE_THREAD', targetId: String(threadId) })]));
+    expect(auditPage.body.data.logs).toEqual(expect.arrayContaining([expect.objectContaining({
+      action: 'DELETE_THREAD',
+      targetId: String(threadId),
+      details: {
+        title: page.body.data.threads[0].title,
+        category: 'growing',
+        authorId,
+        isDeleted: true,
+      },
+    })]));
   }, 30000);
 
   it('creates nested replies and reactions, masks moderated text, and keeps self-deletion', async () => {
