@@ -324,7 +324,7 @@ const pageHarness = stream => {
   let updates = 0;
   let creditRevision = 0;
   const context = {
-    isSending: false, history, activeRequestRef: { current: null }, mountedRef: { current: true },
+    isSending: false, history, activeRequestRef: { current: null }, mountedRef: { current: true }, userJustSubmittedRef: { current: false },
     setMessages: value => { updates += 1; messages = typeof value === 'function' ? value(messages) : value; },
     setInput: value => { updates += 1; input = typeof value === 'function' ? value(input) : value; },
     setHistory: value => { updates += 1; history = value; },

@@ -34,7 +34,7 @@ describe('forum thread detail', () => {
   });
 
   it('returns the thread and comments after a successful view increment', async () => {
-    const thread = { id: 16, title: 'Available thread' };
+    const thread = { id: 16, title: 'Available thread', replies: 6 };
     const comments = [{ id: 1 }];
     mocks.incrementThreadViews.mockResolvedValue({ count: 1 });
     mocks.findThreadById.mockResolvedValue(thread);
@@ -44,7 +44,7 @@ describe('forum thread detail', () => {
     await new ForumController().getThreadDetail({ params: { id: '16' } } as never, res as never, vi.fn());
 
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ data: { thread, comments } }));
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ data: { thread: { ...thread, replies: comments.length }, comments } }));
   });
 
   it('returns 404 when a thread disappears between the increment and detail lookup', async () => {

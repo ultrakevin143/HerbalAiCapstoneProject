@@ -147,7 +147,7 @@ export class ForumController {
         status: 'success',
         code: 200,
         data: {
-          thread,
+          thread: { ...thread, replies: comments.length },
           comments,
         },
       });

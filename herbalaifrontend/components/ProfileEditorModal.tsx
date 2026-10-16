@@ -75,11 +75,11 @@ export default function ProfileEditorModal({ isOpen, onClose }: ProfileEditorMod
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <label className="block text-sm font-bold text-ink">
             Display name
-            <input aria-label="Display name" required minLength={2} maxLength={100} value={name} onChange={(event) => setName(event.target.value)} className="mt-1 w-full rounded-xl border border-line px-3 py-2 font-normal" />
+            <input id="profile-display-name" name="displayName" autoComplete="name" aria-label="Display name" required minLength={2} maxLength={100} value={name} onChange={(event) => setName(event.target.value)} className="mt-1 w-full rounded-xl border border-line px-3 py-2 font-normal" />
           </label>
           <label className="block text-sm font-bold text-ink">
             Avatar URL or emoji
-            <input aria-label="Avatar URL or emoji" maxLength={500} value={avatar} onChange={(event) => setAvatar(event.target.value)} className="mt-1 w-full rounded-xl border border-line px-3 py-2 font-normal" />
+            <input id="profile-avatar" name="avatar" autoComplete="off" aria-label="Avatar URL or emoji" maxLength={500} value={avatar} onChange={(event) => setAvatar(event.target.value)} className="mt-1 w-full rounded-xl border border-line px-3 py-2 font-normal" />
           </label>
           <div className="rounded-xl bg-panel p-3 text-sm text-muted">
             <p><strong>Username:</strong> {user.username}</p>

@@ -62,7 +62,7 @@ export default function HomeHero() {
             ) : isAuthenticated ? (
               <>
                 <form onSubmit={(event) => { event.preventDefault(); if (query.trim()) router.push(`/chat?q=${encodeURIComponent(query.trim())}`); }} className="mt-4 hidden gap-2 md:flex">
-                  <Input value={query} onChange={(event) => setQuery(event.target.value)} type="text" placeholder="e.g. What is lagundi used for?" className="h-12 min-w-0 flex-1 bg-canvas" aria-label="Ask Dr. Ai about a plant" />
+                  <Input id="home-question" name="question" autoComplete="off" value={query} onChange={(event) => setQuery(event.target.value)} type="text" placeholder="e.g. What is lagundi used for?" className="h-12 min-w-0 flex-1 bg-canvas" aria-label="Ask Dr. Ai about a plant" />
                   <Button type="submit" size="icon" className="h-12 w-12 shrink-0" aria-label="Send query" disabled={!query.trim()}><ArrowUp aria-hidden="true" /></Button>
                 </form>
                 <Button asChild variant="secondary" className="mt-5 h-auto min-h-12 justify-between px-4 md:hidden"><Link href="/chat"><span>Open Dr. Ai</span><ArrowUp className="rotate-45" aria-hidden="true" /></Link></Button>

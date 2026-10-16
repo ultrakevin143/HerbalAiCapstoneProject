@@ -206,6 +206,9 @@ export default function AdminPage() {
   const [availableKbCategories, setAvailableKbCategories] = useState<string[]>([]);
   const [kbLoading, setKbLoading] = useState(true);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
+  const [auditPage, setAuditPage] = useState(1);
+  const [auditTotal, setAuditTotal] = useState(0);
+  const auditPageSize = 50;
   const [auditLoading, setAuditLoading] = useState(true);
   const [auditLoadFailed, setAuditLoadFailed] = useState(false);
   const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(null);
@@ -232,6 +235,8 @@ export default function AdminPage() {
   const [kbSearch, setKbSearch] = useState('');
   const [debouncedKbSearch, setDebouncedKbSearch] = useState('');
   const [auditSearch, setAuditSearch] = useState('');
+  const [debouncedAuditSearch, setDebouncedAuditSearch] = useState('');
+  const trimmedAuditSearch = auditSearch.trim();
 
   // Knowledge Base Modals and forms
   const [isKbModalOpen, setIsKbModalOpen] = useState(false);
@@ -305,6 +310,11 @@ export default function AdminPage() {
     const timer = window.setTimeout(() => setDebouncedKbSearch(kbSearch.trim()), 250);
     return () => window.clearTimeout(timer);
   }, [kbSearch]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedAuditSearch(trimmedAuditSearch), 250);
+    return () => window.clearTimeout(timer);
+  }, [trimmedAuditSearch]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedUserSearch(trimmedUserSearch), 350);
@@ -419,10 +429,14 @@ export default function AdminPage() {
         if (activeTab === 'audit') {
           setAuditLoading(true);
           setAuditLoadFailed(false);
-          const auditRes = await api.get('/admin/audit-logs');
+          const auditRes = await api.get('/admin/audit-logs', { params: {
+            limit: auditPageSize, offset: (auditPage - 1) * auditPageSize,
+            search: debouncedAuditSearch || undefined,
+          } });
           if (cancelled) return;
           if (auditRes.data?.status !== 'success') throw new Error('Unable to load audit logs.');
           setAuditLogs(auditRes.data.data.logs || []);
+          setAuditTotal(auditRes.data.data.total || 0);
         }
       } catch (error: unknown) {
         if (!cancelled) {
@@ -435,6 +449,7 @@ export default function AdminPage() {
       }
     };
 
+    if (activeTab === 'audit' && trimmedAuditSearch !== debouncedAuditSearch) return;
     if (!loading) {
       if (!isAuthenticated && !sessionUnavailable) {
         router.push('/signin');
@@ -446,7 +461,7 @@ export default function AdminPage() {
     return () => {
       cancelled = true;
     };
-  }, [loading, isAuthenticated, sessionUnavailable, user?.role, router, activeTab, herbsPage, debouncedLibrarySearch, kbPage, debouncedKbSearch, kbCategoryFilter, kbStatusFilter, refreshSuggestions]);
+  }, [loading, isAuthenticated, sessionUnavailable, user?.role, router, activeTab, herbsPage, debouncedLibrarySearch, kbPage, debouncedKbSearch, kbCategoryFilter, kbStatusFilter, refreshSuggestions, auditPage, auditPageSize, trimmedAuditSearch, debouncedAuditSearch]);
 
   const handleApprove = async (id: number) => {
     if (actioningId !== null) return;
@@ -1288,7 +1303,7 @@ export default function AdminPage() {
                         <div className="grid gap-3 border-t border-border pt-4">
                           <label className="grid gap-1 text-sm font-medium text-ink">
                             Evidence classification
-                            <select
+                            <select name={`evidence-class-${suggestion.id}`}
                               value={evidenceClassById[suggestion.id] || ''}
                               onChange={(event) => setEvidenceClassById((current) => ({ ...current, [suggestion.id]: event.target.value }))}
                               className="min-h-11 rounded-lg border border-input bg-card px-3 py-2 text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -1301,7 +1316,7 @@ export default function AdminPage() {
                           </label>
                           <label className="grid gap-1 text-sm font-medium text-ink">
                             Reviewer notes
-                            <textarea
+                            <textarea name={`review-notes-${suggestion.id}`}
                               value={reviewNotesById[suggestion.id] || ''}
                               onChange={(event) => setReviewNotesById((current) => ({ ...current, [suggestion.id]: event.target.value }))}
                               rows={3}
@@ -1409,7 +1424,7 @@ export default function AdminPage() {
                 {/* Search Bar */}
                 <div className="relative max-w-xs w-full">
                   <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" aria-hidden="true" />
-                  <input
+                  <input name="librarySearch"
                     type="text"
                     placeholder="Search herbs..."
                     aria-label="Search herbs"
@@ -1512,7 +1527,7 @@ export default function AdminPage() {
                   <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted">
                     <Search className="h-3.5 w-3.5" />
                   </span>
-                  <input
+                  <input name="userSearch"
                     type="text"
                     placeholder="Search name, @username, email..."
                     aria-label="Search users"
@@ -1818,7 +1833,7 @@ export default function AdminPage() {
                     <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted">
                       <Search className="h-3.5 w-3.5" />
                     </span>
-                    <input
+                    <input name="kbSearch"
                       type="text"
                       placeholder="Search KB items..."
                       value={kbSearch}
@@ -1866,7 +1881,7 @@ export default function AdminPage() {
                   {/* Category Dropdown */}
                   {availableKbCategories.length > 0 && (
                     <div className="relative">
-                      <select
+                      <select name="kbCategoryFilter"
                         aria-label="Filter by Category"
                         value={kbCategoryFilter}
                         onChange={(e) => { setKbCategoryFilter(e.target.value); setKbPage(1); setKbLoading(true); }}
@@ -1941,7 +1956,7 @@ export default function AdminPage() {
                   <label className={`inline-flex items-center gap-1.5 rounded-full bg-[#c66b3d] px-3 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-[#b85e34] ${isImportingKb ? 'cursor-wait opacity-70' : 'cursor-pointer'}`}>
                     {isImportingKb ? <LoaderCircle className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
                     {isImportingKb ? 'Importing…' : 'Import JSON'}
-                    <input
+                    <input name="knowledgeImport"
                       type="file"
                       accept="application/json,.json"
                       disabled={isImportingKb}
@@ -2169,12 +2184,13 @@ export default function AdminPage() {
 
                 <div className="relative w-full md:w-72">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
-                  <input
+                  <input name="auditSearch"
                     type="text"
-                    placeholder="Filter audit logs..."
+                    placeholder="Search audit records..."
                     aria-label="Filter audit logs"
+                    maxLength={200}
                     value={auditSearch}
-                    onChange={(e) => setAuditSearch(e.target.value)}
+                    onChange={(e) => { if (e.target.value.trim() !== trimmedAuditSearch || auditPage !== 1) setAuditLoading(true); setAuditSearch(e.target.value); setAuditPage(1); }}
                     className="w-full rounded-xl border border-input bg-panel py-2 pl-9 pr-4 text-sm font-semibold text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   />
                 </div>
@@ -2183,7 +2199,10 @@ export default function AdminPage() {
               {auditLoading || auditLoadFailed || auditLogs.length === 0 ? (
                 <div className="bg-panel p-12 text-center rounded-2xl border border-line shadow-sm flex flex-col items-center gap-3">
                   <ClipboardList className="h-10 w-10 text-muted stroke-[1.5]" />
-                  <p role="status" className="text-sm font-bold text-muted">{auditLoading ? 'Loading audit logs…' : auditLoadFailed ? 'Audit logs could not be loaded. Please try again.' : 'No audit logs recorded yet'}</p>
+                  <p role="status" className="text-sm font-bold text-muted">{auditLoading ? 'Loading audit logs…' : auditLoadFailed ? 'Audit logs could not be loaded. Please try again.' : trimmedAuditSearch ? 'No audit records match this search.' : 'No audit logs recorded yet'}</p>
+                  {!auditLoading && !auditLoadFailed && trimmedAuditSearch && (
+                    <button type="button" onClick={() => { setAuditSearch(''); setAuditPage(1); setAuditLoading(true); }} className="min-h-11 rounded-lg border border-line px-4 font-semibold">Clear search</button>
+                  )}
                 </div>
               ) : (
                 <div className="bg-panel rounded-2xl border border-line shadow-sm overflow-x-auto">
@@ -2198,18 +2217,7 @@ export default function AdminPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-line text-xs font-semibold text-ink">
-                      {auditLogs
-                        .filter((log) => {
-                          const query = auditSearch.toLowerCase();
-                          return (
-                            log.action.toLowerCase().includes(query) ||
-                            log.targetType.toLowerCase().includes(query) ||
-                            log.admin.name.toLowerCase().includes(query) ||
-                            (log.admin.email && log.admin.email.toLowerCase().includes(query)) ||
-                            (log.details && JSON.stringify(log.details).toLowerCase().includes(query))
-                          );
-                        })
-                        .map((log) => {
+                      {auditLogs.map((log) => {
                           const getBadgeColor = (action: string) => {
                             if (action.includes('APPROVE')) return 'bg-emerald-50 text-emerald-700 border-emerald-200';
                             if (action.includes('REJECT')) return 'bg-amber-50 text-amber-700 border-amber-200';
@@ -2275,6 +2283,16 @@ export default function AdminPage() {
                   </table>
                 </div>
               )}
+              {!auditLoadFailed && (
+                <nav aria-label="Audit log pages" className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-muted">
+                  <p role="status" aria-live="polite">{auditLoading ? 'Loading audit records…' : `Showing ${auditTotal ? (auditPage - 1) * auditPageSize + 1 : 0}–${Math.min(auditPage * auditPageSize, auditTotal)} of ${auditTotal}${trimmedAuditSearch ? ' matching' : ''} records`}</p>
+                  <div className="flex items-center gap-3">
+                    <button type="button" disabled={auditLoading || auditPage <= 1} onClick={() => { setAuditPage(page => page - 1); setAuditLoading(true); }} className="min-h-11 rounded-lg border border-line px-3 disabled:opacity-40">Previous</button>
+                    <span>Page {auditPage} of {Math.max(1, Math.ceil(auditTotal / auditPageSize))}</span>
+                    <button type="button" disabled={auditLoading || auditPage * auditPageSize >= auditTotal || auditPage * auditPageSize > 10000} onClick={() => { setAuditPage(page => page + 1); setAuditLoading(true); }} className="min-h-11 rounded-lg border border-line px-3 disabled:opacity-40">Next</button>
+                  </div>
+                </nav>
+              )}
             </div>
           )}
         </main>
@@ -2296,8 +2314,8 @@ export default function AdminPage() {
             <form onSubmit={handleEditHerbSubmit} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Local Name *</label>
-                  <input
+                  <label htmlFor="admin-herb-localName" className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Local Name *</label>
+                  <input id="admin-herb-localName" name="localName"
                     aria-label="Local Name"
                     type="text"
                     required
@@ -2308,8 +2326,8 @@ export default function AdminPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Common Name</label>
-                  <input
+                  <label htmlFor="admin-herb-cebuanoName" className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Common Name</label>
+                  <input id="admin-herb-cebuanoName" name="cebuanoName"
                     aria-label="Common Name"
                     type="text"
                     value={herbFormData.cebuanoName}
@@ -2322,8 +2340,8 @@ export default function AdminPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Scientific Name *</label>
-                  <input
+                  <label htmlFor="admin-herb-scientificName" className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Scientific Name *</label>
+                  <input id="admin-herb-scientificName" name="scientificName"
                     aria-label="Scientific Name"
                     type="text"
                     required
@@ -2334,8 +2352,8 @@ export default function AdminPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Category *</label>
-                  <input
+                  <label htmlFor="admin-herb-category" className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Category *</label>
+                  <input id="admin-herb-category" name="category"
                     aria-label="Category"
                     type="text"
                     required
@@ -2348,8 +2366,8 @@ export default function AdminPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Medicinal Uses *</label>
-                <textarea
+                <label htmlFor="admin-herb-medicinalUses" className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Medicinal Uses *</label>
+                <textarea id="admin-herb-medicinalUses" name="medicinalUses"
                   aria-label="Medicinal Uses"
                   required
                   rows={2}
@@ -2361,8 +2379,8 @@ export default function AdminPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Preparation Method</label>
-                <textarea
+                <label htmlFor="admin-herb-preparationMethod" className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Preparation Method</label>
+                <textarea id="admin-herb-preparationMethod" name="preparationMethod"
                   aria-label="Preparation Method"
                   rows={2}
                   value={herbFormData.preparationMethod}
@@ -2373,8 +2391,8 @@ export default function AdminPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Dosage & Frequency</label>
-                <textarea
+                <label htmlFor="admin-herb-dosage" className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Dosage & Frequency</label>
+                <textarea id="admin-herb-dosage" name="dosage"
                   aria-label="Dosage and Frequency"
                   rows={2}
                   value={herbFormData.dosage}
@@ -2386,8 +2404,8 @@ export default function AdminPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Region Found</label>
-                  <input
+                  <label htmlFor="admin-herb-regionFound" className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Region Found</label>
+                  <input id="admin-herb-regionFound" name="regionFound"
                     aria-label="Region Found"
                     type="text"
                     value={herbFormData.regionFound}
@@ -2397,8 +2415,8 @@ export default function AdminPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Image Path / URL</label>
-                  <input
+                  <label htmlFor="admin-herb-imageUrl" className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Image Path / URL</label>
+                  <input id="admin-herb-imageUrl" name="imageUrl"
                     aria-label="Image Path or URL"
                     type="text"
                     value={herbFormData.imageUrl}
@@ -2410,8 +2428,8 @@ export default function AdminPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Important Warnings & Precautions</label>
-                <textarea
+                <label htmlFor="admin-herb-warnings" className="block text-xs font-bold text-[#1b4332] uppercase tracking-wider mb-1">Important Warnings & Precautions</label>
+                <textarea id="admin-herb-warnings" name="warnings"
                   aria-label="Warnings and Precautions"
                   rows={2}
                   value={herbFormData.warnings}
@@ -2461,10 +2479,10 @@ export default function AdminPage() {
 
             <form onSubmit={handleSaveKbItem} className="overflow-y-auto p-6 space-y-4">
               <div className="space-y-1">
-                <label className="block text-xs font-extrabold uppercase tracking-wider text-gray-400">
+                <label htmlFor="admin-kbQuestion" className="block text-xs font-extrabold uppercase tracking-wider text-gray-400">
                   Question *
                 </label>
-                <input
+                <input id="admin-kbQuestion" name="kbQuestion"
                   aria-label="Knowledge question"
                   type="text"
                   required
@@ -2477,10 +2495,10 @@ export default function AdminPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="block text-xs font-extrabold uppercase tracking-wider text-gray-400">
+                <label htmlFor="admin-kbAnswer" className="block text-xs font-extrabold uppercase tracking-wider text-gray-400">
                   Detailed Answer *
                 </label>
-                <textarea
+                <textarea id="admin-kbAnswer" name="kbAnswer"
                   aria-label="Knowledge answer"
                   required
                   minLength={10}
@@ -2513,10 +2531,10 @@ export default function AdminPage() {
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-1">
-                  <label className="block text-xs font-extrabold uppercase tracking-wider text-gray-400">
+                  <label htmlFor="admin-kbCategory" className="block text-xs font-extrabold uppercase tracking-wider text-gray-400">
                     Category (Optional)
                   </label>
-                  <input
+                  <input id="admin-kbCategory" name="kbCategory"
                     aria-label="Knowledge category"
                     type="text"
                     placeholder="e.g. dosage, preparation"
@@ -2527,10 +2545,10 @@ export default function AdminPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-extrabold uppercase tracking-wider text-gray-400">
+                  <label htmlFor="admin-kbTags" className="block text-xs font-extrabold uppercase tracking-wider text-gray-400">
                     Tags (Comma Separated)
                   </label>
-                  <input
+                  <input id="admin-kbTags" name="kbTags"
                     aria-label="Knowledge tags"
                     type="text"
                     placeholder="e.g. mint, leaves, fever"

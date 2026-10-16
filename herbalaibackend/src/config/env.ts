@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import process from 'node:process';
 import { normalizeDatabaseUrl } from './database-url.js';
+import { parseAdditionalFrontendOrigins } from './frontend-origins.js';
 dotenv.config();
 
 const boundedInteger = (name: string, fallback: number, minimum: number, maximum: number) => {
@@ -25,6 +26,7 @@ export const ENV = {
   JWT_SECRET: process.env['JWT_SECRET'] || 'herbalai_access_secret_change_in_prod',
   JWT_REFRESH_SECRET: process.env['JWT_REFRESH_SECRET'] || 'herbalai_refresh_secret_change_in_prod',
   FRONTEND_URL: process.env['FRONTEND_URL'] || 'http://localhost:3000',
+  FRONTEND_ADDITIONAL_ORIGINS: parseAdditionalFrontendOrigins(process.env['FRONTEND_ADDITIONAL_ORIGINS']),
   BACKEND_URL: process.env['BACKEND_URL'] || 'http://localhost:5000',
   GEMINI_API_KEY: process.env['GEMINI_API_KEY'],
   DR_AI_CHAT_MODELS: (process.env['DR_AI_CHAT_MODELS'] || 'gemini-3.6-flash,gemini-3.1-flash-lite,gemini-3.8-flash,gemini-3.7-flash')

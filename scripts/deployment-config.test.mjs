@@ -1,10 +1,49 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
+import ts from '../herbalaifrontend/node_modules/typescript/lib/typescript.js';
 
 const read = path => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const dockerfile = read('herbalaifrontend/Dockerfile');
 const compose = read('docker-compose.yml').split('  frontend:')[1];
+
+const loadNextConfig = env => {
+  const exports = {};
+  const compiled = ts.transpileModule(read('herbalaifrontend/next.config.ts'), {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+  }).outputText;
+  new Function('exports', 'process', compiled)(exports, { env });
+  return exports.default;
+};
+
+test('production enforces CSP while permitting the configured API and realtime endpoints', async () => {
+  const config = loadNextConfig({ NODE_ENV: 'production', NEXT_PUBLIC_API_URL: 'https://api.example.test/api', NEXT_PUBLIC_SOCKET_URL: 'https://realtime.example.test' });
+  const headers = (await config.headers())[0].headers;
+  const policy = headers.find(header => header.key === 'Content-Security-Policy')?.value;
+  assert.ok(policy);
+  assert.match(policy, /connect-src 'self' https:\/\/api\.example\.test wss:\/\/api\.example\.test https:\/\/realtime\.example\.test wss:\/\/realtime\.example\.test;/);
+  assert.match(policy, /script-src 'self' 'unsafe-inline';/);
+  assert.doesNotMatch(policy, /unsafe-eval|connect-src[^;]*(?:https:|wss:)\s/);
+  assert.match(policy, /object-src 'none';/);
+  assert.match(policy, /frame-src 'none';/);
+  assert.match(policy, /worker-src 'self' blob:;/);
+  assert.match(policy, /form-action 'self'/);
+  assert.equal(headers.some(header => header.key === 'Content-Security-Policy-Report-Only'), false);
+});
+
+test('CSP permits local development, same-origin APIs and normal Next development tooling', async () => {
+  const config = loadNextConfig({ NODE_ENV: 'development', NEXT_PUBLIC_API_URL: '/api' });
+  const policy = (await config.headers())[0].headers.find(header => header.key === 'Content-Security-Policy').value;
+  assert.match(policy, /'unsafe-eval'/);
+  assert.match(policy, /ws:\/\/localhost:\*/);
+  assert.doesNotMatch(policy, /https:\/\/undefined/);
+});
+
+test('production rejects insecure remote and credential-bearing connection endpoints', () => {
+  for (const endpoint of ['http://api.example.test/api', 'https://user:secret@api.example.test/api', 'javascript:alert(1)']) {
+    assert.throws(() => loadNextConfig({ NODE_ENV: 'production', NEXT_PUBLIC_API_URL: endpoint }), /must use HTTPS/);
+  }
+});
 
 test('CI schedules every native regression script', () => {
   const workflow = read('.github/workflows/ci.yml');

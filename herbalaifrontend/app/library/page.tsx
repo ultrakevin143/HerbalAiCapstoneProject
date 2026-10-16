@@ -185,6 +185,9 @@ function LibraryContent() {
           {/* Search Input */}
           <div className="library-search relative w-full flex-1">
             <Input
+              id="library-search"
+              name="search"
+              autoComplete="off"
               type="text"
               placeholder="Search by name, scientific name, or uses..."
               aria-label="Search herbs by name, scientific name, or medicinal use"
@@ -202,6 +205,8 @@ function LibraryContent() {
             {/* Category Selector */}
             <div className="min-w-0 flex-1 sm:w-64 md:w-72 shrink-0">
               <select
+                id="library-category"
+                name="category"
                 aria-label="Filter herbs by illness category"
                 value={selectedCategory}
                 onChange={(e) => { setSelectedCategory(e.target.value); setPage(1); }}

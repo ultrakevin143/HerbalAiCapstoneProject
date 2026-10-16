@@ -81,9 +81,9 @@ export default function PasswordSettings({ email, hasLocalPassword, passwordStat
   };
 
   const fields = [
-    { label: 'Current password', value: currentPassword, update: setCurrentPassword, autocomplete: 'current-password' },
-    { label: 'New password', value: newPassword, update: setNewPassword, autocomplete: 'new-password' },
-    { label: 'Confirm new password', value: confirmation, update: setConfirmation, autocomplete: 'new-password' },
+    { name: 'currentPassword', label: 'Current password', value: currentPassword, update: setCurrentPassword, autocomplete: 'current-password' },
+    { name: 'newPassword', label: 'New password', value: newPassword, update: setNewPassword, autocomplete: 'new-password' },
+    { name: 'confirmPassword', label: 'Confirm new password', value: confirmation, update: setConfirmation, autocomplete: 'new-password' },
   ];
 
   const linkFeedback = (message || linkError) && (
@@ -95,10 +95,13 @@ export default function PasswordSettings({ email, hasLocalPassword, passwordStat
   const changePasswordForm = <>
     <p id="password-change-help" className="mt-2 text-sm text-muted">Use at least 8 characters. Changing your password signs you out on all devices.</p>
     <form onSubmit={handleChangePassword} aria-describedby={error ? 'password-change-help password-change-error' : 'password-change-help'} className="mt-4 space-y-4">
+      <input id="password-username" name="username" type="text" autoComplete="username" value={email} readOnly hidden />
       {fields.map(field => (
         <label key={field.label} className="block text-sm font-bold text-ink">
           {field.label}
           <input
+            id={`password-${field.name}`}
+            name={field.name}
             type={visible ? 'text' : 'password'}
             autoComplete={field.autocomplete}
             required

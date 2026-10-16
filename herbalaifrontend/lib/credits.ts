@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+z.config({ jitless: true });
+
 export const creditWalletSchema = z.object({
   enabled: z.boolean(), testMode: z.literal(true), balance: z.number().int().nonnegative().default(0), checkoutAvailable: z.boolean().default(false),
   packages: z.array(z.object({ id: z.string(), name: z.string(), credits: z.number().int().positive(), amountMinor: z.number().int().positive() })).default([]),

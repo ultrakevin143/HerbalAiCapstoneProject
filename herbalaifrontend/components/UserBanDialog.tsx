@@ -60,7 +60,7 @@ export default function UserBanDialog({ user, onSaved, onClose }: {
         ) : (
           <>
             <label className="block text-sm font-semibold">Ban type
-              <select value={type} onChange={event => setType(event.target.value as typeof type)} disabled={pending} className="mt-2 w-full rounded-lg border border-line bg-panel p-3 text-ink">
+              <select name="banType" value={type} onChange={event => setType(event.target.value as typeof type)} disabled={pending} className="mt-2 w-full rounded-lg border border-line bg-panel p-3 text-ink">
                 <option value="temporary">Temporary ban</option>
                 <option value="indefinite">Indefinite ban</option>
               </select>
@@ -69,10 +69,10 @@ export default function UserBanDialog({ user, onSaved, onClose }: {
               <div>
                 <div className="grid grid-cols-2 gap-3">
                   <label className="text-sm font-semibold">Duration
-                    <input type="number" value={duration} onChange={event => setDuration(event.target.value)} min={1} max={maximumBanDurations[unit]} step={1} required disabled={pending} className="mt-2 w-full rounded-lg border border-line bg-panel p-3 text-ink" />
+                    <input name="banDuration" type="number" value={duration} onChange={event => setDuration(event.target.value)} min={1} max={maximumBanDurations[unit]} step={1} required disabled={pending} className="mt-2 w-full rounded-lg border border-line bg-panel p-3 text-ink" />
                   </label>
                   <label className="text-sm font-semibold">Duration unit
-                    <select value={unit} onChange={event => setUnit(event.target.value as BanDurationUnit)} disabled={pending} className="mt-2 w-full rounded-lg border border-line bg-panel p-3 text-ink">
+                    <select name="banDurationUnit" value={unit} onChange={event => setUnit(event.target.value as BanDurationUnit)} disabled={pending} className="mt-2 w-full rounded-lg border border-line bg-panel p-3 text-ink">
                       <option value="minutes">Minutes</option><option value="hours">Hours</option><option value="days">Days</option>
                     </select>
                   </label>
@@ -81,13 +81,13 @@ export default function UserBanDialog({ user, onSaved, onClose }: {
               </div>
             ) : <p className="text-sm text-muted">This account stays banned until an administrator explicitly unbans it.</p>}
             <label className="block text-sm font-semibold">Reason shown to the user
-              <textarea value={reason} onChange={event => setReason(event.target.value)} required minLength={3} maxLength={500} rows={3} disabled={pending} className="mt-2 w-full rounded-lg border border-line bg-panel p-3 text-ink" />
+              <textarea name="banReason" value={reason} onChange={event => setReason(event.target.value)} required minLength={3} maxLength={500} rows={3} disabled={pending} className="mt-2 w-full rounded-lg border border-line bg-panel p-3 text-ink" />
             </label>
           </>
         )}
         <p className="text-sm text-muted">Account records are preserved. Banning revokes sessions and active recovery links; it does not delete the account.</p>
         <label className="flex items-start gap-3 text-sm">
-          <input type="checkbox" checked={confirmed} onChange={event => setConfirmed(event.target.checked)} required disabled={pending} className="mt-1" />
+          <input name="confirmBan" type="checkbox" checked={confirmed} onChange={event => setConfirmed(event.target.checked)} required disabled={pending} className="mt-1" />
           <span>I confirm {user.isBanned ? 'unbanning' : 'banning'} this account. This action is recorded in the audit log.</span>
         </label>
         {error && <p role="alert" className="rounded-lg border border-rose-300 bg-rose-50 p-3 text-sm text-rose-800">{error}</p>}

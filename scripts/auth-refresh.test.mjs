@@ -55,8 +55,38 @@ test('shared requests have a finite default while retaining cookies and caller t
   const fixture = client(config => response(config));
   assert.equal(fixture.api.defaults.timeout, 30_000);
   assert.equal(fixture.api.defaults.withCredentials, true);
+  assert.equal(fixture.api.defaults.withXSRFToken, false);
   await fixture.api.get('/messages/users', { timeout: 10_000 });
   assert.equal(fixture.requests[0].timeout, 10_000);
+});
+
+test('browser requests retain credential mode without synchronously reading an unused XSRF cookie', async () => {
+  const server = createServer((_req, res) => { res.setHeader('Content-Type', 'application/json'); res.end('{"status":"success"}'); });
+  server.listen(0, '127.0.0.1');
+  await once(server, 'listening');
+  const baseURL = `http://127.0.0.1:${server.address().port}`;
+  const previousWindow = globalThis.window;
+  const previousDocument = globalThis.document;
+  const previousFetch = globalThis.fetch;
+  let cookieReads = 0;
+  let credentials;
+  try {
+    globalThis.window = { location: { href: `${baseURL}/` } };
+    globalThis.document = { get cookie() { cookieReads++; throw new Error('Unexpected synchronous cookie read'); } };
+    globalThis.fetch = (input, options) => { credentials = input.credentials ?? options?.credentials; return previousFetch(input, options); };
+    const browserAxios = requireFrontend('axios/dist/browser/axios.cjs');
+    const exports = {};
+    new Function('require', 'exports', 'window', compiled)(name => name === 'axios' ? browserAxios : requireFrontend(name), exports, globalThis.window);
+    const result = await exports.default.get('/health', { baseURL, adapter: 'fetch' });
+    assert.equal(result.status, 200);
+    assert.equal(credentials, 'include');
+    assert.equal(cookieReads, 0);
+  } finally {
+    globalThis.window = previousWindow;
+    globalThis.document = previousDocument;
+    globalThis.fetch = previousFetch;
+    await new Promise(resolve => server.close(resolve));
+  }
 });
 
 test('a login boundary cancels an old checkout instead of replaying it with the new session', async () => {

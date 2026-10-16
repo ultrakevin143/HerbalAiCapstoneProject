@@ -593,6 +593,9 @@ function MessengerContent() {
               <div className="relative">
                 <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted" />
                 <input
+                  id="conversation-search"
+                  name="conversationSearch"
+                  autoComplete="off"
                   type="text"
                   placeholder="Search conversations..."
                   aria-label="Search conversations"
@@ -760,6 +763,10 @@ function MessengerContent() {
                                 {isEditing ? (
                                   <div className="flex items-center gap-1.5 w-full bg-panel border border-line rounded-xl px-2.5 py-1.5 shadow">
                                     <input
+                                      id={`message-edit-${msg.id}`}
+                                      name="messageEdit"
+                                      aria-label="Edit message"
+                                      autoComplete="off"
                                       type="text"
                                       value={editInput}
                                       onChange={(e) => setEditInput(e.target.value)}
@@ -887,6 +894,9 @@ function MessengerContent() {
                       <Paperclip className="h-4 w-4" />
                     </button>
                     <input
+                      id="message-attachment"
+                      name="attachment"
+                      aria-label="Attach an image"
                       ref={fileInputRef}
                       type="file"
                       accept="image/*"
@@ -896,6 +906,9 @@ function MessengerContent() {
 
                     {/* Message input field */}
                     <input
+                      id="message-input"
+                      name="message"
+                      autoComplete="off"
                       ref={inputRef}
                       type="text"
                       placeholder={selectedFile ? "Add a caption..." : `Message ${activeContact.name}...`}
@@ -942,6 +955,9 @@ function MessengerContent() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted" />
                 <input
+                  id="message-user-search"
+                  name="userSearch"
+                  autoComplete="off"
                   type="text"
                   placeholder="Search users..."
                   aria-label="Search users"

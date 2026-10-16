@@ -61,6 +61,7 @@ export const findAllThreads = async (options: FindThreadsOptions = {}) => {
     prisma.thread.findMany({
       where,
       include: {
+        _count: { select: { comments: true } },
         author: {
           select: {
             id: true,
@@ -80,16 +81,17 @@ export const findAllThreads = async (options: FindThreadsOptions = {}) => {
     prisma.thread.count({ where }),
   ]);
 
-  return { threads, total };
+  return { threads: threads.map(({ _count, ...thread }) => ({ ...thread, replies: _count.comments })), total };
 };
 
 export const findThreadById = async (id: number) => {
-  return prisma.thread.findFirst({
+  const thread = await prisma.thread.findFirst({
     where: {
       id,
       isDeleted: false,
     },
     include: {
+      _count: { select: { comments: true } },
       author: {
         select: {
           id: true,
@@ -101,6 +103,9 @@ export const findThreadById = async (id: number) => {
       },
     },
   });
+  if (!thread) return null;
+  const { _count, ...details } = thread;
+  return { ...details, replies: _count.comments };
 };
 
 export const incrementThreadViews = async (id: number) => {

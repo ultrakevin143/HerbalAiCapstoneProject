@@ -71,7 +71,7 @@ export default function SuggestionReviewEditor({ suggestion, onSaved, onClose }:
       <fieldset disabled={saving} className="grid gap-4 md:grid-cols-2">
         {fields.map(([key, label]) => <label key={key} className="grid gap-1">
           <span className="font-bold">{label}</span>
-          <textarea rows={key === 'medicinalUses' || key === 'warnings' ? 4 : 2} className="flat-input" value={values[key]}
+          <textarea name={key} rows={key === 'medicinalUses' || key === 'warnings' ? 4 : 2} className="flat-input" value={values[key]}
             required={['localName', 'scientificName', 'category', 'medicinalUses', 'preparationMethod', 'dosage', 'informationSource'].includes(key)}
             onChange={(event) => setValues((current) => ({ ...current, [key]: event.target.value }))} />
         </label>)}
@@ -80,15 +80,15 @@ export default function SuggestionReviewEditor({ suggestion, onSaved, onClose }:
       {references.map((source, index) => <fieldset disabled={saving} key={index} className="border border-line rounded-xl p-4 space-y-3">
         <legend className="font-bold">Reference {index + 1}</legend>
         {([['title', 'Title'], ['publisher', 'Publisher'], ['url', 'Link'], ['citation', 'Citation'], ['publishedAt', 'Publication year or date']] as const).map(([key, label]) =>
-          <label key={key} className="grid gap-1">{label}<input className="flat-input" type={key === 'url' ? 'url' : 'text'} required={key === 'title'} value={source[key]} onChange={(event) => updateReference(index, { [key]: event.target.value })} /></label>)}
+          <label key={key} className="grid gap-1">{label}<input name={`reference-${index}-${key}`} className="flat-input" type={key === 'url' ? 'url' : 'text'} required={key === 'title'} value={source[key]} onChange={(event) => updateReference(index, { [key]: event.target.value })} /></label>)}
         <p className="font-bold">Which claims does this reference support?</p>
         <div className="flex flex-wrap gap-4">{claims.map(([key, label]) => <label key={key} className="flex gap-2 items-center">
-          <input type="checkbox" checked={source.supports.includes(key)} onChange={(event) => updateReference(index, { supports: event.target.checked ? [...source.supports, key] : source.supports.filter((claim) => claim !== key) })} />{label}
+          <input name={`reference-${index}-claim-${key}`} type="checkbox" checked={source.supports.includes(key)} onChange={(event) => updateReference(index, { supports: event.target.checked ? [...source.supports, key] : source.supports.filter((claim) => claim !== key) })} />{label}
         </label>)}</div>
         <button type="button" className="flat-button flat-button-secondary" disabled={references.length === 1} onClick={() => setReferences((current) => current.filter((_, position) => position !== index))}>Remove reference {index + 1}</button>
       </fieldset>)}
       <button type="button" disabled={saving || references.length >= 20} className="flat-button flat-button-secondary" onClick={() => setReferences((current) => [...current, blankReference()])}>Add reference</button>
-      <label className="grid gap-1 font-bold">Review notes / reason for edits<textarea required maxLength={2000} disabled={saving} className="flat-input" rows={3} value={notes} onChange={(event) => setNotes(event.target.value)} /></label>
+      <label className="grid gap-1 font-bold">Review notes / reason for edits<textarea name="reviewNotes" required maxLength={2000} disabled={saving} className="flat-input" rows={3} value={notes} onChange={(event) => setNotes(event.target.value)} /></label>
       <button disabled={saving} className="flat-button flat-button-primary" type="submit">{saving ? 'Saving…' : 'Save review edits'}</button>
     </form>
   </AccessibleDialog>;

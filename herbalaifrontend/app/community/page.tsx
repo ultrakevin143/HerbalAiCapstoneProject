@@ -235,6 +235,9 @@ export default function CommunityPage() {
             <div className="relative w-full bg-white/70 dark:bg-panel/75 backdrop-blur-md border border-black/10 dark:border-line rounded-full p-3 px-4 shadow-sm flex items-center gap-3">
               <Search className="h-4 w-4 text-[#2d6a4f] dark:text-[#74c69d] shrink-0" />
               <input
+                id="community-search"
+                name="search"
+                autoComplete="off"
                 type="text"
                 placeholder="Search discussion titles or content..."
                 aria-label="Search discussion titles or content"

@@ -3,12 +3,23 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import ts from '../herbalaifrontend/node_modules/typescript/lib/typescript.js';
 import { createRequire } from 'node:module';
+import { spawnSync } from 'node:child_process';
 
 const require = createRequire(new URL('../herbalaifrontend/package.json', import.meta.url));
 const source = await readFile(new URL('../herbalaifrontend/lib/credits.ts', import.meta.url), 'utf8');
 const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
 const exports = {};
 new Function('require', 'exports', compiled)(require, exports);
+
+test('wallet validation works when dynamic code generation is forbidden', () => {
+  const moduleUrl = new URL('../herbalaifrontend/lib/credits.ts', import.meta.url).href;
+  const result = spawnSync(process.execPath, ['--disallow-code-generation-from-strings', '--experimental-strip-types', '--input-type=module', '--eval',
+    `import { creditWalletSchema } from ${JSON.stringify(moduleUrl)};
+    const wallet = creditWalletSchema.parse({ enabled: true, testMode: true, balance: 10 });
+    if (wallet.balance !== 10 || creditWalletSchema.safeParse({ enabled: true, testMode: false }).success) process.exit(1);`],
+    { encoding: 'utf8', timeout: 30000 });
+  assert.equal(result.status, 0, result.stderr);
+});
 
 const pageSource = await readFile(new URL('../herbalaifrontend/components/CreditsWallet.tsx', import.meta.url), 'utf8');
 const chatSource = await readFile(new URL('../herbalaifrontend/app/chat/page.tsx', import.meta.url), 'utf8');

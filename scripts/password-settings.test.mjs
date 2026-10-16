@@ -99,6 +99,13 @@ test('settings render separately from profile editing with labelled password fie
   assert.match(markup, /autoComplete="current-password"/i);
   assert.match(markup, /autoComplete="new-password"/i);
   assert.equal((markup.match(/type="password"/g) || []).length, 3);
+  const usernameInput = markup.match(/<input\b[^>]*id="password-username"[^>]*>/)?.[0];
+  assert.ok(usernameInput);
+  for (const attribute of ['name="username"', 'type="text"', 'autoComplete="username"', 'hidden=""', 'readOnly=""']) assert.ok(usernameInput.includes(attribute));
+  for (const name of ['currentPassword', 'newPassword', 'confirmPassword']) {
+    const input = markup.match(new RegExp(`<input\\b[^>]*id="password-${name}"[^>]*>`))?.[0];
+    assert.ok(input?.includes(`name="${name}"`));
+  }
   assert.match(markup, /Google sign-in still works/);
   assert.match(markup, /all devices/);
   assert.match(markup, /work only once/);
@@ -633,7 +640,7 @@ test('password visibility uses a labelled toggle without changing field values',
   assert.equal(button.props['aria-pressed'], false);
   button.props.onClick();
   const markup = renderToStaticMarkup(instance.render());
-  assert.equal((markup.match(/type="text"/g) || []).length, 3);
+  assert.equal([...markup.matchAll(/<input\b[^>]*>/g)].filter(([input]) => /type="text"/.test(input) && !/\bhidden\b/.test(input)).length, 3);
   assert.match(markup, /Hide passwords/);
   assert.equal(instance.state[0], 'TEST-original-password');
 });

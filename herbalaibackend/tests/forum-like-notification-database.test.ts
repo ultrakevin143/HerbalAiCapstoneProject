@@ -8,7 +8,7 @@ import { knowledgeImportServerBoundary } from './helpers/knowledge-import-server
 
 const state = vi.hoisted(() => ({ client: null as PrismaClient | null }));
 vi.mock('../src/lib/prisma.js', () => ({ get prisma() { return state.client; } }));
-import { findCommentsByThreadId, toggleThreadLike } from '../src/repositories/forum.repository.js';
+import { findAllThreads, findThreadById, findCommentsByThreadId, toggleThreadLike } from '../src/repositories/forum.repository.js';
 
 const connectionUrl = process.env['HERBALAI_TEST_DATABASE_URL'];
 const enabled = adminEditDatabaseBoundary(connectionUrl, process.env['DATABASE_URL'], process.env['CI'] === 'true');
@@ -81,5 +81,11 @@ describe.skipIf(!enabled)('Isolated forum ordering and like notification accepta
     expect(comments.map(comment => comment.id)).toEqual([3, 2, 1]);
     expect(comments[0]?.parentCommentId).toBe(1);
     expect(comments[1]?.content).toBe('[This reply has been deleted by the author or moderator.]');
+    await prisma.thread.update({ where: { id: thread.id }, data: { replies: 6 } });
+    expect((await findThreadById(thread.id))?.replies).toBe(3);
+    expect((await findAllThreads()).threads.find(candidate => candidate.id === thread.id)?.replies).toBe(3);
+    await prisma.threadComment.delete({ where: { id: 3 } });
+    expect((await findThreadById(thread.id))?.replies).toBe(2);
+    expect((await findAllThreads()).threads.find(candidate => candidate.id === thread.id)?.replies).toBe(2);
   });
 });
