@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import request from 'supertest';
 import express from 'express';
 
@@ -44,12 +44,15 @@ const perform = (method: string, path: string) => {
 
 describe('API-wide security and parser boundaries', () => {
   beforeEach(() => {
+    vi.stubEnv('DR_AI_CREDITS_MODE', 'off');
     vi.clearAllMocks();
     mocks.session.mockResolvedValue({ status: 'valid', payload: { userId: 'TEST-owner', role: 'contributor', sessionVersion: 0 } });
     mocks.account.mockResolvedValue({ role: 'contributor', isBanned: false, sessionVersion: 0 });
     mocks.markAll.mockResolvedValue({ count: 1 });
     mocks.user.mockResolvedValue({ id: 'TEST-owner', name: 'TEST ONLY', role: 'contributor', isBanned: false });
   });
+
+  afterEach(() => vi.unstubAllEnvs());
 
   it.each(protectedEndpoints)('%s %s rejects anonymous access before authenticated work', async (method, path) => {
     const response = await perform(method, path);

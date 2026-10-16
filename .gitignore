@@ -1,4 +1,5 @@
 # Dependencies
+/futureuses/
 node_modules/
 .pnp
 .pnp.js
@@ -24,6 +25,7 @@ yarn-error.log*
 pnpm-debug.log*
 *.log
 .demo-pids.json
+.local-pids.json
 .demo-logs/
 tmp/
 .codex-remote-attachments/

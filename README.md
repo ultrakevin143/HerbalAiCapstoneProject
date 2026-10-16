@@ -2,6 +2,30 @@
 
 Herbal-Ai is a full-stack educational repository for documenting and sharing Philippine medicinal-plant knowledge. It combines a curated plant library, source-grounded AI assistance, community features, and an administrative review workflow. It is not a diagnostic service, a prescribing system, or an institutional DOH/PITAHC product.
 
+## Code review folder guide
+
+The active project contains the frontend, backend, application tests, database tooling, and run/deployment configuration. Presentation materials, manuscripts, videos, screenshots, prototypes, historical reports, and local AI/editor tooling were moved into `futureuses/cleanup-2026-10-16/files/`, preserving their original relative paths. Nothing was permanently deleted.
+
+| Keep in the project | Purpose |
+| :--- | :--- |
+| `herbalaifrontend/` | Next.js pages, React components, state, API clients, public images, PWA files, and frontend configuration. |
+| `herbalaibackend/` | Express API, authentication, AI services, realtime messaging, Prisma schema/migrations, seeds, content imports, and automated tests. |
+| `scripts/` | Start/stop the local demonstration, deploy the application, and run regression, browser, performance, and maintenance checks. Presentation-document checks and the old UAT report summarizer were archived. |
+| `Docs/research/` | Data and evidence fixtures read by existing tests and herb database tooling. Keep their current paths so those checks remain runnable. |
+| `Docs/DEPLOYMENT_GUIDE.md`, `Docs/RAILWAY_VERCEL_DEPLOYMENT.md` | Instructions for configuring and deploying the application. |
+| `.github/workflows/` | Automated build, lint, and test workflows. |
+| `docker-compose.yml`, `nginx.conf`, `.env.example` | Container orchestration, reverse proxy configuration, and environment-variable template. |
+| `README.md`, `.gitignore`, `.git/` | Setup instructions, ignored-file rules, and local version history. |
+| `futureuses/` | Local archive, excluded from new Git additions. Review the code outside this folder. |
+
+Within each application, keep `package.json`, `package-lock.json`, TypeScript/lint/build settings, and Docker files. The backend's `content/` files are application data, including knowledge-base retirement lists used by the importer. Frontend `public/` files include images and downloadable templates used by the application.
+
+Installed `node_modules/` folders and current `herbalaifrontend/.next/` and `herbalaibackend/dist/` builds remain available for local execution. They are generated files and are already ignored by Git; a fresh installation can recreate them. The frontend `AGENTS.md` remains because Next.js generates and maintains it.
+
+Local `herbalaibackend/.env` and `herbalaifrontend/.env.local` remain in place so the existing installation can run. They contain local configuration and may contain credentials: use `.env.example` when preparing a shareable source copy, and exclude the real environment files, dependencies, generated builds, `.git/`, and `futureuses/` from that copy. The database itself is external to these source folders; migrations and seeds are kept here for setup.
+
+The archive includes a [cleanup report](futureuses/cleanup-2026-10-16/README.md), a CSV mapping original locations to archive locations, checksums for retained files, and backups of this README and `.gitignore` from before the documentation update. Archived scripts are historical copies; restore their original paths and required inputs before using them again.
+
 ---
 
 ## Architecture Overview
@@ -136,6 +160,30 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+#### Local debugging on Windows
+
+From the project root, start both development servers with hot reload/watch mode:
+
+```powershell
+.\scripts\start-local.ps1
+```
+
+This pins the frontend to `http://localhost:3000`, the API to `http://localhost:5000/api`, and Google OAuth's callback to `http://localhost:5000/api/auth/google/callback`. The configured Google OAuth client must allow that callback. It uses the existing backend `.env` database connection; local app servers do not make a hosted Neon database offline.
+
+The launcher limits the backend pool to three connections, opens no database connections at startup, and closes idle connections after 15 seconds. Existing herb reads stay cached for five minutes and are invalidated by application-managed herb changes. Stop the servers when finished to close their connections:
+
+```powershell
+.\scripts\stop-local.ps1
+```
+
+Email defaults to log mode. To test real verification and password-reset emails for an address you control, explicitly allow it:
+
+```powershell
+.\scripts\start-local.ps1 -EmailTestRecipient 'your-email@example.com'
+```
+
+Other recipients remain suppressed in that session. Logs are in `.demo-logs/local-*.log`; process records are in the ignored `.local-pids.json`. The launcher changes only child-process environment settings and leaves saved `.env` files untouched. Use either the development launcher or the production demonstration launcher at a time, since both use ports 3000 and 5000.
+
 #### Production-mode capstone demonstration (Windows)
 
 For a faster, stable demonstration without development overlays or on-demand compilation:
@@ -190,9 +238,9 @@ For the recommended split deployment, use Railway for the Express/PostgreSQL bac
 
 ## Automated Testing
 
-Use the root-level [`HERBAL_AI_TESTING_SCRATCHPAD.md`](HERBAL_AI_TESTING_SCRATCHPAD.md) for manual session notes, quick regression commands, evidence capture, and temporary-data cleanup. Confirmed outcomes belong in `Docs/TEST_EXECUTION_LOG.md`.
+Historical manual session notes are archived in [`HERBAL_AI_TESTING_SCRATCHPAD.md`](futureuses/cleanup-2026-10-16/files/HERBAL_AI_TESTING_SCRATCHPAD.md); previous confirmed outcomes are in the archived [`TEST_EXECUTION_LOG.md`](futureuses/cleanup-2026-10-16/files/Docs/TEST_EXECUTION_LOG.md). The application test suites remain in their original locations.
 
-Run the automated Vitest test suites (83 tests across authentication/account recovery, profile authorization and validation, safe post-login session caching, bounded user lookup batching, production error responses, herbs, suggestions, chat, system features, validation, fallback behavior, forum deletion and cache controls; some integration checks require the configured database and Gemini API):
+Run the automated Vitest test suites (some integration checks require a dedicated test database or configured external services):
 
 ```bash
 cd herbalaibackend
@@ -239,15 +287,21 @@ CAPSTONE PROJECT/
 │   └── workflows/
 │       └── ci.yml                 # GitHub Actions CI Workflow
 ├── Docs/
-│   └── DEPLOYMENT_GUIDE.md        # Full VPS & Docker Deployment Guide
+│   ├── DEPLOYMENT_GUIDE.md        # VPS & Docker deployment guide
+│   ├── RAILWAY_VERCEL_DEPLOYMENT.md # Split-hosting deployment guide
+│   └── research/                 # Fixtures used by tests and herb tooling
 ├── scripts/
+│   ├── start-local.ps1            # Development servers with bounded database pooling
+│   ├── stop-local.ps1             # Stop development servers and watch processes
+│   ├── start-demo.ps1             # Build and run the production demonstration
+│   ├── stop-demo.ps1              # Stop the production demonstration
 │   ├── setup-docker.sh            # Automated Docker Engine installer for Ubuntu
 │   ├── setup-nginx.sh             # Automated Nginx & Certbot SSL setup
 │   └── deploy.sh                  # Zero-downtime deployment & rebuild script
 ├── docker-compose.yml             # Full-Stack Docker Orchestration Configuration
 ├── nginx.conf                     # Production Nginx Reverse Proxy Config
-├── DEFENSE_DEMO_SCRIPT.md         # Capstone Defense Presentation Script
 ├── README.md                      # Project Documentation
+├── futureuses/                    # Local archive; excluded from Git additions
 ├── herbalaibackend/               # Express.js REST & Socket.io API
 │   ├── prisma/
 │   │   ├── schema.prisma          # Database Schema & pgvector definitions
